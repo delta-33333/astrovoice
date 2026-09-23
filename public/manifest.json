@@ -1,7 +1,7 @@
 {
-  "name": "Lunara",
-  "short_name": "Lunara",
-  "description": "Consultation astrale personnalisée 24/7",
+  "name": "Callastral",
+  "short_name": "Callastral",
+  "description": "Consultation astrologique personnalisée 24/7",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#050810",
