@@ -9,7 +9,7 @@ Application web de consultation astrologique vocale à la minute, avec comptes u
 - **Persistance des données** : Informations de naissance et thème natal sauvegardés
 - **PWA** : Installation sur l'écran d'accueil (iOS et Android)
 - **Consultation vocale en temps réel** avec 5 astrologues aux spécialités différentes
-- **Thème natal complet** calculé via Astrology-API.io (Swiss Ephemeris)
+- **Thème natal complet** avec lecture astrale précise
 - **Conformité EU AI Act** : consentement clair et horodaté
 
 ### Tarification & Upsells
@@ -24,7 +24,6 @@ Application web de consultation astrologique vocale à la minute, avec comptes u
 
 - Node.js 18+ et npm
 - Compte Stripe (https://dashboard.stripe.com)
-- Compte Astrology-API.io (https://astrology-api.io)
 - Compte xAI (https://console.x.ai)
 - **Compte Supabase** (https://supabase.com) — recommandé pour la production
 
@@ -62,9 +61,6 @@ SUPABASE_SERVICE_ROLE_KEY=eyJhbG... # Pour les opérations serveur
 STRIPE_SECRET_KEY=sk_test_...
 STRIPE_PUBLISHABLE_KEY=pk_test_...
 STRIPE_WEBHOOK_SECRET=whsec_...
-
-# Astrology API
-ASTROLOGY_API_KEY=your_key
 
 # xAI Grok
 XAI_API_KEY=xai-...
@@ -216,8 +212,7 @@ L'app fonctionne en mode dégradé sans toutes les clés :
 
 - **Sans Supabase** : Auth désactivée, message d'erreur explicite
 - **Sans Stripe** : Paiements simulés (logs console)
-- **Sans Astrology API** : Thème natal mock
-- **Sans xAI** : Interface de call sans voix réelle
+- **Sans xAI** : Thème natal mock et interface de call sans voix réelle
 
 ## 🎨 Design & UX
 
@@ -265,8 +260,7 @@ L'app fonctionne en mode dégradé sans toutes les clés :
 | `STRIPE_SECRET_KEY` | Oui (prod) | Clé secrète Stripe |
 | `STRIPE_PUBLISHABLE_KEY` | Oui | Clé publique Stripe |
 | `STRIPE_WEBHOOK_SECRET` | Oui (prod) | Secret webhook Stripe |
-| `ASTROLOGY_API_KEY` | Oui | Clé Astrology-API.io |
-| `XAI_API_KEY` | Oui | Clé xAI Grok |
+| `XAI_API_KEY` | Oui | Clé xAI Grok (thème natal + voix) |
 | `NEXT_PUBLIC_APP_URL` | Oui | URL publique (https://) |
 | `NEXT_PUBLIC_SUPABASE_URL` | **Oui** | URL projet Supabase |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | **Oui** | Clé anon Supabase |

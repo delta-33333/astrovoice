@@ -4,7 +4,7 @@
 
 - [x] Application Next.js 15 complète
 - [x] Flow utilisateur complet (6 pages)
-- [x] Intégrations API (Stripe, Astrology, xAI)
+- [x] Intégrations API (Stripe, xAI Grok)
 - [x] Design céleste responsive
 - [x] TypeScript strict, zero erreurs
 - [x] Build réussi
@@ -28,10 +28,7 @@ STRIPE_SECRET_KEY=sk_live_...
 STRIPE_PUBLISHABLE_KEY=pk_live_...
 STRIPE_WEBHOOK_SECRET=whsec_...
 
-# Astrology API (obtenir sur astrology-api.io)
-ASTROLOGY_API_KEY=your_key_here
-
-# xAI (obtenir sur console.x.ai)
+# xAI Grok (obtenir sur console.x.ai)
 XAI_API_KEY=xai-...
 
 # App URL (remplacer par votre URL Vercel)

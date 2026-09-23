@@ -19,9 +19,6 @@ STRIPE_SECRET_KEY=sk_live_...
 STRIPE_PUBLISHABLE_KEY=pk_live_...
 STRIPE_WEBHOOK_SECRET=whsec_...
 
-# Astrology API (https://astrology-api.io)
-ASTROLOGY_API_KEY=your_key_here
-
 # xAI Grok (https://console.x.ai)
 XAI_API_KEY=xai-...
 
@@ -43,7 +40,7 @@ https://vercel.com/new
 ```
 
 ### 2. Variables d'Environnement
-- Copier les 6 variables ci-dessus
+- Copier les 5 variables ci-dessus
 - Scope : Production + Preview + Development
 - Save
 
@@ -66,35 +63,21 @@ https://vercel.com/new
 
 ## ⚠️ Blockers Connus & Solutions
 
-### 1. xAI Grok Voice API
+### 1. xAI Grok API
 
-**Blocker** : L'API vocale xAI peut nécessiter accès beta ou la doc peut avoir changé.
+**Blocker** : L'API Grok peut nécessiter un accès beta et génère à la fois les thèmes natals et les consultations vocales.
 
-**Impact** : Sans XAI_API_KEY valide, le call room fonctionne mais sans voix (fallback activé).
+**Impact** : Sans XAI_API_KEY valide, le call room et les thèmes natals fonctionnent en mode mock/fallback.
 
 **Solution** :
 1. Vérifier accès API sur https://console.x.ai
-2. Consulter https://docs.x.ai pour dernière doc Speech-to-Speech
+2. Consulter https://docs.x.ai pour dernière doc API
 3. Tester avec vraie clé en prod
 4. Le timer et la billing fonctionnent indépendamment
 
-**Workaround temporaire** : Le fallback permet de tester tout le flow sans voix.
+**Workaround temporaire** : Les données mock permettent de tester tout le flow.
 
-### 2. Astrology-API.io Format
-
-**Blocker** : Le format exact de l'endpoint natal chart peut différer de l'implémentation.
-
-**Impact** : Risque d'erreur au calcul du thème natal si format incorrect.
-
-**Solution** :
-1. Consulter https://astrology-api.io/docs
-2. Vérifier endpoint exact : `/api/v3/charts` ou similaire
-3. Ajuster `/app/api/natal-chart/route.ts` si nécessaire
-4. Le mock data fonctionne en attendant
-
-**Coût** : Plan Starter ~$11/mois suffit largement au lancement.
-
-### 3. Stripe Webhook Config
+### 2. Stripe Webhook Config
 
 **Blocker** : Le webhook doit être configuré APRÈS le premier déploiement.
 
@@ -162,14 +145,14 @@ https://vercel.com/new
 ### "xAI not configured"
 ```bash
 → Normal si pas encore de clé
-→ Fallback activé : timer fonctionne
+→ Fallback activé : timer et mock thème natal fonctionnent
 → Ajouter XAI_API_KEY quand disponible
 ```
 
 ### "Natal chart error"
 ```bash
-→ Vérifier ASTROLOGY_API_KEY
-→ Consulter docs Astrology-API.io
+→ Vérifier XAI_API_KEY
+→ Consulter docs Grok API sur docs.x.ai
 → Mock data fonctionne en dev
 ```
 
@@ -216,7 +199,6 @@ https://vercel.com/new
 ### API Docs
 - Stripe : https://stripe.com/docs/api
 - xAI : https://docs.x.ai
-- Astrology-API : https://astrology-api.io/docs
 - Vercel : https://vercel.com/docs
 
 ### Dashboards
@@ -231,7 +213,7 @@ https://vercel.com/new
 L'app est **production-ready** si :
 
 ✅ Build Vercel passe  
-✅ Toutes les 6 env vars définies  
+✅ Toutes les 5 env vars définies  
 ✅ Flow complet testable  
 ✅ Stripe test transactions fonctionnent  
 ✅ Page /consent visible avec disclosure  
@@ -253,7 +235,7 @@ Avant de passer en production (Stripe live keys) :
 ☐ Tester alerte $20
 ☐ Vérifier webhook Stripe fonctionne
 ☐ S'assurer que xAI API key est valide (ou accepter fallback)
-☐ Valider Astrology-API calcul thème natal
+☐ Valider génération thème natal Grok
 ☐ Tester sur mobile (responsive)
 ☐ Vérifier HTTPS actif (auto sur Vercel)
 ☐ Backup du code (déjà sur GitHub)
@@ -265,7 +247,7 @@ Avant de passer en production (Stripe live keys) :
 
 **Lunara est prête pour le déploiement.**
 
-**3 blockers mineurs** (xAI, Astrology format, Webhook config) :
+**2 blockers mineurs** (xAI, Webhook config) :
 - Tous ont des fallbacks/workarounds
 - Aucun n'empêche le lancement
 - Résolvables post-deploy

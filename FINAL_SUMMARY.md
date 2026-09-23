@@ -1,5 +1,7 @@
 # 🌟 Lumen — Résumé Final d'Exécution
 
+> **📌 Note de migration (Sept 2026)** : Document historique. La stack a depuis migré vers xAI Grok exclusivement. Voir README pour détails actuels.
+
 ## ✅ Mission Accomplie
 
 L'application **Lumen** (AstroVoice) a été construite de A à Z et est **prête pour le déploiement en production**.

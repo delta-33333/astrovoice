@@ -100,11 +100,11 @@ export default function ConsentPage() {
               
               <p>
                 Cette expérience utilise un système automatisé pour analyser votre thème natal et répondre à vos questions de manière personnalisée. 
-                Votre thème est calculé avec précision grâce au Swiss Ephemeris.
+                Votre thème est établi avec précision et rigueur.
               </p>
 
               <p>
-                La consultation vocale est générée par un système d'intelligence artificielle conversationnelle 
+                La consultation vocale est générée par un système de conversation automatisé avancé 
                 et n'implique pas d'astrologue humain en direct.
               </p>
             </div>
@@ -151,7 +151,7 @@ export default function ConsentPage() {
               />
               <span className="text-sm text-white/90 group-hover:text-white transition-colors">
                 Je comprends et j'accepte que cette consultation est une expérience digitale automatisée 
-                utilisant l'intelligence artificielle. J'accepte les{' '}
+                utilisant des technologies conversationnelles avancées. J'accepte les{' '}
                 <a href="/terms" className="text-celestial-gold hover:underline" target="_blank">
                   conditions générales
                 </a>
