@@ -17,24 +17,24 @@ const packs: Pack[] = [
   {
     id: '10min',
     minutes: 10,
-    price: 14.99,
-    regularPrice: 19.90,
-    savings: 4.91,
+    price: 12.90,
+    regularPrice: 14.90,
+    savings: 2.00,
   },
   {
     id: '30min',
     minutes: 30,
-    price: 39.99,
-    regularPrice: 59.70,
-    savings: 19.71,
+    price: 34.90,
+    regularPrice: 44.70,
+    savings: 9.80,
     popular: true,
   },
   {
     id: '60min',
     minutes: 60,
-    price: 69.99,
-    regularPrice: 119.40,
-    savings: 49.41,
+    price: 59.90,
+    regularPrice: 89.40,
+    savings: 29.50,
   },
 ];
 
@@ -120,18 +120,18 @@ export default function PacksPage() {
 
               <div className="text-center mb-6">
                 <div className="text-4xl font-bold text-celestial-gold mb-1">
-                  ${pack.price}
+                  {pack.price.toFixed(2)} €
                 </div>
                 <div className="text-sm text-white/50 line-through">
-                  ${pack.regularPrice}
+                  {pack.regularPrice.toFixed(2)} €
                 </div>
                 <div className="text-sm text-green-400 mt-2">
-                  Économisez ${pack.savings.toFixed(2)}
+                  Économisez {pack.savings.toFixed(2)} €
                 </div>
               </div>
 
               <div className="text-center text-xs text-white/50 mb-6">
-                ${(pack.price / pack.minutes).toFixed(2)}/min
+                {(pack.price / pack.minutes).toFixed(2)} €/min
               </div>
 
               <button
