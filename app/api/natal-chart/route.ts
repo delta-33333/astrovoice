@@ -136,7 +136,7 @@ Assure-toi que les degrés sont entre 0 et 30, et les maisons entre 1 et 12.`;
           'Authorization': `Bearer ${XAI_API_KEY}`,
         },
         body: JSON.stringify({
-          model: 'grok-beta',
+          model: 'grok-3',
           messages: [
             {
               role: 'system',
