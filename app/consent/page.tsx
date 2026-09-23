@@ -1,30 +1,76 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
 export default function ConsentPage() {
   const router = useRouter();
   const [hasConsented, setHasConsented] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [alreadyConsented, setAlreadyConsented] = useState(false);
 
-  const handleContinue = () => {
+  useEffect(() => {
+    const checkConsent = async () => {
+      try {
+        const response = await fetch('/api/auth/me');
+        const data = await response.json();
+        
+        if (!data.authenticated) {
+          router.push('/auth');
+          return;
+        }
+
+        if (data.user.consentAcceptedAt) {
+          setAlreadyConsented(true);
+          router.push('/payment');
+        }
+      } catch (error) {
+        console.error('Check consent error:', error);
+      }
+    };
+
+    checkConsent();
+  }, [router]);
+
+  const handleContinue = async () => {
     if (!hasConsented) return;
 
     setIsSubmitting(true);
 
-    // Store consent with timestamp
-    const consentData = {
-      timestamp: new Date().toISOString(),
-      version: '1.0',
-      type: 'automated_consultation',
-    };
-    
-    sessionStorage.setItem('legalConsent', JSON.stringify(consentData));
-    
-    // Navigate to payment
-    router.push('/payment');
+    try {
+      const response = await fetch('/api/consent', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          accepted: true,
+          timestamp: new Date().toISOString(),
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to save consent');
+      }
+
+      sessionStorage.setItem('legalConsent', JSON.stringify({
+        timestamp: new Date().toISOString(),
+        version: '1.0',
+        type: 'automated_consultation',
+      }));
+      
+      router.push('/payment');
+    } catch (error) {
+      console.error('Consent error:', error);
+      setIsSubmitting(false);
+    }
   };
+
+  if (alreadyConsented) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-white/60">Redirection...</div>
+      </div>
+    );
+  }
 
   return (
     <main className="min-h-screen flex items-center justify-center px-4 py-12">
@@ -54,11 +100,11 @@ export default function ConsentPage() {
               
               <p>
                 Cette expérience utilise un système automatisé pour analyser votre thème natal et répondre à vos questions de manière personnalisée. 
-                Votre thème est calculé avec précision grâce au Swiss Ephemeris.
+                Votre thème est établi avec précision et rigueur.
               </p>
 
               <p>
-                La consultation vocale est générée par un système d'intelligence artificielle conversationnelle 
+                La consultation vocale est générée par un système de conversation automatisé avancé 
                 et n'implique pas d'astrologue humain en direct.
               </p>
             </div>
@@ -105,7 +151,7 @@ export default function ConsentPage() {
               />
               <span className="text-sm text-white/90 group-hover:text-white transition-colors">
                 Je comprends et j'accepte que cette consultation est une expérience digitale automatisée 
-                utilisant l'intelligence artificielle. J'accepte les{' '}
+                utilisant des technologies conversationnelles avancées. J'accepte les{' '}
                 <a href="/terms" className="text-celestial-gold hover:underline" target="_blank">
                   conditions générales
                 </a>

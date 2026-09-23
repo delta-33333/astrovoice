@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getAstrologerSystemPrompt } from '@/lib/astrologers';
+import { getVoiceSystemPrompt, getAstrologerVoice } from '@/lib/voice-prompts';
+import { getAstrologerById } from '@/lib/astrologers';
 
 const XAI_API_KEY = process.env.XAI_API_KEY;
 
@@ -14,6 +15,14 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    const astrologer = getAstrologerById(astrologerId);
+    if (!astrologer) {
+      return NextResponse.json(
+        { error: 'Astrologue introuvable' },
+        { status: 404 }
+      );
+    }
+
     // Check if xAI is configured
     if (!XAI_API_KEY || XAI_API_KEY === 'xai-placeholder') {
       console.warn('⚠️ xAI not configured - returning mock session');
@@ -24,13 +33,19 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    // Get system prompt for the astrologer
-    const systemPrompt = getAstrologerSystemPrompt(natalChart, birthData);
+    // Get system prompt with persona-specific voice instructions
+    const systemPrompt = getVoiceSystemPrompt(
+      astrologer.id,
+      astrologer.name,
+      birthData,
+      natalChart
+    );
 
-    // Initialize xAI Grok session
-    // Using the standard chat completions endpoint with grok-3
-    // Note: Voice/realtime API requires separate configuration
-    // Check https://docs.x.ai for the latest API documentation
+    // Get the voice ID for this astrologer (ara/eve/leo/rex/sal)
+    const voiceId = getAstrologerVoice(astrologer.id);
+
+    // Initialize xAI Grok session with grok-3
+    // Using standard chat completions endpoint (voice API may require separate config)
     
     try {
       const response = await fetch('https://api.x.ai/v1/chat/completions', {
@@ -69,6 +84,11 @@ export async function POST(request: NextRequest) {
         initialMessage: sessionData.choices?.[0]?.message?.content,
         sessionId,
         model: 'grok-3',
+        astrologer: {
+          id: astrologer.id,
+          name: astrologer.name,
+          voice: voiceId,
+        },
       });
 
     } catch (xaiError) {
@@ -80,6 +100,11 @@ export async function POST(request: NextRequest) {
         fallback: 'text-chat',
         sessionId,
         systemPrompt, // Client can use this for text-based fallback
+        astrologer: {
+          id: astrologer.id,
+          name: astrologer.name,
+          voice: voiceId,
+        },
         message: 'Connexion vocale indisponible - mode texte activé',
       });
     }

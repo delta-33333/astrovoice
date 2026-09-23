@@ -1,5 +1,7 @@
 # 🌟 Lunara — Rapport Final v2.0 (Post-Market Study)
 
+> **📌 Note de migration (Sept 2026)** : Document historique (v2.0). La stack a depuis migré vers xAI Grok exclusivement. Voir README pour détails actuels.
+
 ## ✅ Intégration Étude de Marché Complétée
 
 Tous les changements demandés suite à l'étude de marché ont été intégrés et l'application est **prête pour le déploiement**.
