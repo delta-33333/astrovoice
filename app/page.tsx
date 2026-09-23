@@ -1,74 +1,65 @@
 import Link from "next/link";
+import InstallPrompt from "@/components/InstallPrompt";
 
-export default function HomePage() {
+export default function LandingPage() {
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8">
-      {/* Hero Section */}
-      <div className="max-w-4xl mx-auto text-center space-y-8 py-12">
-        {/* Logo/Brand */}
+    <main className="min-h-screen flex flex-col items-center justify-center px-4 py-12">
+      <div className="max-w-2xl mx-auto text-center space-y-12">
         <div className="space-y-4">
-          <h1 className="font-[family-name:var(--font-cinzel)] text-6xl sm:text-7xl md:text-8xl font-bold text-glow">
+          <h1 className="font-[family-name:var(--font-cinzel)] text-6xl sm:text-7xl font-bold text-glow">
             Lunara
           </h1>
-          <p className="text-celestial-gold text-xl sm:text-2xl font-light tracking-wide">
-            Consultation Astrale en Direct
+          <p className="text-celestial-gold text-xl sm:text-2xl font-light">
+            Consultation Astrale Personnalisée
           </p>
         </div>
 
-        {/* Value Prop */}
-        <div className="max-w-2xl mx-auto space-y-6">
-          <p className="text-lg sm:text-xl text-white/80 leading-relaxed">
-            Connectez-vous instantanément avec un astrologue expérimenté pour une consultation vocale personnalisée basée sur votre thème natal complet.
-          </p>
-          
-          <div className="flex flex-wrap items-center justify-center gap-3 text-white/60">
-            <div className="flex items-center gap-1">
-              <svg className="w-5 h-5 text-celestial-gold" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd"/>
-              </svg>
-              <span className="font-semibold">$1.99/min (1,99 €/min)</span>
-            </div>
-            <span className="text-white/30">•</span>
-            <span className="text-celestial-gold">2 premières min à $0.99</span>
-          </div>
+        <p className="text-lg text-white/80 leading-relaxed max-w-xl mx-auto">
+          Consultation vocale basée sur votre thème natal complet, disponible 24/7
+        </p>
+        
+        <div className="flex items-center justify-center gap-3 text-sm text-white/60">
+          <span className="font-semibold text-celestial-gold">$1.99/min</span>
+          <span className="text-white/30">•</span>
+          <span>2 premières min à $0.99</span>
         </div>
 
-        {/* CTA */}
-        <div className="pt-6">
+        <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
           <Link 
-            href="/astrologers"
-            className="btn-primary inline-block text-lg"
+            href="/auth"
+            className="btn-primary text-lg"
           >
-            Parler à un astrologue
+            Créer un compte
+          </Link>
+          <Link 
+            href="/auth"
+            className="btn-secondary text-lg"
+          >
+            Se connecter
           </Link>
         </div>
 
-        {/* Trust Indicators */}
-        <div className="pt-12 grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-3xl mx-auto">
-          <div className="space-y-2 p-6 bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10">
-            <div className="text-3xl">✨</div>
-            <h3 className="font-semibold text-white">Instantané</h3>
-            <p className="text-sm text-white/60">Connectez-vous en quelques minutes</p>
+        <div className="pt-8 grid grid-cols-3 gap-4 max-w-md mx-auto text-center">
+          <div>
+            <div className="text-2xl mb-1">✨</div>
+            <p className="text-xs text-white/60">Instantané</p>
           </div>
-          
-          <div className="space-y-2 p-6 bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10">
-            <div className="text-3xl">🌙</div>
-            <h3 className="font-semibold text-white">Personnalisé</h3>
-            <p className="text-sm text-white/60">Basé sur votre thème natal complet</p>
+          <div>
+            <div className="text-2xl mb-1">🌙</div>
+            <p className="text-xs text-white/60">Personnalisé</p>
           </div>
-          
-          <div className="space-y-2 p-6 bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10">
-            <div className="text-3xl">🔒</div>
-            <h3 className="font-semibold text-white">Sécurisé</h3>
-            <p className="text-sm text-white/60">Paiement protégé par Stripe</p>
+          <div>
+            <div className="text-2xl mb-1">🔒</div>
+            <p className="text-xs text-white/60">Sécurisé</p>
           </div>
         </div>
       </div>
 
-      {/* Footer */}
-      <footer className="w-full max-w-4xl mx-auto text-center py-8 text-white/40 text-sm">
-        <p>© {new Date().getFullYear()} Lunara. Consultation astrale professionnelle.</p>
+      <footer className="mt-16 text-center text-white/40 text-xs">
+        <p>© {new Date().getFullYear()} Lunara</p>
       </footer>
+
+      <InstallPrompt />
     </main>
   );
 }
