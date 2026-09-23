@@ -54,7 +54,7 @@ export default function ConsentPage() {
               
               <p>
                 Cette expérience utilise un système automatisé pour analyser votre thème natal et répondre à vos questions de manière personnalisée. 
-                Votre thème est calculé avec précision grâce au Swiss Ephemeris.
+                Votre thème est calculé avec précision par intelligence artificielle.
               </p>
 
               <p>

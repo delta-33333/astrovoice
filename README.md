@@ -5,7 +5,7 @@ Application web de consultation astrologique vocale à la minute, développée a
 ## 🌟 Fonctionnalités
 
 - **Consultation vocale en temps réel** avec des astrologues expérimentés
-- **Thème natal complet** calculé via Astrology-API.io (Swiss Ephemeris)
+- **Thème natal complet** généré par intelligence artificielle avancée
 - **Facturation à la seconde** avec intro offer : 2 premières minutes à $0.99, puis $1.99/min (1,99 €/min)
 - **Interface élégante** avec design céleste immersif
 - **5 astrologues** avec spécialités différentes (Relations, Spiritualité, Prévisions, etc.)
@@ -18,8 +18,7 @@ Application web de consultation astrologique vocale à la minute, développée a
 
 - Node.js 18+ et npm/yarn
 - Compte Stripe (https://dashboard.stripe.com)
-- Compte Astrology-API.io (https://astrology-api.io)
-- Compte xAI (https://console.x.ai) pour les fonctionnalités vocales
+- Compte xAI (https://console.x.ai) pour les fonctionnalités vocales et génération de thèmes natals
 
 ### Installation locale
 
@@ -44,9 +43,6 @@ cp .env.example .env
 STRIPE_SECRET_KEY=sk_test_...
 STRIPE_PUBLISHABLE_KEY=pk_test_...
 STRIPE_WEBHOOK_SECRET=whsec_...
-
-# Astrology API (obtenir sur https://astrology-api.io)
-ASTROLOGY_API_KEY=your_astrology_api_key_here
 
 # xAI Grok API (obtenir sur https://console.x.ai)
 XAI_API_KEY=xai-...
@@ -95,7 +91,6 @@ Ajoutez toutes les variables du fichier `.env` dans **Project Settings → Envir
 - `STRIPE_SECRET_KEY`
 - `STRIPE_PUBLISHABLE_KEY`
 - `STRIPE_WEBHOOK_SECRET`
-- `ASTROLOGY_API_KEY`
 - `XAI_API_KEY`
 - `NEXT_PUBLIC_APP_URL` (votre URL Vercel, ex: https://lunara.vercel.app)
 
@@ -166,15 +161,17 @@ astrovoice/
 
 ### Intégrations API
 
-#### Astrology-API.io
+#### xAI Grok
 
-Calcul du thème natal avec positions planétaires, maisons et aspects :
+Génération de thèmes natals et consultation vocale :
 
 ```typescript
 POST /api/natal-chart
 Body: { date, time, place, timeUnknown }
-Response: { planets, houses, aspects, coords }
+Response: { planets, houses, aspects, ascendant, sunSign, moonSign, summary, coords }
 ```
+
+Grok analyse la date, heure et lieu de naissance pour générer un thème natal complet avec positions planétaires, maisons astrologiques et aspects majeurs.
 
 #### Stripe
 
@@ -222,8 +219,7 @@ Connexion vocale temps réel avec voix sélectionnée (Ara, Eve, Leo, Rex, Sal).
 L'application fonctionne en mode dégradé si les clés API ne sont pas configurées :
 
 - **Sans Stripe** : Paiements simulés avec logs console
-- **Sans Astrology-API** : Thème natal mock avec données d'exemple
-- **Sans xAI** : Interface de call avec timer mais sans voix
+- **Sans xAI** : Thème natal mock avec données d'exemple et interface de call avec timer mais sans voix
 
 Ceci permet le développement et les tests sans configuration complète.
 
@@ -234,8 +230,7 @@ Ceci permet le développement et les tests sans configuration complète.
 | `STRIPE_SECRET_KEY` | Oui (prod) | Clé secrète Stripe (sk_test_ ou sk_live_) |
 | `STRIPE_PUBLISHABLE_KEY` | Oui | Clé publique Stripe (pk_test_ ou pk_live_) |
 | `STRIPE_WEBHOOK_SECRET` | Oui (prod) | Secret de signature webhook (whsec_) |
-| `ASTROLOGY_API_KEY` | Oui | Clé API Astrology-API.io |
-| `XAI_API_KEY` | Oui | Clé API xAI pour Grok Voice |
+| `XAI_API_KEY` | Oui | Clé API xAI pour Grok (thèmes natals + voix) |
 | `NEXT_PUBLIC_APP_URL` | Oui | URL publique de l'app (avec https://) |
 
 ## 🔒 Sécurité
