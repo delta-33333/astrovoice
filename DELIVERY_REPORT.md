@@ -1,5 +1,7 @@
 # 🌟 AstroVoice (Lumen) — Rapport Final de Livraison
 
+> **📌 Note de migration (Sept 2026)** : Ce document décrit la version initiale. Depuis, Astrology-API a été remplacé par xAI Grok pour une expérience client optimale. Voir le README à jour pour la stack actuelle.
+
 ## ✅ Application Complète Livrée
 
 **Repository** : https://github.com/delta-33333/astrovoice  
