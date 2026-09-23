@@ -27,36 +27,48 @@ export async function POST(request: NextRequest) {
     // Get system prompt for the astrologer
     const systemPrompt = getAstrologerSystemPrompt(natalChart, birthData);
 
-    // Initialize xAI Grok realtime session
-    // Note: This is a placeholder - actual xAI realtime API may differ
-    // Check https://docs.x.ai for the latest voice/realtime API documentation
+    // Initialize xAI Grok session
+    // Using the standard chat completions endpoint with grok-3
+    // Note: Voice/realtime API requires separate configuration
+    // Check https://docs.x.ai for the latest API documentation
     
     try {
-      const response = await fetch('https://api.x.ai/v1/realtime/sessions', {
+      const response = await fetch('https://api.x.ai/v1/chat/completions', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${XAI_API_KEY}`,
         },
         body: JSON.stringify({
-          model: 'grok-voice-1',
-          voice: astrologerId, // Maps to ara/eve/leo/rex/sal
-          system: systemPrompt,
+          model: 'grok-3',
+          messages: [
+            {
+              role: 'system',
+              content: systemPrompt,
+            },
+            {
+              role: 'user',
+              content: `Bonjour, je suis ${birthData.name}. Je souhaite commencer ma consultation astrologique.`,
+            },
+          ],
           temperature: 0.7,
           max_tokens: 2000,
+          stream: false,
         }),
       });
 
       if (!response.ok) {
-        throw new Error(`xAI API error: ${response.status}`);
+        const errorText = await response.text();
+        throw new Error(`xAI API error: ${response.status} — ${errorText}`);
       }
 
       const sessionData = await response.json();
 
       return NextResponse.json({
-        sessionToken: sessionData.token || sessionData.session_id,
-        wsUrl: sessionData.websocket_url,
+        sessionToken: sessionData.id,
+        initialMessage: sessionData.choices?.[0]?.message?.content,
         sessionId,
+        model: 'grok-3',
       });
 
     } catch (xaiError) {
