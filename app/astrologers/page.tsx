@@ -21,7 +21,7 @@ export default function AstrologersPage() {
 
   const handleSelect = (astrologerId: string) => {
     sessionStorage.setItem('astrologerId', astrologerId);
-    router.push('/payment');
+    router.push('/birth');
   };
 
   if (!birthData) {

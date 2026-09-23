@@ -34,9 +34,9 @@ export default function BirthDataPage() {
       return;
     }
 
-    // Store in sessionStorage and navigate
+    // Store in sessionStorage and navigate to preview
     sessionStorage.setItem('birthData', JSON.stringify(formData));
-    router.push('/astrologers');
+    router.push('/preview');
   };
 
   return (

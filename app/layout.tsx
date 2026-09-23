@@ -6,10 +6,10 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const cinzel = Cinzel({ subsets: ["latin"], variable: "--font-cinzel", weight: ["400", "600", "700"] });
 
 export const metadata: Metadata = {
-  title: "Lumen — Consultation Astrale en Direct",
+  title: "Lunara — Consultation Astrale en Direct",
   description: "Parlez à un astrologue expérimenté pour une consultation personnalisée basée sur votre thème natal.",
   openGraph: {
-    title: "Lumen — Consultation Astrale en Direct",
+    title: "Lunara — Consultation Astrale en Direct",
     description: "Consultation astrale personnalisée avec un astrologue expert",
     type: "website",
   },

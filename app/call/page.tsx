@@ -17,6 +17,8 @@ export default function CallPage() {
   const [error, setError] = useState<string | null>(null);
   const [isMocked, setIsMocked] = useState(false);
   const [transcript, setTranscript] = useState<string[]>([]);
+  const [showCostAlert, setShowCostAlert] = useState(false);
+  const [hasShownAlert, setHasShownAlert] = useState(false);
 
   const startTimeRef = useRef<number>(0);
   const timerIntervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -89,6 +91,13 @@ export default function CallPage() {
       timerIntervalRef.current = setInterval(() => {
         const elapsed = Math.floor((Date.now() - startTimeRef.current) / 1000);
         setCallDuration(elapsed);
+        
+        // Show cost alert at $20
+        const cost = calculateCost(elapsed);
+        if (cost >= 2000 && !hasShownAlert) {
+          setShowCostAlert(true);
+          setHasShownAlert(true);
+        }
       }, 1000);
 
       // Add welcome message to transcript
@@ -203,9 +212,39 @@ export default function CallPage() {
                   {formatCurrency(currentCost)}
                 </div>
                 <div className="text-sm text-white/50">
-                  $1.99 par minute • Facturation à la seconde
+                  {callDuration <= 120 ? (
+                    <span className="text-celestial-gold">
+                      Offre découverte : 2 premières min à $0.99
+                    </span>
+                  ) : (
+                    <span>$1.99/min (1,99 €/min) • Facturation à la seconde</span>
+                  )}
                 </div>
               </div>
+
+              {/* Cost Alert */}
+              {showCostAlert && (
+                <div className="bg-yellow-500/10 border-2 border-yellow-500/50 rounded-xl p-4 mb-4 animate-pulse">
+                  <div className="flex items-start gap-3">
+                    <span className="text-2xl">⚠️</span>
+                    <div>
+                      <p className="font-semibold text-yellow-200 mb-1">
+                        Coût atteint : $20
+                      </p>
+                      <p className="text-sm text-yellow-200/80">
+                        Vous pouvez continuer ou terminer la consultation maintenant. 
+                        Le coût continuera d'augmenter de $1.99 par minute.
+                      </p>
+                      <button
+                        onClick={() => setShowCostAlert(false)}
+                        className="mt-2 text-xs underline hover:no-underline"
+                      >
+                        J'ai compris
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
 
               {/* Transcript */}
               {transcript.length > 0 && (

@@ -128,11 +128,19 @@ export default function PaymentPage() {
           <div className="pt-6 border-t border-white/10">
             <div className="flex items-center justify-between mb-2">
               <span className="text-lg font-semibold">Tarif</span>
-              <span className="text-2xl font-bold text-celestial-gold">$1.99/min</span>
+              <div className="text-right">
+                <div className="text-2xl font-bold text-celestial-gold">$1.99/min</div>
+                <div className="text-sm text-white/60">(1,99 €/min)</div>
+              </div>
             </div>
-            <p className="text-xs text-white/50">
-              Facturation à la seconde • Vous payez uniquement pour la durée réelle de votre consultation
+            <p className="text-xs text-white/50 mb-2">
+              Facturation à la seconde • Vous payez uniquement pour la durée réelle
             </p>
+            <div className="bg-celestial-gold/10 border border-celestial-gold/30 rounded-lg p-3 mt-3">
+              <p className="text-sm text-celestial-gold font-semibold">
+                🎁 Offre découverte : 2 premières minutes à $0.99
+              </p>
+            </div>
           </div>
         </div>
 
@@ -143,7 +151,7 @@ export default function PaymentPage() {
             Paiement sécurisé
           </h3>
           <p className="text-sm text-white/70 leading-relaxed">
-            Nous autorisons votre carte pour un montant maximum de $59.70 (30 minutes). 
+            Nous autorisons votre carte pour un montant maximum de $19.90 (~10 minutes). 
             À la fin de votre consultation, seul le montant exact de la durée utilisée sera prélevé.
           </p>
         </div>

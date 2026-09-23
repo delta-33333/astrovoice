@@ -8,7 +8,7 @@ export default function HomePage() {
         {/* Logo/Brand */}
         <div className="space-y-4">
           <h1 className="font-[family-name:var(--font-cinzel)] text-6xl sm:text-7xl md:text-8xl font-bold text-glow">
-            Lumen
+            Lunara
           </h1>
           <p className="text-celestial-gold text-xl sm:text-2xl font-light tracking-wide">
             Consultation Astrale en Direct
@@ -21,22 +21,22 @@ export default function HomePage() {
             Connectez-vous instantanément avec un astrologue expérimenté pour une consultation vocale personnalisée basée sur votre thème natal complet.
           </p>
           
-          <div className="flex items-center justify-center gap-2 text-white/60">
+          <div className="flex flex-wrap items-center justify-center gap-3 text-white/60">
             <div className="flex items-center gap-1">
               <svg className="w-5 h-5 text-celestial-gold" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd"/>
               </svg>
-              <span>$1.99 / minute</span>
+              <span className="font-semibold">$1.99/min (1,99 €/min)</span>
             </div>
             <span className="text-white/30">•</span>
-            <span>Consultation vocale immédiate</span>
+            <span className="text-celestial-gold">2 premières min à $0.99</span>
           </div>
         </div>
 
         {/* CTA */}
         <div className="pt-6">
           <Link 
-            href="/birth"
+            href="/astrologers"
             className="btn-primary inline-block text-lg"
           >
             Parler à un astrologue
@@ -67,7 +67,7 @@ export default function HomePage() {
 
       {/* Footer */}
       <footer className="w-full max-w-4xl mx-auto text-center py-8 text-white/40 text-sm">
-        <p>© {new Date().getFullYear()} Lumen. Consultation astrale professionnelle.</p>
+        <p>© {new Date().getFullYear()} Lunara. Consultation astrale professionnelle.</p>
       </footer>
     </main>
   );

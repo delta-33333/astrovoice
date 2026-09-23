@@ -1,4 +1,4 @@
-# Lumen — Consultation Astrale en Direct
+# Lunara — Consultation Astrale en Direct
 
 Application web de consultation astrologique vocale à la minute, développée avec Next.js 15, TypeScript et Tailwind CSS.
 
@@ -6,10 +6,11 @@ Application web de consultation astrologique vocale à la minute, développée a
 
 - **Consultation vocale en temps réel** avec des astrologues expérimentés
 - **Thème natal complet** calculé via Astrology-API.io (Swiss Ephemeris)
-- **Facturation à la seconde** ($1.99/minute) via Stripe
+- **Facturation à la seconde** avec intro offer : 2 premières minutes à $0.99, puis $1.99/min (1,99 €/min)
 - **Interface élégante** avec design céleste immersif
 - **5 astrologues** avec spécialités différentes (Relations, Spiritualité, Prévisions, etc.)
 - **Paiement sécurisé** avec autorisation pré-consultation et capture du montant exact
+- **Conformité EU AI Act** : consentement clair avant consultation
 
 ## 🚀 Installation
 
@@ -96,7 +97,7 @@ Ajoutez toutes les variables du fichier `.env` dans **Project Settings → Envir
 - `STRIPE_WEBHOOK_SECRET`
 - `ASTROLOGY_API_KEY`
 - `XAI_API_KEY`
-- `NEXT_PUBLIC_APP_URL` (votre URL Vercel, ex: https://astrovoice.vercel.app)
+- `NEXT_PUBLIC_APP_URL` (votre URL Vercel, ex: https://lunara.vercel.app)
 
 ## 🔗 Configuration des webhooks Stripe
 
@@ -133,8 +134,10 @@ astrovoice/
 │   │   ├── natal-chart/      # Calcul du thème natal
 │   │   ├── call-session/     # Création de session vocale
 │   │   └── stripe/           # Gestion paiements Stripe
-│   ├── birth/                # Formulaire données de naissance
 │   ├── astrologers/          # Sélection astrologue
+│   ├── birth/                # Formulaire données de naissance
+│   ├── preview/              # Aperçu du thème natal
+│   ├── consent/              # Consentement EU AI Act
 │   ├── payment/              # Page de paiement
 │   ├── call/                 # Interface d'appel
 │   ├── complete/             # Confirmation fin de consultation
@@ -153,11 +156,13 @@ astrovoice/
 ### Flux utilisateur
 
 1. **Landing** (`/`) — Page d'accueil avec CTA
-2. **Birth Data** (`/birth`) — Collecte nom, date, heure, lieu de naissance
-3. **Astrologers** (`/astrologers`) — Choix parmi 5 astrologues
-4. **Payment** (`/payment`) — Autorisation Stripe pré-consultation
-5. **Call** (`/call`) — Interface vocale avec timer et coût en temps réel
-6. **Complete** (`/complete`) — Récapitulatif et reçu
+2. **Astrologers** (`/astrologers`) — Choix parmi 5 astrologues
+3. **Birth Data** (`/birth`) — Collecte nom, date, heure, lieu de naissance
+4. **Preview** (`/preview`) — Aperçu du thème natal calculé
+5. **Consent** (`/consent`) — Consentement EU AI Act (Art. 50)
+6. **Payment** (`/payment`) — Autorisation Stripe pré-consultation
+7. **Call** (`/call`) — Interface vocale avec timer et coût en temps réel
+8. **Complete** (`/complete`) — Récapitulatif et reçu
 
 ### Intégrations API
 
@@ -175,11 +180,12 @@ Response: { planets, houses, aspects, coords }
 
 **Autorisation pré-consultation** :
 - `PaymentIntent` avec `capture_method: manual`
-- Montant max autorisé : $59.70 (30 minutes)
+- Montant max autorisé : $19.90 (environ 10 minutes)
 
 **Capture du montant exact** :
-- Calcul : `Math.ceil((secondes * 199) / 60)` centimes
-- Update du `PaymentIntent` + capture
+- Intro offer : 2 premières minutes à $0.99 (99 cents)
+- Après 2 min : $1.99/min billed par seconde
+- Formule : `if (seconds <= 120) { 99¢ } else { 99¢ + ceil((seconds-120)*199/60)¢ }`
 
 #### xAI Grok Voice
 
@@ -208,7 +214,7 @@ Connexion vocale temps réel avec voix sélectionnée (Ara, Eve, Leo, Rex, Sal).
 
 - Design sombre/céleste immersif
 - Animations douces (glow, float)
-- Pas de mention d'IA/bot (expérience 100% humaine)
+- Expérience élégante et professionnelle
 - Mobile-first responsive
 
 ## 🧪 Mode développement
@@ -240,6 +246,29 @@ Ceci permet le développement et les tests sans configuration complète.
 - Variables sensibles dans `.env` (gitignored)
 - HTTPS obligatoire en production (automatique sur Vercel)
 
+## ⚖️ Conformité légale
+
+### EU AI Act (Article 50)
+
+L'application respecte le Règlement européen sur l'IA :
+
+- **Disclosure obligatoire** : Les utilisateurs sont informés avant la consultation qu'il s'agit d'une "consultation digitale automatisée" utilisant l'IA
+- **Consentement explicite** : Checkbox de consentement avec horodatage
+- **Wording élégant** : Le marketing reste professionnel sans mentionner "AI/IA" explicitement
+- **Immersion après consentement** : L'expérience astrologue démarre après acceptation
+
+## 💰 Tarification
+
+### Intro Offer
+- **2 premières minutes** : $0.99 (99 cents)
+- **Après 2 minutes** : $1.99/min (1,99 €/min)
+- **Facturation** : À la seconde exacte
+- **Alerte** : Pop-up à $20 pour éviter les surprises
+
+### Hold Stripe
+- **Montant maximum** : $19.90 (~10 minutes)
+- **Capture** : Montant exact selon durée réelle
+
 ## 🐛 Dépannage
 
 ### "Stripe not configured"
@@ -268,7 +297,7 @@ Ceci permet le développement et les tests sans configuration complète.
 
 ## 📄 License
 
-Projet privé — © 2026 Lumen
+Projet privé — © 2026 Lunara
 
 ## 🤝 Contribution
 

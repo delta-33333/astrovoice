@@ -60,8 +60,8 @@ export async function POST(request: NextRequest) {
     }
 
     // Create PaymentIntent with manual capture for exact amount later
-    // Max 30 minutes = $59.70
-    const maxAmount = 5970; // cents
+    // Max 10 minutes = $19.90 (2 min intro @ $0.99 + 8 min @ $1.99)
+    const maxAmount = 1990; // cents
 
     const paymentIntent = await stripe.paymentIntents.create({
       amount: maxAmount,
