@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import InstallPrompt from '@/components/InstallPrompt';
+import { formatCurrency, INTRO_CENTS, PER_MINUTE_CENTS } from '@/lib/pricing';
 
 interface UserData {
   displayName: string;
@@ -16,6 +17,7 @@ export default function HomePage() {
   const router = useRouter();
   const [user, setUser] = useState<UserData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [packNotice, setPackNotice] = useState(false);
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -43,6 +45,11 @@ export default function HomePage() {
     };
 
     checkAuth();
+
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('pack_success') === '1') {
+      setPackNotice(true);
+    }
   }, [router]);
 
   const handleLogout = async () => {
@@ -103,6 +110,15 @@ export default function HomePage() {
             </p>
           </div>
 
+          {packNotice && (
+            <div className="bg-white/5 border border-white/10 rounded-2xl p-4 text-center">
+              <p className="text-celestial-gold font-semibold">Minutes ajoutées</p>
+              <p className="text-white/60 text-sm mt-1">
+                Elles seront utilisées en premier lors de votre prochaine consultation.
+              </p>
+            </div>
+          )}
+
           {hasPrepaidMinutes && (
             <div className="bg-celestial-gold/10 border border-celestial-gold/30 rounded-2xl p-4 text-center">
               <p className="text-celestial-gold font-semibold">
@@ -122,7 +138,7 @@ export default function HomePage() {
           </button>
 
           <div className="text-center text-sm text-white/60">
-            <p>$1.99/min • 2 premières min à $0.99</p>
+            <p>{formatCurrency(PER_MINUTE_CENTS)}/min • {formatCurrency(INTRO_CENTS)}/min les 3 premières minutes</p>
           </div>
 
           <div className="grid grid-cols-2 gap-4 mt-8">

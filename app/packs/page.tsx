@@ -1,50 +1,34 @@
 'use client';
 
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-
-interface Pack {
-  id: string;
-  minutes: number;
-  price: number;
-  regularPrice: number;
-  savings: number;
-  popular?: boolean;
-}
-
-const packs: Pack[] = [
-  {
-    id: '10min',
-    minutes: 10,
-    price: 12.90,
-    regularPrice: 14.90,
-    savings: 2.00,
-  },
-  {
-    id: '30min',
-    minutes: 30,
-    price: 34.90,
-    regularPrice: 44.70,
-    savings: 9.80,
-    popular: true,
-  },
-  {
-    id: '60min',
-    minutes: 60,
-    price: 59.90,
-    regularPrice: 89.40,
-    savings: 29.50,
-  },
-];
+import PaymentSheet from '@/components/PaymentSheet';
+import { formatCurrency, MINUTE_PACKS, type MinutePack } from '@/lib/pricing';
 
 export default function PacksPage() {
   const router = useRouter();
   const [selectedPack, setSelectedPack] = useState<string | null>(null);
   const [isPurchasing, setIsPurchasing] = useState(false);
   const [error, setError] = useState('');
+  const [sheetOpen, setSheetOpen] = useState(false);
+  const [clientSecret, setClientSecret] = useState<string | null>(null);
+  const [checkoutSessionId, setCheckoutSessionId] = useState<string | null>(null);
+  const [collectContact, setCollectContact] = useState(false);
+  const [sheetTitle, setSheetTitle] = useState('Minutes');
+  const [sheetAmount, setSheetAmount] = useState('');
+  const [sheetDetail, setSheetDetail] = useState('');
 
-  const handlePurchase = async (pack: Pack) => {
+  const standardPacks = MINUTE_PACKS.filter((pack) => !pack.founding);
+  const founding = MINUTE_PACKS.find((pack) => pack.founding);
+
+  const closeSheet = useCallback(() => {
+    setSheetOpen(false);
+    setIsPurchasing(false);
+    setSelectedPack(null);
+  }, []);
+
+  const handlePurchase = async (pack: MinutePack) => {
     setSelectedPack(pack.id);
     setIsPurchasing(true);
     setError('');
@@ -59,19 +43,28 @@ export default function PacksPage() {
       const data = await response.json();
 
       if (!response.ok) {
-        setError(data.error || 'Erreur lors de l\'achat');
+        setError(data.error || 'Le paiement n’a pas pu être préparé');
         setIsPurchasing(false);
+        setSelectedPack(null);
         return;
       }
 
-      if (data.checkoutUrl) {
-        window.location.href = data.checkoutUrl;
-      } else {
-        router.push('/home');
-      }
-    } catch (err) {
+      setClientSecret(data.clientSecret);
+      setCheckoutSessionId(data.checkoutSessionId);
+      setCollectContact(!!data.collectContact);
+      setSheetTitle(data.label || 'Minutes');
+      setSheetAmount(formatCurrency(data.amount));
+      setSheetDetail(
+        pack.founding
+          ? 'Dix minutes ajoutées à votre compte, une seule fois.'
+          : `${pack.minutes} minutes ajoutées à votre compte dès confirmation. Elles n’expirent pas.`
+      );
+      setSheetOpen(true);
+      setIsPurchasing(false);
+    } catch {
       setError('Erreur de connexion');
       setIsPurchasing(false);
+      setSelectedPack(null);
     }
   };
 
@@ -87,7 +80,7 @@ export default function PacksPage() {
             Packs Minutes
           </h1>
           <p className="text-white/70 text-lg max-w-2xl mx-auto">
-            Économisez sur vos consultations avec nos packs prépayés
+            Des minutes d’avance, au calme, pour vos prochaines consultations Callastral.
           </p>
         </div>
 
@@ -97,8 +90,39 @@ export default function PacksPage() {
           </div>
         )}
 
+        {founding && (
+          <div className="mb-8 bg-celestial-gold/10 border border-celestial-gold/40 rounded-3xl p-8">
+            <p className="text-xs uppercase tracking-[0.18em] text-celestial-gold mb-2">Cercle Fondateur</p>
+            <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6">
+              <div>
+                <h2 className="font-[family-name:var(--font-cinzel)] text-3xl mb-2">
+                  {founding.minutes} minutes
+                </h2>
+                <p className="text-white/70 text-sm max-w-md">
+                  Une place fondateur : dix minutes pour {formatCurrency(founding.amountCents)}, une fois par compte.
+                </p>
+              </div>
+              <div className="text-left sm:text-right">
+                <div className="text-4xl font-bold text-celestial-gold">
+                  {formatCurrency(founding.amountCents)}
+                </div>
+                <div className="text-sm text-white/40 line-through">
+                  {formatCurrency(founding.regularCents)}
+                </div>
+                <button
+                  onClick={() => handlePurchase(founding)}
+                  disabled={sheetOpen || (isPurchasing && selectedPack === founding.id)}
+                  className="btn-primary mt-4 disabled:opacity-50"
+                >
+                  {isPurchasing && selectedPack === founding.id ? 'Préparation…' : 'Rejoindre'}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          {packs.map((pack) => (
+          {standardPacks.map((pack) => (
             <div
               key={pack.id}
               className={`relative bg-white/5 backdrop-blur-sm rounded-3xl border-2 p-8 transition-all ${
@@ -109,7 +133,7 @@ export default function PacksPage() {
             >
               {pack.popular && (
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-celestial-gold text-celestial-darker px-4 py-1 rounded-full text-xs font-semibold">
-                  Plus populaire
+                  Plus demandé
                 </div>
               )}
 
@@ -120,53 +144,74 @@ export default function PacksPage() {
 
               <div className="text-center mb-6">
                 <div className="text-4xl font-bold text-celestial-gold mb-1">
-                  {pack.price.toFixed(2)} €
+                  {formatCurrency(pack.amountCents)}
                 </div>
                 <div className="text-sm text-white/50 line-through">
-                  {pack.regularPrice.toFixed(2)} €
+                  {formatCurrency(pack.regularCents)}
                 </div>
                 <div className="text-sm text-green-400 mt-2">
-                  Économisez {pack.savings.toFixed(2)} €
+                  Économisez {formatCurrency(pack.regularCents - pack.amountCents)}
                 </div>
               </div>
 
               <div className="text-center text-xs text-white/50 mb-6">
-                {(pack.price / pack.minutes).toFixed(2)} €/min
+                {formatCurrency(Math.round(pack.amountCents / pack.minutes))}/min
               </div>
 
               <button
                 onClick={() => handlePurchase(pack)}
-                disabled={isPurchasing && selectedPack === pack.id}
+                disabled={sheetOpen || (isPurchasing && selectedPack === pack.id)}
                 className="btn-primary w-full disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {isPurchasing && selectedPack === pack.id ? 'Chargement...' : 'Acheter'}
+                {isPurchasing && selectedPack === pack.id ? 'Préparation…' : 'Choisir'}
               </button>
             </div>
           ))}
         </div>
 
         <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 p-6 space-y-3">
-          <h3 className="font-semibold text-center mb-4">Comment ça marche ?</h3>
+          <h3 className="font-semibold text-center mb-4">Comment ça se passe</h3>
           <ul className="space-y-2 text-sm text-white/70">
             <li className="flex items-start gap-2">
               <span className="text-celestial-gold mt-0.5">✓</span>
-              <span>Vos minutes sont ajoutées à votre compte immédiatement</span>
+              <span>Le règlement se fait ici, sans quitter Callastral</span>
             </li>
             <li className="flex items-start gap-2">
               <span className="text-celestial-gold mt-0.5">✓</span>
-              <span>Utilisées automatiquement lors de vos appels</span>
+              <span>Les minutes sont ajoutées à votre compte dès confirmation</span>
             </li>
             <li className="flex items-start gap-2">
               <span className="text-celestial-gold mt-0.5">✓</span>
-              <span>Aucune date d'expiration</span>
+              <span>Elles sont utilisées en premier lors de vos appels</span>
             </li>
             <li className="flex items-start gap-2">
               <span className="text-celestial-gold mt-0.5">✓</span>
-              <span>Si vous dépassez, facturation normale automatique</span>
+              <span>Aucune date d’expiration. Au-delà, le tarif à la minute reprend</span>
             </li>
           </ul>
         </div>
       </div>
+
+      <PaymentSheet
+        open={sheetOpen}
+        title={sheetTitle}
+        amountLabel={sheetAmount}
+        detail={sheetDetail}
+        payLabel={sheetAmount ? `Payer ${sheetAmount}` : 'Payer'}
+        clientSecret={clientSecret}
+        collectContact={collectContact}
+        onClose={closeSheet}
+        onSuccess={() => {
+          if (!checkoutSessionId) return;
+          void fetch('/api/stripe/confirm-prepaid', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ checkoutSessionId }),
+          }).finally(() => {
+            router.push('/home?pack_success=1');
+          });
+        }}
+      />
     </main>
   );
 }

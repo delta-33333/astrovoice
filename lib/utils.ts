@@ -1,33 +1,11 @@
 // Utility functions
 
-export function formatCurrency(cents: number): string {
-  return new Intl.NumberFormat('fr-FR', {
-    style: 'currency',
-    currency: 'USD',
-  }).format(cents / 100);
-}
+export { calculateCost, formatCurrency } from './pricing';
 
 export function formatDuration(seconds: number): string {
   const mins = Math.floor(seconds / 60);
   const secs = seconds % 60;
   return `${mins}:${secs.toString().padStart(2, '0')}`;
-}
-
-export function calculateCost(seconds: number): number {
-  // Intro offer: first 2 minutes at $0.99, then $1.99/min
-  // Formula: 
-  // - 0-120s: $0.99 for 2 min = 99 cents total
-  // - 120s+: 99 cents + ((seconds - 120) * 199 / 60) cents
-  
-  if (seconds <= 120) {
-    // First 2 minutes flat rate
-    return 99;
-  } else {
-    // Intro (99¢) + additional time at $1.99/min
-    const additionalSeconds = seconds - 120;
-    const additionalCost = Math.ceil((additionalSeconds * 199) / 60);
-    return 99 + additionalCost;
-  }
 }
 
 export async function geocodePlace(place: string): Promise<{ lat: number; lon: number } | null> {

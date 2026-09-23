@@ -25,5 +25,8 @@ export interface UserProfile {
   consent_accepted_at?: string;
   prepaid_seconds: number;
   stripe_customer_id?: string;
+  email?: string;
+  founding_claimed?: boolean;
+  credited_checkout_sessions?: string[];
   created_at: string;
 }

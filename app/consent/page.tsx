@@ -131,7 +131,7 @@ export default function ConsentPage() {
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-celestial-gold mt-0.5">✓</span>
-                <span>Tarif clair : $1.99/min • 2 premières minutes à $0.99</span>
+                <span>Tarif clair : 1,49 €/min • 0,99 €/min les 3 premières minutes</span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-celestial-gold mt-0.5">✓</span>
