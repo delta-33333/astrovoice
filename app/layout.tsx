@@ -6,17 +6,17 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const cinzel = Cinzel({ subsets: ["latin"], variable: "--font-cinzel", weight: ["400", "600", "700"] });
 
 export const metadata: Metadata = {
-  title: "Lunara — Consultation Astrale",
-  description: "Consultation astrale personnalisée 24/7 basée sur votre thème natal.",
+  title: "Callastral — Consultation Astrologique Personnalisée",
+  description: "Consultation astrologique vocale 24/7 basée sur votre thème natal complet. Votre astrologue personnel qui vous connaît et se souvient.",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
-    title: "Lunara",
+    title: "Callastral",
   },
   openGraph: {
-    title: "Lunara — Consultation Astrale",
-    description: "Consultation astrale personnalisée avec un astrologue expert",
+    title: "Callastral — Votre astrologue personnel 24/7",
+    description: "Consultation astrologique vocale basée sur votre thème natal. Disponible 24/7, continuité garantie.",
     type: "website",
   },
 };

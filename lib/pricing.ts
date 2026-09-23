@@ -1,11 +1,11 @@
 /**
- * Tarifs Callastral en euros (centimes).
- * Intro : 0,99 € pour les 2 premières minutes, puis 1,49 €/min à la seconde.
+ * Tarifs Callastral en euros (centimes), alignés sur la page de vente.
+ * Intro : 0,99 €/min pendant les 3 premières minutes, puis 1,49 €/min, à la seconde.
  */
 
 export const CURRENCY = 'eur' as const;
 
-export const INTRO_SECONDS = 120;
+export const INTRO_SECONDS = 180;
 export const INTRO_CENTS = 99;
 export const PER_MINUTE_CENTS = 149;
 
@@ -62,14 +62,16 @@ export function packSeconds(pack: MinutePack): number {
 
 /**
  * Montant en centimes pour une durée facturable (hors minutes déjà prépayées).
- * 0 seconde = 0. De 1 à 120 s : forfait d'intro 0,99 €. Au-delà : 1,49 €/min à la seconde.
+ * 0 seconde = 0. Jusqu'à 3 minutes : 0,99 €/min. Au-delà : 1,49 €/min. À la seconde.
  */
 export function calculateCost(seconds: number): number {
   if (seconds <= 0) return 0;
-  if (seconds <= INTRO_SECONDS) return INTRO_CENTS;
+  if (seconds <= INTRO_SECONDS) {
+    return Math.ceil((seconds * INTRO_CENTS) / 60);
+  }
+  const introCost = Math.ceil((INTRO_SECONDS * INTRO_CENTS) / 60);
   const additionalSeconds = seconds - INTRO_SECONDS;
-  const additionalCost = Math.ceil((additionalSeconds * PER_MINUTE_CENTS) / 60);
-  return INTRO_CENTS + additionalCost;
+  return introCost + Math.ceil((additionalSeconds * PER_MINUTE_CENTS) / 60);
 }
 
 export const CALL_HOLD_CENTS = calculateCost(CALL_HOLD_SECONDS);

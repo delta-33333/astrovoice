@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import type { BirthData } from '@/lib/types';
 import { getAstrologerById } from '@/lib/astrologers';
 import { formatDuration, formatCurrency } from '@/lib/utils';
-import { CALL_HOLD_CENTS, INTRO_CENTS, PER_MINUTE_CENTS, quoteCall } from '@/lib/pricing';
+import { CALL_HOLD_CENTS, INTRO_CENTS, INTRO_SECONDS, PER_MINUTE_CENTS, quoteCall } from '@/lib/pricing';
 
 export default function CallPage() {
   const router = useRouter();
@@ -238,9 +238,9 @@ export default function CallPage() {
                 <div className="text-sm text-white/50">
                   {quote.coveredSeconds > 0 && quote.amountCents === 0 ? (
                     <span className="text-celestial-gold">Inclus dans vos minutes</span>
-                  ) : quote.billableSeconds <= 120 ? (
+                  ) : quote.billableSeconds <= INTRO_SECONDS ? (
                     <span className="text-celestial-gold">
-                      Offre découverte : 2 premières minutes à {formatCurrency(INTRO_CENTS)}
+                      Offre découverte : {formatCurrency(INTRO_CENTS)}/min les 3 premières minutes
                     </span>
                   ) : (
                     <span>{formatCurrency(PER_MINUTE_CENTS)}/min · facturation à la seconde</span>
