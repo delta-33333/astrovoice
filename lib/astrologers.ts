@@ -47,6 +47,8 @@ export function getAstrologerById(id: string): Astrologer | undefined {
   return astrologers.find(a => a.id === id);
 }
 
+// Legacy function - kept for backwards compatibility
+// Use getVoiceSystemPrompt from lib/voice-prompts.ts for new implementations
 export function getAstrologerSystemPrompt(natalChart: any, birthData: any): string {
   return `Tu es un astrologue expérimenté et empathique en consultation vocale avec un client. 
 

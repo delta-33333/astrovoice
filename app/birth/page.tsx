@@ -34,9 +34,26 @@ export default function BirthDataPage() {
       return;
     }
 
-    // Store in sessionStorage and navigate to preview
-    sessionStorage.setItem('birthData', JSON.stringify(formData));
-    router.push('/preview');
+    try {
+      // Save to user profile
+      const saveResponse = await fetch('/api/birth-data', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+
+      if (!saveResponse.ok) {
+        throw new Error('Failed to save birth data');
+      }
+
+      // Store in sessionStorage for immediate use
+      sessionStorage.setItem('birthData', JSON.stringify(formData));
+      router.push('/preview');
+    } catch (error) {
+      console.error('Error saving birth data:', error);
+      setErrors(['Erreur lors de la sauvegarde. Veuillez réessayer.']);
+      setIsSubmitting(false);
+    }
   };
 
   return (
