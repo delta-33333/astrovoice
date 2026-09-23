@@ -155,7 +155,7 @@ export default function PreviewPage() {
               {/* Trust Message */}
               <div className="bg-celestial-purple/10 border border-celestial-purple/30 rounded-xl p-4">
                 <p className="text-sm text-white/80 leading-relaxed">
-                  ✨ Votre thème a été calculé avec précision grâce à une intelligence artificielle avancée. 
+                  ✨ Votre thème a été établi avec précision. 
                   {astrologer.name} utilisera ces données pour une consultation personnalisée.
                 </p>
               </div>
