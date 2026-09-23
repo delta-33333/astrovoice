@@ -60,28 +60,33 @@ export async function POST(request: NextRequest) {
     }
 
     // Fallback: Cookie-based session (no 503!)
+    // Generate a stable userId that matches Supabase pattern
     const userId = `user_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    const sessionId = `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 
     // Store user data in secure cookie
     const userData = {
-      userId,
+      id: userId, // Align with Supabase UserProfile.id
+      userId, // Keep for backward compatibility
       username: userIdentifier,
       email: email || userIdentifier,
-      displayName: userDisplayName,
+      display_name: userDisplayName,
+      displayName: userDisplayName, // Keep for backward compatibility
       createdAt: new Date().toISOString(),
+      created_at: new Date().toISOString(), // Align with Supabase
     };
 
     const cookieStore = await cookies();
     
     // Set secure HTTP-only cookies with 30 day expiration
-    cookieStore.set('lunara_session', sessionId, {
+    // lunara_session stores the userId (consistent with Supabase path)
+    cookieStore.set('lunara_session', userId, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
       maxAge: 60 * 60 * 24 * 30, // 30 days
     });
 
+    // lunara_user stores full user profile (used when Supabase unavailable)
     cookieStore.set('lunara_user', JSON.stringify(userData), {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
@@ -95,7 +100,6 @@ export async function POST(request: NextRequest) {
       success: true,
       needsBirthData: true,
       userId,
-      sessionId,
       method: 'cookie-fallback',
       message: 'Compte créé avec succès',
     });

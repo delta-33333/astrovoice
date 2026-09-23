@@ -102,16 +102,22 @@ export async function updateUserProfile(
   userId: string,
   updates: Partial<UserProfile>
 ): Promise<boolean> {
-  if (!supabaseAvailable) return false;
+  // Try Supabase first if available
+  if (supabaseAvailable) {
+    try {
+      const { error } = await supabase!
+        .from('users')
+        .update(updates)
+        .eq('id', userId);
 
-  try {
-    const { error } = await supabase!
-      .from('users')
-      .update(updates)
-      .eq('id', userId);
-
-    return !error;
-  } catch {
-    return false;
+      return !error;
+    } catch (error) {
+      console.error('Supabase update failed:', error);
+      return false;
+    }
   }
+
+  // Fallback: update cookie-based profile
+  const { updateUserCookie } = await import('./session');
+  return updateUserCookie(userId, updates);
 }
