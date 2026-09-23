@@ -1,95 +1,73 @@
 import { NextRequest, NextResponse } from 'next/server';
-import Stripe from 'stripe';
+import { getSession } from '@/lib/session';
+import { createElementsCheckout } from '@/lib/checkout';
+import { CALL_HOLD_CENTS } from '@/lib/pricing';
+import { stripeSecretConfigured } from '@/lib/stripe';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || 'sk_test_placeholder', {
-  apiVersion: '2025-02-24.acacia',
-});
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
 
+/**
+ * Empreinte pour une consultation à la minute.
+ * Checkout Session ui_mode=elements + capture manuelle.
+ * Le montant réel est capturé à la fin de l'appel.
+ */
 export async function POST(request: NextRequest) {
   try {
+    const user = await getSession();
+    if (!user) {
+      return NextResponse.json({ error: 'Non authentifié' }, { status: 401 });
+    }
+
     const { birthData, astrologerId } = await request.json();
-
-    if (!birthData || !astrologerId) {
-      return NextResponse.json(
-        { error: 'Données manquantes' },
-        { status: 400 }
-      );
+    if (!birthData?.name || !birthData?.date || !astrologerId) {
+      return NextResponse.json({ error: 'Données manquantes' }, { status: 400 });
     }
 
-    // Check if Stripe is configured
-    if (!process.env.STRIPE_SECRET_KEY || process.env.STRIPE_SECRET_KEY === 'sk_test_placeholder') {
-      console.warn('⚠️ Stripe not configured - using mock mode');
+    const sessionId = `session_${Date.now()}_${user.id.slice(-6)}`;
+
+    if (!stripeSecretConfigured()) {
       return NextResponse.json({
-        clientSecret: 'mock_client_secret',
-        sessionId: `mock_session_${Date.now()}`,
         mock: true,
+        clientSecret: null,
+        sessionId,
+        checkoutSessionId: `mock_${sessionId}`,
+        amount: CALL_HOLD_CENTS,
+        currency: 'eur',
       });
     }
 
-    // Calculate natal chart first
-    const chartResponse = await fetch(`${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/api/natal-chart`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(birthData),
-    });
-
-    if (!chartResponse.ok) {
-      throw new Error('Erreur lors du calcul du thème natal');
-    }
-
-    const natalChart = await chartResponse.json();
-
-    // Create or get customer
-    const customers = await stripe.customers.list({
-      email: `${birthData.name.toLowerCase().replace(/\s/g, '.')}@placeholder.com`,
-      limit: 1,
-    });
-
-    let customer: Stripe.Customer;
-    if (customers.data.length > 0) {
-      customer = customers.data[0];
-    } else {
-      customer = await stripe.customers.create({
-        email: `${birthData.name.toLowerCase().replace(/\s/g, '.')}@placeholder.com`,
-        name: birthData.name,
-        metadata: {
-          birthDate: birthData.date,
-          birthPlace: birthData.place,
-        },
-      });
-    }
-
-    // Create PaymentIntent with manual capture for exact amount later
-    // Max 10 minutes = $19.90 (2 min intro @ $0.99 + 8 min @ $1.99)
-    const maxAmount = 1990; // cents
-
-    const paymentIntent = await stripe.paymentIntents.create({
-      amount: maxAmount,
-      currency: 'usd',
-      customer: customer.id,
-      description: 'Consultation astrale',
-      capture_method: 'manual', // We'll capture exact amount after call
+    const checkout = await createElementsCheckout({
+      request,
+      user,
+      amountCents: CALL_HOLD_CENTS,
+      productName: 'Consultation Callastral',
+      productDescription: 'Empreinte de consultation — seul le temps réel est encaissé',
+      purpose: 'call_meter',
+      manualCapture: true,
+      flow: 'call',
+      integrationFlow: 'call-meter',
       metadata: {
-        astrologerId,
-        sessionId: `session_${Date.now()}_${customer.id.slice(-6)}`,
-        birthData: JSON.stringify(birthData),
-        natalChartPreview: JSON.stringify(natalChart).slice(0, 500),
+        sessionId,
+        astrologerId: String(astrologerId).slice(0, 80),
+        birthName: String(birthData.name).slice(0, 80),
+        birthDate: String(birthData.date).slice(0, 40),
+        birthPlace: String(birthData.place || '').slice(0, 120),
       },
     });
 
-    // Store session data (in production, use a database)
-    const sessionId = paymentIntent.metadata.sessionId;
-
     return NextResponse.json({
-      clientSecret: paymentIntent.client_secret,
-      sessionId,
-      paymentIntentId: paymentIntent.id,
+      clientSecret: checkout.clientSecret,
+      checkoutSessionId: checkout.checkoutSessionId,
+      sessionId: checkout.sessionId,
+      amount: checkout.amountCents,
+      currency: 'eur',
+      collectContact: checkout.collectContact,
     });
-
   } catch (error) {
-    console.error('Payment intent creation error:', error);
+    console.error('Création empreinte consultation:', error);
     return NextResponse.json(
-      { error: 'Erreur lors de la création du paiement' },
+      { error: 'Le paiement n’a pas pu être préparé. Réessayez dans un instant.' },
       { status: 500 }
     );
   }

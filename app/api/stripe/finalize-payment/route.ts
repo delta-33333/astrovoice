@@ -1,73 +1,132 @@
 import { NextRequest, NextResponse } from 'next/server';
-import Stripe from 'stripe';
-import { calculateCost } from '@/lib/utils';
+import { getSession } from '@/lib/session';
+import { consumePrepaidSeconds, restorePrepaidSeconds } from '@/lib/credits';
+import { quoteCall } from '@/lib/pricing';
+import { getStripe, stripeSecretConfigured } from '@/lib/stripe';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || 'sk_test_placeholder', {
-  apiVersion: '2025-02-24.acacia',
-});
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
 
+/**
+ * Arrête le compteur : consomme les minutes prépayées, puis capture
+ * le montant réel (ou libère l'empreinte si rien n'est dû).
+ */
 export async function POST(request: NextRequest) {
   try {
-    const { sessionId, durationSeconds } = await request.json();
-
-    if (!sessionId || typeof durationSeconds !== 'number') {
-      return NextResponse.json(
-        { error: 'Session ID et durée requis' },
-        { status: 400 }
-      );
+    const user = await getSession();
+    if (!user) {
+      return NextResponse.json({ error: 'Non authentifié' }, { status: 401 });
     }
 
-    // Check if Stripe is configured
-    if (!process.env.STRIPE_SECRET_KEY || process.env.STRIPE_SECRET_KEY === 'sk_test_placeholder') {
-      console.warn('⚠️ Stripe not configured - using mock finalization');
-      const cost = calculateCost(durationSeconds);
+    const { sessionId, checkoutSessionId, durationSeconds } = await request.json();
+    if (typeof durationSeconds !== 'number' || durationSeconds < 0) {
+      return NextResponse.json({ error: 'Durée requise' }, { status: 400 });
+    }
+
+    const prepaidBefore = user.prepaid_seconds ?? 0;
+    const quote = quoteCall(durationSeconds, prepaidBefore);
+    const isMock =
+      !stripeSecretConfigured() ||
+      (typeof checkoutSessionId === 'string' && checkoutSessionId.startsWith('mock_')) ||
+      (typeof sessionId === 'string' && sessionId.startsWith('mock_'));
+
+    if (isMock) {
+      const used = await consumePrepaidSeconds(user.id, quote.coveredSeconds);
       return NextResponse.json({
         success: true,
         mock: true,
-        amountCharged: cost,
+        amountCharged: quote.amountCents,
         durationSeconds,
+        prepaidSecondsUsed: used,
+        capped: quote.capped,
       });
     }
 
-    // Calculate actual cost
-    const actualAmount = calculateCost(durationSeconds);
-
-    // Find the payment intent by session ID in metadata
-    const paymentIntents = await stripe.paymentIntents.list({
-      limit: 100,
-    });
-
-    const paymentIntent = paymentIntents.data.find(
-      pi => pi.metadata.sessionId === sessionId
-    );
-
-    if (!paymentIntent) {
-      throw new Error('Session de paiement introuvable');
+    if (!checkoutSessionId || typeof checkoutSessionId !== 'string') {
+      return NextResponse.json({ error: 'Session de paiement manquante' }, { status: 400 });
     }
 
-    // Update amount and capture
-    if (actualAmount > paymentIntent.amount) {
-      // Should not happen, but cap at max authorized amount
-      await stripe.paymentIntents.capture(paymentIntent.id);
-    } else {
-      // Update to actual amount and capture
-      await stripe.paymentIntents.update(paymentIntent.id, {
-        amount: actualAmount,
+    const stripe = getStripe();
+    if (!stripe) {
+      return NextResponse.json({ error: 'Paiement indisponible' }, { status: 503 });
+    }
+
+    const checkout = await stripe.checkout.sessions.retrieve(checkoutSessionId);
+    if (checkout.metadata?.userId !== user.id || checkout.metadata?.purpose !== 'call_meter') {
+      return NextResponse.json({ error: 'Session de paiement introuvable' }, { status: 404 });
+    }
+
+    if (checkout.status !== 'complete') {
+      return NextResponse.json(
+        { error: 'L’empreinte n’a pas été confirmée.' },
+        { status: 402 }
+      );
+    }
+
+    const paymentIntentId =
+      typeof checkout.payment_intent === 'string'
+        ? checkout.payment_intent
+        : checkout.payment_intent?.id;
+
+    if (!paymentIntentId) {
+      return NextResponse.json({ error: 'Paiement introuvable' }, { status: 404 });
+    }
+
+    const used = await consumePrepaidSeconds(user.id, quote.coveredSeconds);
+
+    try {
+      const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
+
+      if (paymentIntent.status === 'succeeded') {
+        return NextResponse.json({
+          success: true,
+          amountCharged: paymentIntent.amount_received,
+          durationSeconds,
+          prepaidSecondsUsed: used,
+          paymentIntentId,
+          capped: quote.capped,
+        });
+      }
+
+      if (quote.amountCents <= 0 || paymentIntent.status === 'canceled') {
+        if (paymentIntent.status === 'requires_capture') {
+          await stripe.paymentIntents.cancel(paymentIntentId);
+        }
+        return NextResponse.json({
+          success: true,
+          amountCharged: 0,
+          durationSeconds,
+          prepaidSecondsUsed: used,
+          paymentIntentId,
+          released: true,
+        });
+      }
+
+      if (paymentIntent.status !== 'requires_capture') {
+        throw new Error(`Statut inattendu: ${paymentIntent.status}`);
+      }
+
+      const amountToCapture = Math.min(quote.amountCents, paymentIntent.amount);
+      const captured = await stripe.paymentIntents.capture(paymentIntentId, {
+        amount_to_capture: amountToCapture,
       });
-      await stripe.paymentIntents.capture(paymentIntent.id);
+
+      return NextResponse.json({
+        success: true,
+        amountCharged: captured.amount_received,
+        durationSeconds,
+        prepaidSecondsUsed: used,
+        paymentIntentId,
+        capped: quote.capped || amountToCapture < quote.amountCents,
+      });
+    } catch (captureError) {
+      await restorePrepaidSeconds(user.id, used);
+      throw captureError;
     }
-
-    return NextResponse.json({
-      success: true,
-      amountCharged: actualAmount,
-      durationSeconds,
-      paymentIntentId: paymentIntent.id,
-    });
-
   } catch (error) {
-    console.error('Payment finalization error:', error);
+    console.error('Arrêt du compteur:', error);
     return NextResponse.json(
-      { error: 'Erreur lors de la finalisation du paiement' },
+      { error: 'La consultation est terminée. Le règlement sera confirmé sous peu.' },
       { status: 500 }
     );
   }

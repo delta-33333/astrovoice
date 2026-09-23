@@ -1,14 +1,16 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { loadStripe } from '@stripe/stripe-js';
 import type { BirthData } from '@/lib/types';
 import { getAstrologerById } from '@/lib/astrologers';
-
-const stripePromise = loadStripe(
-  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || 'pk_test_placeholder'
-);
+import {
+  CALL_HOLD_CENTS,
+  formatCurrency,
+  INTRO_CENTS,
+  PER_MINUTE_CENTS,
+} from '@/lib/pricing';
+import PaymentSheet from '@/components/PaymentSheet';
 
 export default function PaymentPage() {
   const router = useRouter();
@@ -16,21 +18,36 @@ export default function PaymentPage() {
   const [astrologerId, setAstrologerId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [sheetOpen, setSheetOpen] = useState(false);
+  const [clientSecret, setClientSecret] = useState<string | null>(null);
+  const [collectContact, setCollectContact] = useState(false);
+  const [checkoutSessionId, setCheckoutSessionId] = useState<string | null>(null);
+  const [sessionId, setSessionId] = useState<string | null>(null);
 
   useEffect(() => {
     const data = sessionStorage.getItem('birthData');
     const astrId = sessionStorage.getItem('astrologerId');
-    
+
     if (!data || !astrId) {
       router.push('/birth');
       return;
     }
-    
+
     setBirthData(JSON.parse(data));
     setAstrologerId(astrId);
   }, [router]);
 
   const astrologer = astrologerId ? getAstrologerById(astrologerId) : null;
+  const holdLabel = formatCurrency(CALL_HOLD_CENTS);
+
+  const continueToCall = useCallback(
+    (nextSessionId: string, nextCheckoutId: string) => {
+      sessionStorage.setItem('sessionId', nextSessionId);
+      sessionStorage.setItem('checkoutSessionId', nextCheckoutId);
+      router.push('/call');
+    },
+    [router]
+  );
 
   const handlePayment = async () => {
     if (!birthData || !astrologerId) return;
@@ -39,7 +56,6 @@ export default function PaymentPage() {
     setError(null);
 
     try {
-      // Create payment intent
       const response = await fetch('/api/stripe/create-payment-intent', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -49,27 +65,31 @@ export default function PaymentPage() {
         }),
       });
 
+      const data = await response.json();
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Erreur de paiement');
+        throw new Error(data.error || 'Erreur de paiement');
       }
 
-      const { clientSecret, sessionId } = await response.json();
+      if (data.mock) {
+        continueToCall(data.sessionId, data.checkoutSessionId);
+        return;
+      }
 
-      // Store session ID for the call
-      sessionStorage.setItem('sessionId', sessionId);
-
-      // For MVP, we'll use a simple card collection flow
-      // In production, implement proper Stripe Elements
-      router.push('/call');
-
+      setClientSecret(data.clientSecret);
+      setCheckoutSessionId(data.checkoutSessionId);
+      setSessionId(data.sessionId);
+      setCollectContact(!!data.collectContact);
+      setSheetOpen(true);
     } catch (err) {
-      console.error('Payment error:', err);
       setError(err instanceof Error ? err.message : 'Erreur lors du paiement');
     } finally {
       setIsLoading(false);
     }
   };
+
+  const closeSheet = useCallback(() => {
+    setSheetOpen(false);
+  }, []);
 
   if (!birthData || !astrologer) {
     return (
@@ -82,7 +102,6 @@ export default function PaymentPage() {
   return (
     <main className="min-h-screen flex items-center justify-center px-4 py-12">
       <div className="max-w-2xl w-full">
-        {/* Header */}
         <div className="text-center mb-12">
           <h1 className="font-[family-name:var(--font-cinzel)] text-4xl sm:text-5xl font-bold mb-4 text-glow">
             Commencer la consultation
@@ -92,9 +111,7 @@ export default function PaymentPage() {
           </p>
         </div>
 
-        {/* Summary */}
         <div className="bg-white/5 backdrop-blur-sm p-8 rounded-3xl border border-white/10 space-y-6 mb-8">
-          {/* Astrologer */}
           <div className="flex items-center gap-4 pb-6 border-b border-white/10">
             <div className="text-5xl">{astrologer.avatar}</div>
             <div>
@@ -105,7 +122,6 @@ export default function PaymentPage() {
             </div>
           </div>
 
-          {/* Client info */}
           <div className="space-y-3 text-sm">
             <div className="flex justify-between">
               <span className="text-white/60">Client</span>
@@ -124,59 +140,68 @@ export default function PaymentPage() {
             </div>
           </div>
 
-          {/* Pricing */}
           <div className="pt-6 border-t border-white/10">
             <div className="flex items-center justify-between mb-2">
               <span className="text-lg font-semibold">Tarif</span>
               <div className="text-right">
-                <div className="text-2xl font-bold text-celestial-gold">$1.99/min</div>
-                <div className="text-sm text-white/60">(1,99 €/min)</div>
+                <div className="text-2xl font-bold text-celestial-gold">
+                  {formatCurrency(PER_MINUTE_CENTS)}/min
+                </div>
               </div>
             </div>
             <p className="text-xs text-white/50 mb-2">
-              Facturation à la seconde • Vous payez uniquement pour la durée réelle
+              Facturation à la seconde. Vous réglez uniquement la durée réelle.
             </p>
             <div className="bg-celestial-gold/10 border border-celestial-gold/30 rounded-lg p-3 mt-3">
               <p className="text-sm text-celestial-gold font-semibold">
-                🎁 Offre découverte : 2 premières minutes à $0.99
+                Offre découverte : 2 premières minutes à {formatCurrency(INTRO_CENTS)}
               </p>
             </div>
           </div>
         </div>
 
-        {/* Payment info */}
         <div className="bg-celestial-purple/10 border border-celestial-purple/30 rounded-2xl p-6 mb-8">
-          <h3 className="font-semibold mb-3 flex items-center gap-2">
-            <span>💳</span>
-            Paiement sécurisé
-          </h3>
+          <h3 className="font-semibold mb-3">Paiement dans l’application</h3>
           <p className="text-sm text-white/70 leading-relaxed">
-            Nous autorisons votre carte pour un montant maximum de $19.90 (~10 minutes). 
-            À la fin de votre consultation, seul le montant exact de la durée utilisée sera prélevé.
+            Une empreinte de {holdLabel} couvre environ dix minutes. Carte, Apple Pay ou Google Pay,
+            selon votre appareil. À la fin, seul le montant exact est encaissé. Le reste est libéré.
           </p>
         </div>
 
-        {/* Error */}
         {error && (
           <div className="bg-red-500/10 border border-red-500/50 rounded-xl p-4 mb-6">
             <p className="text-sm text-red-200">{error}</p>
           </div>
         )}
 
-        {/* CTA */}
         <button
           onClick={handlePayment}
           disabled={isLoading}
           className="btn-primary w-full text-lg disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {isLoading ? 'Préparation...' : 'Démarrer la consultation'}
+          {isLoading ? 'Préparation...' : 'Régler et commencer'}
         </button>
 
-        {/* Security */}
         <div className="mt-6 text-center text-xs text-white/40">
-          <p>🔒 Paiement sécurisé par Stripe • Vos données sont protégées</p>
+          <p>Paiement sécurisé par Stripe · Vos données restent protégées</p>
         </div>
       </div>
+
+      <PaymentSheet
+        open={sheetOpen}
+        title="Empreinte de consultation"
+        amountLabel={holdLabel}
+        detail="Aucun débit immédiat. Le montant réel de la consultation sera prélevé à la fin, dans la limite de cette empreinte."
+        payLabel={`Autoriser ${holdLabel}`}
+        clientSecret={clientSecret}
+        collectContact={collectContact}
+        onClose={closeSheet}
+        onSuccess={() => {
+          if (sessionId && checkoutSessionId) {
+            continueToCall(sessionId, checkoutSessionId);
+          }
+        }}
+      />
     </main>
   );
 }

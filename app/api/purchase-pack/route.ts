@@ -1,94 +1,77 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSession } from '@/lib/session';
-import Stripe from 'stripe';
+import { createElementsCheckout } from '@/lib/checkout';
+import { foundingAlreadyClaimed } from '@/lib/credits';
+import { formatCurrency, getPack, packSeconds } from '@/lib/pricing';
+import { stripeSecretConfigured } from '@/lib/stripe';
 
-const stripe = process.env.STRIPE_SECRET_KEY
-  ? new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: '2025-02-24.acacia' })
-  : null;
-
-const packPrices: Record<string, { minutes: number; priceId?: string; amount: number }> = {
-  '10min': {
-    minutes: 10,
-    priceId: process.env.STRIPE_PRICE_ID_10MIN_PACK,
-    amount: 1499,
-  },
-  '30min': {
-    minutes: 30,
-    priceId: process.env.STRIPE_PRICE_ID_30MIN_PACK,
-    amount: 3999,
-  },
-  '60min': {
-    minutes: 60,
-    priceId: process.env.STRIPE_PRICE_ID_60MIN_PACK,
-    amount: 6999,
-  },
-};
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
 
 export async function POST(request: NextRequest) {
   try {
     const user = await getSession();
-    
     if (!user) {
-      return NextResponse.json(
-        { error: 'Non authentifié' },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: 'Non authentifié' }, { status: 401 });
     }
 
     const { packId } = await request.json();
-    const pack = packPrices[packId];
-
+    const pack = getPack(packId);
     if (!pack) {
+      return NextResponse.json({ error: 'Offre introuvable' }, { status: 400 });
+    }
+
+    if (pack.founding && (await foundingAlreadyClaimed(user))) {
       return NextResponse.json(
-        { error: 'Pack invalide' },
-        { status: 400 }
+        { error: 'Le Cercle Fondateur est déjà ouvert sur ce compte.' },
+        { status: 409 }
       );
     }
 
-    if (!stripe) {
+    if (!stripeSecretConfigured()) {
       return NextResponse.json(
-        { error: 'Paiement non configuré' },
+        { error: 'Le paiement n’est pas disponible pour le moment.' },
         { status: 503 }
       );
     }
 
-    const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+    const label = pack.founding
+      ? 'Cercle Fondateur'
+      : `Pack ${pack.minutes} minutes`;
 
-    const session = await stripe.checkout.sessions.create({
-      mode: 'payment',
-      payment_method_types: ['card'],
-      line_items: [
-        {
-          price_data: {
-            currency: 'usd',
-            product_data: {
-              name: `Pack ${pack.minutes} minutes`,
-              description: `Prépaiement de ${pack.minutes} minutes de consultation`,
-            },
-            unit_amount: pack.amount,
-          },
-          quantity: 1,
-        },
-      ],
-      success_url: `${appUrl}/home?pack_success=true`,
-      cancel_url: `${appUrl}/packs`,
-      client_reference_id: user.id,
+    const checkout = await createElementsCheckout({
+      request,
+      user,
+      amountCents: pack.amountCents,
+      productName: label,
+      productDescription: pack.founding
+        ? 'Dix minutes offertes au tarif fondateur'
+        : `Prépaiement de ${pack.minutes} minutes de consultation`,
+      purpose: 'prepaid',
+      manualCapture: false,
+      flow: 'pack',
+      integrationFlow: 'prepaid',
       metadata: {
-        type: 'minute_pack',
-        packId,
-        minutes: pack.minutes.toString(),
-        userId: user.id,
+        packId: pack.id,
+        minutes: String(pack.minutes),
+        seconds: String(packSeconds(pack)),
       },
     });
 
     return NextResponse.json({
-      success: true,
-      checkoutUrl: session.url,
+      clientSecret: checkout.clientSecret,
+      checkoutSessionId: checkout.checkoutSessionId,
+      amount: checkout.amountCents,
+      amountLabel: formatCurrency(checkout.amountCents),
+      currency: 'eur',
+      minutes: pack.minutes,
+      label,
+      collectContact: checkout.collectContact,
     });
   } catch (error) {
-    console.error('Purchase pack error:', error);
+    console.error('Achat de minutes:', error);
     return NextResponse.json(
-      { error: 'Erreur serveur' },
+      { error: 'Le paiement n’a pas pu être préparé. Réessayez dans un instant.' },
       { status: 500 }
     );
   }

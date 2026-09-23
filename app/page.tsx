@@ -1,5 +1,6 @@
 import Link from "next/link";
 import InstallPrompt from "@/components/InstallPrompt";
+import { formatCurrency, INTRO_CENTS, PER_MINUTE_CENTS } from "@/lib/pricing";
 
 export default function LandingPage() {
   return (
@@ -19,9 +20,9 @@ export default function LandingPage() {
         </p>
         
         <div className="flex items-center justify-center gap-3 text-sm text-white/60">
-          <span className="font-semibold text-celestial-gold">$1.99/min</span>
+          <span className="font-semibold text-celestial-gold">{formatCurrency(PER_MINUTE_CENTS)}/min</span>
           <span className="text-white/30">•</span>
-          <span>2 premières min à $0.99</span>
+          <span>2 premières minutes à {formatCurrency(INTRO_CENTS)}</span>
         </div>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">

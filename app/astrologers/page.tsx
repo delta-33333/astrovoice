@@ -94,7 +94,7 @@ export default function AstrologersPage() {
 
         {/* Info */}
         <div className="text-center text-white/50 text-sm">
-          <p>Tous nos astrologues sont disponibles immédiatement • $1.99/minute</p>
+          <p>Tous nos astrologues sont disponibles immédiatement • 1,49 €/minute</p>
         </div>
       </div>
     </main>

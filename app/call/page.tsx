@@ -4,13 +4,13 @@ import { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import type { BirthData } from '@/lib/types';
 import { getAstrologerById } from '@/lib/astrologers';
-import { formatDuration, calculateCost, formatCurrency } from '@/lib/utils';
+import { formatDuration, formatCurrency } from '@/lib/utils';
+import { CALL_HOLD_CENTS, INTRO_CENTS, PER_MINUTE_CENTS, quoteCall } from '@/lib/pricing';
 
 export default function CallPage() {
   const router = useRouter();
   const [birthData, setBirthData] = useState<BirthData | null>(null);
   const [astrologerId, setAstrologerId] = useState<string | null>(null);
-  const [sessionId, setSessionId] = useState<string | null>(null);
   const [isConnecting, setIsConnecting] = useState(true);
   const [isConnected, setIsConnected] = useState(false);
   const [callDuration, setCallDuration] = useState(0);
@@ -18,18 +18,25 @@ export default function CallPage() {
   const [isMocked, setIsMocked] = useState(false);
   const [transcript, setTranscript] = useState<string[]>([]);
   const [showCostAlert, setShowCostAlert] = useState(false);
-  const [hasShownAlert, setHasShownAlert] = useState(false);
+  const [prepaidSeconds, setPrepaidSeconds] = useState(0);
 
   const startTimeRef = useRef<number>(0);
   const timerIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const stoppedRef = useRef(false);
+  const prepaidRef = useRef(0);
+  const checkoutRef = useRef<string | null>(null);
+  const sessionRef = useRef<string | null>(null);
+  const finishRef = useRef<(seconds: number) => Promise<void>>(async () => {});
 
   const astrologer = astrologerId ? getAstrologerById(astrologerId) : null;
-  const currentCost = calculateCost(callDuration);
+  const quote = quoteCall(callDuration, prepaidSeconds);
+  const currentCost = quote.amountCents;
 
   useEffect(() => {
     const data = sessionStorage.getItem('birthData');
     const astrId = sessionStorage.getItem('astrologerId');
     const sessId = sessionStorage.getItem('sessionId');
+    const checkoutId = sessionStorage.getItem('checkoutSessionId');
 
     if (!data || !astrId || !sessId) {
       router.push('/birth');
@@ -38,7 +45,18 @@ export default function CallPage() {
 
     setBirthData(JSON.parse(data));
     setAstrologerId(astrId);
-    setSessionId(sessId);
+    sessionRef.current = sessId;
+    checkoutRef.current = checkoutId;
+    prepaidRef.current = 0;
+
+    fetch('/api/auth/me')
+      .then((response) => response.json())
+      .then((payload) => {
+        const seconds = payload?.user?.prepaidSeconds ?? 0;
+        prepaidRef.current = seconds;
+        setPrepaidSeconds(seconds);
+      })
+      .catch(() => undefined);
 
     // Initialize call session
     initializeCall(JSON.parse(data), astrId, sessId);
@@ -91,12 +109,14 @@ export default function CallPage() {
       timerIntervalRef.current = setInterval(() => {
         const elapsed = Math.floor((Date.now() - startTimeRef.current) / 1000);
         setCallDuration(elapsed);
-        
-        // Show cost alert at $20
-        const cost = calculateCost(elapsed);
-        if (cost >= 2000 && !hasShownAlert) {
+
+        const liveQuote = quoteCall(elapsed, prepaidRef.current);
+        if (liveQuote.capped || liveQuote.amountCents >= CALL_HOLD_CENTS) {
           setShowCostAlert(true);
-          setHasShownAlert(true);
+          if (timerIntervalRef.current) {
+            clearInterval(timerIntervalRef.current);
+          }
+          void finishRef.current(elapsed);
         }
       }, 1000);
 
@@ -112,22 +132,25 @@ export default function CallPage() {
     }
   };
 
-  const handleHangup = async () => {
-    // Stop timer
+  const finishCall = async (seconds: number) => {
+    if (stoppedRef.current) return;
+    stoppedRef.current = true;
+
     if (timerIntervalRef.current) {
       clearInterval(timerIntervalRef.current);
     }
 
     setIsConnected(false);
+    const finalQuote = quoteCall(seconds, prepaidRef.current);
 
     try {
-      // Finalize payment
       const response = await fetch('/api/stripe/finalize-payment', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          sessionId,
-          durationSeconds: callDuration,
+          sessionId: sessionRef.current,
+          checkoutSessionId: checkoutRef.current,
+          durationSeconds: seconds,
         }),
       });
 
@@ -137,28 +160,29 @@ export default function CallPage() {
 
       const result = await response.json();
 
-      // Store final data for complete page
       sessionStorage.setItem('callComplete', JSON.stringify({
-        durationSeconds: callDuration,
+        durationSeconds: seconds,
         amountCharged: result.amountCharged,
+        prepaidSecondsUsed: result.prepaidSecondsUsed,
         astrologerName: astrologer?.name,
+        astrologerId,
       }));
 
-      // Navigate to complete page
       router.push('/complete');
-
     } catch (err) {
       console.error('Hangup error:', err);
-      // Still navigate to complete page
       sessionStorage.setItem('callComplete', JSON.stringify({
-        durationSeconds: callDuration,
-        amountCharged: currentCost,
+        durationSeconds: seconds,
+        amountCharged: finalQuote.amountCents,
         astrologerName: astrologer?.name,
-        error: 'Le paiement sera finalisé sous peu',
+        astrologerId,
+        error: 'Le règlement sera confirmé sous peu',
       }));
       router.push('/complete');
     }
   };
+
+  finishRef.current = finishCall;
 
   if (!birthData || !astrologer) {
     return (
@@ -212,12 +236,14 @@ export default function CallPage() {
                   {formatCurrency(currentCost)}
                 </div>
                 <div className="text-sm text-white/50">
-                  {callDuration <= 120 ? (
+                  {quote.coveredSeconds > 0 && quote.amountCents === 0 ? (
+                    <span className="text-celestial-gold">Inclus dans vos minutes</span>
+                  ) : quote.billableSeconds <= 120 ? (
                     <span className="text-celestial-gold">
-                      Offre découverte : 2 premières min à $0.99
+                      Offre découverte : 2 premières minutes à {formatCurrency(INTRO_CENTS)}
                     </span>
                   ) : (
-                    <span>$1.99/min (1,99 €/min) • Facturation à la seconde</span>
+                    <span>{formatCurrency(PER_MINUTE_CENTS)}/min · facturation à la seconde</span>
                   )}
                 </div>
               </div>
@@ -229,11 +255,10 @@ export default function CallPage() {
                     <span className="text-2xl">⚠️</span>
                     <div>
                       <p className="font-semibold text-yellow-200 mb-1">
-                        Coût atteint : $20
+                        Empreinte atteinte : {formatCurrency(CALL_HOLD_CENTS)}
                       </p>
                       <p className="text-sm text-yellow-200/80">
-                        Vous pouvez continuer ou terminer la consultation maintenant. 
-                        Le coût continuera d'augmenter de $1.99 par minute.
+                        La consultation s’arrête ici. Seul ce montant, ou moins si vos minutes couvrent une partie, est encaissé.
                       </p>
                       <button
                         onClick={() => setShowCostAlert(false)}
@@ -268,7 +293,7 @@ export default function CallPage() {
 
               {/* Hangup button */}
               <button
-                onClick={handleHangup}
+                onClick={() => void finishCall(callDuration)}
                 className="w-full bg-red-500 hover:bg-red-600 text-white font-semibold py-4 rounded-full transition-all duration-300 hover:scale-105"
               >
                 Terminer la consultation
@@ -279,7 +304,7 @@ export default function CallPage() {
 
         {/* Info */}
         <div className="mt-6 text-center text-xs text-white/40">
-          <p>Le montant exact sera prélevé à la fin de votre consultation</p>
+          <p>Le montant exact est encaissé à la fin. L’empreinte non utilisée est libérée.</p>
         </div>
       </div>
     </main>
