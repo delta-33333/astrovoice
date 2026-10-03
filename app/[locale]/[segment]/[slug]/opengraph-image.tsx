@@ -1,5 +1,5 @@
 import { ImageResponse } from 'next/og';
-import { readRates } from '@/lib/market';
+import { localeRates } from '@/lib/market';
 import { quoteAdvisor } from '@/lib/money';
 import { getAdvisorProfile } from '@/lib/slots';
 import { isLocale, localeCurrency, phonePhrase, professionSlug, specialtyLabel } from '@/lib/seo';
@@ -19,7 +19,7 @@ export default async function AdvisorOg(props: {
     try {
       const profile = await getAdvisorProfile(slug);
       if (profile.advisor) {
-        const quote = quoteAdvisor(profile.advisor.pricePerMinCents, localeCurrency(locale), readRates(), undefined, locale);
+        const quote = quoteAdvisor(profile.advisor.pricePerMinCents, localeCurrency(locale), localeRates(locale), undefined, locale);
         const topic = specialtyLabel(locale, profile.advisor.specialties[0] || 'amour');
         name = profile.advisor.name;
         line = `${topic} · ${phonePhrase(locale)} · ${quote.introLabel}`;

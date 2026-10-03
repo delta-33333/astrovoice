@@ -1,13 +1,15 @@
 /**
- * Tarifs Callastral en euros (centimes), alignés sur la page de vente.
- * Intro : 0,99 €/min pendant les 3 premières minutes, puis 1,49 €/min, à la seconde.
+ * Constantes historiques en euros (centimes). Les prix affichés et encaissés
+ * viennent de lib/price-bands.ts (bandes par pays) via lib/money.ts.
+ * Ces valeurs ne servent plus que de repli (paiement à la minute sans métadonnées).
+ * Les montants de packs ci-dessous = bande France (référence).
  */
 
 export const CURRENCY = 'eur' as const;
 
-export const INTRO_SECONDS = 180;
-export const INTRO_CENTS = 99;
-export const PER_MINUTE_CENTS = 149;
+export const INTRO_SECONDS = 300;
+export const INTRO_CENTS = 179;
+export const PER_MINUTE_CENTS = 220;
 
 /** Empreinte d'environ 10 minutes, encaissée au réel à la fin. */
 export const CALL_HOLD_SECONDS = 10 * 60;
@@ -28,27 +30,27 @@ export const MINUTE_PACKS: MinutePack[] = [
     id: 'founding',
     minutes: 10,
     amountCents: 490,
-    regularCents: 1490,
+    regularCents: 2200,
     founding: true,
   },
   {
     id: '10min',
     minutes: 10,
-    amountCents: 1290,
-    regularCents: 1490,
+    amountCents: 1990,
+    regularCents: 2200,
   },
   {
     id: '30min',
     minutes: 30,
-    amountCents: 3490,
-    regularCents: 4470,
+    amountCents: 5590,
+    regularCents: 6600,
     popular: true,
   },
   {
     id: '60min',
     minutes: 60,
-    amountCents: 5990,
-    regularCents: 8940,
+    amountCents: 9890,
+    regularCents: 13200,
   },
 ];
 
@@ -62,7 +64,7 @@ export function packSeconds(pack: MinutePack): number {
 
 /**
  * Montant en centimes pour une durée facturable (hors minutes déjà prépayées).
- * 0 seconde = 0. Jusqu'à 3 minutes : 0,99 €/min. Au-delà : 1,49 €/min. À la seconde.
+ * Repli historique : intro puis tarif standard, à la seconde.
  */
 export function calculateCost(seconds: number): number {
   if (seconds <= 0) return 0;

@@ -131,7 +131,7 @@ export default function AdvisorDirectory({
             : 'Les fiches des conseillers apparaîtront ici.'}
         </p>
         <p className="text-sm text-celestial-gold mt-1">
-          À partir de {floor}/min · tarif réduit les 3 premières minutes
+          À partir de {floor}/min · tarif réduit les 5 premières minutes
         </p>
       </div>
 
@@ -267,19 +267,21 @@ export default function AdvisorDirectory({
               <p className="text-sm text-white/80 mt-4">
                 <span className="text-celestial-gold font-semibold">{quote.perMinLabel}</span>
                 {' · '}
-                {quote.introLabel} les 3 premières minutes
+                {quote.introLabel} les 5 premières minutes
               </p>
 
-              <div className="mt-4">
-                {callHref ? (
-                  <Link href={callHref} className="btn-primary block text-center w-full">
+              <div className={`mt-4 grid gap-2 ${callHref ? 'grid-cols-2' : ''}`}>
+                {callHref && (
+                  <Link href={callHref} className="btn-primary block text-center w-full text-sm">
                     Appeler maintenant
                   </Link>
-                ) : (
-                  <Link href={`/advisors/${advisor.slug}`} className="btn-primary block text-center w-full">
-                    Prendre RDV
-                  </Link>
                 )}
+                <Link
+                  href={`/advisors/${advisor.slug}#creneaux`}
+                  className={`${callHref ? 'btn-secondary' : 'btn-primary'} block text-center w-full text-sm`}
+                >
+                  Réserver un créneau
+                </Link>
               </div>
             </motion.article>
           );

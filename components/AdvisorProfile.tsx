@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useMemo, useState, type ReactNode } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import AdvisorAvatar from '@/components/AdvisorAvatar';
@@ -9,7 +9,11 @@ import { localizedBio } from '@/lib/advisor-bio';
 import TrustNotes from '@/components/TrustNotes';
 import { BADGE_LABELS, languageLabel, styleLabel } from '@/lib/advisor-badges';
 import { bookPath } from '@/lib/book-path';
-import { DEFAULT_RATES, quoteAdvisor, type Currency, type FxRates } from '@/lib/money';
+import { DEFAULT_RATES, quoteAdvisor, type Currency, type PriceRates } from '@/lib/money';
+import { exampleQuestions, methodParagraph, readingStyleText } from '@/lib/profile-content';
+import { REVIEWS_DISPLAY_MIN } from '@/lib/review-rules';
+import { GUARANTEE_TEXT } from '@/lib/guarantee-text';
+import { INTRO_MINUTES } from '@/lib/price-bands';
 import type { AdvisorSlot, DirectoryAdvisor } from '@/lib/types';
 
 function parisDayLabel(iso: string): string {
@@ -43,11 +47,14 @@ export default function AdvisorProfile({
   slots,
   currency = 'eur',
   rates = DEFAULT_RATES,
+  reviews,
 }: {
   advisor: DirectoryAdvisor;
   slots: AdvisorSlot[];
   currency?: Currency;
-  rates?: FxRates;
+  rates?: PriceRates;
+  /** Bloc d’avis réels rendu côté serveur (rien sous 3 avis). */
+  reviews?: ReactNode;
 }) {
   const router = useRouter();
   const [selected, setSelected] = useState<string | null>(null);
@@ -106,7 +113,7 @@ export default function AdvisorProfile({
             <p className="text-sm text-white/55 mt-1">
               Style : {styleLabel(advisor.readingStyle)} · {advisor.languages.map(languageLabel).join(' · ')}
             </p>
-            {advisor.averageRating != null && advisor.reviewCount >= 5 && (
+            {advisor.averageRating != null && advisor.reviewCount >= REVIEWS_DISPLAY_MIN && (
               <p className="text-sm text-white/70 mt-1">
                 {advisor.averageRating.toLocaleString('fr-FR', { minimumFractionDigits: 1, maximumFractionDigits: 1 })}
                 {' · '}
@@ -129,6 +136,7 @@ export default function AdvisorProfile({
         )}
 
         <p className="mt-4 text-white/75 leading-relaxed">{localizedBio(advisor, 'fr')}</p>
+        <p className="mt-3 text-white/75 leading-relaxed">{methodParagraph('fr', advisor)}</p>
 
         <div className="flex flex-wrap gap-2 mt-4">
           {advisor.specialties.map((item) => (
@@ -139,17 +147,60 @@ export default function AdvisorProfile({
         </div>
 
         <p className="mt-6 text-celestial-gold">
-          {quote.introLabel} les 3 premières minutes, puis {quote.perMinLabel}
+          {quote.introLabel} les 5 premières minutes, puis {quote.perMinLabel}
         </p>
         <TrustNotes className="mt-3" />
 
-        {immediate && (
-          <button type="button" onClick={() => go(immediate)} className="btn-primary w-full mt-6">
-            Appeler maintenant
-          </button>
+        <div className={`mt-6 grid gap-3 ${immediate ? 'sm:grid-cols-2' : ''}`}>
+          {immediate && (
+            <button type="button" onClick={() => go(immediate)} className="btn-primary w-full">
+              Appeler maintenant
+            </button>
+          )}
+          <a href="#creneaux" className={`${immediate ? 'btn-secondary' : 'btn-primary'} w-full text-center`}>
+            Réserver un créneau
+          </a>
+        </div>
+
+        {readingStyleText('fr', advisor.readingStyle) && (
+          <section className="mt-8">
+            <h2 className="text-lg font-semibold">Style de lecture</h2>
+            <p className="mt-2 text-white/75 leading-relaxed">{readingStyleText('fr', advisor.readingStyle)}</p>
+          </section>
         )}
 
         <section className="mt-8">
+          <h2 className="text-lg font-semibold">Exemples de questions à poser</h2>
+          <div className="mt-3 space-y-3">
+            {advisor.specialties.map((specialty) => {
+              const questions = exampleQuestions('fr', specialty);
+              if (!questions.length) return null;
+              return (
+                <details key={specialty} className="rounded-xl border border-white/10 bg-white/5 p-4">
+                  <summary className="cursor-pointer font-semibold capitalize">{specialty}</summary>
+                  <ul className="mt-2 list-disc pl-5 space-y-1 text-sm text-white/75">
+                    {questions.map((question) => <li key={question}>{question}</li>)}
+                  </ul>
+                </details>
+              );
+            })}
+          </div>
+        </section>
+
+        {reviews}
+
+        <section className="mt-8 rounded-2xl border border-white/10 bg-white/5 p-4 space-y-2 text-sm text-white/75">
+          <h2 className="text-lg font-semibold text-white">Comment ça marche</h2>
+          <ol className="list-decimal pl-5 space-y-1">
+            <li>« Appeler maintenant » si {advisor.firstName} est disponible, ou « Réserver un créneau » ci-dessous.</li>
+            <li>Vous payez d’avance la durée choisie : {quote.introLabel} les {INTRO_MINUTES} premières minutes, puis {quote.perMinLabel}.</li>
+            <li>Vous rejoignez l’appel depuis le navigateur ; votre thème natal est transmis au début.</li>
+          </ol>
+          <p>Annulation plus de 24 h avant : remboursement intégral ; ensuite, avoir valable 30 jours.</p>
+          <p className="text-celestial-gold">{GUARANTEE_TEXT.title}. <Link href="/terms#garantie" className="underline">Conditions</Link></p>
+        </section>
+
+        <section id="creneaux" className="mt-8 scroll-mt-24">
           <h2 className="text-lg font-semibold mb-1">Choisir un créneau</h2>
           <p className="text-xs text-white/45 mb-4">Heure de Paris. Le créneau est confirmé au paiement.</p>
 

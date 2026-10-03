@@ -1,3 +1,4 @@
+import { PRICE_BANDS } from '@/lib/price-bands';
 import Link from 'next/link';
 import AiDisclosure from '@/components/AiDisclosure';
 import JsonLd from '@/components/JsonLd';
@@ -19,8 +20,8 @@ export function pricesCopy(locale: GeoLocale) {
   if (locale === 'fr') {
     return {
       title: 'Tarifs de la voyance et de l’astrologie par téléphone en 2026',
-      description: `En 2026, une consultation par téléphone coûte de 0,80 €/min (audiotel) à 9,50 €/min (voyant premium par carte) ; chez Callastral, ${c.min} à ${c.max}/min. Prix relevés et sourcés.`,
-      answer: `En 2026, une consultation par téléphone coûte de 0,80 €/min (audiotel, plus le prix de l’appel) à 9,50 €/min (voyant premium payé par carte) ; chez Callastral, de ${c.min} à ${c.max}/min, avec des conseillers virtuels.`,
+      description: `En 2026, une consultation par téléphone coûte de 0,80 €/min (audiotel) à 9,50 €/min (voyant premium par carte) ; chez Callastral, ${c.min} à ${c.max}/min en France. Prix relevés et sourcés.`,
+      answer: `En 2026, une consultation par téléphone coûte de 0,80 €/min (audiotel, plus le prix de l’appel) à 9,50 €/min (voyant premium payé par carte) ; chez Callastral, de ${c.min} à ${c.max}/min en France (le tarif dépend du pays, voir le tableau), avec des conseillers virtuels.`,
       notVoyance: 'Callastral fait de l’astrologie à partir du thème natal, pas de la voyance : si vous cherchez un voyant humain, les services listés ci-dessous sont plus adaptés.',
       ourModel: `${aiActLine('fr')} ; 24 h/24 ; 5 langues ; thème natal calculé`,
       tableCaption: 'Prix publics relevés le 3 octobre 2026 sur les grilles officielles',
@@ -35,7 +36,7 @@ export function pricesCopy(locale: GeoLocale) {
       faqs: [
         {
           question: 'Combien coûte une consultation de voyance par téléphone en 2026 ?',
-          answer: `De 0,80 €/min plus le prix de l’appel (audiotel 0892) à 9,50 €/min pour les voyants les plus chers payés par carte (Voyance.fr). Wengo annonce environ 2,50 €/min en général. Chez Callastral, l’astrologie par téléphone coûte de ${c.min} à ${c.max}/min.`,
+          answer: `De 0,80 €/min plus le prix de l’appel (audiotel 0892) à 9,50 €/min pour les voyants les plus chers payés par carte (Voyance.fr). Wengo annonce environ 2,50 €/min en général. Chez Callastral, l’astrologie par téléphone coûte de ${c.min} à ${c.max}/min en France ; Wengo peut donc revenir moins cher selon l’expert choisi.`,
         },
         {
           question: 'Pourquoi l’audiotel coûte-t-il plus que 0,80 €/min ?',
@@ -57,8 +58,8 @@ export function pricesCopy(locale: GeoLocale) {
   }
   return {
     title: 'Phone psychic and astrology reading prices in 2026',
-    description: `In 2026, a phone reading in France costs from €0.80/min (audiotel) to €9.50/min (premium psychic by card); at Callastral, ${c.min} to ${c.max}/min. Sourced, dated prices.`,
-    answer: `In 2026, a phone psychic or astrology reading in France costs from €0.80/min (audiotel premium-rate line, plus the price of the call) to €9.50/min (premium psychic paid by card); at Callastral, ${c.min} to ${c.max}/min, with virtual advisors.`,
+    description: `In 2026, a phone reading in France costs from €0.80/min (audiotel) to €9.50/min (premium psychic by card); at Callastral, ${c.min} to ${c.max}/min in France. Sourced, dated prices.`,
+    answer: `In 2026, a phone psychic or astrology reading in France costs from €0.80/min (audiotel premium-rate line, plus the price of the call) to €9.50/min (premium psychic paid by card); at Callastral, ${c.min} to ${c.max}/min in France (rates depend on the country, see the table), with virtual advisors.`,
     notVoyance: 'Callastral offers astrology based on your birth chart, not psychic readings: if you want a human psychic, the services listed below are a better fit.',
     ourModel: `${aiActLine('en')}; 24/7; 5 languages; computed birth chart`,
     tableCaption: 'Public prices collected on 3 October 2026 from official price pages',
@@ -73,7 +74,7 @@ export function pricesCopy(locale: GeoLocale) {
     faqs: [
       {
         question: 'How much does a phone psychic reading cost in 2026?',
-        answer: `In France, from €0.80/min plus the call price (audiotel 0892 numbers) to €9.50/min for the most expensive card-paid psychics (Voyance.fr). Wengo states about €2.50/min in general. Kasamba (US) offers 3 free minutes per new advisor. At Callastral, phone astrology costs ${c.min} to ${c.max}/min.`,
+        answer: `In France, from €0.80/min plus the call price (audiotel 0892 numbers) to €9.50/min for the most expensive card-paid psychics (Voyance.fr). Wengo states about €2.50/min in general. Kasamba (US) offers 3 free minutes per new advisor. At Callastral, phone astrology costs ${c.min} to ${c.max}/min in France, so Wengo can be cheaper depending on the expert.`,
       },
       {
         question: 'Is Callastral a psychic service?',
@@ -93,6 +94,7 @@ export function pricesCopy(locale: GeoLocale) {
 export default function GeoPricesPage({ locale }: { locale: GeoLocale }) {
   const copy = pricesCopy(locale);
   const rows = priceRows(locale, copy.ourModel);
+  const facts = callastralFacts(locale);
   const origin = appBaseUrl();
   const url = `${origin}${GEO_PATHS.prices[locale]}`;
   const allSources = [SOURCES.S16, SOURCES.S17, SOURCES.S18, SOURCES.S19a, SOURCES.S19b, SOURCES.S20];
@@ -136,6 +138,38 @@ export default function GeoPricesPage({ locale }: { locale: GeoLocale }) {
               ))}
             </tbody>
           </table>
+        </div>
+
+        <h2 className="mt-10 text-xl text-white font-semibold">
+          {locale === 'fr' ? 'Les prix Callastral selon votre pays' : 'Callastral prices by country'}
+        </h2>
+        <p className="mt-2 text-sm text-white/70">
+          {locale === 'fr'
+            ? `Le tarif dépend du pays depuis lequel vous consultez et du conseiller. Les ${facts.introMinutes} premières minutes sont à tarif réduit (60 % du tarif du conseiller, plafonné). Le prix exact est affiché avant le paiement et c’est ce montant qui est encaissé.`
+            : `The rate depends on the country you call from and on the advisor. The first ${facts.introMinutes} minutes are at a reduced rate (60% of the advisor’s rate, capped). The exact price is shown before payment and that is the amount charged.`}
+        </p>
+        <div className="mt-3 overflow-x-auto">
+          <table className="w-full text-sm border-collapse">
+            <thead>
+              <tr className="text-left text-white">
+                <th scope="col" className="border-b border-white/20 py-2 pr-3">{locale === 'fr' ? 'Pays' : 'Country'}</th>
+                <th scope="col" className="border-b border-white/20 py-2 pr-3">{locale === 'fr' ? 'Tarif par minute' : 'Rate per minute'}</th>
+                <th scope="col" className="border-b border-white/20 py-2">{locale === 'fr' ? `${facts.introMinutes} premières minutes` : `First ${facts.introMinutes} minutes`}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {facts.table.map((row) => (
+                <tr key={row.id}>
+                  <th scope="row" className="border-b border-white/10 py-2 pr-3 text-left font-normal text-white">{row.label}</th>
+                  <td className="border-b border-white/10 py-2 pr-3">{row.min} – {row.max}</td>
+                  <td className="border-b border-white/10 py-2">{row.introMin} – {row.introMax}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <p className="mt-2 text-xs text-white/50">
+            {locale === 'fr' ? 'Autres pays : tarifs France.' : 'Other countries: France rates.'}
+          </p>
         </div>
 
         <h2 className="mt-10 text-xl text-white font-semibold">{copy.methodTitle}</h2>
@@ -195,6 +229,20 @@ export default function GeoPricesPage({ locale }: { locale: GeoLocale }) {
             creator: { '@type': 'Organization', name: 'Callastral', url: origin },
             variableMeasured: locale === 'fr' ? ['Prix par minute', 'Offre de bienvenue'] : ['Price per minute', 'Welcome offer'],
             citation: allSources.map((source) => source.url),
+          },
+          {
+            '@type': 'Service',
+            name: 'Callastral',
+            serviceType: locale === 'fr' ? 'Consultation d’astrologie par téléphone' : 'Astrology reading by phone',
+            provider: { '@type': 'Organization', name: 'Callastral', url: origin },
+            offers: facts.table.map((row) => ({
+              '@type': 'AggregateOffer',
+              name: row.label,
+              priceCurrency: row.currency.toUpperCase(),
+              lowPrice: (PRICE_BANDS[row.id].min / 100).toFixed(2),
+              highPrice: (PRICE_BANDS[row.id].max / 100).toFixed(2),
+              unitText: locale === 'fr' ? 'minute' : 'minute',
+            })),
           },
           {
             '@type': 'FAQPage',

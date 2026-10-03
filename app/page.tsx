@@ -6,7 +6,9 @@ import SiteHeader from "@/components/SiteHeader";
 import { trackEvent } from "@/lib/events";
 import { VIRTUAL_ADVISOR_DISCLOSURE } from "@/lib/legal";
 import { resolveMarket } from "@/lib/market";
-import { convertEurCents, formatMoney, perMinuteRange } from "@/lib/money";
+import { convertEurCents, formatMoney, packMinor, perMinuteRange } from "@/lib/money";
+import { INTRO_MINUTES } from "@/lib/price-bands";
+import { GUARANTEE_TEXT } from "@/lib/guarantee-text";
 import { SUBSCRIPTION_EUR_CENTS, subscriptionCurrency } from "@/lib/offers";
 import { MINUTE_PACKS } from "@/lib/pricing";
 import { hreflangAlternates, localeHomePath } from "@/lib/seo";
@@ -46,6 +48,7 @@ export default async function LandingPage({
     subscriptionCurrencyCode
   );
   const packs = MINUTE_PACKS.filter((pack) => !pack.founding);
+  const packMoney = (pack: (typeof MINUTE_PACKS)[number]) => packMinor(pack, market.currency, market.rates);
 
   return (
     <main className="min-h-screen pb-28 sm:pb-12">
@@ -158,7 +161,7 @@ export default async function LandingPage({
         {/* How It Works */}
         <section className="py-16 sm:py-24 space-y-12">
           <h2 className="font-[family-name:var(--font-cinzel)] text-3xl sm:text-4xl font-bold text-center text-glow">
-            Comment ça fonctionne
+            Comment ça marche
           </h2>
           
           <div className="grid sm:grid-cols-2 gap-8 max-w-3xl mx-auto">
@@ -178,7 +181,7 @@ export default async function LandingPage({
                 <h3 className="text-lg font-semibold">Prenez un créneau</h3>
               </div>
               <p className="text-white/70 text-sm leading-relaxed">
-                Le prix du conseiller est affiché avant le paiement : tarif réduit les trois premières minutes, puis son tarif habituel.
+                « Appeler maintenant » ou « Réserver un créneau » : le prix du conseiller est affiché avant le paiement, tarif réduit les {INTRO_MINUTES} premières minutes, puis son tarif habituel.
               </p>
             </div>
 
@@ -201,6 +204,19 @@ export default async function LandingPage({
                 Après le paiement, ouvrez l’appel ou ajoutez le rendez-vous à votre calendrier. Vous pouvez annuler jusqu’à 24 h avant.
               </p>
             </div>
+          </div>
+        </section>
+
+        <section className="max-w-3xl mx-auto grid sm:grid-cols-2 gap-4 pb-8">
+          <div className="p-6 rounded-2xl border border-white/10 bg-white/5">
+            <h3 className="text-lg font-semibold">Annulation</h3>
+            <p className="mt-2 text-sm text-white/70 leading-relaxed">
+              Jusqu’à 24 h avant le rendez-vous : remboursement intégral. Ensuite : un avoir valable 30 jours sur une nouvelle réservation.
+            </p>
+          </div>
+          <div className="p-6 rounded-2xl border border-celestial-gold/40 bg-celestial-gold/10">
+            <h3 className="text-lg font-semibold">{GUARANTEE_TEXT.title}</h3>
+            <p className="mt-2 text-sm text-white/75 leading-relaxed">{GUARANTEE_TEXT.body}</p>
           </div>
         </section>
 
@@ -228,7 +244,7 @@ export default async function LandingPage({
               </div>
               <div className="pt-2 border-t border-white/10">
                 <p className="text-white/60 text-sm">
-                  Les 3 premières minutes sont à un tarif réduit, environ deux tiers du tarif du conseiller.
+                  Les {INTRO_MINUTES} premières minutes sont à un tarif réduit (environ 60 % du tarif du conseiller, plafonné). Les prix dépendent de votre pays et sont affichés avant le paiement.
                 </p>
               </div>
             </div>
@@ -244,9 +260,9 @@ export default async function LandingPage({
                       : 'bg-white/5 backdrop-blur-sm border border-white/10'
                   }`}
                 >
-                  <div className="text-2xl font-bold text-celestial-gold">{money(pack.amountCents)}</div>
+                  <div className="text-2xl font-bold text-celestial-gold">{formatMoney(packMoney(pack), market.currency)}</div>
                   <div className="text-lg font-semibold">Pack {pack.minutes} min</div>
-                  <div className="text-xs text-white/50">{money(Math.round(pack.amountCents / pack.minutes))}/min</div>
+                  <div className="text-xs text-white/50">{formatMoney(Math.round(packMoney(pack) / pack.minutes), market.currency)}/min</div>
                 </div>
               ))}
             </div>
@@ -315,11 +331,11 @@ export default async function LandingPage({
 
             <details className="group p-6 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10">
               <summary className="cursor-pointer text-lg font-semibold list-none flex items-center justify-between">
-                <span>Pourquoi ces tarifs sont-ils plus accessibles qu'ailleurs ?</span>
+                <span>Combien coûte une consultation ?</span>
                 <span className="text-celestial-gold transition-transform group-open:rotate-180">↓</span>
               </summary>
               <p className="mt-4 text-white/70 text-sm leading-relaxed">
-                Chaque conseiller a un tarif entre {floor} et {ceiling} la minute. Les trois premières minutes sont à tarif réduit. L’offre fondateur est de 10 minutes pour {founding}, une fois par compte. Les packs de minutes sont indiqués dans votre devise.
+                Dans votre pays, chaque conseiller a un tarif entre {floor} et {ceiling} la minute. Les {INTRO_MINUTES} premières minutes sont à tarif réduit. L’offre fondateur est de 10 minutes pour {founding}, une fois par compte. Les packs de minutes sont indiqués dans votre devise. Le montant affiché est celui encaissé.
               </p>
             </details>
 
@@ -329,7 +345,7 @@ export default async function LandingPage({
                 <span className="text-celestial-gold transition-transform group-open:rotate-180">↓</span>
               </summary>
               <p className="mt-4 text-white/70 text-sm leading-relaxed">
-                Oui, vous pouvez raccrocher à tout moment. Un rendez-vous réservé est payé à l’avance pour la durée choisie. En l’annulant plus de 24 h avant, vous êtes remboursé ; ensuite, le montant devient un avoir valable 30 jours. L’abonnement Callastral Illimité est un choix séparé, résiliable depuis le compte.
+                Oui, vous pouvez raccrocher à tout moment. Un rendez-vous réservé est payé à l’avance pour la durée choisie. En l’annulant plus de 24 h avant, vous êtes remboursé ; ensuite, le montant devient un avoir valable 30 jours. {GUARANTEE_TEXT.short} L’abonnement Callastral Illimité est un choix séparé, résiliable depuis le compte.
               </p>
             </details>
 
@@ -349,7 +365,7 @@ export default async function LandingPage({
                 <span className="text-celestial-gold transition-transform group-open:rotate-180">↓</span>
               </summary>
               <p className="mt-4 text-white/70 text-sm leading-relaxed">
-                Une réservation se paie à l’avance : minutes × tarif du conseiller, avec un tarif réduit sur les trois premières minutes. Vous pouvez aussi acheter des packs de minutes, déduits ensuite de la durée de consultation. Le montant est encaissé dans la devise affichée.
+                Une réservation se paie à l’avance : minutes × tarif du conseiller, avec un tarif réduit sur les {INTRO_MINUTES} premières minutes. Vous pouvez aussi acheter des packs de minutes, déduits ensuite de la durée de consultation. Le montant est encaissé dans la devise affichée.
               </p>
             </details>
 
@@ -396,6 +412,7 @@ export default async function LandingPage({
           <p className="mt-3 space-x-4">
             <Link href="/a-propos" className="hover:text-white/70">À propos</Link>
             <Link href="/fr/tarifs-voyance-telephone-2026" className="hover:text-white/70">Tarifs 2026</Link>
+            <Link href="/fr/consultation-astrale" className="hover:text-white/70">Consultation astrale</Link>
             <Link href="/fr/meilleurs-sites-voyance-2026" className="hover:text-white/70">Comparatif 2026</Link>
           </p>
         </footer>

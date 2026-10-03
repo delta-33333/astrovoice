@@ -148,8 +148,9 @@ export default function OffersCatalog({ labels }: { labels: OfferLabels }) {
       <section className="rounded-3xl border border-white/10 bg-white/5 p-6 space-y-3">
         <h2 className="text-xl font-semibold">Consultation à la minute</h2>
         <p className="text-white/75">
-          Chaque conseiller a son tarif, entre {labels.floor} et {labels.ceiling} la minute. Les trois premières minutes
-          sont à un tarif réduit, propre à ce tarif.
+          Dans votre pays, chaque conseiller a son tarif, entre {labels.floor} et {labels.ceiling} la minute. Les cinq
+          premières minutes sont à un tarif réduit (60 % du tarif du conseiller, plafonné). Le prix exact est affiché
+          avant le paiement.
         </p>
         <Link href="/#annuaire" className="text-celestial-gold underline">Choisir un conseiller</Link>
       </section>

@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import AdvisorProfile from '@/components/AdvisorProfile';
 import SiteHeader from '@/components/SiteHeader';
+import ReviewsBlock from '@/components/ReviewsBlock';
+import { advisorReviews } from '@/lib/reviews';
 import { localizedBio } from '@/lib/advisor-bio';
 import { trackEvent } from '@/lib/events';
 import { resolveMarket } from '@/lib/market';
@@ -48,6 +50,7 @@ export default async function AdvisorPage(props: { params: Promise<{ slug: strin
     if (!profile.advisor) notFound();
     await trackEvent({ name: 'view_advisor', advisorId: profile.advisor.id });
     const market = await resolveMarket();
+    const reviews = await advisorReviews(profile.advisor.id);
     return (
       <>
         <SiteHeader />
@@ -56,6 +59,7 @@ export default async function AdvisorPage(props: { params: Promise<{ slug: strin
           slots={profile.slots}
           currency={market.currency}
           rates={market.rates}
+          reviews={<ReviewsBlock reviews={reviews} locale="fr" />}
         />
       </>
     );

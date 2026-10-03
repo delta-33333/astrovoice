@@ -4,7 +4,7 @@ import AiDisclosure from '@/components/AiDisclosure';
 import JsonLd from '@/components/JsonLd';
 import { GEO_PATHS } from '@/lib/geo-pages';
 import SeoChrome from '@/components/SeoChrome';
-import { readRates } from '@/lib/market';
+import { localeRates } from '@/lib/market';
 import { perMinuteRange, quoteAdvisor } from '@/lib/money';
 import { listDirectoryAdvisors } from '@/lib/slots';
 import {
@@ -34,11 +34,11 @@ const TITLE: Record<string, string> = {
 };
 
 const INTRO: Record<string, string> = {
-  fr: 'Callastral met en relation avec un astrologue pour une consultation par téléphone, à partir de votre thème natal. Le tarif de chaque conseiller est affiché avant le paiement, entre un plancher et un plafond clairs. Les trois premières minutes sont à tarif réduit.',
-  en: 'Callastral connects you with an astrologer for a phone consultation based on your birth chart. Each advisor’s rate is shown before payment, between a clear floor and ceiling. The first three minutes use a reduced rate.',
-  es: 'Callastral le pone en contacto con un astrólogo para una consulta por teléfono a partir de su carta natal. La tarifa de cada consejero se muestra antes del pago. Los tres primeros minutos tienen una tarifa reducida.',
-  de: 'Callastral verbindet Sie mit einem Astrologen für eine telefonische Beratung anhand Ihres Geburtshoroskops. Der Tarif jedes Beraters steht vor der Zahlung. Die ersten drei Minuten sind ermäßigt.',
-  it: 'Callastral ti mette in contatto con un astrologo per un consulto telefonico a partire dal tema natale. La tariffa di ogni consulente è indicata prima del pagamento. I primi tre minuti hanno una tariffa ridotta.',
+  fr: 'Callastral met en relation avec un astrologue pour une consultation par téléphone, à partir de votre thème natal. Le tarif de chaque conseiller est affiché avant le paiement, entre un plancher et un plafond clairs. Les cinq premières minutes sont à tarif réduit.',
+  en: 'Callastral connects you with an astrologer for a phone consultation based on your birth chart. Each advisor’s rate is shown before payment, between a clear floor and ceiling. The first five minutes use a reduced rate.',
+  es: 'Callastral le pone en contacto con un astrólogo para una consulta por teléfono a partir de su carta natal. La tarifa de cada consejero se muestra antes del pago. Los cinco primeros minutos tienen una tarifa reducida.',
+  de: 'Callastral verbindet Sie mit einem Astrologen für eine telefonische Beratung anhand Ihres Geburtshoroskops. Der Tarif jedes Beraters steht vor der Zahlung. Die ersten fünf Minuten sind ermäßigt.',
+  it: 'Callastral ti mette in contatto con un astrologo per un consulto telefonico a partire dal tema natale. La tariffa di ogni consulente è indicata prima del pagamento. I primi cinque minuti hanno una tariffa ridotta.',
 };
 
 export async function generateMetadata(
@@ -63,7 +63,7 @@ export default async function LocaleHome(props: { params: Promise<{ locale: stri
   if (!isLocale(locale)) notFound();
 
   const currency = localeCurrency(locale);
-  const rates = readRates();
+  const rates = localeRates(locale);
   const { floor, ceiling } = perMinuteRange(currency, rates, locale);
   let advisors: Awaited<ReturnType<typeof listDirectoryAdvisors>>['advisors'] = [];
   try {

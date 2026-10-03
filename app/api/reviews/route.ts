@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getBooking } from '@/lib/bookings';
+import { getCallSessionByBooking } from '@/lib/call-records';
 import { getSupabaseAdmin, supabaseAvailable } from '@/lib/supabase';
 import { getSession } from '@/lib/session';
 
@@ -23,8 +24,10 @@ export async function GET(request: NextRequest) {
     .eq('booking_id', bookingId)
     .maybeSingle();
 
+  const session = await getCallSessionByBooking(bookingId).catch(() => null);
+  const longEnough = Boolean(session?.ended_at) && (session?.duration_seconds ?? 0) >= 120;
   return NextResponse.json({
-    eligible: booking.status === 'completed' && !data,
+    eligible: (booking.status === 'completed' || booking.status === 'confirmed') && longEnough && !data,
     existing: data ?? null,
   });
 }

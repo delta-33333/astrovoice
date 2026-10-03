@@ -4,7 +4,7 @@ import { createElementsCheckout } from '@/lib/checkout';
 import { trackEvent } from '@/lib/events';
 import { foundingAlreadyClaimed } from '@/lib/credits';
 import { resolveMarket } from '@/lib/market';
-import { convertEurCents, formatMoney } from '@/lib/money';
+import { formatMoney, packMinor } from '@/lib/money';
 import { getPack, packSeconds } from '@/lib/pricing';
 import { stripeSecretConfigured } from '@/lib/stripe';
 
@@ -42,7 +42,8 @@ export async function POST(request: NextRequest) {
       ? 'Cercle Fondateur'
       : `Pack ${pack.minutes} minutes`;
     const market = await resolveMarket();
-    const amount = convertEurCents(pack.amountCents, market.currency, market.rates);
+    // Montant calculé côté serveur, identique à l’affichage (bande pays + devise).
+    const amount = packMinor(pack, market.currency, market.rates);
 
     const checkout = await createElementsCheckout({
       request,

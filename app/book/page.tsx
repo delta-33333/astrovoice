@@ -191,7 +191,7 @@ export default function BookPage() {
           {includedSeconds >= duration * 60
             ? `Inclus dans Callastral Illimité · ${Math.floor(includedSeconds / 60)} min restantes ce mois-ci`
             : introLabel && perMinLabel
-              ? `${introLabel} les 3 premières minutes, puis ${perMinLabel}`
+              ? `${introLabel} les 5 premières minutes, puis ${perMinLabel}`
               : 'Le tarif du conseiller est confirmé au paiement.'}
         </p>
         <TrustNotes className="mb-6" />

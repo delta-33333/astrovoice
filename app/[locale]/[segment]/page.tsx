@@ -4,8 +4,10 @@ import { notFound } from 'next/navigation';
 import AiDisclosure from '@/components/AiDisclosure';
 import JsonLd from '@/components/JsonLd';
 import SeoChrome from '@/components/SeoChrome';
-import { readRates } from '@/lib/market';
-import { quoteAdvisor } from '@/lib/money';
+import { localeRates } from '@/lib/market';
+import { perMinuteRange, quoteAdvisor } from '@/lib/money';
+import { INTRO_MINUTES } from '@/lib/price-bands';
+import { answerContent } from '@/lib/specialty-content';
 import { appBaseUrl } from '@/lib/stripe';
 import { listDirectoryAdvisors } from '@/lib/slots';
 import {
@@ -61,7 +63,9 @@ export async function generateMetadata(
   if (!specialty) return {};
   const path = hubPath(locale, specialty);
   const title = hubTitle(locale, specialty);
-  const description = hubIntro(locale, specialty).slice(0, 160);
+  const range = perMinuteRange(localeCurrency(locale), localeRates(locale), locale);
+  const content = answerContent(locale, specialty, { ...range, introMinutes: INTRO_MINUTES });
+  const description = (content?.answer ?? hubIntro(locale, specialty)).slice(0, 158);
   return {
     title,
     description,
@@ -80,7 +84,7 @@ export default async function SpecialtyHub(props: { params: Promise<{ locale: st
   if (!specialty) notFound();
 
   const currency = localeCurrency(locale);
-  const rates = readRates();
+  const rates = localeRates(locale);
   let advisors: Awaited<ReturnType<typeof listDirectoryAdvisors>>['advisors'] = [];
   try {
     advisors = (await listDirectoryAdvisors()).advisors;
@@ -93,6 +97,11 @@ export default async function SpecialtyHub(props: { params: Promise<{ locale: st
   const title = hubTitle(locale, specialty).replace(' | Callastral', '');
   const origin = appBaseUrl();
   const pageUrl = `${origin}${hubPath(locale, specialty)}`;
+  const range = perMinuteRange(currency, rates, locale);
+  const content = answerContent(locale, specialty, { ...range, introMinutes: INTRO_MINUTES });
+  const faqTitle: Record<Locale, string> = { fr: 'Questions fréquentes', en: 'Frequently asked questions', es: 'Preguntas frecuentes', de: 'Häufige Fragen', it: 'Domande frequenti' };
+  const pointsTitle: Record<Locale, string> = { fr: 'Ce que la consultation peut apporter', en: 'What a reading can help with', es: 'En qué puede ayudar la consulta', de: 'Wobei die Beratung helfen kann', it: 'In cosa può aiutare il consulto' };
+  const advisorsTitle: Record<Locale, string> = { fr: 'Conseillers sur ce thème', en: 'Advisors for this topic', es: 'Consejeros para este tema', de: 'Berater zu diesem Thema', it: 'Consulenti per questo tema' };
 
   return (
     <main>
@@ -104,6 +113,16 @@ export default async function SpecialtyHub(props: { params: Promise<{ locale: st
           <span>{specialtyLabel(locale, specialty)}</span>
         </nav>
         <h1 className="font-[family-name:var(--font-cinzel)] text-3xl sm:text-4xl">{title}</h1>
+        {content && <p className="mt-4 text-lg text-white leading-relaxed">{content.answer}</p>}
+        {content && (
+          <section className="mt-6">
+            <h2 className="text-xl font-semibold">{pointsTitle[locale]}</h2>
+            <ul className="mt-2 list-disc pl-5 space-y-1 text-white/80">
+              {content.points.map((point) => <li key={point}>{point}</li>)}
+            </ul>
+          </section>
+        )}
+        {content && <h2 className="mt-8 text-xl font-semibold">{advisorsTitle[locale]}</h2>}
         <p className="mt-4 text-white/80 leading-relaxed">{hubIntro(locale, specialty)}</p>
         <ul className="mt-8 space-y-4">
           {matching.map((advisor) => {
@@ -127,6 +146,17 @@ export default async function SpecialtyHub(props: { params: Promise<{ locale: st
             <Link href={localeHomePath(locale)} className="underline">{homeLabel(locale)}</Link>
           </p>
         )}
+        {content && (
+          <section className="mt-10 space-y-4">
+            <h2 className="text-2xl font-[family-name:var(--font-cinzel)]">{faqTitle[locale]}</h2>
+            {content.faqs.map((item) => (
+              <div key={item.question} className="rounded-xl border border-white/10 p-4">
+                <h3 className="font-semibold">{item.question}</h3>
+                <p className="mt-2 text-sm text-white/75 leading-relaxed">{item.answer}</p>
+              </div>
+            ))}
+          </section>
+        )}
       </article>
       <JsonLd data={{
         '@context': 'https://schema.org',
@@ -144,6 +174,16 @@ export default async function SpecialtyHub(props: { params: Promise<{ locale: st
             url: pageUrl,
             isPartOf: { '@id': `${origin}/#website` },
           },
+          ...(content
+            ? [{
+                '@type': 'FAQPage',
+                mainEntity: content.faqs.map((item) => ({
+                  '@type': 'Question',
+                  name: item.question,
+                  acceptedAnswer: { '@type': 'Answer', text: item.answer },
+                })),
+              }]
+            : []),
         ],
       }} />
     </main>

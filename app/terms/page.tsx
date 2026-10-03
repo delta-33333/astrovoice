@@ -1,3 +1,5 @@
+import { GUARANTEE_TEXT } from '@/lib/guarantee-text';
+import { INTRO_MINUTES, bandTableText } from '@/lib/price-bands';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { VIRTUAL_ADVISOR_DISCLOSURE } from '@/lib/legal';
@@ -30,16 +32,25 @@ export default function TermsPage() {
         <section className="space-y-3">
           <h2 className="text-white text-lg font-semibold">Tarifs</h2>
           <ul className="list-disc pl-5 space-y-2">
-            <li>Chaque conseiller a un tarif entre 0,50 € et 1,99 € par minute. Les trois premières minutes sont à un tarif réduit, calculé sur le tarif de ce conseiller, à la seconde.</li>
+            <li>
+              Chaque conseiller a un tarif par minute qui dépend du pays depuis lequel vous consultez (détecté
+              automatiquement ; à défaut, tarifs France) :
+              <ul className="list-[circle] pl-5 mt-1 space-y-1">
+                {bandTableText('fr').map((line) => <li key={line}>{line}</li>)}
+              </ul>
+              Les {INTRO_MINUTES} premières minutes sont à un tarif réduit : 60 % du tarif du conseiller, plafonné à
+              1,79 € (1,69 £, 1,99 $, 1,69 CHF). Le prix exact est affiché avant le paiement et c’est ce montant,
+              calculé par nos serveurs, qui est encaissé.
+            </li>
             <li>Offre fondateur : 10 minutes pour 4,90 €, une fois par compte.</li>
-            <li>Packs de minutes : 10 minutes pour 12,90 €, 30 minutes pour 34,90 €, 60 minutes pour 59,90 €. Ces minutes n’expirent pas.</li>
+            <li>Packs de minutes (tarifs France) : 10 minutes pour 19,90 €, 30 minutes pour 55,90 €, 60 minutes pour 98,90 €. Le prix dépend du pays et est affiché avant le paiement. Ces minutes n’expirent pas.</li>
             <li>Résumé écrit d’une consultation : 2,90 €.</li>
             <li>Thème natal écrit : 9,90 €. Prévision 2026 et 2027 : 14,90 €. Lecture de compatibilité : 7,90 €.</li>
             <li>Callastral Illimité : 49 € par mois. La parole n’est pas facturée à la minute, dans la limite de 300 minutes par mois et de 60 minutes par appel. L’abonnement se résilie à tout moment depuis le compte ; l’accès court jusqu’à la fin de la période déjà payée.</li>
             <li>Après une consultation, le prochain rendez-vous payant peut bénéficier de 15 % de réduction, pendant 30 jours, une seule offre à la fois.</li>
           </ul>
           <p>
-            Les prix de référence sont indiqués en euros, toutes taxes comprises. Lors du paiement, le montant
+            Les prix sont indiqués toutes taxes comprises. Lors du paiement, le montant
             encaissé est celui affiché dans la devise du visiteur (euro, dollar, livre, yen, franc suisse ou dollar
             canadien). L’abonnement mensuel est proposé en euro, dollar, livre ou yen.
           </p>
@@ -62,6 +73,16 @@ export default function TermsPage() {
           <p>
             Jusqu’à 24 heures avant le début, le montant payé est intégralement remboursé. Passé ce délai,
             il est converti en avoir, valable 30 jours, utilisable sur une nouvelle réservation.
+          </p>
+        </section>
+
+        <section id="garantie" className="space-y-3">
+          <h2 className="text-white text-lg font-semibold">{GUARANTEE_TEXT.title}</h2>
+          <p>
+            Si un appel payé a duré au plus {INTRO_MINUTES} minutes facturées, vous pouvez en demander le remboursement
+            depuis votre compte, dans les 24 heures suivant la fin de l’appel. La part payée par carte est remboursée
+            sur le moyen de paiement utilisé ; la part payée avec un avoir est recréditée. Cette garantie s’applique
+            une seule fois par compte, aux réservations payées (hors abonnement Callastral Illimité).
           </p>
         </section>
 

@@ -1,5 +1,17 @@
+import {
+  INTRO_MINUTES,
+  INTRO_SECONDS,
+  PRICE_BANDS,
+  bandIntro,
+  bandPackPrice,
+  bandPackReference,
+  bandStandard,
+  type BandId,
+  type PriceBand,
+} from './price-bands';
+
 /**
- * Prix conseiller (base EUR) et conversion affichée / encaissée.
+ * Prix conseiller (palier de base EUR → marché) et conversion affichée / encaissée.
  * Module pur : aucun accès à process.env, utilisable côté client.
  * Les taux effectifs sont fournis par le serveur (lib/market.ts).
  */
@@ -28,6 +40,14 @@ export const DEFAULT_RATES: FxRates = {
   cad: 1.47,
 };
 
+/** Taux de change + marché tarifaire (pays). Le marché manquant vaut « fr ». */
+export type PriceRates = FxRates & { band?: BandId };
+
+export function priceBand(rates: PriceRates): PriceBand {
+  return PRICE_BANDS[rates.band ?? 'fr'] ?? PRICE_BANDS.fr;
+}
+
+/** Palier de base d’un conseiller (bornes historiques en centimes d’euro). */
 export const MIN_EUR_CENTS = 50;
 export const MAX_EUR_CENTS = 199;
 
@@ -75,14 +95,7 @@ export function pricePerMinCents(input: {
   return clamp(50 + years * 3 + extra * 12, MIN_EUR_CENTS, MAX_EUR_CENTS);
 }
 
-/** Tarif d’intro : 99/149 du tarif du conseiller, strictement en dessous. */
-export function introCentsFromStandard(standardCents: number): number {
-  const standard = clamp(Math.round(standardCents), MIN_EUR_CENTS, MAX_EUR_CENTS);
-  const intro = Math.max(1, Math.round((standard * 99) / 149));
-  return intro < standard ? intro : standard - 1;
-}
-
-function niceRound(minor: number, currency: Currency): number {
+function niceRound(minor: number): number {
   if (minor <= 0) return 0;
   const step = 10;
   const rounded = Math.round(minor / step) * step;
@@ -93,59 +106,60 @@ function niceRound(minor: number, currency: Currency): number {
 export function convertEurCents(eurCents: number, currency: Currency, rates: FxRates): number {
   const cents = Math.max(0, Math.round(eurCents));
   if (cents === 0) return 0;
-  if (currency === 'eur') {
-    const rounded = niceRound(cents, 'eur');
-    // Le plafond minute est 1,99 € : un arrondi à la dizaine ne doit pas l’afficher à 2,00 €.
-    if (cents <= MAX_EUR_CENTS && rounded > MAX_EUR_CENTS) return cents;
-    return rounded;
-  }
+  if (currency === 'eur') return niceRound(cents);
   const rate = rates[currency] > 0 ? rates[currency] : DEFAULT_RATES[currency];
   const major = (cents / 100) * rate;
-  if (currency === 'jpy') return niceRound(Math.round(major), 'jpy');
-  return niceRound(Math.round(major * 100), currency);
+  if (currency === 'jpy') return niceRound(Math.round(major));
+  return niceRound(Math.round(major * 100));
+}
+
+/** Convertit un montant mineur d’une devise à l’autre, au centime (au yen pour JPY). */
+export function convertMinor(minor: number, from: Currency, to: Currency, rates: FxRates): number {
+  const amount = Math.max(0, Math.round(minor));
+  if (amount === 0 || from === to) return amount;
+  const fromRate = rates[from] > 0 ? rates[from] : DEFAULT_RATES[from];
+  const toRate = rates[to] > 0 ? rates[to] : DEFAULT_RATES[to];
+  const eurMajor = (isZeroDecimal(from) ? amount : amount / 100) / fromRate;
+  const target = eurMajor * toRate;
+  return Math.max(1, isZeroDecimal(to) ? Math.round(target) : Math.round(target * 100));
 }
 
 export interface LocalRates {
+  /** Palier de base du conseiller (centimes d’euro, 50 à 199). */
   standardEur: number;
-  introEur: number;
+  /** Tarifs dans la devise du marché, avant conversion d’affichage. */
+  bandCurrency: Currency;
+  standardBand: number;
+  introBand: number;
+  /** Tarifs encaissés, dans la devise affichée. */
   standardLocal: number;
   introLocal: number;
 }
 
 /**
- * Tarif minute converti : même règle pour le plancher, le plafond et chaque conseiller.
- * EUR : arrondi à 0,10 € (plafond 1,99 € conservé). Autres devises : conversion au centime
- * (au yen pour JPY), pour que 0,50 € devienne bien 0,54 $, 0,42 £, 86 ¥, etc.
+ * Tarif minute d’un conseiller pour le marché du visiteur, puis converti dans la devise
+ * affichée si elle diffère de celle du marché. Le serveur encaisse exactement ces montants.
  */
-export function convertPerMinute(eurCents: number, currency: Currency, rates: FxRates): number {
-  if (currency === 'eur') return convertEurCents(eurCents, currency, rates);
-  const cents = Math.max(0, Math.round(eurCents));
-  if (cents === 0) return 0;
-  const rate = rates[currency] > 0 ? rates[currency] : DEFAULT_RATES[currency];
-  const major = (cents / 100) * rate;
-  return Math.max(1, currency === 'jpy' ? Math.round(major) : Math.round(major * 100));
-}
-
-export function localRates(eurPerMinCents: number, currency: Currency, rates: FxRates): LocalRates {
+export function localRates(eurPerMinCents: number, currency: Currency, rates: PriceRates): LocalRates {
+  const band = priceBand(rates);
   const standardEur = clamp(Math.round(eurPerMinCents), MIN_EUR_CENTS, MAX_EUR_CENTS);
-  const introEur = introCentsFromStandard(standardEur);
-  const standardLocal = convertPerMinute(standardEur, currency, rates);
-  let introLocal = convertPerMinute(introEur, currency, rates);
-  const step = currency === 'eur' ? 10 : 1;
-  if (introLocal >= standardLocal) {
-    introLocal = Math.max(1, standardLocal - step);
-  }
-  return { standardEur, introEur, standardLocal, introLocal };
+  const standardBand = bandStandard(band, standardEur);
+  const introBand = bandIntro(band, standardBand);
+  const standardLocal = convertMinor(standardBand, band.currency, currency, rates);
+  let introLocal = convertMinor(introBand, band.currency, currency, rates);
+  if (introLocal >= standardLocal) introLocal = Math.max(1, standardLocal - 1);
+  return { standardEur, bandCurrency: band.currency, standardBand, introBand, standardLocal, introLocal };
 }
 
-/** Plancher et plafond du tarif minute, convertis comme les tarifs des conseillers. */
+/** Plancher et plafond du tarif minute du marché, dans la devise affichée. */
 export function perMinuteRange(
   currency: Currency,
-  rates: FxRates,
+  rates: PriceRates,
   locale?: string
 ): { floorMinor: number; ceilingMinor: number; floor: string; ceiling: string } {
-  const floorMinor = convertPerMinute(MIN_EUR_CENTS, currency, rates);
-  const ceilingMinor = convertPerMinute(MAX_EUR_CENTS, currency, rates);
+  const band = priceBand(rates);
+  const floorMinor = convertMinor(band.min, band.currency, currency, rates);
+  const ceilingMinor = convertMinor(band.max, band.currency, currency, rates);
   return {
     floorMinor,
     ceilingMinor,
@@ -154,25 +168,42 @@ export function perMinuteRange(
   };
 }
 
-/** Réservation = minutes d’intro × tarif intro local + reste × tarif du conseiller. */
+/** Réservation = minutes d’intro × tarif intro + reste × tarif du conseiller. */
 export function localBookingMinor(
   eurPerMinCents: number,
   minutes: number,
   currency: Currency,
-  rates: FxRates
+  rates: PriceRates
 ): number {
   const { standardLocal, introLocal } = localRates(eurPerMinCents, currency, rates);
-  const introMinutes = Math.min(3, Math.max(0, minutes));
-  const rest = Math.max(0, minutes - 3);
+  const introMinutes = Math.min(INTRO_MINUTES, Math.max(0, minutes));
+  const rest = Math.max(0, minutes - INTRO_MINUTES);
   return introMinutes * introLocal + rest * standardLocal;
 }
 
 /** Compteur à la seconde, dans l’unité mineure déjà convertie. */
 export function meterMinor(seconds: number, introPerMin: number, standardPerMin: number): number {
   if (seconds <= 0) return 0;
-  const introSeconds = Math.min(180, seconds);
-  const rest = Math.max(0, seconds - 180);
+  const introSeconds = Math.min(INTRO_SECONDS, seconds);
+  const rest = Math.max(0, seconds - INTRO_SECONDS);
   return Math.ceil((introSeconds * introPerMin) / 60) + Math.ceil((rest * standardPerMin) / 60);
+}
+
+/** Prix d’un pack de minutes pour le marché, dans la devise affichée. L’offre fondateur reste à 4,90 € convertis. */
+export function packMinor(
+  pack: { minutes: number; amountCents: number; founding?: boolean },
+  currency: Currency,
+  rates: PriceRates
+): number {
+  if (pack.founding) return convertEurCents(pack.amountCents, currency, rates);
+  const band = priceBand(rates);
+  return convertMinor(bandPackPrice(band, pack.minutes), band.currency, currency, rates);
+}
+
+/** Prix de référence : les mêmes minutes au tarif minute le plus bas du marché. */
+export function packReferenceMinor(minutes: number, currency: Currency, rates: PriceRates): number {
+  const band = priceBand(rates);
+  return convertMinor(bandPackReference(band, minutes), band.currency, currency, rates);
 }
 
 const MONEY_LOCALE: Record<string, string> = {
@@ -228,7 +259,7 @@ export interface AdvisorQuote {
 export function quoteAdvisor(
   eurPerMinCents: number,
   currency: Currency,
-  rates: FxRates,
+  rates: PriceRates,
   durations: readonly number[] = [10, 20, 30],
   locale?: string | null
 ): AdvisorQuote {

@@ -338,7 +338,7 @@ export function advisorFaqs(input: {
       },
       {
         question: `Quel est le tarif de ${name} ?`,
-        answer: `La consultation commence à ${intro} pendant les trois premières minutes, puis ${standard}. Le montant d’un rendez-vous est le nombre de minutes multiplié par ces tarifs.`,
+        answer: `La consultation commence à ${intro} pendant les cinq premières minutes, puis ${standard}. Le montant d’un rendez-vous est le nombre de minutes multiplié par ces tarifs.`,
       },
       {
         question: `En quelles langues ${name} consulte-t-${pronoun} ?`,
@@ -360,7 +360,7 @@ export function advisorFaqs(input: {
       },
       {
         question: `What does ${name} charge?`,
-        answer: `The consultation starts at ${intro} for the first three minutes, then ${standard}. A booking is the number of minutes times those rates.`,
+        answer: `The consultation starts at ${intro} for the first five minutes, then ${standard}. A booking is the number of minutes times those rates.`,
       },
       {
         question: `Which languages does ${name} use?`,
@@ -382,7 +382,7 @@ export function advisorFaqs(input: {
       },
       {
         question: `¿Cuál es el precio de ${name}?`,
-        answer: `La consulta empieza a ${intro} durante los tres primeros minutos y sigue a ${standard}. Una reserva es el número de minutos por esas tarifas.`,
+        answer: `La consulta empieza a ${intro} durante los cinco primeros minutos y sigue a ${standard}. Una reserva es el número de minutos por esas tarifas.`,
       },
       {
         question: `¿En qué idiomas consulta ${name}?`,
@@ -404,7 +404,7 @@ export function advisorFaqs(input: {
       },
       {
         question: `Was kostet ${name}?`,
-        answer: `Die Beratung beginnt mit ${intro} in den ersten drei Minuten, danach ${standard}. Eine Buchung ist die Minutenzahl mal diesen Tarifen.`,
+        answer: `Die Beratung beginnt mit ${intro} in den ersten fünf Minuten, danach ${standard}. Eine Buchung ist die Minutenzahl mal diesen Tarifen.`,
       },
       {
         question: `In welchen Sprachen berät ${name}?`,
@@ -426,7 +426,7 @@ export function advisorFaqs(input: {
       },
       {
         question: `Qual è il prezzo di ${name}?`,
-        answer: `Il consulto parte da ${intro} per i primi tre minuti, poi ${standard}. Una prenotazione è il numero di minuti per queste tariffe.`,
+        answer: `Il consulto parte da ${intro} per i primi cinque minuti, poi ${standard}. Una prenotazione è il numero di minuti per queste tariffe.`,
       },
       {
         question: `In quali lingue consulta ${name}?`,
@@ -453,27 +453,27 @@ export function homeFaqs(locale: Locale, floor: string, ceiling: string): FaqIte
     fr: [
       { question: 'Qui sont les conseillers Callastral ?', answer: disclosure.fr },
       { question: 'Comment se passe une consultation par téléphone ?', answer: 'Vous choisissez un conseiller, un créneau, puis vous payez. Le compte se crée à ce moment-là. Le lien d’appel s’ouvre cinq minutes avant le début.' },
-      { question: 'Quels sont les tarifs ?', answer: `Chaque conseiller affiche son tarif, entre ${floor} et ${ceiling} la minute. Les trois premières minutes sont à un tarif réduit.` },
+      { question: 'Quels sont les tarifs ?', answer: `Chaque conseiller affiche son tarif, entre ${floor} et ${ceiling} la minute. Les cinq premières minutes sont à un tarif réduit. Le prix exact pour votre pays est affiché avant le paiement.` },
     ],
     en: [
       { question: 'Who are the Callastral advisors?', answer: disclosure.en },
       { question: 'How does a phone consultation work?', answer: 'You choose an advisor and a time, then pay. The account is created at that step. The call link opens five minutes before the start.' },
-      { question: 'What are the prices?', answer: `Each advisor shows a rate between ${floor} and ${ceiling} per minute. The first three minutes use a reduced rate.` },
+      { question: 'What are the prices?', answer: `Each advisor shows a rate between ${floor} and ${ceiling} per minute. The first five minutes use a reduced rate. The exact price for your country is shown before payment.` },
     ],
     es: [
       { question: '¿Quiénes son los consejeros de Callastral?', answer: disclosure.es },
       { question: '¿Cómo es una consulta por teléfono?', answer: 'Elige un consejero y un horario, luego paga. La cuenta se crea en ese paso. El enlace de la llamada se abre cinco minutos antes.' },
-      { question: '¿Cuáles son los precios?', answer: `Cada consejero muestra una tarifa entre ${floor} y ${ceiling} por minuto. Los tres primeros minutos tienen una tarifa reducida.` },
+      { question: '¿Cuáles son los precios?', answer: `Cada consejero muestra una tarifa entre ${floor} y ${ceiling} por minuto. Los cinco primeros minutos tienen una tarifa reducida. El precio exacto para su país se muestra antes del pago.` },
     ],
     de: [
       { question: 'Wer sind die Berater von Callastral?', answer: disclosure.de },
       { question: 'Wie läuft eine telefonische Beratung ab?', answer: 'Sie wählen einen Berater und einen Termin und zahlen dann. Das Konto entsteht bei diesem Schritt. Der Anruflink öffnet fünf Minuten vor Beginn.' },
-      { question: 'Welche Preise gelten?', answer: `Jeder Berater zeigt einen Tarif zwischen ${floor} und ${ceiling} pro Minute. Die ersten drei Minuten sind ermäßigt.` },
+      { question: 'Welche Preise gelten?', answer: `Jeder Berater zeigt einen Tarif zwischen ${floor} und ${ceiling} pro Minute. Die ersten fünf Minuten sind ermäßigt. Der genaue Preis für Ihr Land wird vor der Zahlung angezeigt.` },
     ],
     it: [
       { question: 'Chi sono i consulenti Callastral?', answer: disclosure.it },
       { question: 'Come funziona un consulto telefonico?', answer: 'Scegli un consulente e un orario, poi paghi. L’account si crea in quel passaggio. Il link della chiamata si apre cinque minuti prima.' },
-      { question: 'Quali sono i prezzi?', answer: `Ogni consulente mostra una tariffa tra ${floor} e ${ceiling} al minuto. I primi tre minuti hanno una tariffa ridotta.` },
+      { question: 'Quali sono i prezzi?', answer: `Ogni consulente mostra una tariffa tra ${floor} e ${ceiling} al minuto. I primi cinque minuti hanno una tariffa ridotta. Il prezzo esatto per il tuo paese è indicato prima del pagamento.` },
     ],
   };
   return rest[locale];

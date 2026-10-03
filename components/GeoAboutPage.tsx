@@ -1,3 +1,4 @@
+import { GUARANTEE_TEXT } from '@/lib/guarantee-text';
 import Link from 'next/link';
 import AiDisclosure from '@/components/AiDisclosure';
 import JsonLd from '@/components/JsonLd';
@@ -83,7 +84,7 @@ export default function GeoAboutPage({ locale }: { locale: GeoLocale }) {
         {
           title: 'Prix',
           body: [
-            `De ${c.min} à ${c.max} par minute selon le conseiller, à la seconde ; les trois premières minutes sont à tarif réduit.`,
+            `En France, de ${c.min} à ${c.max} par minute selon le conseiller ; les ${c.introMinutes} premières minutes sont à tarif réduit. Le tarif dépend du pays (par exemple ${c.table.find((r) => r.id === 'us')?.min} à ${c.table.find((r) => r.id === 'us')?.max} aux États-Unis) et le prix exact est affiché avant le paiement.`,
             ...(c.founding ? [`Offre fondateur : ${c.founding.minutes} minutes pour ${c.founding.price}, une fois par compte.`] : []),
             `Packs de minutes, sans date d’expiration : ${packs}.`,
             `Callastral Illimité : ${c.subscription} par mois, dans la limite de ${c.fairUse} minutes par mois et de 60 minutes par appel ; résiliable à tout moment.`,
@@ -94,6 +95,7 @@ export default function GeoAboutPage({ locale }: { locale: GeoLocale }) {
           body: [
             'Jusqu’à 24 heures avant le début d’une réservation, le montant payé est intégralement remboursé. Passé ce délai, il est converti en avoir valable 30 jours.',
             'Pour une consultation à la minute, seule la durée réelle est encaissée. L’abonnement se résilie depuis le compte ; l’accès court jusqu’à la fin de la période payée.',
+            GUARANTEE_TEXT.title + ' : ' + GUARANTEE_TEXT.body,
           ],
         },
         {
@@ -139,7 +141,7 @@ export default function GeoAboutPage({ locale }: { locale: GeoLocale }) {
         {
           title: 'Prices',
           body: [
-            `From ${c.min} to ${c.max} per minute depending on the advisor, billed by the second; the first three minutes are at a reduced rate.`,
+            `In France, from ${c.min} to ${c.max} per minute depending on the advisor; the first ${c.introMinutes} minutes are at a reduced rate. Rates depend on the country (for example ${c.table.find((r) => r.id === 'us')?.min} to ${c.table.find((r) => r.id === 'us')?.max} in the United States) and the exact price is shown before payment.`,
             ...(c.founding ? [`Founder offer: ${c.founding.minutes} minutes for ${c.founding.price}, once per account.`] : []),
             `Minute packs, with no expiry: ${packsEn}.`,
             `Callastral Unlimited: ${c.subscription} per month, up to ${c.fairUse} minutes a month and 60 minutes per call; cancel anytime.`,
@@ -150,6 +152,7 @@ export default function GeoAboutPage({ locale }: { locale: GeoLocale }) {
           body: [
             'Up to 24 hours before a booking starts, the amount paid is fully refunded. After that, it becomes a credit valid for 30 days.',
             'For per-minute consultations, only the actual duration is charged. The subscription is cancelled from your account; access runs until the end of the paid period.',
+            `Refunded if the first ${c.introMinutes} minutes don’t suit you: hang up within the first ${c.introMinutes} billed minutes and request a refund from your account within 24 hours (card refund to the same payment method, credit restored otherwise). One request per account.`,
           ],
         },
         {

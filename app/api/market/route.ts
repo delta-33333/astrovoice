@@ -1,7 +1,16 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { MARKET_COOKIE, marketCookieOptions, resolveMarket } from '@/lib/market';
-import { convertEurCents, formatMoney, isAdvisorLang, isCurrency, perMinuteRange } from '@/lib/money';
+import {
+  convertEurCents,
+  formatMoney,
+  isAdvisorLang,
+  isCurrency,
+  packMinor,
+  packReferenceMinor,
+  perMinuteRange,
+} from '@/lib/money';
+import { INTRO_MINUTES } from '@/lib/price-bands';
 import {
   COMPATIBILITY_REPORT_EUR_CENTS,
   FORECAST_REPORT_EUR_CENTS,
@@ -42,13 +51,20 @@ export async function GET() {
       fairUseMinutes: SUBSCRIPTION_FAIR_USE_MINUTES,
       maxCallMinutes: SUBSCRIPTION_MAX_CALL_MINUTES,
     },
-    packs: MINUTE_PACKS.map((pack) => ({
-      id: pack.id,
-      amountLabel: money(pack.amountCents),
-      regularLabel: money(pack.regularCents),
-      perMinLabel: `${money(Math.round(pack.amountCents / pack.minutes))}/min`,
-      savingsLabel: money(Math.max(0, pack.regularCents - pack.amountCents)),
-    })),
+    introMinutes: INTRO_MINUTES,
+    band: market.band,
+    packs: MINUTE_PACKS.map((pack) => {
+      const amount = packMinor(pack, market.currency, market.rates);
+      const regular = packReferenceMinor(pack.minutes, market.currency, market.rates);
+      const fmt = (minor: number) => formatMoney(minor, market.currency);
+      return {
+        id: pack.id,
+        amountLabel: fmt(amount),
+        regularLabel: fmt(regular),
+        perMinLabel: `${fmt(Math.round(amount / pack.minutes))}/min`,
+        savingsLabel: fmt(Math.max(0, regular - amount)),
+      };
+    }),
   });
 }
 

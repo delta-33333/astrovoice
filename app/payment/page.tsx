@@ -178,7 +178,7 @@ export default function PaymentPage() {
             </p>
             <div className="bg-celestial-gold/10 border border-celestial-gold/30 rounded-lg p-3 mt-3">
               <p className="text-sm text-celestial-gold font-semibold">
-                Offre découverte : {introLabel || 'tarif réduit'} les 3 premières minutes
+                Offre découverte : {introLabel || 'tarif réduit'} les 5 premières minutes
               </p>
             </div>
           </div>

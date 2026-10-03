@@ -14,7 +14,11 @@ const ENTRIES: { q: string; a: string }[] = [
   },
   {
     q: 'Comment est calculé le prix d’une consultation à la minute ?',
-    a: 'Chaque conseiller a son tarif, entre 0,50 € et 1,99 € par minute. Les trois premières minutes sont à un tarif réduit, propre à ce tarif. Des packs de minutes et une offre fondateur de 10 minutes à 4,90 € sont proposés après l’inscription. L’abonnement Callastral Illimité est à 49 € par mois, dans la limite de 300 minutes par mois et de 60 minutes par appel.',
+    a: 'Chaque conseiller a son tarif, qui dépend aussi de votre pays : en France, de 2,20 € à 4,50 € par minute ; aux États-Unis, de 2,49 $ à 4,99 $ ; au Royaume-Uni, de 2,20 £ à 4,50 £ ; en Espagne, de 1,49 € à 2,99 €. Les cinq premières minutes sont à un tarif réduit (60 % du tarif, plafonné). Le prix exact est affiché avant le paiement. Des packs de minutes et une offre fondateur de 10 minutes à 4,90 € sont proposés après l’inscription. L’abonnement Callastral Illimité est à 49 € par mois, dans la limite de 300 minutes par mois et de 60 minutes par appel.',
+  },
+  {
+    q: 'Puis-je être remboursé si l’appel ne me convient pas ?',
+    a: 'Oui, une fois par compte : si un appel payé s’arrête dans les 5 premières minutes facturées, demandez son remboursement depuis votre compte dans les 24 heures. La part carte est remboursée sur le même moyen de paiement, la part avoir est recréditée. Pour une réservation, l’annulation plus de 24 h avant est remboursée ; ensuite, le montant devient un avoir valable 30 jours.',
   },
   {
     q: 'La consultation s’appuie-t-elle sur mon thème natal ?',

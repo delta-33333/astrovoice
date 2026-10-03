@@ -124,7 +124,7 @@ export default function ConsentPage() {
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-celestial-gold mt-0.5">✓</span>
-                <span>Tarif du conseiller choisi, entre 0,50 € et 1,99 € la minute. Les trois premières minutes sont à un tarif réduit.</span>
+                <span>Tarif du conseiller choisi, selon votre pays (en France : 2,20 € à 4,50 € la minute), affiché avant le paiement. Les cinq premières minutes sont à un tarif réduit.</span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-celestial-gold mt-0.5">✓</span>

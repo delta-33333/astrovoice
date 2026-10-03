@@ -3,6 +3,7 @@
 import { FormEvent, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { GuaranteeSection } from '@/components/GuaranteeSection';
 
 export default function AccountPage() {
   const router = useRouter();
@@ -152,6 +153,8 @@ export default function AccountPage() {
             </p>
           )}
         </section>
+
+        <GuaranteeSection />
 
         <section className="rounded-2xl border border-white/10 bg-white/5 p-4 space-y-3">
           <h2 className="font-semibold">Rapports</h2>

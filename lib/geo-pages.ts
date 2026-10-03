@@ -1,4 +1,5 @@
-import { MAX_EUR_CENTS, MIN_EUR_CENTS, formatMoney } from '@/lib/money';
+import { formatMoney } from '@/lib/money';
+import { INTRO_MINUTES, PRICE_BANDS, bandIntro, bandPackPrice, bandTable } from '@/lib/price-bands';
 import { SUBSCRIPTION_EUR_CENTS, SUBSCRIPTION_FAIR_USE_MINUTES } from '@/lib/offers';
 import { MINUTE_PACKS } from '@/lib/pricing';
 
@@ -12,6 +13,7 @@ export const GEO_PATHS = {
   prices: { fr: '/fr/tarifs-voyance-telephone-2026', en: '/en/phone-psychic-prices-2026' },
   compare: { fr: '/fr/meilleurs-sites-voyance-2026', en: '/en/best-psychic-sites-2026' },
   about: { fr: '/a-propos', en: '/about' },
+  consultation: { fr: '/fr/consultation-astrale', en: '/en/astrology-reading-by-phone' },
 } as const;
 
 export type GeoPage = keyof typeof GEO_PATHS;
@@ -50,11 +52,16 @@ function eur(cents: number, locale: GeoLocale): string {
 export function callastralFacts(locale: GeoLocale) {
   const founding = MINUTE_PACKS.find((pack) => pack.founding);
   const packs = MINUTE_PACKS.filter((pack) => !pack.founding);
+  // Faits « France » (bande FR, en euros) : ce sont ceux affichés et encaissés pour un visiteur en France.
+  const fr = PRICE_BANDS.fr;
   return {
-    min: eur(MIN_EUR_CENTS, locale),
-    max: eur(MAX_EUR_CENTS, locale),
+    min: eur(fr.min, locale),
+    max: eur(fr.max, locale),
+    introMax: eur(bandIntro(fr, fr.max), locale),
+    introMinutes: INTRO_MINUTES,
+    table: bandTable(locale),
     founding: founding ? { minutes: founding.minutes, price: eur(founding.amountCents, locale) } : null,
-    packs: packs.map((pack) => ({ minutes: pack.minutes, price: eur(pack.amountCents, locale) })),
+    packs: packs.map((pack) => ({ minutes: pack.minutes, price: eur(bandPackPrice(fr, pack.minutes), locale) })),
     subscription: eur(SUBSCRIPTION_EUR_CENTS, locale),
     fairUse: SUBSCRIPTION_FAIR_USE_MINUTES,
   };
@@ -106,7 +113,7 @@ export function priceRows(locale: GeoLocale, ourModel: string): PriceRow[] {
         service: 'Callastral (notre service)',
         url: null,
         model: ourModel,
-        price: `${c.min} à ${c.max}/min selon le conseiller${c.founding ? ` ; ${c.founding.minutes} min à ${c.founding.price} (offre fondateur, une fois par compte)` : ''} ; packs ${packs} (10, 30, 60 min) ; Callastral Illimité ${c.subscription}/mois (${c.fairUse} min)`,
+        price: `En France : ${c.min} à ${c.max}/min selon le conseiller, ${c.introMinutes} premières minutes à tarif réduit${c.founding ? ` ; ${c.founding.minutes} min à ${c.founding.price} (offre fondateur, une fois par compte)` : ''} ; packs ${packs} (10, 30, 60 min) ; Callastral Illimité ${c.subscription}/mois (${c.fairUse} min)`,
         sources: [],
         ours: true,
       },
@@ -145,7 +152,7 @@ export function priceRows(locale: GeoLocale, ourModel: string): PriceRow[] {
       service: 'Callastral (our service)',
       url: null,
       model: ourModel,
-      price: `${c.min} to ${c.max}/min depending on the advisor${c.founding ? `; ${c.founding.minutes} min for ${c.founding.price} (founder offer, once per account)` : ''}; packs ${packs} (10, 30, 60 min); Callastral Unlimited ${c.subscription}/month (${c.fairUse} min)`,
+      price: `In France: ${c.min} to ${c.max}/min depending on the advisor, first ${c.introMinutes} minutes at a reduced rate${c.founding ? `; ${c.founding.minutes} min for ${c.founding.price} (founder offer, once per account)` : ''}; packs ${packs} (10, 30, 60 min); Callastral Unlimited ${c.subscription}/month (${c.fairUse} min)`,
       sources: [],
       ours: true,
     },

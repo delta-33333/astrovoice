@@ -36,10 +36,10 @@ export function compareCopy(locale: GeoLocale) {
         url: origin,
         ours: true,
         kind: aiActLine('fr'),
-        price: `${c.min} à ${c.max}/min selon le conseiller`,
+        price: `En France : ${c.min} à ${c.max}/min selon le conseiller (${c.introMinutes} premières minutes à tarif réduit)`,
         welcome: c.founding ? `${c.founding.minutes} min à ${c.founding.price} (offre fondateur)` : '—',
         language: 'Français, anglais, espagnol, allemand, italien',
-        bestFor: 'Astrologie à partir du thème natal, à toute heure, à petit prix, en sachant que le conseiller est virtuel et ne garde pas la mémoire des appels précédents.',
+        bestFor: 'Astrologie à partir du thème natal, à toute heure, avec un prix affiché avant l’appel, en sachant que le conseiller est virtuel et ne garde pas la mémoire des appels précédents.',
         sources: [],
       },
       {
@@ -76,7 +76,7 @@ export function compareCopy(locale: GeoLocale) {
     return {
       title: 'Meilleurs sites de voyance et d’astrologie par téléphone en 2026 : comparatif honnête',
       description: 'Comparatif 2026 de Callastral (notre service), Kasamba, Voyance.fr et Wengo : prix relevés et sourcés, humain ou virtuel, et quand un autre service vaut mieux.',
-      answer: 'Il n’y a pas un meilleur site pour tout le monde : pour un voyant humain, Voyance.fr, Wengo ou Kasamba (en anglais) sont plus adaptés ; pour de l’astrologie à partir du thème natal, à toute heure et de 0,50 € à 1,99 €/min, Callastral, notre service, avec des conseillers virtuels.',
+      answer: `Il n’y a pas un meilleur site pour tout le monde : pour un voyant humain, Voyance.fr, Wengo ou Kasamba (en anglais) sont plus adaptés ; pour de l’astrologie à partir du thème natal, à toute heure et de ${c.min} à ${c.max}/min en France, Callastral, notre service, avec des conseillers virtuels. Wengo et l’audiotel peuvent revenir moins cher à la minute.`,
       disclosure: 'Transparence : Callastral est notre service. Les services sont classés par ordre alphabétique, sans note ni lien affilié. Les prix ont été relevés le 3 octobre 2026 sur les pages officielles citées.',
       cols: ['Service', 'Humain ou virtuel', 'Prix relevé', 'Offre de bienvenue', 'Langue', 'Source'],
       caption: 'Mêmes critères pour chaque service (relevé du 3 octobre 2026)',
@@ -91,13 +91,13 @@ export function compareCopy(locale: GeoLocale) {
       whenOurs: [
         'Vous voulez une lecture d’astrologie fondée sur votre thème natal, calculé avec Swiss Ephemeris.',
         'Vous voulez appeler à toute heure, dans l’une de 5 langues.',
-        `Vous voulez un prix bas et clair : ${c.min} à ${c.max}/min, à la seconde, sans surtaxe.`,
+        `Vous voulez un prix clair, affiché avant l’appel : ${c.min} à ${c.max}/min en France, sans surtaxe, remboursé si les ${c.introMinutes} premières minutes ne vous conviennent pas (une fois par compte).`,
       ],
       bestForLabel: 'Pour qui : ',
       faqs: [
         {
           question: 'Quel est le meilleur site de voyance par téléphone en 2026 ?',
-          answer: 'Cela dépend de ce que vous cherchez. Pour un voyant humain : Voyance.fr, Wengo ou, en anglais, Kasamba. Pour de l’astrologie fondée sur le thème natal, disponible à toute heure à bas prix avec des conseillers virtuels : Callastral, notre service.',
+          answer: 'Cela dépend de ce que vous cherchez. Pour un voyant humain : Voyance.fr, Wengo ou, en anglais, Kasamba. Pour de l’astrologie fondée sur le thème natal, disponible à toute heure avec des conseillers virtuels : Callastral, notre service.',
         },
         {
           question: 'Les conseillers Callastral sont-ils humains ?',
@@ -119,10 +119,10 @@ export function compareCopy(locale: GeoLocale) {
       url: origin,
       ours: true,
       kind: aiActLine('en'),
-      price: `${c.min} to ${c.max}/min depending on the advisor`,
+      price: `In France: ${c.min} to ${c.max}/min depending on the advisor (first ${c.introMinutes} minutes at a reduced rate)`,
       welcome: c.founding ? `${c.founding.minutes} min for ${c.founding.price} (founder offer)` : '—',
       language: 'French, English, Spanish, German, Italian',
-      bestFor: 'Birth-chart astrology at any hour at a low price, knowing the advisor is virtual and does not remember previous calls.',
+      bestFor: 'Birth-chart astrology at any hour with the price shown before the call, knowing the advisor is virtual and does not remember previous calls.',
       sources: [],
     },
     {
@@ -159,7 +159,7 @@ export function compareCopy(locale: GeoLocale) {
   return {
     title: 'Best phone psychic and astrology sites in 2026: an honest comparison',
     description: 'A 2026 comparison of Callastral (our service), Kasamba, Voyance.fr and Wengo: sourced prices, human or virtual, and when another service is the better choice.',
-    answer: 'There is no single best site for everyone: for a human psychic, Kasamba (English) or, in French, Voyance.fr and Wengo are a better fit; for birth-chart astrology at any hour from €0.50 to €1.99/min, Callastral, our service, with virtual advisors.',
+    answer: `There is no single best site for everyone: for a human psychic, Kasamba (English) or, in French, Voyance.fr and Wengo are a better fit; for birth-chart astrology at any hour from ${c.min} to ${c.max}/min in France, Callastral, our service, with virtual advisors. Wengo and audiotel can be cheaper per minute.`,
     disclosure: 'Disclosure: Callastral is our service. Services are listed alphabetically, with no ratings and no affiliate links. Prices were collected on 3 October 2026 from the official pages cited.',
     cols: ['Service', 'Human or virtual', 'Price collected', 'Welcome offer', 'Language', 'Source'],
     caption: 'Same criteria for every service (collected on 3 October 2026)',
@@ -174,13 +174,13 @@ export function compareCopy(locale: GeoLocale) {
     whenOurs: [
       'You want an astrology reading based on your birth chart, computed with Swiss Ephemeris.',
       'You want to call at any hour, in one of 5 languages.',
-      `You want a low, clear price: ${c.min} to ${c.max}/min, billed by the second, no premium-rate surcharge.`,
+      `You want a clear price shown before the call: ${c.min} to ${c.max}/min in France, no premium-rate surcharge, refunded if the first ${c.introMinutes} minutes don’t suit you (once per account).`,
     ],
     bestForLabel: 'Best for: ',
     faqs: [
       {
         question: 'What is the best phone psychic site in 2026?',
-        answer: 'It depends on what you want. For a human psychic: Kasamba in English, or Voyance.fr and Wengo in French. For birth-chart astrology available at any hour at a low price with virtual advisors: Callastral, our service.',
+        answer: 'It depends on what you want. For a human psychic: Kasamba in English, or Voyance.fr and Wengo in French. For birth-chart astrology available at any hour with virtual advisors: Callastral, our service.',
       },
       {
         question: 'Are Callastral advisors human?',

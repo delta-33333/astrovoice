@@ -8,7 +8,9 @@ import {
   type AdvisorLang,
   type Currency,
   type FxRates,
+  type PriceRates,
 } from './money';
+import { PRICE_BANDS, bandForCountry, bandForLocale, type BandId } from './price-bands';
 
 export const MARKET_COOKIE = 'callastral_market';
 
@@ -17,18 +19,20 @@ const EUROZONE = new Set([
   'LT', 'LU', 'LV', 'MT', 'NL', 'PT', 'SI', 'SK',
 ]);
 
-/** Pays de l’UE hors zone euro, et micro-États qui utilisent l’euro : affichage en euros. */
-const EURO_DISPLAY = new Set([
-  'BG', 'CZ', 'DK', 'HU', 'PL', 'RO', 'SE', 'MC', 'AD', 'SM', 'VA', 'ME', 'XK',
-]);
-
 const MULTILINGUAL = new Set(['BE', 'CH', 'CA', 'LU']);
 
 export interface Market {
   language: AdvisorLang;
   currency: Currency;
-  rates: FxRates;
+  /** Taux de change + marché tarifaire du pays (jamais fourni par le client). */
+  rates: PriceRates;
+  band: BandId;
   country: string | null;
+}
+
+/** Taux + marché d’une page éditoriale de langue (prix affichés « pour la France », etc.). */
+export function localeRates(locale: string): PriceRates {
+  return { ...readRates(), band: bandForLocale(locale) };
 }
 
 function positiveRate(name: string, fallback: number): number {
@@ -51,15 +55,9 @@ export function readRates(): FxRates {
   };
 }
 
+/** Devise par défaut = devise du marché tarifaire du pays (euro si inconnu). */
 export function currencyForCountry(country: string | null): Currency {
-  const code = (country || '').toUpperCase();
-  // Pays inconnu (pas d’en-tête géo) : euro, la devise de référence du site.
-  if (!code || code === 'XX' || EUROZONE.has(code) || EURO_DISPLAY.has(code)) return 'eur';
-  if (code === 'GB') return 'gbp';
-  if (code === 'JP') return 'jpy';
-  if (code === 'CH') return 'chf';
-  if (code === 'CA') return 'cad';
-  return 'usd';
+  return PRICE_BANDS[bandForCountry(country)].currency;
 }
 
 function languageFromCountry(country: string): AdvisorLang | null {
@@ -103,9 +101,10 @@ export async function resolveMarket(): Promise<Market> {
   const hdrs = await headers();
   const country = hdrs.get('x-vercel-ip-country');
   const saved = parseCookie(jar.get(MARKET_COOKIE)?.value);
-  const rates = readRates();
+  const band = bandForCountry(country);
+  const rates: PriceRates = { ...readRates(), band };
   if (saved) {
-    return { ...saved, rates, country };
+    return { ...saved, rates, band, country };
   }
 
   const code = (country || '').toUpperCase();
@@ -121,6 +120,7 @@ export async function resolveMarket(): Promise<Market> {
     language,
     currency: currencyForCountry(country),
     rates,
+    band,
     country,
   };
 }
