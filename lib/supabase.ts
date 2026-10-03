@@ -3,8 +3,14 @@ import { createClient } from '@supabase/supabase-js';
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
 
+// Les tables Callastral vivent dans le schéma Postgres dédié `callastral`
+// (base partagée avec un autre projet : on n'utilise jamais `public`).
+export const SUPABASE_DB_SCHEMA = 'callastral';
+
 export const supabase = supabaseUrl && supabaseAnonKey
-  ? createClient(supabaseUrl, supabaseAnonKey)
+  ? createClient(supabaseUrl, supabaseAnonKey, {
+      db: { schema: SUPABASE_DB_SCHEMA },
+    })
   : null;
 
 export const supabaseAvailable = !!supabase;
