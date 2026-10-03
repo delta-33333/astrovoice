@@ -39,7 +39,8 @@ BEGIN
 
   DELETE FROM callastral.slots
   WHERE status = 'available'
-    AND starts_at < now();
+    AND starts_at < now()
+    AND NOT EXISTS (SELECT 1 FROM callastral.bookings WHERE bookings.slot_id = slots.id);
 
   FOR lang, spec IN
     SELECT langs.lang, specs.spec

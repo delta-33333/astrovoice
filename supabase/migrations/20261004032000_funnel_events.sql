@@ -3,20 +3,8 @@
 
 BEGIN;
 
-DO $$
-DECLARE
-  cons text;
-BEGIN
-  FOR cons IN
-    SELECT conname
-    FROM pg_constraint
-    WHERE conrelid = 'callastral.events'::regclass
-      AND contype = 'c'
-      AND pg_get_constraintdef(oid) ILIKE '%name IN%'
-  LOOP
-    EXECUTE format('ALTER TABLE callastral.events DROP CONSTRAINT %I', cons);
-  END LOOP;
-END $$;
+-- pg_get_constraintdef rend « name = ANY (ARRAY[...]) », pas « IN » : on supprime par nom.
+ALTER TABLE callastral.events DROP CONSTRAINT IF EXISTS events_name_check;
 
 ALTER TABLE callastral.events
   ADD CONSTRAINT events_name_check CHECK (name IN (
