@@ -1,5 +1,14 @@
 import { trackEvent } from './events';
-import { BOOKING_DURATIONS, bookingListPriceCents, formatCurrency } from './pricing';
+import { ensureImmediateAvailability } from './slots';
+import { resolveMarket } from './market';
+import {
+  formatMoney,
+  localBookingMinor,
+  normalizeCurrency,
+  pricePerMinCents,
+  type Currency,
+} from './money';
+import { BOOKING_DURATIONS } from './pricing';
 import { recipientEmail, sendMail } from './email';
 import { getSupabaseAdmin, supabaseAvailable, type UserProfile } from './supabase';
 import { appBaseUrl } from './stripe';
@@ -27,6 +36,7 @@ export interface BookingRow {
   status: 'pending' | 'confirmed' | 'cancelled' | 'completed';
   stripe_checkout_session_id: string | null;
   stripe_payment_intent_id: string | null;
+  currency?: string | null;
   hold_expires_at: string | null;
   reminder_sent_at: string | null;
   confirmed_at: string | null;
@@ -51,6 +61,59 @@ export function isImmediateStart(startsAt: string, now = new Date()): boolean {
   return new Date(startsAt).getTime() - now.getTime() <= IMMEDIATE_MS;
 }
 
+function missingColumn(error: { code?: string; message?: string } | null): boolean {
+  if (!error) return false;
+  const message = error.message || '';
+  return error.code === '42703' || error.code === 'PGRST204' || /does not exist/i.test(message);
+}
+
+function oldHoldSignature(error: { code?: string; message?: string } | null): boolean {
+  if (!error) return false;
+  const message = error.message || '';
+  return error.code === 'PGRST202' || /schema cache/i.test(message) || /p_currency/i.test(message);
+}
+
+async function eurPriceForSlot(slotId: string): Promise<number> {
+  const admin = getSupabaseAdmin();
+  const { data: slot, error: slotError } = await admin
+    .from('slots')
+    .select('advisor_id')
+    .eq('id', slotId)
+    .maybeSingle();
+  if (slotError || !slot?.advisor_id) throw new Error('UNAVAILABLE');
+
+  const full = await admin
+    .from('advisors')
+    .select('age, specialties, years_experience, price_per_min_cents')
+    .eq('id', slot.advisor_id)
+    .maybeSingle();
+
+  if (full.error && missingColumn(full.error)) {
+    const basic = await admin
+      .from('advisors')
+      .select('age, specialties')
+      .eq('id', slot.advisor_id)
+      .maybeSingle();
+    if (basic.error || !basic.data) throw new Error('UNAVAILABLE');
+    return pricePerMinCents({
+      age: basic.data.age,
+      specialties: basic.data.specialties ?? [],
+    });
+  }
+  if (full.error || !full.data) throw new Error('UNAVAILABLE');
+  const stored = full.data.price_per_min_cents;
+  if (typeof stored === 'number' && stored >= 50 && stored <= 200) return stored;
+  return pricePerMinCents({
+    years: full.data.years_experience,
+    age: full.data.age,
+    specialties: full.data.specialties ?? [],
+  });
+}
+
+function money(minor: number, currency: string | null | undefined): string {
+  return formatMoney(minor, normalizeCurrency(currency));
+}
+
 export function canJoinCall(booking: Pick<BookingRow, 'starts_at' | 'duration_min' | 'status'>, now = new Date()): boolean {
   if (booking.status !== 'confirmed' && booking.status !== 'completed') return false;
   const start = new Date(booking.starts_at).getTime();
@@ -69,14 +132,41 @@ export async function holdSlot(input: {
   listPriceCents: number;
   startsAt: string;
   holdExpiresAt: string;
+  currency: Currency;
 }> {
   if (!supabaseAvailable) throw new Error('SUPABASE_NOT_CONFIGURED');
-  const { data, error } = await getSupabaseAdmin().rpc('hold_slot', {
+  try {
+    await ensureImmediateAvailability();
+  } catch (error) {
+    console.warn('Créneaux immédiats:', error instanceof Error ? error.message : error);
+  }
+
+  const market = await resolveMarket();
+  const eurPerMin = await eurPriceForSlot(input.slotId);
+  const chargeCurrency = market.currency;
+  const listPrice = localBookingMinor(eurPerMin, input.durationMin, chargeCurrency, market.rates);
+  const admin = getSupabaseAdmin();
+
+  let { data, error } = await admin.rpc('hold_slot', {
     p_user_id: input.userId,
     p_slot_id: input.slotId,
     p_duration: input.durationMin,
-    p_list_price: bookingListPriceCents(input.durationMin),
+    p_list_price: listPrice,
+    p_currency: chargeCurrency,
   });
+
+  let currency: Currency = chargeCurrency;
+  if (error && oldHoldSignature(error)) {
+    currency = 'eur';
+    const eurList = localBookingMinor(eurPerMin, input.durationMin, 'eur', market.rates);
+    ({ data, error } = await admin.rpc('hold_slot', {
+      p_user_id: input.userId,
+      p_slot_id: input.slotId,
+      p_duration: input.durationMin,
+      p_list_price: eurList,
+    }));
+  }
+
   if (error) {
     const message = error.message || '';
     if (message.includes('held')) throw new Error('HELD');
@@ -91,8 +181,9 @@ export async function holdSlot(input: {
     listPriceCents: number;
     startsAt: string;
     holdExpiresAt: string;
+    currency?: string;
   };
-  return row;
+  return { ...row, currency: normalizeCurrency(row.currency || currency) };
 }
 
 export async function getBooking(id: string): Promise<BookingRow | null> {
@@ -124,7 +215,7 @@ export async function confirmBookingPayment(input: {
     if (booking) {
       await sendBookingConfirmation(booking);
       await trackEvent({
-        name: 'paid',
+        name: 'payment_success',
         userId: booking.user_id,
         advisorId: booking.advisor_id,
         bookingId: booking.id,
@@ -166,7 +257,7 @@ export async function sendBookingConfirmation(booking: BookingRow): Promise<void
 <ul>
 <li>Quand : ${escapeHtml(when)} (heure de Paris)</li>
 <li>Durée : ${booking.duration_min} minutes</li>
-<li>Montant réglé : ${escapeHtml(formatCurrency(booking.amount_cents))}</li>
+<li>Montant réglé : ${escapeHtml(money(booking.amount_cents, booking.currency))}</li>
 </ul>
 <p><a href="${link}">Rejoindre l'appel</a></p>
 <p>Le lien s'ouvre 5 minutes avant le début.</p>`,
@@ -278,13 +369,27 @@ export async function cancelBooking(booking: BookingRow, user: UserProfile): Pro
 
   if (fullValue > 0) {
     const expires = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString();
-    await admin.from('booking_credits').insert({
+    const creditCurrency = normalizeCurrency(booking.currency);
+    const inserted = await admin.from('booking_credits').insert({
       user_id: booking.user_id,
       source_booking_id: booking.id,
       amount_cents: fullValue,
       remaining_cents: fullValue,
       expires_at: expires,
+      currency: creditCurrency,
     });
+    if (inserted.error && missingColumn(inserted.error) && creditCurrency === 'eur') {
+      const retry = await admin.from('booking_credits').insert({
+        user_id: booking.user_id,
+        source_booking_id: booking.id,
+        amount_cents: fullValue,
+        remaining_cents: fullValue,
+        expires_at: expires,
+      });
+      if (retry.error) throw new Error(retry.error.message);
+    } else if (inserted.error) {
+      throw new Error(inserted.error.message);
+    }
   }
   await markCancelled(booking.id, booking.slot_id);
   await sendCancellationMail(user, booking, 'credit', fullValue);
@@ -317,8 +422,8 @@ async function sendCancellationMail(
   const to = recipientEmail(user);
   if (!to) return;
   const body = mode === 'refund'
-    ? `Votre consultation du ${escapeHtml(parisWhen(booking.starts_at))} est annulée. ${escapeHtml(formatCurrency(amountCents))} sera remboursé sur le moyen de paiement utilisé.`
-    : `Votre consultation du ${escapeHtml(parisWhen(booking.starts_at))} est annulée. Un avoir de ${escapeHtml(formatCurrency(amountCents))} est disponible pendant 30 jours pour une nouvelle réservation.`;
+    ? `Votre consultation du ${escapeHtml(parisWhen(booking.starts_at))} est annulée. ${escapeHtml(money(amountCents, booking.currency))} sera remboursé sur le moyen de paiement utilisé.`
+    : `Votre consultation du ${escapeHtml(parisWhen(booking.starts_at))} est annulée. Un avoir de ${escapeHtml(money(amountCents, booking.currency))} est disponible pendant 30 jours pour une nouvelle réservation.`;
   await sendMail({
     to,
     subject: 'Annulation de votre consultation',

@@ -1,13 +1,9 @@
-import AdvisorDirectory from '@/components/AdvisorDirectory';
-import { listDirectoryAdvisors } from '@/lib/slots';
+import { redirect } from 'next/navigation';
 
 export const dynamic = 'force-dynamic';
 
-export default async function AstrologersPage() {
-  try {
-    const result = await listDirectoryAdvisors();
-    return <AdvisorDirectory advisors={result.advisors} unavailable={result.unavailable} />;
-  } catch {
-    return <AdvisorDirectory advisors={[]} unavailable />;
-  }
+export default async function AstrologersPage(props: { searchParams: Promise<{ dispo?: string }> }) {
+  const params = await props.searchParams;
+  const query = params.dispo ? `?dispo=${encodeURIComponent(params.dispo)}` : '';
+  redirect(`/${query}`);
 }

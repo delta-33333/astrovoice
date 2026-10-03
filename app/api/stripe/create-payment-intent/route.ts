@@ -2,7 +2,10 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getSession } from '@/lib/session';
 import { createElementsCheckout } from '@/lib/checkout';
 import { trackEvent } from '@/lib/events';
-import { CALL_HOLD_CENTS } from '@/lib/pricing';
+import { getPublicAdvisorById } from '@/lib/astrologers';
+import { resolveMarket } from '@/lib/market';
+import { formatMoney, localBookingMinor, localRates, quoteAdvisor } from '@/lib/money';
+import { PER_MINUTE_CENTS } from '@/lib/pricing';
 import { stripeSecretConfigured } from '@/lib/stripe';
 
 export const runtime = 'nodejs';
@@ -26,6 +29,21 @@ export async function POST(request: NextRequest) {
     }
 
     const sessionId = `session_${Date.now()}_${user.id.slice(-6)}`;
+    const market = await resolveMarket();
+    const advisor = await getPublicAdvisorById(String(astrologerId)).catch(() => null);
+    const eurPerMin = advisor?.pricePerMinCents ?? PER_MINUTE_CENTS;
+    const rates = localRates(eurPerMin, market.currency, market.rates);
+    const quote = quoteAdvisor(eurPerMin, market.currency, market.rates);
+    const holdMinor = localBookingMinor(eurPerMin, 10, market.currency, market.rates);
+    const meter = {
+      currency: market.currency,
+      introMinor: rates.introLocal,
+      standardMinor: rates.standardLocal,
+      holdMinor,
+      amountLabel: formatMoney(holdMinor, market.currency),
+      introLabel: quote.introLabel,
+      perMinLabel: quote.perMinLabel,
+    };
 
     if (!stripeSecretConfigured()) {
       return NextResponse.json({
@@ -33,15 +51,16 @@ export async function POST(request: NextRequest) {
         clientSecret: null,
         sessionId,
         checkoutSessionId: `mock_${sessionId}`,
-        amount: CALL_HOLD_CENTS,
-        currency: 'eur',
+        amount: holdMinor,
+        ...meter,
       });
     }
 
     const checkout = await createElementsCheckout({
       request,
       user,
-      amountCents: CALL_HOLD_CENTS,
+      amountCents: holdMinor,
+      currency: market.currency,
       productName: 'Consultation Callastral',
       productDescription: 'Empreinte de consultation — seul le temps réel est encaissé',
       purpose: 'call_meter',
@@ -50,6 +69,8 @@ export async function POST(request: NextRequest) {
       integrationFlow: 'call-meter',
       metadata: {
         sessionId,
+        introMinor: String(rates.introLocal),
+        standardMinor: String(rates.standardLocal),
         astrologerId: String(astrologerId).slice(0, 80),
         birthName: String(birthData.name).slice(0, 80),
         birthDate: String(birthData.date).slice(0, 40),
@@ -58,7 +79,7 @@ export async function POST(request: NextRequest) {
     });
 
     await trackEvent({
-      name: 'checkout_started',
+      name: 'checkout_start',
       userId: user.id,
       metadata: { purpose: 'call_meter' },
     });
@@ -68,7 +89,7 @@ export async function POST(request: NextRequest) {
       checkoutSessionId: checkout.checkoutSessionId,
       sessionId: checkout.sessionId,
       amount: checkout.amountCents,
-      currency: 'eur',
+      ...meter,
       collectContact: checkout.collectContact,
     });
   } catch (error) {

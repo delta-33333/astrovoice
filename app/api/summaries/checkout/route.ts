@@ -2,7 +2,9 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getBooking } from '@/lib/bookings';
 import { trackEvent } from '@/lib/events';
 import { createElementsCheckout } from '@/lib/checkout';
-import { SUMMARY_CENTS, formatCurrency } from '@/lib/pricing';
+import { resolveMarket } from '@/lib/market';
+import { convertEurCents, formatMoney } from '@/lib/money';
+import { SUMMARY_CENTS } from '@/lib/pricing';
 import { getSession } from '@/lib/session';
 
 export const dynamic = 'force-dynamic';
@@ -26,10 +28,13 @@ export async function POST(request: NextRequest) {
   }
 
   try {
+    const market = await resolveMarket();
+    const amount = convertEurCents(SUMMARY_CENTS, market.currency, market.rates);
     const checkout = await createElementsCheckout({
       request,
       user,
-      amountCents: SUMMARY_CENTS,
+      amountCents: amount,
+      currency: market.currency,
       productName: 'Résumé écrit de consultation',
       productDescription: 'Résumé écrit envoyé par e-mail après la consultation.',
       purpose: 'summary',
@@ -39,7 +44,7 @@ export async function POST(request: NextRequest) {
       metadata: { booking_id: booking.id },
     });
     await trackEvent({
-      name: 'checkout_started',
+      name: 'checkout_start',
       userId: user.id,
       advisorId: booking.advisor_id,
       bookingId: booking.id,
@@ -47,7 +52,7 @@ export async function POST(request: NextRequest) {
     });
     return NextResponse.json({
       ...checkout,
-      amountLabel: formatCurrency(SUMMARY_CENTS),
+      amountLabel: formatMoney(amount, market.currency),
     });
   } catch (error) {
     const message = error instanceof Error ? error.message : '';

@@ -70,6 +70,7 @@ export async function loadStripePayments(): Promise<Array<{
   status: string;
   created: number;
   purpose: string;
+  currency: string;
 }>> {
   const stripe = getStripe();
   if (!stripe) return [];
@@ -81,6 +82,7 @@ export async function loadStripePayments(): Promise<Array<{
       status: intent.status,
       created: intent.created,
       purpose: intent.metadata?.purpose || '',
+      currency: intent.currency || 'eur',
     }));
   } catch (error) {
     console.warn('Paiements Stripe:', error instanceof Error ? error.message : error);

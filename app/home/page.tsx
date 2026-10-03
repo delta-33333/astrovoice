@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import InstallPrompt from '@/components/InstallPrompt';
-import { formatCurrency, INTRO_CENTS, PER_MINUTE_CENTS } from '@/lib/pricing';
 
 interface UserData {
   displayName: string;
@@ -26,12 +25,7 @@ export default function HomePage() {
         const data = await response.json();
 
         if (!data.authenticated) {
-          router.push('/auth');
-          return;
-        }
-
-        if (!data.user.hasBirthData) {
-          router.push('/birth');
+          router.push('/');
           return;
         }
 
@@ -62,12 +56,7 @@ export default function HomePage() {
   };
 
   const startCall = () => {
-    if (user?.favoriteAstrologerId) {
-      sessionStorage.setItem('astrologerId', user.favoriteAstrologerId);
-      router.push('/consent');
-    } else {
-      router.push('/astrologers');
-    }
+    router.push('/astrologers?dispo=now');
   };
 
   if (loading) {
@@ -89,16 +78,21 @@ export default function HomePage() {
         <div className="flex justify-between items-center mb-12">
           <div>
             <h1 className="font-[family-name:var(--font-cinzel)] text-3xl font-bold text-glow">
-              Lunara
+              Callastral
             </h1>
             <p className="text-white/60 text-sm mt-1">Bonjour, {user.displayName}</p>
           </div>
-          <button
-            onClick={handleLogout}
-            className="text-white/60 hover:text-white text-sm"
-          >
-            Déconnexion
-          </button>
+          <div className="flex items-center gap-4">
+            <Link href="/account" className="text-white/60 hover:text-white text-sm">
+              Compte
+            </Link>
+            <button
+              onClick={handleLogout}
+              className="text-white/60 hover:text-white text-sm"
+            >
+              Déconnexion
+            </button>
+          </div>
         </div>
 
         <div className="flex-1 flex flex-col justify-center space-y-8">
@@ -138,7 +132,7 @@ export default function HomePage() {
           </button>
 
           <div className="text-center text-sm text-white/60">
-            <p>{formatCurrency(PER_MINUTE_CENTS)}/min • {formatCurrency(INTRO_CENTS)}/min les 3 premières minutes</p>
+            <p>Le tarif de chaque conseiller est indiqué sur sa fiche.</p>
           </div>
 
           <div className="grid grid-cols-2 gap-4 mt-8">

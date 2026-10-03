@@ -34,6 +34,9 @@ export interface PublicAdvisor {
   averageRating: number | null;
   bookingCount: number;
   badges: AdvisorBadge[];
+  yearsExperience: number;
+  /** Tarif minute de base, en centimes d’euro (0,50 € à 2,00 €). */
+  pricePerMinCents: number;
 }
 
 export interface AdvisorAvailability {
@@ -42,6 +45,8 @@ export interface AdvisorAvailability {
   nextSlotAt: string | null;
   hasImmediate: boolean;
   scarcity: string | null;
+  immediateSlotId: string | null;
+  immediateStartsAt: string | null;
 }
 
 export interface DirectoryAdvisor extends PublicAdvisor {

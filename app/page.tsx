@@ -1,68 +1,51 @@
 import Link from "next/link";
+import AdvisorDirectory from "@/components/AdvisorDirectory";
 import InstallPrompt from "@/components/InstallPrompt";
+import SiteHeader from "@/components/SiteHeader";
 import { trackEvent } from "@/lib/events";
 import { VIRTUAL_ADVISOR_DISCLOSURE } from "@/lib/legal";
+import { resolveMarket } from "@/lib/market";
+import { convertEurCents, formatMoney } from "@/lib/money";
+import { MINUTE_PACKS } from "@/lib/pricing";
+import { listDirectoryAdvisors } from "@/lib/slots";
 
-export default async function LandingPage() {
-  await trackEvent({ name: 'visit' });
+export default async function LandingPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ dispo?: string }>;
+}) {
+  const params = await searchParams;
+  await trackEvent({ name: 'view_home' });
+  const market = await resolveMarket();
+  let advisors: Awaited<ReturnType<typeof listDirectoryAdvisors>>['advisors'] = [];
+  let unavailable = false;
+  try {
+    const result = await listDirectoryAdvisors();
+    advisors = result.advisors;
+    unavailable = result.unavailable;
+  } catch {
+    unavailable = true;
+  }
+  const money = (eurCents: number) =>
+    formatMoney(convertEurCents(eurCents, market.currency, market.rates), market.currency);
+  const founding = money(490);
+  const floor = money(50);
+  const ceiling = money(200);
+  const packs = MINUTE_PACKS.filter((pack) => !pack.founding);
+
   return (
-    <main className="min-h-screen px-4 py-12">
-      <div className="max-w-4xl mx-auto">
-        
-        {/* Hero Section */}
-        <section className="text-center space-y-8 py-12 sm:py-20">
-          <div className="space-y-4">
-            <h1 className="font-[family-name:var(--font-cinzel)] text-5xl sm:text-7xl font-bold text-glow">
-              Callastral
-            </h1>
-            <p className="text-celestial-gold text-xl sm:text-2xl font-light">
-              Votre astrologue personnel, disponible 24/7
-            </p>
-          </div>
-
-          <p className="text-lg sm:text-xl text-white/90 leading-relaxed max-w-2xl mx-auto">
-            Consultation vocale basée sur votre thème natal complet. Un même astrologue qui vous connaît, se souvient de vos échanges et vous accompagne dans votre chemin.
-          </p>
-          
-          <div className="flex items-center justify-center gap-3 text-base text-white/70 pt-4">
-            <span className="text-celestial-gold font-semibold text-lg">0,99 €/min</span>
-            <span className="text-white/30">•</span>
-            <span>les 3 premières minutes</span>
-          </div>
-
-          <div className="flex flex-col sm:flex-row gap-4 justify-center pt-6">
-            <Link 
-              href="/auth"
-              className="btn-primary text-lg"
-            >
-              Commencer ma consultation
-            </Link>
-            <Link 
-              href="/auth"
-              className="btn-secondary text-lg"
-            >
-              Se connecter
-            </Link>
-          </div>
-
-          <div className="pt-12 grid grid-cols-3 gap-6 max-w-2xl mx-auto">
-            <div className="space-y-2">
-              <div className="text-3xl">🌙</div>
-              <p className="text-sm text-white/80 font-medium">Thème natal complet</p>
-              <p className="text-xs text-white/50">Date, heure, lieu de naissance</p>
-            </div>
-            <div className="space-y-2">
-              <div className="text-3xl">✨</div>
-              <p className="text-sm text-white/80 font-medium">Disponible 24/7</p>
-              <p className="text-xs text-white/50">À tout moment, jour et nuit</p>
-            </div>
-            <div className="space-y-2">
-              <div className="text-3xl">💫</div>
-              <p className="text-sm text-white/80 font-medium">Continuité</p>
-              <p className="text-xs text-white/50">Votre astrologue se souvient</p>
-            </div>
-          </div>
-        </section>
+    <main className="min-h-screen pb-28 sm:pb-12">
+      <SiteHeader />
+      <AdvisorDirectory
+        embedded
+        advisors={advisors}
+        unavailable={unavailable}
+        preferredLanguage={market.language}
+        currency={market.currency}
+        rates={market.rates}
+        initialAvailability={params.dispo === 'now' ? 'now' : ''}
+      />
+      <div className="max-w-4xl mx-auto px-4">
 
         {/* Cercle Fondateur - Founding Offer */}
         <section className="py-16 sm:py-20">
@@ -83,7 +66,7 @@ export default async function LandingPage() {
               </h2>
               
               <p className="text-center text-white/80 text-lg mb-8 max-w-xl mx-auto">
-                Dix minutes de consultation pour 4,90 €, une fois par compte.
+                Dix minutes de consultation pour {founding}, une fois par compte.
               </p>
 
               {/* Main offer */}
@@ -92,15 +75,11 @@ export default async function LandingPage() {
                   <div className="space-y-2">
                     <p className="text-white/70 text-sm uppercase tracking-wide">Votre première consultation</p>
                     <div className="flex items-center justify-center gap-4">
-                      <span className="text-5xl font-bold text-celestial-gold">4,90 €</span>
+                      <span className="text-5xl font-bold text-celestial-gold">{founding}</span>
                       <div className="text-left">
                         <div className="text-sm text-white/60">pour</div>
                         <div className="text-2xl font-semibold">10 minutes</div>
                       </div>
-                    </div>
-                    <div className="flex items-center justify-center gap-2 text-sm text-white/50">
-                      <span className="line-through">14,90 €</span>
-                      <span className="text-green-400 font-semibold">(-67%)</span>
                     </div>
                   </div>
                 </div>
@@ -112,7 +91,7 @@ export default async function LandingPage() {
                   <span className="text-celestial-gold text-xl">✓</span>
                   <div>
                     <p className="font-semibold text-sm">10 minutes</p>
-                    <p className="text-xs text-white/60">Pour 4,90 €, une fois par compte</p>
+                    <p className="text-xs text-white/60">Pour {founding}, une fois par compte</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3 bg-white/5 backdrop-blur-sm rounded-xl p-4 border border-white/10">
@@ -132,8 +111,8 @@ export default async function LandingPage() {
                 <div className="flex items-start gap-3 bg-white/5 backdrop-blur-sm rounded-xl p-4 border border-white/10">
                   <span className="text-celestial-gold text-xl">✓</span>
                   <div>
-                    <p className="font-semibold text-sm">Ensuite, le tarif habituel</p>
-                    <p className="text-xs text-white/60">1,49 €/min ou packs de minutes</p>
+                    <p className="font-semibold text-sm">Ensuite, le tarif du conseiller</p>
+                    <p className="text-xs text-white/60">Affiché sur la fiche, entre {floor} et {ceiling} / min</p>
                   </div>
                 </div>
               </div>
@@ -154,7 +133,7 @@ export default async function LandingPage() {
                   Rejoindre le Cercle Fondateur
                 </Link>
                 <p className="text-white/40 text-xs mt-4">
-                  Après votre première consultation : 1,49 €/min ou packs avantageux
+                  Après votre première consultation : le tarif indiqué sur la fiche, ou des packs de minutes
                 </p>
               </div>
             </div>
@@ -171,40 +150,40 @@ export default async function LandingPage() {
             <div className="space-y-3 p-6 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10">
               <div className="flex items-center gap-3">
                 <span className="text-celestial-gold font-bold text-2xl">1</span>
-                <h3 className="text-lg font-semibold">Créez votre compte</h3>
+                <h3 className="text-lg font-semibold">Choisissez un conseiller</h3>
               </div>
               <p className="text-white/70 text-sm leading-relaxed">
-                Indiquez votre date, heure et lieu de naissance pour établir votre thème natal complet.
+                Ouvrez l’annuaire et prenez quelqu’un de disponible maintenant, dans votre langue.
               </p>
             </div>
 
             <div className="space-y-3 p-6 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10">
               <div className="flex items-center gap-3">
                 <span className="text-celestial-gold font-bold text-2xl">2</span>
-                <h3 className="text-lg font-semibold">Choisissez votre astrologue</h3>
+                <h3 className="text-lg font-semibold">Prenez un créneau</h3>
               </div>
               <p className="text-white/70 text-sm leading-relaxed">
-                Sélectionnez l'astrologue qui résonne avec vous. Il deviendra votre accompagnant personnel.
+                Le prix du conseiller est affiché avant le paiement : tarif réduit les trois premières minutes, puis son tarif habituel.
               </p>
             </div>
 
             <div className="space-y-3 p-6 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10">
               <div className="flex items-center gap-3">
                 <span className="text-celestial-gold font-bold text-2xl">3</span>
-                <h3 className="text-lg font-semibold">Parlez librement</h3>
+                <h3 className="text-lg font-semibold">Créez le compte au paiement</h3>
               </div>
               <p className="text-white/70 text-sm leading-relaxed">
-                Consultation vocale en direct. Posez vos questions, explorez vos transits, approfondissez votre chemin.
+                Prénom, e-mail et mot de passe suffisent. Apple Pay et Google Pay sont proposés quand votre téléphone les a.
               </p>
             </div>
 
             <div className="space-y-3 p-6 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10">
               <div className="flex items-center gap-3">
                 <span className="text-celestial-gold font-bold text-2xl">4</span>
-                <h3 className="text-lg font-semibold">Retrouvez votre historique</h3>
+                <h3 className="text-lg font-semibold">Rejoignez l’appel</h3>
               </div>
               <p className="text-white/70 text-sm leading-relaxed">
-                Toutes vos consultations sont sauvegardées. Votre astrologue se souvient de votre parcours.
+                Après le paiement, ouvrez l’appel ou ajoutez le rendez-vous à votre calendrier. Vous pouvez annuler jusqu’à 24 h avant.
               </p>
             </div>
           </div>
@@ -216,7 +195,7 @@ export default async function LandingPage() {
             <h2 className="font-[family-name:var(--font-cinzel)] text-3xl sm:text-4xl font-bold text-glow">
               Tarifs transparents
             </h2>
-            <p className="text-white/70">Payez uniquement le temps de consultation. Arrêtez quand vous voulez.</p>
+            <p className="text-white/70">Chaque conseiller affiche son tarif, entre {floor} et {ceiling} la minute.</p>
           </div>
           
           <div className="max-w-3xl mx-auto space-y-6">
@@ -228,39 +207,33 @@ export default async function LandingPage() {
                   <p className="text-white/60 text-sm">Sans engagement</p>
                 </div>
                 <div className="text-left sm:text-right">
-                  <p className="text-3xl font-bold text-celestial-gold">1,49 €/min</p>
-                  <p className="text-sm text-white/60">tarif standard</p>
+                  <p className="text-3xl font-bold text-celestial-gold">{floor}–{ceiling}</p>
+                  <p className="text-sm text-white/60">par minute, selon le conseiller</p>
                 </div>
               </div>
               <div className="pt-2 border-t border-white/10">
                 <p className="text-white/60 text-sm">
-                  Offre découverte : <span className="text-celestial-gold font-semibold">0,99 €/min</span> pour les 3 premières minutes
-                </p>
-                <p className="text-white/50 text-xs mt-1">
-                  (uniquement si vous ne rejoignez pas le Cercle Fondateur)
+                  Les 3 premières minutes sont à un tarif réduit, environ deux tiers du tarif du conseiller.
                 </p>
               </div>
             </div>
 
             {/* Packs */}
             <div className="grid sm:grid-cols-3 gap-4">
-              <div className="p-6 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10 space-y-3 text-center">
-                <div className="text-2xl font-bold text-celestial-gold">12,90 €</div>
-                <div className="text-lg font-semibold">Pack 10 min</div>
-                <div className="text-xs text-white/50">1,29 €/min</div>
-              </div>
-
-              <div className="p-6 rounded-xl bg-celestial-purple/20 backdrop-blur-sm border border-celestial-purple/40 space-y-3 text-center relative">
-                <div className="text-2xl font-bold text-celestial-gold">34,90 €</div>
-                <div className="text-lg font-semibold">Pack 30 min</div>
-                <div className="text-xs text-white/50">1,16 €/min</div>
-              </div>
-
-              <div className="p-6 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10 space-y-3 text-center">
-                <div className="text-2xl font-bold text-celestial-gold">59,90 €</div>
-                <div className="text-lg font-semibold">Pack 60 min</div>
-                <div className="text-xs text-white/50">~1 €/min</div>
-              </div>
+              {packs.map((pack) => (
+                <div
+                  key={pack.id}
+                  className={`p-6 rounded-xl space-y-3 text-center ${
+                    pack.popular
+                      ? 'bg-celestial-purple/20 backdrop-blur-sm border border-celestial-purple/40'
+                      : 'bg-white/5 backdrop-blur-sm border border-white/10'
+                  }`}
+                >
+                  <div className="text-2xl font-bold text-celestial-gold">{money(pack.amountCents)}</div>
+                  <div className="text-lg font-semibold">Pack {pack.minutes} min</div>
+                  <div className="text-xs text-white/50">{money(Math.round(pack.amountCents / pack.minutes))}/min</div>
+                </div>
+              ))}
             </div>
 
             <p className="text-center text-white/50 text-sm pt-4">
@@ -322,7 +295,7 @@ export default async function LandingPage() {
                 <span className="text-celestial-gold transition-transform group-open:rotate-180">↓</span>
               </summary>
               <p className="mt-4 text-white/70 text-sm leading-relaxed">
-                La consultation à la minute est à 0,99 € pendant les trois premières minutes, puis 1,49 €. L’offre fondateur est de 10 minutes pour 4,90 €, une fois par compte. Les packs de minutes sont à 12,90 €, 34,90 € et 59,90 €.
+                Chaque conseiller a un tarif entre {floor} et {ceiling} la minute. Les trois premières minutes sont à tarif réduit. L’offre fondateur est de 10 minutes pour {founding}, une fois par compte. Les packs de minutes sont indiqués dans votre devise.
               </p>
             </details>
 
@@ -352,7 +325,7 @@ export default async function LandingPage() {
                 <span className="text-celestial-gold transition-transform group-open:rotate-180">↓</span>
               </summary>
               <p className="mt-4 text-white/70 text-sm leading-relaxed">
-                Lors de votre première consultation, vous bénéficiez de l'offre découverte : 0,99 €/minute pour les 3 premières minutes, puis 1,49 €/minute. Vous pouvez ensuite acheter des packs de minutes pour réduire le coût (jusqu'à ~1 €/min pour le pack 60 minutes). Les minutes achetées sont déduites automatiquement lors de vos consultations.
+                Une réservation se paie à l’avance : minutes × tarif du conseiller, avec un tarif réduit sur les trois premières minutes. Vous pouvez aussi acheter des packs de minutes, déduits ensuite de la durée de consultation. Le montant est encaissé dans la devise affichée.
               </p>
             </details>
 
@@ -375,15 +348,15 @@ export default async function LandingPage() {
               Prêt à explorer votre carte du ciel ?
             </h2>
             <p className="text-white/70 text-lg">
-              Créez votre compte en 2 minutes et commencez votre première consultation.
+              Un conseiller est disponible maintenant. Le compte se crée juste avant le paiement.
             </p>
           </div>
           
           <Link 
-            href="/auth"
+            href="#annuaire"
             className="btn-primary text-lg inline-block"
           >
-            Commencer maintenant
+            Appeler maintenant
           </Link>
         </section>
 
@@ -399,7 +372,7 @@ export default async function LandingPage() {
 
       </div>
 
-      <InstallPrompt />
+      <InstallPrompt lifted />
     </main>
   );
 }

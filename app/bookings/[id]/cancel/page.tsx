@@ -3,13 +3,12 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
-import { formatCurrency } from '@/lib/pricing';
 
 export default function CancelBookingPage() {
   const params = useParams<{ id: string }>();
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
-  const [result, setResult] = useState<{ mode: 'refund' | 'credit'; amountCents: number } | null>(null);
+  const [result, setResult] = useState<{ mode: 'refund' | 'credit'; amountCents: number; amountLabel?: string } | null>(null);
   const [loading, setLoading] = useState(false);
 
   const cancel = async () => {
@@ -37,8 +36,8 @@ export default function CancelBookingPage() {
         {result && (
           <p className="text-celestial-gold">
             {result.mode === 'refund'
-              ? `${formatCurrency(result.amountCents)} sera remboursé.`
-              : `Avoir de ${formatCurrency(result.amountCents)}, valable 30 jours.`}
+              ? `${result.amountLabel || ''} sera remboursé.`
+              : `Avoir de ${result.amountLabel || ''}, valable 30 jours.`}
           </p>
         )}
         {error && <p className="text-red-200 text-sm">{error}</p>}

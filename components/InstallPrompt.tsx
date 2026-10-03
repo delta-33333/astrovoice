@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 
-export default function InstallPrompt() {
+export default function InstallPrompt({ lifted = false }: { lifted?: boolean }) {
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
   const [showPrompt, setShowPrompt] = useState(false);
   const [isIOS, setIsIOS] = useState(false);
@@ -65,7 +65,7 @@ export default function InstallPrompt() {
   if (!showPrompt || isStandalone) return null;
 
   return (
-    <div className="fixed bottom-4 left-4 right-4 max-w-md mx-auto z-50">
+    <div className={`fixed left-4 right-4 max-w-md mx-auto z-50 ${lifted ? 'bottom-24' : 'bottom-4'}`}>
       <div className="bg-celestial-purple/95 backdrop-blur-lg border border-white/20 rounded-2xl p-4 shadow-2xl">
         <div className="flex items-start gap-3">
           <div className="text-2xl">📱</div>
@@ -73,7 +73,7 @@ export default function InstallPrompt() {
             <h3 className="font-semibold mb-1">Ajouter à l'écran d'accueil</h3>
             {isIOS ? (
               <div className="text-sm text-white/90 space-y-1">
-                <p>Pour installer Lunara :</p>
+                <p>Pour installer Callastral :</p>
                 <ol className="list-decimal list-inside space-y-0.5 text-xs">
                   <li>Appuyez sur <span className="inline-block">⎙</span> (Partager)</li>
                   <li>Sélectionnez « Sur l'écran d'accueil »</li>

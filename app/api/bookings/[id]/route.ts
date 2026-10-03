@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { canJoinCall, getBooking } from '@/lib/bookings';
+import { formatMoney, normalizeCurrency } from '@/lib/money';
 import { getSupabaseAdmin } from '@/lib/supabase';
 import { getSession } from '@/lib/session';
 
@@ -30,6 +31,9 @@ export async function GET(
       durationMin: booking.duration_min,
       amountCents: booking.amount_cents,
       creditCents: booking.credit_cents,
+      currency: normalizeCurrency(booking.currency),
+      amountLabel: formatMoney(booking.amount_cents, normalizeCurrency(booking.currency)),
+      creditLabel: formatMoney(booking.credit_cents, normalizeCurrency(booking.currency)),
       status: booking.status,
       advisorId: booking.advisor_id,
       advisorName: advisor ? `${advisor.first_name} ${advisor.last_name}` : 'Conseiller',

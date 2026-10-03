@@ -33,6 +33,25 @@ export async function sendMail(input: MailInput): Promise<boolean> {
   return true;
 }
 
+export function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+export async function sendPasswordResetMail(to: string, name: string, link: string): Promise<boolean> {
+  return sendMail({
+    to,
+    subject: 'Réinitialisation de votre mot de passe Callastral',
+    html: `<p>Bonjour ${escapeHtml(name || '')},</p>
+<p>Vous avez demandé à choisir un nouveau mot de passe. Ce lien est valable 1 heure et ne peut servir qu’une fois.</p>
+<p><a href="${escapeHtml(link)}">Choisir un nouveau mot de passe</a></p>
+<p>Si vous n’êtes pas à l’origine de cette demande, ignorez cet e-mail. Votre accès actuel reste inchangé.</p>`,
+  });
+}
+
 export function recipientEmail(user: { email?: string | null; username?: string | null }): string | null {
   const candidates = [user.email, user.username];
   for (const candidate of candidates) {

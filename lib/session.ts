@@ -1,103 +1,103 @@
+import { createHmac, timingSafeEqual } from 'crypto';
 import { cookies } from 'next/headers';
 import { getUserById } from './auth';
-import { supabaseAvailable } from './supabase';
 import type { UserProfile } from './supabase';
 
 const SESSION_COOKIE_NAME = 'lunara_session';
 const USER_COOKIE_NAME = 'lunara_user';
-const SESSION_MAX_AGE = 60 * 60 * 24 * 30; // 30 days
+const SESSION_MAX_AGE = 60 * 60 * 24 * 30;
+
+export function authSecret(): string | null {
+  const value = process.env.AUTH_SECRET?.trim() ?? '';
+  if (value.length < 16) return null;
+  return value;
+}
+
+function sign(body: string, secret: string): string {
+  return createHmac('sha256', secret).update(body).digest('base64url');
+}
+
+function safeEqual(left: string, right: string): boolean {
+  const a = Buffer.from(left);
+  const b = Buffer.from(right);
+  if (a.length !== b.length) return false;
+  return timingSafeEqual(a, b);
+}
 
 /**
- * Creates a session by storing userId in lunara_session cookie.
- * Consistent behavior with/without Supabase: always stores userId.
+ * Cookie de session httpOnly, Secure en production, SameSite=Lax.
+ * La valeur est un jeton HMAC (AUTH_SECRET), jamais l’identifiant en clair.
+ * Sans AUTH_SECRET, aucune session n’est créée ni reconnue.
  */
-export async function createSession(userId: string): Promise<void> {
+export async function createSession(userId: string): Promise<boolean> {
+  const secret = authSecret();
+  if (!secret) {
+    console.error('AUTH_SECRET manquant : session refusée.');
+    return false;
+  }
+
+  const body = Buffer.from(JSON.stringify({
+    uid: userId,
+    exp: Date.now() + SESSION_MAX_AGE * 1000,
+  })).toString('base64url');
   const cookieStore = await cookies();
-  cookieStore.set(SESSION_COOKIE_NAME, userId, {
+  cookieStore.set(SESSION_COOKIE_NAME, `${body}.${sign(body, secret)}`, {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax',
     maxAge: SESSION_MAX_AGE,
     path: '/',
   });
+  cookieStore.delete(USER_COOKIE_NAME);
+  return true;
 }
 
-/**
- * Retrieves the current user session.
- * - With Supabase: reads userId from lunara_session, fetches from DB.
- * - Without Supabase (cookie-fallback): reads userId from lunara_session, 
- *   then reads full profile from lunara_user cookie.
- */
 export async function getSession(): Promise<UserProfile | null> {
+  const secret = authSecret();
+  if (!secret) return null;
+
   const cookieStore = await cookies();
-  const sessionCookie = cookieStore.get(SESSION_COOKIE_NAME);
-  
-  if (!sessionCookie?.value) {
-    return null;
-  }
+  const raw = cookieStore.get(SESSION_COOKIE_NAME)?.value;
+  if (!raw) return null;
 
-  const userId = sessionCookie.value;
-
-  // Try Supabase first if available
-  if (supabaseAvailable) {
-    return getUserById(userId);
-  }
-
-  // Fallback: read user data from cookie
-  const userCookie = cookieStore.get(USER_COOKIE_NAME);
-  if (!userCookie?.value) {
-    return null;
-  }
+  const dot = raw.lastIndexOf('.');
+  if (dot <= 0) return null;
+  const body = raw.slice(0, dot);
+  const signature = raw.slice(dot + 1);
+  if (!safeEqual(signature, sign(body, secret))) return null;
 
   try {
-    const userData = JSON.parse(userCookie.value);
-    // Ensure the userId matches (security check)
-    if (userData.id === userId || userData.userId === userId) {
-      return userData as UserProfile;
-    }
-  } catch (error) {
-    console.error('Failed to parse user cookie:', error);
+    const payload = JSON.parse(Buffer.from(body, 'base64url').toString('utf8')) as {
+      uid?: string;
+      exp?: number;
+    };
+    if (!payload.uid || typeof payload.exp !== 'number' || payload.exp <= Date.now()) return null;
+    return getUserById(payload.uid);
+  } catch {
+    return null;
   }
-
-  return null;
 }
 
-/**
- * Updates the user cookie with new profile data (cookie-fallback only).
- * Merges updates with existing cookie data.
- */
 export async function updateUserCookie(userId: string, updates: Partial<UserProfile>): Promise<boolean> {
   const cookieStore = await cookies();
   const userCookie = cookieStore.get(USER_COOKIE_NAME);
-  
-  if (!userCookie?.value) {
-    return false;
-  }
+  if (!userCookie?.value) return false;
 
   try {
-    const existingData = JSON.parse(userCookie.value);
-    
-    // Security check: ensure userId matches
-    if (existingData.id !== userId && existingData.userId !== userId) {
-      return false;
-    }
-
-    // Merge updates
-    const updatedData = {
+    const existingData = JSON.parse(userCookie.value) as { id?: string; userId?: string };
+    if (existingData.id !== userId && existingData.userId !== userId) return false;
+    cookieStore.set(USER_COOKIE_NAME, JSON.stringify({
       ...existingData,
       ...updates,
-      id: existingData.id, // Never overwrite core id
+      id: existingData.id,
       userId: existingData.userId,
-    };
-
-    // Update cookie
-    cookieStore.set(USER_COOKIE_NAME, JSON.stringify(updatedData), {
+    }), {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
       maxAge: SESSION_MAX_AGE,
+      path: '/',
     });
-
     return true;
   } catch (error) {
     console.error('Failed to update user cookie:', error);

@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import PaymentSheet from '@/components/PaymentSheet';
@@ -18,6 +18,25 @@ export default function PacksPage() {
   const [sheetTitle, setSheetTitle] = useState('Minutes');
   const [sheetAmount, setSheetAmount] = useState('');
   const [sheetDetail, setSheetDetail] = useState('');
+  const [labels, setLabels] = useState<Record<string, { amountLabel: string; regularLabel: string; perMinLabel: string; savingsLabel: string }>>({});
+
+  useEffect(() => {
+    fetch('/api/market')
+      .then((response) => response.json())
+      .then((payload) => {
+        const next: typeof labels = {};
+        if (Array.isArray(payload.packs)) {
+          for (const pack of payload.packs) next[pack.id] = pack;
+        }
+        setLabels(next);
+      })
+      .catch(() => undefined);
+  }, []);
+
+  const amountOf = (pack: MinutePack) => labels[pack.id]?.amountLabel || formatCurrency(pack.amountCents);
+  const regularOf = (pack: MinutePack) => labels[pack.id]?.regularLabel || formatCurrency(pack.regularCents);
+  const perMinOf = (pack: MinutePack) => labels[pack.id]?.perMinLabel || `${formatCurrency(Math.round(pack.amountCents / pack.minutes))}/min`;
+  const savingsOf = (pack: MinutePack) => labels[pack.id]?.savingsLabel || formatCurrency(pack.regularCents - pack.amountCents);
 
   const standardPacks = MINUTE_PACKS.filter((pack) => !pack.founding);
   const founding = MINUTE_PACKS.find((pack) => pack.founding);
@@ -99,15 +118,15 @@ export default function PacksPage() {
                   {founding.minutes} minutes
                 </h2>
                 <p className="text-white/70 text-sm max-w-md">
-                  Une place fondateur : dix minutes pour {formatCurrency(founding.amountCents)}, une fois par compte.
+                  Une place fondateur : dix minutes pour {amountOf(founding)}, une fois par compte.
                 </p>
               </div>
               <div className="text-left sm:text-right">
                 <div className="text-4xl font-bold text-celestial-gold">
-                  {formatCurrency(founding.amountCents)}
+                  {amountOf(founding)}
                 </div>
                 <div className="text-sm text-white/40 line-through">
-                  {formatCurrency(founding.regularCents)}
+                  {regularOf(founding)}
                 </div>
                 <button
                   onClick={() => handlePurchase(founding)}
@@ -144,18 +163,18 @@ export default function PacksPage() {
 
               <div className="text-center mb-6">
                 <div className="text-4xl font-bold text-celestial-gold mb-1">
-                  {formatCurrency(pack.amountCents)}
+                  {amountOf(pack)}
                 </div>
                 <div className="text-sm text-white/50 line-through">
-                  {formatCurrency(pack.regularCents)}
+                  {regularOf(pack)}
                 </div>
                 <div className="text-sm text-green-400 mt-2">
-                  Économisez {formatCurrency(pack.regularCents - pack.amountCents)}
+                  Économisez {savingsOf(pack)}
                 </div>
               </div>
 
               <div className="text-center text-xs text-white/50 mb-6">
-                {formatCurrency(Math.round(pack.amountCents / pack.minutes))}/min
+                {perMinOf(pack)}
               </div>
 
               <button

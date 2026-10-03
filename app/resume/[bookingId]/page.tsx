@@ -4,7 +4,6 @@ import { Suspense, useEffect, useState } from 'react';
 import { useParams, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import PaymentSheet from '@/components/PaymentSheet';
-import { SUMMARY_CENTS, formatCurrency } from '@/lib/pricing';
 
 export default function ResumePage() {
   return (
@@ -23,6 +22,16 @@ function ResumeClient() {
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [checkoutId, setCheckoutId] = useState<string | null>(null);
   const [done, setDone] = useState(false);
+  const [summaryLabel, setSummaryLabel] = useState('…');
+
+  useEffect(() => {
+    fetch('/api/market')
+      .then((response) => response.json())
+      .then((payload) => {
+        if (typeof payload.summaryLabel === 'string') setSummaryLabel(payload.summaryLabel);
+      })
+      .catch(() => undefined);
+  }, []);
 
   useEffect(() => {
     if (!paid) return;
@@ -67,6 +76,7 @@ function ResumeClient() {
     }
     setClientSecret(payload.clientSecret);
     setCheckoutId(payload.checkoutSessionId);
+    if (typeof payload.amountLabel === 'string') setSummaryLabel(payload.amountLabel);
   };
 
   return (
@@ -76,7 +86,7 @@ function ResumeClient() {
         <p className="text-white/75">{message}</p>
         {!paid && !done && (
           <button type="button" onClick={() => void start()} className="btn-primary w-full">
-            Recevoir le résumé · {formatCurrency(SUMMARY_CENTS)}
+            Recevoir le résumé · {summaryLabel}
           </button>
         )}
         <Link href="/home" className="block text-sm text-white/45">Retour à l’accueil</Link>
@@ -84,9 +94,9 @@ function ResumeClient() {
       <PaymentSheet
         open={open}
         title="Résumé écrit"
-        amountLabel={formatCurrency(SUMMARY_CENTS)}
+        amountLabel={summaryLabel}
         detail="Envoyé par e-mail après confirmation du paiement."
-        payLabel={`Payer ${formatCurrency(SUMMARY_CENTS)}`}
+        payLabel={`Payer ${summaryLabel}`}
         clientSecret={clientSecret}
         onClose={() => setOpen(false)}
         onSuccess={() => {

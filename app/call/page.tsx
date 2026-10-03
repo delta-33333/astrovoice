@@ -103,6 +103,7 @@ export default function CallPage() {
       sessionStorage.setItem('callComplete', JSON.stringify({
         durationSeconds: seconds,
         amountCharged: result?.amountCharged ?? 0,
+        currency: result?.currency,
         prepaidSecondsUsed: result?.prepaidSecondsUsed,
         astrologerName: advisor?.name,
         astrologerId: advisor?.id ?? astrologerId,

@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { cancelBooking, getBooking } from '@/lib/bookings';
+import { formatMoney, normalizeCurrency } from '@/lib/money';
 import { getSession } from '@/lib/session';
 
 export const dynamic = 'force-dynamic';
@@ -18,7 +19,12 @@ export async function POST(
 
   try {
     const result = await cancelBooking(booking, user);
-    return NextResponse.json(result);
+    const currency = normalizeCurrency(booking.currency);
+    return NextResponse.json({
+      ...result,
+      currency,
+      amountLabel: formatMoney(result.amountCents, currency),
+    });
   } catch (error) {
     const code = error instanceof Error ? error.message : '';
     if (code === 'TOO_LATE') {

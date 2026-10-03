@@ -3,7 +3,9 @@ import { getSession } from '@/lib/session';
 import { createElementsCheckout } from '@/lib/checkout';
 import { trackEvent } from '@/lib/events';
 import { foundingAlreadyClaimed } from '@/lib/credits';
-import { formatCurrency, getPack, packSeconds } from '@/lib/pricing';
+import { resolveMarket } from '@/lib/market';
+import { convertEurCents, formatMoney } from '@/lib/money';
+import { getPack, packSeconds } from '@/lib/pricing';
 import { stripeSecretConfigured } from '@/lib/stripe';
 
 export const runtime = 'nodejs';
@@ -39,11 +41,14 @@ export async function POST(request: NextRequest) {
     const label = pack.founding
       ? 'Cercle Fondateur'
       : `Pack ${pack.minutes} minutes`;
+    const market = await resolveMarket();
+    const amount = convertEurCents(pack.amountCents, market.currency, market.rates);
 
     const checkout = await createElementsCheckout({
       request,
       user,
-      amountCents: pack.amountCents,
+      amountCents: amount,
+      currency: market.currency,
       productName: label,
       productDescription: pack.founding
         ? 'Dix minutes offertes au tarif fondateur'
@@ -60,7 +65,7 @@ export async function POST(request: NextRequest) {
     });
 
     await trackEvent({
-      name: 'checkout_started',
+      name: 'checkout_start',
       userId: user.id,
       metadata: { purpose: 'prepaid', packId: pack.id },
     });
@@ -69,8 +74,8 @@ export async function POST(request: NextRequest) {
       clientSecret: checkout.clientSecret,
       checkoutSessionId: checkout.checkoutSessionId,
       amount: checkout.amountCents,
-      amountLabel: formatCurrency(checkout.amountCents),
-      currency: 'eur',
+      amountLabel: formatMoney(checkout.amountCents, market.currency),
+      currency: market.currency,
       minutes: pack.minutes,
       label,
       collectContact: checkout.collectContact,

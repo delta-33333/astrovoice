@@ -4,7 +4,10 @@ import { useMemo, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import AdvisorAvatar from '@/components/AdvisorAvatar';
+import TrustNotes from '@/components/TrustNotes';
 import { BADGE_LABELS, languageLabel, styleLabel } from '@/lib/advisor-badges';
+import { bookPath } from '@/lib/book-path';
+import { DEFAULT_RATES, quoteAdvisor, type Currency, type FxRates } from '@/lib/money';
 import type { AdvisorSlot, DirectoryAdvisor } from '@/lib/types';
 
 function parisDayLabel(iso: string): string {
@@ -36,9 +39,13 @@ function parisDayKey(iso: string): string {
 export default function AdvisorProfile({
   advisor,
   slots,
+  currency = 'eur',
+  rates = DEFAULT_RATES,
 }: {
   advisor: DirectoryAdvisor;
   slots: AdvisorSlot[];
+  currency?: Currency;
+  rates?: FxRates;
 }) {
   const router = useRouter();
   const [selected, setSelected] = useState<string | null>(null);
@@ -54,9 +61,11 @@ export default function AdvisorProfile({
     return [...map.entries()];
   }, [slots]);
 
-  const confirm = () => {
-    const slot = slots.find((item) => item.id === selected);
-    if (!slot) return;
+  const immediate = advisor.availability.immediateSlotId
+    ? slots.find((slot) => slot.id === advisor.availability.immediateSlotId) ?? null
+    : null;
+
+  const go = (slot: AdvisorSlot) => {
     sessionStorage.setItem('astrologerId', advisor.id);
     sessionStorage.setItem('slotId', slot.id);
     sessionStorage.setItem('slotStartsAt', slot.startsAt);
@@ -64,18 +73,26 @@ export default function AdvisorProfile({
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        name: 'slot_selected',
+        name: 'select_slot',
         advisorId: advisor.id,
         metadata: { slotId: slot.id },
       }),
     });
-    router.push('/book');
+    router.push(bookPath(slot.id, slot.startsAt, advisor.id));
   };
 
+  const confirm = () => {
+    const slot = slots.find((item) => item.id === selected);
+    if (!slot) return;
+    go(slot);
+  };
+
+  const quote = quoteAdvisor(advisor.pricePerMinCents, currency, rates);
+
   return (
-    <main className="min-h-screen px-4 py-8">
+    <main className="min-h-screen px-4 pt-8 pb-28">
       <div className="max-w-xl mx-auto">
-        <Link href="/astrologers" className="text-sm text-white/50 hover:text-white">
+        <Link href="/" className="text-sm text-white/50 hover:text-white">
           ← Annuaire
         </Link>
 
@@ -118,6 +135,17 @@ export default function AdvisorProfile({
           ))}
         </div>
 
+        <p className="mt-6 text-celestial-gold">
+          {quote.introLabel} les 3 premières minutes, puis {quote.perMinLabel}
+        </p>
+        <TrustNotes className="mt-3" />
+
+        {immediate && (
+          <button type="button" onClick={() => go(immediate)} className="btn-primary w-full mt-6">
+            Appeler maintenant
+          </button>
+        )}
+
         <section className="mt-8">
           <h2 className="text-lg font-semibold mb-1">Choisir un créneau</h2>
           <p className="text-xs text-white/45 mb-4">Heure de Paris. Le créneau est confirmé au paiement.</p>
@@ -157,10 +185,24 @@ export default function AdvisorProfile({
           type="button"
           disabled={!selected}
           onClick={confirm}
-          className="btn-primary w-full mt-8 disabled:opacity-40 disabled:cursor-not-allowed"
+          className="btn-primary w-full mt-8 hidden sm:block disabled:opacity-40 disabled:cursor-not-allowed"
         >
           Continuer avec ce créneau
         </button>
+      </div>
+
+      <div className="sm:hidden fixed bottom-0 inset-x-0 z-40 border-t border-white/10 bg-[#0c1018]/95 px-4 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
+        {selected ? (
+          <button type="button" onClick={confirm} className="btn-primary w-full">
+            Continuer avec ce créneau
+          </button>
+        ) : immediate ? (
+          <button type="button" onClick={() => go(immediate)} className="btn-primary w-full">
+            Appeler maintenant
+          </button>
+        ) : (
+          <p className="text-center text-sm text-white/60 py-3">Choisissez un horaire</p>
+        )}
       </div>
     </main>
   );

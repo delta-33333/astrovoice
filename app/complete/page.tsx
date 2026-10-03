@@ -3,11 +3,13 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { formatCurrency, formatDuration } from '@/lib/utils';
+import { formatMoney, normalizeCurrency } from '@/lib/money';
+import { formatDuration } from '@/lib/utils';
 
 interface CallCompleteData {
   durationSeconds: number;
   amountCharged: number;
+  currency?: string;
   astrologerName?: string;
   astrologerId?: string;
   bookingId?: string;
@@ -21,6 +23,7 @@ export default function CompletePage() {
   const [stars, setStars] = useState(0);
   const [comment, setComment] = useState('');
   const [reviewMessage, setReviewMessage] = useState<string | null>(null);
+  const [summaryLabel, setSummaryLabel] = useState('');
 
   useEffect(() => {
     const completeData = sessionStorage.getItem('callComplete');
@@ -31,6 +34,12 @@ export default function CompletePage() {
 
     const parsed = JSON.parse(completeData) as CallCompleteData;
     setData(parsed);
+    fetch('/api/market')
+      .then((response) => response.json())
+      .then((payload) => {
+        if (typeof payload.summaryLabel === 'string') setSummaryLabel(payload.summaryLabel);
+      })
+      .catch(() => undefined);
     if (!parsed.bookingId) return;
     fetch(`/api/reviews?bookingId=${encodeURIComponent(parsed.bookingId)}`)
       .then((response) => response.json())
@@ -90,13 +99,13 @@ export default function CompletePage() {
 
             <div className="flex justify-between items-center pb-4 border-b border-white/10">
               <span className="text-white/60">Tarif</span>
-              <span className="text-lg">1,49 €/min</span>
+              <span className="text-lg">Tarif du conseiller</span>
             </div>
 
             <div className="flex justify-between items-center pt-2">
               <span className="text-xl font-semibold">Total</span>
               <span className="text-3xl font-bold text-celestial-gold">
-                {formatCurrency(data.amountCharged)}
+                {formatMoney(data.amountCharged, normalizeCurrency(data.currency))}
               </span>
             </div>
           </div>
@@ -149,8 +158,18 @@ export default function CompletePage() {
         )}
 
         <div className="space-y-4 mb-8">
+          {data.bookingId && (
+            <Link href={`/resume/${data.bookingId}`} className="btn-primary inline-block">
+              Recevoir le résumé écrit · {summaryLabel || '…'}
+            </Link>
+          )}
+          <p>
+            <Link href="/astrologers?dispo=now" className="btn-secondary inline-block">
+              Reprendre un créneau
+            </Link>
+          </p>
           {data.astrologerId && (
-            <Link href={`/astrologers?recall=${data.astrologerId}`} className="btn-primary inline-block">
+            <Link href={`/astrologers?recall=${data.astrologerId}`} className="text-sm text-white/60 underline">
               Rappeler {data.astrologerName}
             </Link>
           )}

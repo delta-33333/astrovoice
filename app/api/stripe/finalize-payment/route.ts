@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSession } from '@/lib/session';
 import { consumePrepaidSeconds, restorePrepaidSeconds } from '@/lib/credits';
+import { meterMinor } from '@/lib/money';
 import { quoteCall } from '@/lib/pricing';
 import { getStripe, stripeSecretConfigured } from '@/lib/stripe';
 
@@ -25,6 +26,7 @@ export async function POST(request: NextRequest) {
 
     const prepaidBefore = user.prepaid_seconds ?? 0;
     const quote = quoteCall(durationSeconds, prepaidBefore);
+    const currencyHint = 'eur';
     const isMock =
       !stripeSecretConfigured() ||
       (typeof checkoutSessionId === 'string' && checkoutSessionId.startsWith('mock_')) ||
@@ -36,6 +38,7 @@ export async function POST(request: NextRequest) {
         success: true,
         mock: true,
         amountCharged: quote.amountCents,
+        currency: currencyHint,
         durationSeconds,
         prepaidSecondsUsed: used,
         capped: quote.capped,
@@ -91,6 +94,7 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({
           success: true,
           amountCharged: paymentIntent.amount_received,
+          currency: paymentIntent.currency,
           durationSeconds,
           prepaidSecondsUsed: used,
           paymentIntentId,
@@ -116,7 +120,11 @@ export async function POST(request: NextRequest) {
         throw new Error(`Statut inattendu: ${paymentIntent.status}`);
       }
 
-      const amountToCapture = Math.min(quote.amountCents, paymentIntent.amount);
+      const introMinor = Number(checkout.metadata?.introMinor);
+      const standardMinor = Number(checkout.metadata?.standardMinor);
+      const metered = Number.isFinite(introMinor) && introMinor > 0 && Number.isFinite(standardMinor) && standardMinor > 0;
+      const rawMinor = metered ? meterMinor(quote.billableSeconds, introMinor, standardMinor) : quote.amountCents;
+      const amountToCapture = Math.min(rawMinor, paymentIntent.amount);
       const captured = await stripe.paymentIntents.capture(paymentIntentId, {
         amount_to_capture: amountToCapture,
       });
@@ -124,6 +132,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({
         success: true,
         amountCharged: captured.amount_received,
+        currency: paymentIntent.currency,
         durationSeconds,
         prepaidSecondsUsed: used,
         paymentIntentId,

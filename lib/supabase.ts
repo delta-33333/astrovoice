@@ -72,7 +72,7 @@ export function getSupabaseAdmin(): AdminClient {
 export interface UserProfile {
   id: string;
   username: string;
-  password_hash: string;
+  password_hash: string | null;
   display_name: string;
   birth_date: string;
   birth_time?: string;

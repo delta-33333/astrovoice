@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { confirmBookingPayment, getBooking, isImmediateStart } from '@/lib/bookings';
 import { trackEvent } from '@/lib/events';
 import { createElementsCheckout } from '@/lib/checkout';
-import { formatCurrency } from '@/lib/pricing';
+import { formatMoney, normalizeCurrency } from '@/lib/money';
 import { getSession } from '@/lib/session';
 
 export const dynamic = 'force-dynamic';
@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
 
   if (booking.amount_cents === 0) {
     await trackEvent({
-      name: 'checkout_started',
+      name: 'checkout_start',
       userId: user.id,
       advisorId: booking.advisor_id,
       bookingId: booking.id,
@@ -58,6 +58,7 @@ export async function POST(request: NextRequest) {
       request,
       user,
       amountCents: booking.amount_cents,
+      currency: normalizeCurrency(booking.currency),
       productName: `Consultation ${booking.duration_min} min`,
       productDescription: `Consultation de ${booking.duration_min} minutes`,
       purpose: 'booking',
@@ -71,7 +72,7 @@ export async function POST(request: NextRequest) {
       integrationFlow: 'booking',
     });
     await trackEvent({
-      name: 'checkout_started',
+      name: 'checkout_start',
       userId: user.id,
       advisorId: booking.advisor_id,
       bookingId: booking.id,
@@ -83,7 +84,7 @@ export async function POST(request: NextRequest) {
       clientSecret: session.clientSecret,
       checkoutSessionId: session.checkoutSessionId,
       amountCents: booking.amount_cents,
-      amountLabel: formatCurrency(booking.amount_cents),
+      amountLabel: formatMoney(booking.amount_cents, normalizeCurrency(booking.currency)),
       collectContact: session.collectContact,
       bookingId: booking.id,
       immediate: isImmediateStart(booking.starts_at),

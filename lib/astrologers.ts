@@ -1,4 +1,5 @@
 import { advisorBadges } from './advisor-badges';
+import { pricePerMinCents, yearsFromAge } from './money';
 import { getSupabaseAdmin, supabaseAvailable } from './supabase';
 import type { PublicAdvisor, VoiceId } from './types';
 
@@ -6,6 +7,7 @@ const VOICES: readonly VoiceId[] = ['ara', 'eve', 'leo', 'rex', 'sal'];
 
 const PUBLIC_COLUMNS =
   'id, slug, first_name, last_name, age, gender, languages, specialties, reading_style, bio, photo_url, voice_id, featured, daily_capacity';
+const PRICE_COLUMNS = 'years_experience, price_per_min_cents';
 
 export interface AdvisorRecord extends PublicAdvisor {
   personaPrompt: string;
@@ -27,6 +29,14 @@ interface AdvisorRow {
   persona_prompt?: string | null;
   featured: boolean;
   daily_capacity: number;
+  years_experience?: number | null;
+  price_per_min_cents?: number | null;
+}
+
+function missingColumn(error: { code?: string; message?: string } | null): boolean {
+  if (!error) return false;
+  const message = error.message || '';
+  return error.code === '42703' || error.code === 'PGRST204' || /does not exist/i.test(message);
 }
 
 function asVoice(value: string): VoiceId {
@@ -89,6 +99,18 @@ function toPublic(row: AdvisorRow, signal?: AdvisorSignal): PublicAdvisor {
       age: row.age,
       bookingCount,
     }),
+    yearsExperience:
+      row.years_experience != null && row.years_experience > 0
+        ? row.years_experience
+        : yearsFromAge(row.age),
+    pricePerMinCents:
+      row.price_per_min_cents != null && row.price_per_min_cents >= 50
+        ? row.price_per_min_cents
+        : pricePerMinCents({
+            years: row.years_experience,
+            age: row.age,
+            specialties,
+          }),
   };
 }
 
@@ -100,12 +122,24 @@ export async function listPublicAdvisors(): Promise<{
     return { advisors: [], unavailable: true };
   }
 
-  const { data, error } = await getSupabaseAdmin()
+  const admin = getSupabaseAdmin();
+  let { data, error } = await admin
     .from('advisors')
-    .select(PUBLIC_COLUMNS)
+    .select(`${PUBLIC_COLUMNS}, ${PRICE_COLUMNS}`)
     .eq('active', true)
     .order('featured', { ascending: false })
     .order('last_name', { ascending: true });
+
+  if (error && missingColumn(error)) {
+    const fallback = await admin
+      .from('advisors')
+      .select(PUBLIC_COLUMNS)
+      .eq('active', true)
+      .order('featured', { ascending: false })
+      .order('last_name', { ascending: true });
+    data = fallback.data as typeof data;
+    error = fallback.error;
+  }
 
   if (error) {
     console.error('list advisors:', error.message);
@@ -126,12 +160,24 @@ export async function getAdvisorById(idOrSlug: string): Promise<AdvisorRecord | 
   if (!supabaseAvailable || !idOrSlug) return null;
   const column = UUID_RE.test(idOrSlug) ? 'id' : 'slug';
 
-  const { data, error } = await getSupabaseAdmin()
+  const admin = getSupabaseAdmin();
+  let { data, error } = await admin
     .from('advisors')
-    .select(`${PUBLIC_COLUMNS}, persona_prompt`)
+    .select(`${PUBLIC_COLUMNS}, ${PRICE_COLUMNS}, persona_prompt`)
     .eq(column, idOrSlug)
     .eq('active', true)
     .maybeSingle();
+
+  if (error && missingColumn(error)) {
+    const fallback = await admin
+      .from('advisors')
+      .select(`${PUBLIC_COLUMNS}, persona_prompt`)
+      .eq(column, idOrSlug)
+      .eq('active', true)
+      .maybeSingle();
+    data = fallback.data as typeof data;
+    error = fallback.error;
+  }
 
   if (error) {
     console.error('get advisor:', error.message);
