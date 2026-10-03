@@ -1,35 +1,19 @@
-import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 import type Stripe from 'stripe';
 import { getSession, updateUserCookie } from './session';
-import { SUPABASE_DB_SCHEMA, type UserProfile } from './supabase';
+import { getSupabaseAdmin, supabaseAvailable, type AdminClient, type UserProfile } from './supabase';
 import { getStripe } from './stripe';
 
 const UUID_RE =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
-type AdminClient = SupabaseClient<any, any, any>;
-
-let adminClient: AdminClient | null | undefined;
-
 function isUuid(value: string): boolean {
   return UUID_RE.test(value);
 }
 
+/** Client admin service_role (schéma callastral) ; null seulement si la base n'est pas configurée. */
 function getAdmin(): AdminClient | null {
-  if (adminClient !== undefined) return adminClient;
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const key =
-    process.env.SUPABASE_SERVICE_ROLE_KEY ||
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-  if (!url || !key || key.includes('placeholder') || url.includes('your-project')) {
-    adminClient = null;
-    return null;
-  }
-  adminClient = createClient(url, key, {
-    auth: { persistSession: false, autoRefreshToken: false },
-    db: { schema: SUPABASE_DB_SCHEMA },
-  });
-  return adminClient;
+  if (!supabaseAvailable) return null;
+  return getSupabaseAdmin();
 }
 
 export function isPrepaidPaidSession(session: Stripe.Checkout.Session): boolean {

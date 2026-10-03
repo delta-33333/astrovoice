@@ -1,7 +1,7 @@
 import type { NextRequest } from 'next/server';
 import type Stripe from 'stripe';
 import type { UserProfile } from './supabase';
-import { supabase, supabaseAvailable } from './supabase';
+import { getSupabaseAdmin, supabaseAvailable } from './supabase';
 import { updateUserCookie } from './session';
 import { appBaseUrl, getStripe, integrationIdentifier } from './stripe';
 
@@ -36,11 +36,12 @@ async function ensureCustomer(
     },
   });
 
-  if (supabaseAvailable && supabase) {
-    await supabase
+  if (supabaseAvailable) {
+    const { error } = await getSupabaseAdmin()
       .from('users')
       .update({ stripe_customer_id: customer.id })
       .eq('id', user.id);
+    if (error) console.error('stripe_customer_id update failed:', error.message);
   } else {
     await updateUserCookie(user.id, { stripe_customer_id: customer.id });
   }
