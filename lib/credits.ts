@@ -165,6 +165,73 @@ export async function grantPrepaidCredits(
   return { granted: false };
 }
 
+async function loadFreshPrepaidSeconds(user: UserProfile): Promise<number> {
+  const admin = getAdmin();
+  if (admin && isUuid(user.id)) {
+    const { data, error } = await admin
+      .from('users')
+      .select('prepaid_seconds')
+      .eq('id', user.id)
+      .maybeSingle();
+    if (!error && data && typeof data.prepaid_seconds === 'number') {
+      return Math.max(0, data.prepaid_seconds);
+    }
+  }
+  return Math.max(0, user.prepaid_seconds ?? 0);
+}
+
+async function hasConfirmedCallHold(userId: string, checkoutSessionId: string): Promise<boolean> {
+  if (!checkoutSessionId || checkoutSessionId.startsWith('mock_')) return false;
+  const stripe = getStripe();
+  if (!stripe) return false;
+  try {
+    const checkout = await stripe.checkout.sessions.retrieve(checkoutSessionId);
+    if (checkout.metadata?.userId !== userId || checkout.metadata?.purpose !== 'call_meter') {
+      return false;
+    }
+    if (checkout.status === 'complete') return true;
+    const paymentIntentId =
+      typeof checkout.payment_intent === 'string'
+        ? checkout.payment_intent
+        : checkout.payment_intent?.id;
+    if (!paymentIntentId) return false;
+    const intent = await stripe.paymentIntents.retrieve(paymentIntentId);
+    return intent.status === 'requires_capture' || intent.status === 'succeeded';
+  } catch (error) {
+    console.warn(
+      'Empreinte consultation illisible:',
+      error instanceof Error ? error.message : 'erreur'
+    );
+    return false;
+  }
+}
+
+export type VoiceCallAccess = {
+  allowed: boolean;
+  prepaidSeconds: number;
+  /** Empreinte call_meter confirmée : tarif découverte puis tarif minute. */
+  metered: boolean;
+  foundingClaimed: boolean;
+};
+
+/**
+ * Autorise la voix si des secondes prépayées restent (pack fondateur inclus,
+ * lu via le client admin schéma callastral) ou si une empreinte confirmée
+ * ouvre la facturation à la minute (offre découverte).
+ */
+export async function evaluateVoiceCallAccess(
+  user: UserProfile,
+  checkoutSessionId?: string | null
+): Promise<VoiceCallAccess> {
+  const prepaidSeconds = await loadFreshPrepaidSeconds(user);
+  const foundingClaimed = await foundingAlreadyClaimed(user);
+  const metered = checkoutSessionId
+    ? await hasConfirmedCallHold(user.id, checkoutSessionId)
+    : false;
+  const allowed = prepaidSeconds > 0 || metered;
+  return { allowed, prepaidSeconds, metered, foundingClaimed };
+}
+
 export async function foundingAlreadyClaimed(user: UserProfile): Promise<boolean> {
   if (user.founding_claimed) return true;
   const admin = getAdmin();

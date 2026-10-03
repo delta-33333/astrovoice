@@ -43,7 +43,17 @@ export async function POST(request: NextRequest) {
     }
 
     if (!checkoutSessionId || typeof checkoutSessionId !== 'string') {
-      return NextResponse.json({ error: 'Session de paiement manquante' }, { status: 400 });
+      if (quote.amountCents > 0) {
+        return NextResponse.json({ error: 'Session de paiement manquante' }, { status: 400 });
+      }
+      const used = await consumePrepaidSeconds(user.id, quote.coveredSeconds);
+      return NextResponse.json({
+        success: true,
+        amountCharged: 0,
+        durationSeconds,
+        prepaidSecondsUsed: used,
+        released: true,
+      });
     }
 
     const stripe = getStripe();
