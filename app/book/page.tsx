@@ -8,6 +8,7 @@ import TrustNotes from '@/components/TrustNotes';
 import Logo from '@/components/Logo';
 import MarketSwitch from '@/components/MarketSwitch';
 import { BOOKING_DURATIONS } from '@/lib/pricing';
+import { bookPath } from '@/lib/book-path';
 import type { AdvisorLang, Currency } from '@/lib/money';
 
 export default function BookPage() {
@@ -35,6 +36,12 @@ export default function BookPage() {
   const [durationLabels, setDurationLabels] = useState<Record<number, string>>({});
   const [market, setMarket] = useState<{ language: AdvisorLang; currency: Currency } | null>(null);
   const [includedSeconds, setIncludedSeconds] = useState(0);
+  const [advisorId, setAdvisorId] = useState<string | null>(null);
+  const [nowMode, setNowMode] = useState(false);
+  const [choices, setChoices] = useState<{
+    nextSlot: { id: string; startsAt: string; advisorId: string } | null;
+    alternative: { advisorId: string; name: string; slotId: string; startsAt: string } | null;
+  } | null>(null);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -50,6 +57,9 @@ export default function BookPage() {
     if (advisorId) sessionStorage.setItem('astrologerId', advisorId);
     setSlotId(slot);
     setStartsAt(when);
+    setAdvisorId(advisorId);
+    // « Appeler maintenant » : créneau qui commence dans les 15 minutes (ou déjà commencé).
+    setNowMode(!when || new Date(when).getTime() - Date.now() <= 15 * 60 * 1000);
     fetch('/api/market')
       .then((response) => response.json())
       .then((payload) => {
@@ -85,7 +95,9 @@ export default function BookPage() {
     }
   }, [router]);
 
-  const whenLabel = startsAt
+  const whenLabel = nowMode
+    ? 'Maintenant'
+    : startsAt
     ? new Intl.DateTimeFormat('fr-FR', {
         timeZone: 'Europe/Paris',
         weekday: 'long',
@@ -117,15 +129,30 @@ export default function BookPage() {
     if (!slotId) return;
     setLoading(true);
     setError(null);
+    setChoices(null);
     try {
       await ensureAccount();
+      const immediate = nowMode || (startsAt ? new Date(startsAt).getTime() - Date.now() <= 15 * 60 * 1000 : true);
       const heldResponse = await fetch('/api/bookings/hold', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ slotId, durationMin: duration }),
+        body: JSON.stringify({ slotId, durationMin: duration, advisorId, immediate }),
       });
-      const held = await heldResponse.json();
-      if (!heldResponse.ok) throw new Error(held.error || 'Créneau indisponible');
+      const held = await heldResponse.json().catch(() => ({}));
+      if (!heldResponse.ok) {
+        if (held?.nextSlot || held?.alternative) {
+          setChoices({ nextSlot: held.nextSlot ?? null, alternative: held.alternative ?? null });
+        }
+        throw new Error(held?.error || 'Créneau indisponible');
+      }
+      if (held.slotId && held.slotId !== slotId) {
+        setSlotId(held.slotId);
+        sessionStorage.setItem('slotId', held.slotId);
+      }
+      if (held.startsAt) {
+        setStartsAt(held.startsAt);
+        sessionStorage.setItem('slotStartsAt', held.startsAt);
+      }
 
       const checkoutResponse = await fetch('/api/bookings/checkout', {
         method: 'POST',
@@ -283,6 +310,28 @@ export default function BookPage() {
             : 'Le créneau est bloqué 10 minutes, le temps du paiement. Apple Pay et Google Pay s’affichent si votre appareil les propose.'}
         </p>
         {error && <p className="text-sm text-red-200 mt-4">{error}</p>}
+        {choices && (
+          <div className="mt-3 grid gap-2">
+            {choices.nextSlot && (
+              <button
+                type="button"
+                className="btn-secondary w-full"
+                onClick={() => window.location.assign(bookPath(choices.nextSlot!.id, choices.nextSlot!.startsAt, choices.nextSlot!.advisorId))}
+              >
+                {`Prochain créneau : ${new Intl.DateTimeFormat('fr-FR', { timeZone: 'Europe/Paris', weekday: 'long', hour: '2-digit', minute: '2-digit' }).format(new Date(choices.nextSlot.startsAt))}`}
+              </button>
+            )}
+            {choices.alternative && (
+              <button
+                type="button"
+                className="btn-primary w-full"
+                onClick={() => window.location.assign(bookPath(choices.alternative!.slotId, choices.alternative!.startsAt, choices.alternative!.advisorId))}
+              >
+                {`Appeler ${choices.alternative.name} maintenant`}
+              </button>
+            )}
+          </div>
+        )}
         <button type="button" onClick={() => void pay()} disabled={loading} className="btn-primary w-full mt-6 hidden sm:block disabled:opacity-50">
           {loading
             ? 'Préparation…'
