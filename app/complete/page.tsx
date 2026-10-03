@@ -13,6 +13,7 @@ interface CallCompleteData {
   astrologerName?: string;
   astrologerId?: string;
   bookingId?: string;
+  subscription?: boolean;
   error?: string;
 }
 
@@ -115,7 +116,11 @@ export default function CompletePage() {
             <div className="flex justify-between items-center pt-2">
               <span className="text-xl font-semibold">Total</span>
               <span className="text-3xl font-bold text-celestial-gold">
-                {formatMoney(data.amountCharged, normalizeCurrency(data.currency))}
+                {data.bookingId
+                  ? 'Réglé à la réservation'
+                  : data.subscription
+                    ? 'Inclus dans l’abonnement'
+                    : formatMoney(data.amountCharged, normalizeCurrency(data.currency))}
               </span>
             </div>
           </div>
@@ -127,7 +132,9 @@ export default function CompletePage() {
           )}
 
           <p className="text-xs text-white/50 pt-4 border-t border-white/10">
-            Un reçu a été envoyé par email • Paiement sécurisé par Stripe
+            {data.bookingId || data.subscription || data.amountCharged <= 0
+              ? 'Paiement sécurisé par Stripe'
+              : 'Un reçu a été envoyé par email • Paiement sécurisé par Stripe'}
           </p>
         </div>
 
