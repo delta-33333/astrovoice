@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { motion } from 'framer-motion';
 import AdvisorAvatar from '@/components/AdvisorAvatar';
 import PaymentSheet from '@/components/PaymentSheet';
 import {
@@ -780,9 +781,14 @@ export default function CallScreen({
   return (
     <main className="call-stage fixed inset-0 z-40 text-white flex flex-col">
       <div className="flex-1 flex flex-col items-center justify-center px-6 pb-40">
-        <div className={phase === 'live' ? 'call-pulse rounded-full' : 'rounded-full'}>
+        <motion.div
+          className={phase === 'live' ? 'call-pulse rounded-full' : 'rounded-full'}
+          initial={{ scale: 0.94, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 0.45, ease: 'easeOut' }}
+        >
           <AdvisorAvatar advisor={advisor} size="call" />
-        </div>
+        </motion.div>
         <h1 className="mt-6 font-[family-name:var(--font-cinzel)] text-3xl text-center">{advisor.name}</h1>
         <p className="mt-2 text-sm uppercase tracking-[0.18em] text-emerald-100/80">{statusLabel}</p>
 
