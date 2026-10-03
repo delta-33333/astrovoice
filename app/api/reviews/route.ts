@@ -23,8 +23,17 @@ export async function GET(request: NextRequest) {
     .eq('booking_id', bookingId)
     .maybeSingle();
 
+  // Même règle que submit_review en base : appel terminé d'au moins 2 minutes.
+  const { data: calls } = await getSupabaseAdmin()
+    .from('call_sessions')
+    .select('duration_seconds, ended_at')
+    .eq('booking_id', bookingId);
+  const longEnough = (calls ?? []).some(
+    (call) => Boolean(call.ended_at) && Number(call.duration_seconds ?? 0) >= 120
+  );
+
   return NextResponse.json({
-    eligible: booking.status === 'completed' && !data,
+    eligible: ['completed', 'confirmed'].includes(booking.status) && longEnough && !data,
     existing: data ?? null,
   });
 }
