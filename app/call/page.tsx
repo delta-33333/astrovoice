@@ -116,11 +116,14 @@ export default function CallPage() {
   const [showCostAlert, setShowCostAlert] = useState(false);
   const [prepaidSeconds, setPrepaidSeconds] = useState(0);
   const [micLevel, setMicLevel] = useState(0);
+  const [bookedCall, setBookedCall] = useState(false);
 
   const phaseRef = useRef<Phase>('ready');
   const liveRef = useRef<LiveCall>(emptyLive());
   const sessionRef = useRef<string | null>(null);
   const checkoutRef = useRef<string | null>(null);
+  const bookingIdRef = useRef<string | null>(null);
+  const bookingCapRef = useRef<number | null>(null);
   const astrologerIdRef = useRef<string | null>(null);
   const astrologerNameRef = useRef<string | undefined>(undefined);
 
@@ -190,6 +193,28 @@ export default function CallPage() {
 
     setCallPhase('ending');
     const finalQuote = quoteCall(seconds, live.prepaid);
+    const activeBookingId = bookingIdRef.current;
+
+    if (activeBookingId) {
+      try {
+        await fetch(`/api/bookings/${activeBookingId}/complete`, { method: 'POST', keepalive: true });
+      } catch (err) {
+        console.error('Clôture réservation:', err instanceof Error ? err.message : 'erreur');
+      }
+      sessionStorage.setItem(
+        'callComplete',
+        JSON.stringify({
+          durationSeconds: seconds,
+          amountCharged: 0,
+          astrologerName: astrologerNameRef.current,
+          astrologerId: astrologerIdRef.current,
+          bookingId: activeBookingId,
+          error: note,
+        })
+      );
+      router.push('/complete');
+      return;
+    }
 
     try {
       const response = await fetch('/api/stripe/finalize-payment', {
@@ -256,6 +281,11 @@ export default function CallPage() {
     astrologerIdRef.current = astrId;
     sessionRef.current = sessionStorage.getItem('sessionId');
     checkoutRef.current = sessionStorage.getItem('checkoutSessionId');
+    const cap = Number(sessionStorage.getItem('bookingDurationSec') || 0);
+    const bookingId = sessionStorage.getItem('bookingId');
+    bookingIdRef.current = cap > 0 && bookingId ? bookingId : null;
+    bookingCapRef.current = cap > 0 && bookingId ? cap : null;
+    setBookedCall(Boolean(bookingIdRef.current));
 
     void fetch('/api/auth/me')
       .then((response) => response.json())
@@ -337,6 +367,11 @@ export default function CallPage() {
       if (current.stopped || !current.billingStarted) return;
       const elapsed = Math.max(0, Math.floor((Date.now() - current.startMs) / 1000));
       setCallDuration(elapsed);
+      const cap = bookingCapRef.current;
+      if (cap) {
+        if (elapsed >= cap) void finishRef.current();
+        return;
+      }
       if (!current.metered) {
         if (elapsed >= current.prepaid) void finishRef.current();
         return;
@@ -454,6 +489,7 @@ export default function CallPage() {
           astrologerId: astrId,
           natalChart,
           checkoutSessionId: checkoutRef.current,
+          bookingId: bookingIdRef.current,
         }),
       });
       const tokenPayload = (await tokenResponse.json().catch(() => null)) as
@@ -686,7 +722,7 @@ export default function CallPage() {
               <p className="text-white/70">
                 Touchez le bouton pour autoriser le micro et joindre {astrologer.name}.
               </p>
-              {prepaidSeconds > 0 && (
+              {!bookedCall && prepaidSeconds > 0 && (
                 <p className="text-sm text-celestial-gold">
                   {Math.floor(prepaidSeconds / 60)} min déjà incluses
                 </p>
@@ -716,9 +752,13 @@ export default function CallPage() {
                 <div className="text-6xl font-mono font-bold text-celestial-gold">
                   {formatDuration(callDuration)}
                 </div>
-                <div className="text-2xl font-semibold">{formatCurrency(currentCost)}</div>
+                <div className="text-2xl font-semibold">
+                  {bookedCall ? 'Consultation réservée' : formatCurrency(currentCost)}
+                </div>
                 <div className="text-sm text-white/50">
-                  {quote.coveredSeconds > 0 && quote.amountCents === 0 ? (
+                  {bookedCall ? (
+                    <span>Durée réservée</span>
+                  ) : quote.coveredSeconds > 0 && quote.amountCents === 0 ? (
                     <span className="text-celestial-gold">Inclus dans vos minutes</span>
                   ) : quote.billableSeconds <= INTRO_SECONDS ? (
                     <span className="text-celestial-gold">
@@ -777,9 +817,11 @@ export default function CallPage() {
           )}
         </div>
 
-        <div className="mt-6 text-center text-xs text-white/40">
-          <p>Le montant exact est encaissé à la fin. L’empreinte non utilisée est libérée.</p>
-        </div>
+        {!bookedCall && (
+          <div className="mt-6 text-center text-xs text-white/40">
+            <p>Le montant exact est encaissé à la fin. L’empreinte non utilisée est libérée.</p>
+          </div>
+        )}
       </div>
     </main>
   );

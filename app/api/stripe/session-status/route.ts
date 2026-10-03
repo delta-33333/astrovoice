@@ -34,5 +34,7 @@ export async function GET(request: NextRequest) {
     checkoutSessionId: session.id,
     amountTotal: session.amount_total,
     packId: session.metadata?.packId ?? null,
+    bookingId: session.metadata?.booking_id ?? null,
+    startsAt: session.metadata?.startsAt ?? null,
   });
 }

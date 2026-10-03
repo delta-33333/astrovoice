@@ -48,6 +48,14 @@ export default function TermsPage() {
         </section>
 
         <section className="space-y-3">
+          <h2 className="text-white text-lg font-semibold">Annulation d’une réservation</h2>
+          <p>
+            Jusqu’à 24 heures avant le début, le montant payé est intégralement remboursé. Passé ce délai,
+            il est converti en avoir, valable 30 jours, utilisable sur une nouvelle réservation.
+          </p>
+        </section>
+
+        <section className="space-y-3">
           <h2 className="text-white text-lg font-semibold">Consultations</h2>
           <p>
             Une consultation ne constitue ni un avis médical, ni un conseil juridique, ni une

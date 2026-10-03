@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { evaluateVoiceCallAccess } from '@/lib/credits';
 import { getSession } from '@/lib/session';
 import { getAdvisorById } from '@/lib/astrologers';
+import { canJoinCall, getBooking } from '@/lib/bookings';
 import { getVoiceSystemPrompt } from '@/lib/voice-prompts';
 import type { BirthData, NatalChart } from '@/lib/types';
 
@@ -65,17 +66,36 @@ export async function POST(request: NextRequest) {
     const astrologerId = asString(body?.astrologerId, 80);
     const natalChart = asNatalChart(body?.natalChart);
     const checkoutSessionId = asString(body?.checkoutSessionId, 200);
+    const bookingId = asString(body?.bookingId, 64);
 
     if (!birthData || !astrologerId || !natalChart) {
       return NextResponse.json({ error: 'Données manquantes' }, { status: 400 });
     }
 
-    const astrologer = await getAdvisorById(astrologerId);
+    let advisorKey = astrologerId;
+    let bookingAccess: { prepaidSeconds: number } | null = null;
+    if (bookingId) {
+      const booking = await getBooking(bookingId);
+      if (!booking || booking.user_id !== user.id) {
+        return NextResponse.json({ error: 'Réservation introuvable' }, { status: 404 });
+      }
+      if (!canJoinCall(booking)) {
+        return NextResponse.json({ error: 'L’appel n’est pas ouvert' }, { status: 409 });
+      }
+      advisorKey = booking.advisor_id;
+      const end = new Date(booking.starts_at).getTime() + booking.duration_min * 60 * 1000;
+      const remaining = Math.max(0, Math.floor((end - Date.now()) / 1000));
+      bookingAccess = { prepaidSeconds: Math.min(booking.duration_min * 60, remaining) };
+    }
+
+    const astrologer = await getAdvisorById(advisorKey);
     if (!astrologer) {
       return NextResponse.json({ error: 'Astrologue introuvable' }, { status: 404 });
     }
 
-    const access = await evaluateVoiceCallAccess(user, checkoutSessionId);
+    const access = bookingAccess
+      ? { allowed: bookingAccess.prepaidSeconds > 0, prepaidSeconds: bookingAccess.prepaidSeconds, metered: false }
+      : await evaluateVoiceCallAccess(user, checkoutSessionId);
     if (!access.allowed) {
       return NextResponse.json(
         {

@@ -33,7 +33,7 @@ export function appBaseUrl(requestOrigin?: string): string {
 }
 
 /** Suffixe de 8 lettres, exigé pour integration_identifier (API Dahlia). */
-export function integrationIdentifier(flow: 'call-meter' | 'prepaid'): string {
+export function integrationIdentifier(flow: 'call-meter' | 'prepaid' | 'booking' | 'summary'): string {
   const alphabet = 'abcdefghijklmnopqrstuvwxyz';
   const bytes = randomBytes(8);
   let suffix = '';
