@@ -231,6 +231,25 @@ export function advisorPath(locale: Locale, slug: string): string {
   return `/${locale}/${PROFESSION_SLUG[locale]}/${slug}`;
 }
 
+/** Locales où la fiche a un contenu propre : les langues réellement parlées. */
+export function indexableAdvisorLocales(languages: readonly string[]): Locale[] {
+  const spoken = new Set(languages.filter((code): code is Locale => isLocale(code)));
+  return LOCALES.filter((locale) => spoken.has(locale));
+}
+
+export function advisorSpeaks(languages: readonly string[], locale: Locale): boolean {
+  return indexableAdvisorLocales(languages).includes(locale);
+}
+
+/** hreflang limité aux langues parlées. x-default vise la première de ces langues. */
+export function advisorAlternates(slug: string, languages: readonly string[]): Record<string, string> {
+  const locales = indexableAdvisorLocales(languages);
+  const map: Record<string, string> = {};
+  for (const locale of locales) map[locale] = advisorPath(locale, slug);
+  if (locales[0]) map['x-default'] = advisorPath(locales[0], slug);
+  return map;
+}
+
 export function hubPath(locale: Locale, specialty: string): string {
   const slug = hubSlug(locale, specialty);
   return slug ? `/${locale}/${slug}` : localeHomePath(locale);

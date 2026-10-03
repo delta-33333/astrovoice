@@ -4,7 +4,7 @@ import AdvisorProfile from '@/components/AdvisorProfile';
 import SiteHeader from '@/components/SiteHeader';
 import { trackEvent } from '@/lib/events';
 import { resolveMarket } from '@/lib/market';
-import { advisorPath } from '@/lib/seo';
+import { advisorPath, indexableAdvisorLocales } from '@/lib/seo';
 import { getAdvisorProfile } from '@/lib/slots';
 
 export const dynamic = 'force-dynamic';
@@ -20,7 +20,12 @@ export async function generateMetadata(
       title: `${profile.advisor.name} — Callastral`,
       description: profile.advisor.bio.slice(0, 160),
       robots: { index: false, follow: true },
-      alternates: { canonical: advisorPath('fr', profile.advisor.slug) },
+      alternates: {
+        canonical: advisorPath(
+          indexableAdvisorLocales(profile.advisor.languages)[0] ?? 'fr',
+          profile.advisor.slug
+        ),
+      },
     };
   } catch {
     return { title: 'Conseiller — Callastral' };

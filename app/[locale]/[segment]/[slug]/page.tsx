@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import AiDisclosure from '@/components/AiDisclosure';
 import JsonLd from '@/components/JsonLd';
 import SeoChrome from '@/components/SeoChrome';
 import { bookPath } from '@/lib/book-path';
@@ -9,11 +10,13 @@ import { quoteAdvisor } from '@/lib/money';
 import { appBaseUrl } from '@/lib/stripe';
 import { getAdvisorProfile, listDirectoryAdvisors } from '@/lib/slots';
 import {
+  advisorAlternates,
   advisorFaqs,
   advisorPath,
+  advisorSpeaks,
   availabilitySentence,
+  indexableAdvisorLocales,
   homeLabel,
-  hreflangAlternates,
   hubPath,
   isLocale,
   languageLabel,
@@ -21,7 +24,6 @@ import {
   localeHomePath,
   phonePhrase,
   professionSlug,
-  professionTitle,
   specialtyLabel,
   styleLabel,
   type Locale,
@@ -52,14 +54,18 @@ export async function generateMetadata(
   const title = `${advisor.name} — ${topic} — ${phonePhrase(locale)} dès ${quote.introLabel}`;
   const description = `${advisor.name} : ${phonePhrase(locale)} sur ${advisor.specialties.map((item) => specialtyLabel(locale, item)).join(', ')}. ${styleLabel(locale, advisor.readingStyle)}. Dès ${quote.introLabel}.`.slice(0, 160);
   const path = advisorPath(locale, advisor.slug);
+  const indexable = indexableAdvisorLocales(advisor.languages);
+  const listed = indexable.includes(locale);
+  const canonical = listed || indexable.length === 0 ? path : advisorPath(indexable[0], advisor.slug);
   return {
     title,
     description,
+    robots: listed ? { index: true, follow: true } : { index: false, follow: true },
     alternates: {
-      canonical: path,
-      languages: hreflangAlternates((item) => advisorPath(item, advisor.slug)),
+      canonical,
+      ...(listed ? { languages: advisorAlternates(advisor.slug, advisor.languages) } : {}),
     },
-    openGraph: { title, description, url: path, type: 'profile' },
+    openGraph: { title, description, url: canonical, type: 'website' },
   };
 }
 
@@ -98,7 +104,7 @@ export default async function AdvisorSeoPage(
   try {
     const directory = await listDirectoryAdvisors();
     related = directory.advisors
-      .filter((item) => item.id !== advisor.id && item.specialties.includes(primary))
+      .filter((item) => item.id !== advisor.id && item.specialties.includes(primary) && advisorSpeaks(item.languages, locale))
       .slice(0, 6)
       .map((item) => ({ slug: item.slug, name: item.name }));
   } catch {
@@ -123,7 +129,8 @@ export default async function AdvisorSeoPage(
 
   const showRating = advisor.averageRating != null && advisor.reviewCount >= 5;
   const priceMajor = currency === 'jpy' ? quote.introMinor : (quote.introMinor / 100).toFixed(2);
-  const personId = `${pageUrl}#person`;
+  const listed = indexableAdvisorLocales(advisor.languages).includes(locale);
+  const orgId = `${origin}/#organization`;
 
   return (
     <main>
@@ -137,6 +144,7 @@ export default async function AdvisorSeoPage(
           <span>{advisor.name}</span>
         </nav>
         <h1 className="font-[family-name:var(--font-cinzel)] text-3xl sm:text-5xl">{advisor.name}</h1>
+        <AiDisclosure locale={locale} className="mt-3" />
         <p className="mt-4 text-lg text-white/85 leading-relaxed">{intro[locale]}</p>
         <p className="mt-3 text-celestial-gold">{quote.introLabel} · {quote.perMinLabel}</p>
         <Link href={bookHref} className="btn-primary inline-block mt-6">{cta[locale]}</Link>
@@ -197,64 +205,57 @@ export default async function AdvisorSeoPage(
           </section>
         )}
       </article>
-      <JsonLd data={{
-        '@context': 'https://schema.org',
-        '@graph': [
-          {
-            '@type': 'BreadcrumbList',
-            itemListElement: [
-              { '@type': 'ListItem', position: 1, name: homeLabel(locale), item: `${origin}${localeHomePath(locale)}` },
-              { '@type': 'ListItem', position: 2, name: specialtyLabel(locale, primary), item: `${origin}${hubPath(locale, primary)}` },
-              { '@type': 'ListItem', position: 3, name: advisor.name, item: pageUrl },
-            ],
-          },
-          {
-            '@type': 'Person',
-            '@id': personId,
-            name: advisor.name,
-            url: pageUrl,
-            jobTitle: professionTitle(locale),
-            knowsLanguage: advisor.languages,
-            description: advisor.bio?.slice(0, 300) || intro[locale],
-          },
-          {
-            '@type': 'Service',
-            name: `${phonePhrase(locale)} — ${advisor.name}`,
-            url: pageUrl,
-            provider: { '@id': personId },
-            serviceType: phonePhrase(locale),
-            ...(showRating
-              ? {
-                  aggregateRating: {
-                    '@type': 'AggregateRating',
-                    ratingValue: advisor.averageRating,
-                    reviewCount: advisor.reviewCount,
-                    bestRating: 5,
-                    worstRating: 1,
-                  },
-                }
-              : {}),
-            offers: {
-              '@type': 'Offer',
-              url: pageUrl,
-              priceCurrency: currency.toUpperCase(),
-              price: priceMajor,
-              ...(advisor.availability.hasImmediate || advisor.availability.nextSlotAt
-                ? { availability: 'https://schema.org/InStock' }
-                : {}),
-              description: `${quote.introLabel} / ${quote.perMinLabel}`,
+      {listed && (
+        <JsonLd data={{
+          '@context': 'https://schema.org',
+          '@graph': [
+            {
+              '@type': 'BreadcrumbList',
+              itemListElement: [
+                { '@type': 'ListItem', position: 1, name: homeLabel(locale), item: `${origin}${localeHomePath(locale)}` },
+                { '@type': 'ListItem', position: 2, name: specialtyLabel(locale, primary), item: `${origin}${hubPath(locale, primary)}` },
+                { '@type': 'ListItem', position: 3, name: advisor.name, item: pageUrl },
+              ],
             },
-          },
-          {
-            '@type': 'FAQPage',
-            mainEntity: faqs.map((item) => ({
-              '@type': 'Question',
-              name: item.question,
-              acceptedAnswer: { '@type': 'Answer', text: item.answer },
-            })),
-          },
-        ],
-      }} />
+            {
+              '@type': 'Service',
+              name: `${phonePhrase(locale)} — ${advisor.name}`,
+              url: pageUrl,
+              provider: { '@id': orgId },
+              serviceType: phonePhrase(locale),
+              ...(showRating
+                ? {
+                    aggregateRating: {
+                      '@type': 'AggregateRating',
+                      ratingValue: advisor.averageRating,
+                      reviewCount: advisor.reviewCount,
+                      bestRating: 5,
+                      worstRating: 1,
+                    },
+                  }
+                : {}),
+              offers: {
+                '@type': 'Offer',
+                url: pageUrl,
+                priceCurrency: currency.toUpperCase(),
+                price: priceMajor,
+                ...(advisor.availability.hasImmediate || advisor.availability.nextSlotAt
+                  ? { availability: 'https://schema.org/InStock' }
+                  : {}),
+                description: `${quote.introLabel} / ${quote.perMinLabel}`,
+              },
+            },
+            {
+              '@type': 'FAQPage',
+              mainEntity: faqs.map((item) => ({
+                '@type': 'Question',
+                name: item.question,
+                acceptedAnswer: { '@type': 'Answer', text: item.answer },
+              })),
+            },
+          ],
+        }} />
+      )}
     </main>
   );
 }

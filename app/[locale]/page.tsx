@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import AiDisclosure from '@/components/AiDisclosure';
 import JsonLd from '@/components/JsonLd';
 import SeoChrome from '@/components/SeoChrome';
 import { readRates } from '@/lib/market';
@@ -8,6 +9,7 @@ import { listDirectoryAdvisors } from '@/lib/slots';
 import {
   SPECIALTY_IDS,
   advisorPath,
+  advisorSpeaks,
   availabilitySentence,
   homeFaqs,
   homeLabel,
@@ -69,7 +71,9 @@ export default async function LocaleHome(props: { params: Promise<{ locale: stri
   } catch {
     advisors = [];
   }
-  const ordered = [...advisors].sort((a, b) => Number(b.availability.hasImmediate) - Number(a.availability.hasImmediate));
+  const ordered = advisors
+    .filter((advisor) => advisorSpeaks(advisor.languages, locale))
+    .sort((a, b) => Number(b.availability.hasImmediate) - Number(a.availability.hasImmediate));
   const faqs = homeFaqs(locale, floor, ceiling);
 
   return (
@@ -99,6 +103,7 @@ export default async function LocaleHome(props: { params: Promise<{ locale: stri
                 <h2 className="text-xl font-[family-name:var(--font-cinzel)]">
                   <Link href={advisorPath(locale, advisor.slug)} className="hover:text-celestial-gold">{advisor.name}</Link>
                 </h2>
+                <AiDisclosure locale={locale} className="mt-1" />
                 <p className="text-sm text-white/70 mt-1">
                   {advisor.specialties.map((item) => specialtyLabel(locale, item)).join(' · ')}
                   {' · '}

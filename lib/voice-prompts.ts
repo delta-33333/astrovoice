@@ -1,3 +1,4 @@
+import { AI_ACT_SPOKEN } from './legal';
 import type { BirthData, NatalChart, VoiceId } from './types';
 
 const VOICES: readonly VoiceId[] = ['ara', 'eve', 'leo', 'rex', 'sal'];
@@ -71,8 +72,18 @@ export function getVoiceSystemPrompt(
     de: 'Horoskop (Kurzfassung)',
     it: 'Tema (riassunto)',
   };
+  const spoken = AI_ACT_SPOKEN[lang as keyof typeof AI_ACT_SPOKEN] ?? AI_ACT_SPOKEN.fr;
+  const opening: Record<string, string> = {
+    fr: `Ouverture obligatoire. Ta toute première phrase, avant toute salutation, est exactement : « ${spoken} » Ensuite seulement, poursuis.`,
+    en: `Mandatory opening. Your very first sentence, before any greeting, is exactly: "${spoken}" Only then continue.`,
+    es: `Apertura obligatoria. Tu primera frase, antes de cualquier saludo, es exactamente: « ${spoken} » Solo después continúas.`,
+    de: `Pflicht am Anfang. Dein allererster Satz, vor jeder Begrüßung, lautet genau: „${spoken}“ Erst danach sprichst du weiter.`,
+    it: `Apertura obbligatoria. La tua primissima frase, prima di qualsiasi saluto, è esattamente: « ${spoken} » Solo dopo prosegui.`,
+  };
 
-  return `${advisor.personaPrompt}
+  return `${opening[lang] ?? opening.fr}
+
+${advisor.personaPrompt}
 
 ${client}
 

@@ -25,6 +25,8 @@ La langue par défaut (x-default) est le français : ${origin}/fr
 
 ${professions}
 
+Une fiche n’est indexée que dans les langues parlées par le conseiller. Les autres locales restent accessibles, avec noindex.
+
 ## Thématiques
 
 ${hubs}

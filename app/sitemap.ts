@@ -3,9 +3,11 @@ import { listPublicAdvisors } from '@/lib/astrologers';
 import {
   LOCALES,
   SPECIALTY_IDS,
+  advisorAlternates,
   advisorPath,
   hreflangAlternates,
   hubPath,
+  indexableAdvisorLocales,
   localeHomePath,
   type Locale,
 } from '@/lib/seo';
@@ -38,10 +40,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   try {
     const { advisors } = await listPublicAdvisors();
     for (const advisor of advisors) {
-      for (const locale of LOCALES) {
+      const locales = indexableAdvisorLocales(advisor.languages);
+      const alternates = Object.fromEntries(
+        Object.entries(advisorAlternates(advisor.slug, advisor.languages)).map(([key, value]) => [key, `${origin}${value}`])
+      );
+      for (const locale of locales) {
         entries.push({
           url: `${origin}${advisorPath(locale, advisor.slug)}`,
-          alternates: { languages: absoluteLanguages(origin, (item) => advisorPath(item, advisor.slug)) },
+          alternates: { languages: alternates },
         });
       }
     }

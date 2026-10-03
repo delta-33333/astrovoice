@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import AdvisorAvatar from '@/components/AdvisorAvatar';
+import AiDisclosure from '@/components/AiDisclosure';
 import PaymentSheet from '@/components/PaymentSheet';
 import { formatMoney, meterMinor, normalizeCurrency, type Currency } from '@/lib/money';
 import {
@@ -849,6 +850,7 @@ export default function CallScreen({
           <AdvisorAvatar advisor={advisor} size="call" />
         </motion.div>
         <h1 className="mt-6 font-[family-name:var(--font-cinzel)] text-3xl text-center">{advisor.name}</h1>
+        <AiDisclosure className="mt-2 max-w-xs text-center" />
         <p className="mt-2 text-sm uppercase tracking-[0.18em] text-emerald-100/80">{statusLabel}</p>
 
         {phase === 'live' || phase === 'ending' ? (

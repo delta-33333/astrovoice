@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
+import AiDisclosure from '@/components/AiDisclosure';
 import TrustNotes from '@/components/TrustNotes';
 import { formatMoney, normalizeCurrency, type Currency } from '@/lib/money';
 
@@ -56,6 +57,7 @@ export default function BookingPage() {
       <article className="max-w-lg mx-auto space-y-4">
         <h1 className="font-[family-name:var(--font-cinzel)] text-3xl">Consultation confirmée</h1>
         <p className="text-white/80">{booking.advisorName}</p>
+        <AiDisclosure />
         <p>{when} · heure de Paris</p>
         <p>{booking.durationMin} minutes · {booking.amountLabel || formatMoney(booking.amountCents, normalizeCurrency(booking.currency))}
           {booking.creditCents > 0 ? ` · avoir ${booking.creditLabel || formatMoney(booking.creditCents, normalizeCurrency(booking.currency))}` : ''}

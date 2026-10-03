@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
+import AiDisclosure from '@/components/AiDisclosure';
 
 interface View {
   id: string;
@@ -65,6 +66,7 @@ export default function JoinCallPage() {
     <main className="min-h-screen px-4 py-12">
       <div className="max-w-md mx-auto text-center space-y-5">
         <h1 className="font-[family-name:var(--font-cinzel)] text-3xl">{booking.advisorName}</h1>
+        <AiDisclosure />
         <p className="text-white/70">{when}</p>
         <p className="text-white/70">{booking.durationMin} minutes</p>
         {booking.canJoin ? (

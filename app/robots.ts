@@ -9,6 +9,7 @@ const ALLOWED = [
   'GPTBot',
   'PerplexityBot',
   'ClaudeBot',
+  'Claude-SearchBot',
   'Google-Extended',
 ];
 

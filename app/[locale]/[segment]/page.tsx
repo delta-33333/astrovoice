@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import AiDisclosure from '@/components/AiDisclosure';
 import JsonLd from '@/components/JsonLd';
 import SeoChrome from '@/components/SeoChrome';
 import { readRates } from '@/lib/market';
@@ -9,6 +10,7 @@ import { appBaseUrl } from '@/lib/stripe';
 import { listDirectoryAdvisors } from '@/lib/slots';
 import {
   advisorPath,
+  advisorSpeaks,
   availabilitySentence,
   homeLabel,
   hreflangAlternates,
@@ -86,7 +88,7 @@ export default async function SpecialtyHub(props: { params: Promise<{ locale: st
     advisors = [];
   }
   const matching = advisors
-    .filter((advisor) => advisor.specialties.includes(specialty))
+    .filter((advisor) => advisor.specialties.includes(specialty) && advisorSpeaks(advisor.languages, locale))
     .sort((a, b) => Number(b.availability.hasImmediate) - Number(a.availability.hasImmediate));
   const title = hubTitle(locale, specialty).replace(' | Callastral', '');
   const origin = appBaseUrl();
@@ -111,6 +113,7 @@ export default async function SpecialtyHub(props: { params: Promise<{ locale: st
                 <h2 className="text-xl">
                   <Link href={advisorPath(locale, advisor.slug)} className="hover:text-celestial-gold">{advisor.name}</Link>
                 </h2>
+                <AiDisclosure locale={locale} className="mt-1" />
                 <p className="text-sm text-white/70 mt-1">
                   {quote.introLabel} · {advisor.languages.map((code) => languageLabel(locale, code)).join(', ')}
                 </p>
