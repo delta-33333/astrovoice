@@ -5,12 +5,6 @@ import { useRouter } from 'next/navigation';
 import type { BirthData } from '@/lib/types';
 import AdvisorAvatar from '@/components/AdvisorAvatar';
 import { useAdvisor } from '@/components/use-advisor';
-import {
-  CALL_HOLD_CENTS,
-  formatCurrency,
-  INTRO_CENTS,
-  PER_MINUTE_CENTS,
-} from '@/lib/pricing';
 import PaymentSheet from '@/components/PaymentSheet';
 
 export default function PaymentPage() {
@@ -25,6 +19,9 @@ export default function PaymentPage() {
   const [collectContact, setCollectContact] = useState(false);
   const [checkoutSessionId, setCheckoutSessionId] = useState<string | null>(null);
   const [sessionId, setSessionId] = useState<string | null>(null);
+  const [perMinLabel, setPerMinLabel] = useState('');
+  const [introLabel, setIntroLabel] = useState('');
+  const [holdLabel, setHoldLabel] = useState('');
 
   useEffect(() => {
     const data = sessionStorage.getItem('birthData');
@@ -37,9 +34,19 @@ export default function PaymentPage() {
 
     setBirthData(JSON.parse(data));
     setAstrologerId(astrId);
+    if (!astrId) return;
+    fetch(`/api/advisors/${encodeURIComponent(astrId)}`)
+      .then((response) => response.json())
+      .then((payload) => {
+        const ten = Array.isArray(payload.quote?.durations)
+          ? payload.quote.durations.find((item: { minutes: number }) => item.minutes === 10)
+          : null;
+        if (payload.quote?.perMinLabel) setPerMinLabel(payload.quote.perMinLabel);
+        if (payload.quote?.introLabel) setIntroLabel(payload.quote.introLabel);
+        if (ten?.label) setHoldLabel(ten.label);
+      })
+      .catch(() => undefined);
   }, [router]);
-
-  const holdLabel = formatCurrency(CALL_HOLD_CENTS);
 
   const continueToCall = useCallback(
     (nextSessionId: string, nextCheckoutId: string) => {
@@ -71,6 +78,14 @@ export default function PaymentPage() {
         throw new Error(data.error || 'Erreur de paiement');
       }
 
+      if (data.currency && data.introMinor && data.standardMinor && data.holdMinor) {
+        sessionStorage.setItem('callastral_meter', JSON.stringify({
+          currency: data.currency,
+          introMinor: data.introMinor,
+          standardMinor: data.standardMinor,
+          holdMinor: data.holdMinor,
+        }));
+      }
       if (data.mock) {
         continueToCall(data.sessionId, data.checkoutSessionId);
         return;
@@ -154,7 +169,7 @@ export default function PaymentPage() {
               <span className="text-lg font-semibold">Tarif</span>
               <div className="text-right">
                 <div className="text-2xl font-bold text-celestial-gold">
-                  {formatCurrency(PER_MINUTE_CENTS)}/min
+                  {perMinLabel || 'tarif du conseiller'}
                 </div>
               </div>
             </div>
@@ -163,7 +178,7 @@ export default function PaymentPage() {
             </p>
             <div className="bg-celestial-gold/10 border border-celestial-gold/30 rounded-lg p-3 mt-3">
               <p className="text-sm text-celestial-gold font-semibold">
-                Offre découverte : {formatCurrency(INTRO_CENTS)}/min les 3 premières minutes
+                Offre découverte : {introLabel || 'tarif réduit'} les 3 premières minutes
               </p>
             </div>
           </div>
@@ -172,7 +187,7 @@ export default function PaymentPage() {
         <div className="bg-celestial-purple/10 border border-celestial-purple/30 rounded-2xl p-6 mb-8">
           <h3 className="font-semibold mb-3">Paiement dans l’application</h3>
           <p className="text-sm text-white/70 leading-relaxed">
-            Une empreinte de {holdLabel} couvre environ dix minutes. Carte, Apple Pay ou Google Pay,
+            Une empreinte de {holdLabel || 'dix minutes'} couvre environ dix minutes. Carte, Apple Pay ou Google Pay,
             selon votre appareil. À la fin, seul le montant exact est encaissé. Le reste est libéré.
           </p>
         </div>

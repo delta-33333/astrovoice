@@ -1,7 +1,9 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import AdvisorProfile from '@/components/AdvisorProfile';
+import SiteHeader from '@/components/SiteHeader';
 import { trackEvent } from '@/lib/events';
+import { resolveMarket } from '@/lib/market';
 import { getAdvisorProfile } from '@/lib/slots';
 
 export const dynamic = 'force-dynamic';
@@ -36,7 +38,18 @@ export default async function AdvisorPage(props: { params: Promise<{ slug: strin
     }
     if (!profile.advisor) notFound();
     await trackEvent({ name: 'view_advisor', advisorId: profile.advisor.id });
-    return <AdvisorProfile advisor={profile.advisor} slots={profile.slots} />;
+    const market = await resolveMarket();
+    return (
+      <>
+        <SiteHeader />
+        <AdvisorProfile
+          advisor={profile.advisor}
+          slots={profile.slots}
+          currency={market.currency}
+          rates={market.rates}
+        />
+      </>
+    );
   } catch {
     return (
       <main className="min-h-screen px-4 py-16 text-center text-white/70">

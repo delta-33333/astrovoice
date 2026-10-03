@@ -5,7 +5,10 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import PaymentSheet from '@/components/PaymentSheet';
 import TrustNotes from '@/components/TrustNotes';
-import { BOOKING_DURATIONS, bookingListPriceCents, formatCurrency, INTRO_CENTS, PER_MINUTE_CENTS } from '@/lib/pricing';
+import Logo from '@/components/Logo';
+import MarketSwitch from '@/components/MarketSwitch';
+import { BOOKING_DURATIONS } from '@/lib/pricing';
+import type { AdvisorLang, Currency } from '@/lib/money';
 
 export default function BookPage() {
   const router = useRouter();
@@ -27,6 +30,10 @@ export default function BookPage() {
   const [sheetOpen, setSheetOpen] = useState(false);
   const [bookingId, setBookingId] = useState<string | null>(null);
   const [immediate, setImmediate] = useState(false);
+  const [introLabel, setIntroLabel] = useState('');
+  const [perMinLabel, setPerMinLabel] = useState('');
+  const [durationLabels, setDurationLabels] = useState<Record<number, string>>({});
+  const [market, setMarket] = useState<{ language: AdvisorLang; currency: Currency } | null>(null);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -34,7 +41,7 @@ export default function BookPage() {
     const when = params.get('at') || sessionStorage.getItem('slotStartsAt');
     const advisorId = params.get('advisor') || sessionStorage.getItem('astrologerId');
     if (!slot) {
-      router.replace('/astrologers');
+      router.replace('/');
       return;
     }
     sessionStorage.setItem('slotId', slot);
@@ -42,6 +49,14 @@ export default function BookPage() {
     if (advisorId) sessionStorage.setItem('astrologerId', advisorId);
     setSlotId(slot);
     setStartsAt(when);
+    fetch('/api/market')
+      .then((response) => response.json())
+      .then((payload) => {
+        if (payload.language && payload.currency) {
+          setMarket({ language: payload.language, currency: payload.currency });
+        }
+      })
+      .catch(() => undefined);
     fetch('/api/auth/me')
       .then((response) => response.json())
       .then((payload) => setAuthed(Boolean(payload.authenticated)))
@@ -51,6 +66,13 @@ export default function BookPage() {
         .then((response) => response.json())
         .then((payload) => {
           if (payload.advisor?.name) setAdvisorName(payload.advisor.name);
+          if (payload.quote?.introLabel) setIntroLabel(payload.quote.introLabel);
+          if (payload.quote?.perMinLabel) setPerMinLabel(payload.quote.perMinLabel);
+          if (Array.isArray(payload.quote?.durations)) {
+            const labels: Record<number, string> = {};
+            for (const item of payload.quote.durations) labels[item.minutes] = item.label;
+            setDurationLabels(labels);
+          }
         })
         .catch(() => undefined);
     }
@@ -114,7 +136,7 @@ export default function BookPage() {
       }
       setClientSecret(checkout.clientSecret);
       setCheckoutSessionId(checkout.checkoutSessionId);
-      setAmountLabel(checkout.amountLabel || formatCurrency(held.amountCents));
+      setAmountLabel(checkout.amountLabel || held.amountLabel || '');
       setCollectContact(Boolean(checkout.collectContact));
       setSheetOpen(true);
     } catch (err) {
@@ -149,13 +171,19 @@ export default function BookPage() {
   return (
     <main className="min-h-screen px-4 pt-8 pb-28">
       <div className="max-w-lg mx-auto">
-        <Link href="/astrologers" className="text-sm text-white/50">← Annuaire</Link>
+        <div className="flex items-center justify-between gap-3">
+          <Logo />
+          {market && <MarketSwitch language={market.language} currency={market.currency} />}
+        </div>
+        <Link href="/" className="text-sm text-white/50 mt-4 inline-block">← Annuaire</Link>
         <h1 className="font-[family-name:var(--font-cinzel)] text-3xl mt-4 mb-2">
           {advisorName ? `Appeler ${advisorName}` : 'Réserver'}
         </h1>
         <p className="text-white/70 mb-2">{whenLabel} · heure de Paris</p>
         <p className="text-sm text-celestial-gold mb-4">
-          {formatCurrency(INTRO_CENTS)}/min les 3 premières minutes, puis {formatCurrency(PER_MINUTE_CENTS)}/min
+          {introLabel && perMinLabel
+            ? `${introLabel} les 3 premières minutes, puis ${perMinLabel}`
+            : 'Le tarif du conseiller est confirmé au paiement.'}
         </p>
         <TrustNotes className="mb-6" />
 
@@ -170,7 +198,7 @@ export default function BookPage() {
               }`}
             >
               <span className="font-semibold">{minutes} minutes</span>
-              <span className="float-right text-celestial-gold">{formatCurrency(bookingListPriceCents(minutes))}</span>
+              <span className="float-right text-celestial-gold">{durationLabels[minutes] || '…'}</span>
             </button>
           ))}
         </div>
@@ -243,13 +271,13 @@ export default function BookPage() {
         </p>
         {error && <p className="text-sm text-red-200 mt-4">{error}</p>}
         <button type="button" onClick={() => void pay()} disabled={loading} className="btn-primary w-full mt-6 hidden sm:block disabled:opacity-50">
-          {loading ? 'Préparation…' : `Continuer · ${formatCurrency(bookingListPriceCents(duration))}`}
+          {loading ? 'Préparation…' : `Continuer · ${durationLabels[duration] || ''}`}
         </button>
       </div>
 
       <div className="sm:hidden fixed bottom-0 inset-x-0 z-40 border-t border-white/10 bg-[#0c1018]/95 px-4 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
         <button type="button" onClick={() => void pay()} disabled={loading} className="btn-primary w-full disabled:opacity-50">
-          {loading ? 'Préparation…' : `Continuer · ${formatCurrency(bookingListPriceCents(duration))}`}
+          {loading ? 'Préparation…' : `Continuer · ${durationLabels[duration] || ''}`}
         </button>
       </div>
 

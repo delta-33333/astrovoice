@@ -1,5 +1,5 @@
 import { loadRows } from '@/lib/admin-data';
-import { formatCurrency } from '@/lib/pricing';
+import { formatMoney, normalizeCurrency } from '@/lib/money';
 
 export const dynamic = 'force-dynamic';
 
@@ -11,14 +11,22 @@ interface Row {
   status: string;
   user_id: string;
   advisor_id: string;
+  currency?: string | null;
 }
 
 export default async function AdminBookingsPage() {
-  const rows = await loadRows<Row>(
+  const withCurrency = await loadRows<Row>(
     'bookings',
-    'id, starts_at, duration_min, amount_cents, status, user_id, advisor_id',
+    'id, starts_at, duration_min, amount_cents, status, user_id, advisor_id, currency',
     'created_at'
   );
+  const rows = withCurrency.length > 0
+    ? withCurrency
+    : await loadRows<Row>(
+        'bookings',
+        'id, starts_at, duration_min, amount_cents, status, user_id, advisor_id',
+        'created_at'
+      );
   return (
     <main>
       <h1 className="font-[family-name:var(--font-cinzel)] text-3xl mb-6">Réservations</h1>
@@ -37,7 +45,7 @@ export default async function AdminBookingsPage() {
               <tr key={row.id} className="border-t border-white/10">
                 <td className="py-2 pr-3">{new Date(row.starts_at).toLocaleString('fr-FR', { timeZone: 'Europe/Paris' })}</td>
                 <td className="py-2 pr-3">{row.duration_min} min</td>
-                <td className="py-2 pr-3">{formatCurrency(row.amount_cents)}</td>
+                <td className="py-2 pr-3">{formatMoney(row.amount_cents, normalizeCurrency(row.currency))}</td>
                 <td className="py-2 pr-3">{row.status}</td>
               </tr>
             ))}

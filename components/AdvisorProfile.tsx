@@ -7,7 +7,7 @@ import AdvisorAvatar from '@/components/AdvisorAvatar';
 import TrustNotes from '@/components/TrustNotes';
 import { BADGE_LABELS, languageLabel, styleLabel } from '@/lib/advisor-badges';
 import { bookPath } from '@/lib/book-path';
-import { formatCurrency, INTRO_CENTS, PER_MINUTE_CENTS } from '@/lib/pricing';
+import { DEFAULT_RATES, quoteAdvisor, type Currency, type FxRates } from '@/lib/money';
 import type { AdvisorSlot, DirectoryAdvisor } from '@/lib/types';
 
 function parisDayLabel(iso: string): string {
@@ -39,9 +39,13 @@ function parisDayKey(iso: string): string {
 export default function AdvisorProfile({
   advisor,
   slots,
+  currency = 'eur',
+  rates = DEFAULT_RATES,
 }: {
   advisor: DirectoryAdvisor;
   slots: AdvisorSlot[];
+  currency?: Currency;
+  rates?: FxRates;
 }) {
   const router = useRouter();
   const [selected, setSelected] = useState<string | null>(null);
@@ -83,10 +87,12 @@ export default function AdvisorProfile({
     go(slot);
   };
 
+  const quote = quoteAdvisor(advisor.pricePerMinCents, currency, rates);
+
   return (
     <main className="min-h-screen px-4 pt-8 pb-28">
       <div className="max-w-xl mx-auto">
-        <Link href="/astrologers" className="text-sm text-white/50 hover:text-white">
+        <Link href="/" className="text-sm text-white/50 hover:text-white">
           ← Annuaire
         </Link>
 
@@ -130,7 +136,7 @@ export default function AdvisorProfile({
         </div>
 
         <p className="mt-6 text-celestial-gold">
-          {formatCurrency(INTRO_CENTS)}/min les 3 premières minutes, puis {formatCurrency(PER_MINUTE_CENTS)}/min
+          {quote.introLabel} les 3 premières minutes, puis {quote.perMinLabel}
         </p>
         <TrustNotes className="mt-3" />
 

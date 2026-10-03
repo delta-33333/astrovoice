@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import AdvisorAvatar from '@/components/AdvisorAvatar';
 import PaymentSheet from '@/components/PaymentSheet';
+import { formatMoney, meterMinor, normalizeCurrency, type Currency } from '@/lib/money';
 import {
   CALL_HOLD_CENTS,
   SUMMARY_CENTS,
@@ -168,6 +169,14 @@ export default function CallScreen({
   const [payOpen, setPayOpen] = useState(false);
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [checkoutId, setCheckoutId] = useState<string | null>(null);
+  const [summaryLabel, setSummaryLabel] = useState('');
+  const [meter, setMeter] = useState<{
+    currency: Currency;
+    introMinor: number;
+    standardMinor: number;
+    holdMinor: number;
+  } | null>(null);
+  const meterRef = useRef<typeof meter>(null);
 
   const phaseRef = useRef<Phase>('ready');
   const liveRef = useRef<LiveCall>(emptyLive());
@@ -182,7 +191,43 @@ export default function CallScreen({
     setPrepaid(prepaidSeconds);
   }, [prepaidSeconds]);
 
-  const quote = quoteCall(elapsed, prepaid);
+  useEffect(() => {
+    try {
+      const raw = sessionStorage.getItem('callastral_meter');
+      if (raw) {
+        const parsed = JSON.parse(raw) as NonNullable<typeof meter>;
+        if (parsed?.introMinor && parsed.standardMinor && parsed.holdMinor) {
+          meterRef.current = parsed;
+          setMeter(parsed);
+        }
+      }
+    } catch {
+      /* affichage au tarif de repli */
+    }
+    fetch('/api/market')
+      .then((response) => response.json())
+      .then((payload) => {
+        if (typeof payload.summaryLabel === 'string') setSummaryLabel(payload.summaryLabel);
+      })
+      .catch(() => undefined);
+  }, []);
+
+  const snap = meter;
+  const quote = snap
+    ? (() => {
+        const safeDuration = Math.max(0, Math.floor(elapsed));
+        const safePrepaid = Math.max(0, Math.floor(prepaid));
+        const coveredSeconds = Math.min(safePrepaid, safeDuration);
+        const raw = meterMinor(safeDuration - coveredSeconds, snap.introMinor, snap.standardMinor);
+        return {
+          coveredSeconds,
+          amountCents: Math.min(raw, snap.holdMinor),
+          capped: raw >= snap.holdMinor,
+        };
+      })()
+    : quoteCall(elapsed, prepaid);
+  const moneyLabel = (minor: number) =>
+    snap ? formatMoney(minor, normalizeCurrency(snap.currency)) : formatCurrency(minor);
   const remaining = booking ? booking.durationSec - elapsed : null;
 
   const setCallPhase = (next: Phase) => {
@@ -386,9 +431,23 @@ export default function CallScreen({
         if (seconds >= current.prepaid) void finishRef.current();
         return;
       }
-      const liveQuote = quoteCall(seconds, current.prepaid);
-      if (liveQuote.capped || liveQuote.amountCents >= CALL_HOLD_CENTS) {
-        setNotice(`Empreinte atteinte : ${formatCurrency(CALL_HOLD_CENTS)}. La consultation s’arrête ici.`);
+      const active = meterRef.current;
+      const liveQuote = active
+        ? (() => {
+            const raw = meterMinor(
+              Math.max(0, seconds - current.prepaid),
+              active.introMinor,
+              active.standardMinor
+            );
+            return { amountCents: Math.min(raw, active.holdMinor), capped: raw >= active.holdMinor };
+          })()
+        : quoteCall(seconds, current.prepaid);
+      const holdCap = active ? active.holdMinor : CALL_HOLD_CENTS;
+      if (liveQuote.capped || liveQuote.amountCents >= holdCap) {
+        const holdText = active
+          ? formatMoney(active.holdMinor, normalizeCurrency(active.currency))
+          : formatCurrency(CALL_HOLD_CENTS);
+        setNotice(`Empreinte atteinte : ${holdText}. La consultation s’arrête ici.`);
         void finishRef.current();
       }
     }, 1000);
@@ -803,7 +862,7 @@ export default function CallScreen({
               <p className="mt-2 text-sm text-white/70">
                 {quote.coveredSeconds > 0 && quote.amountCents === 0
                   ? 'Inclus dans vos minutes'
-                  : formatCurrency(quote.amountCents)}
+                  : moneyLabel(quote.amountCents)}
               </p>
             )}
           </>
@@ -843,7 +902,7 @@ export default function CallScreen({
       {showUpsell && booking && summaryState !== 'bought' && summaryState !== 'declined' && (
         <div className="mx-4 mb-3 rounded-3xl border border-white/15 bg-black/35 p-4 backdrop-blur">
           <p className="font-semibold">Recevoir le résumé écrit de votre consultation</p>
-          <p className="mt-1 text-sm text-white/70">{formatCurrency(SUMMARY_CENTS)}, envoyé par e-mail.</p>
+          <p className="mt-1 text-sm text-white/70">{summaryLabel || formatCurrency(SUMMARY_CENTS)}, envoyé par e-mail.</p>
           <div className="mt-3 flex gap-2">
             <button type="button" onClick={() => void buySummary()} className="btn-primary flex-1 py-2">
               Recevoir
@@ -942,9 +1001,9 @@ export default function CallScreen({
       <PaymentSheet
         open={payOpen}
         title="Résumé écrit"
-        amountLabel={formatCurrency(SUMMARY_CENTS)}
+        amountLabel={summaryLabel || formatCurrency(SUMMARY_CENTS)}
         detail="Envoyé par e-mail à la fin de la consultation."
-        payLabel={`Payer ${formatCurrency(SUMMARY_CENTS)}`}
+        payLabel={`Payer ${summaryLabel || formatCurrency(SUMMARY_CENTS)}`}
         clientSecret={clientSecret}
         onClose={() => {
           setPayOpen(false);

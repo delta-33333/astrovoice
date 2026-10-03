@@ -1,7 +1,9 @@
 import { ensureCallSession, getCallSessionByBooking, type CallSessionRow, type TranscriptLine } from './call-records';
 import { trackEvent } from './events';
 import { recipientEmail, sendMail } from './email';
-import { SUMMARY_CENTS, formatCurrency } from './pricing';
+import { readRates } from './market';
+import { convertEurCents, formatMoney, normalizeCurrency } from './money';
+import { SUMMARY_CENTS } from './pricing';
 import { appBaseUrl } from './stripe';
 import { getSupabaseAdmin, supabaseAvailable } from './supabase';
 
@@ -151,12 +153,22 @@ export async function emailSummaryPaymentLink(bookingId: string): Promise<boolea
 
   const advisorId = row.astrologer_id;
   const advisor = advisorId ? await advisorMeta(advisorId) : { name: 'votre conseiller', language: 'fr' };
+  const { data: bookingRow } = await getSupabaseAdmin()
+    .from('bookings')
+    .select('currency')
+    .eq('id', bookingId)
+    .maybeSingle();
+  const summaryCurrency = normalizeCurrency(bookingRow?.currency);
+  const summaryLabel = formatMoney(
+    convertEurCents(SUMMARY_CENTS, summaryCurrency, readRates()),
+    summaryCurrency
+  );
   const link = `${appBaseUrl()}/resume/${bookingId}`;
   const sent = await sendMail({
     to,
     subject: 'Le résumé écrit de votre consultation',
     html: `<p>Bonjour ${escapeHtml(user.display_name || '')},</p>
-<p>Vous pouvez recevoir le résumé écrit de votre consultation avec ${escapeHtml(advisor.name)} (${escapeHtml(formatCurrency(SUMMARY_CENTS))}).</p>
+<p>Vous pouvez recevoir le résumé écrit de votre consultation avec ${escapeHtml(advisor.name)} (${escapeHtml(summaryLabel)}).</p>
 <p><a href="${link}">Recevoir le résumé</a></p>`,
   });
   if (!sent) return false;

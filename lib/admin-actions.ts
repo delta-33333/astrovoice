@@ -12,16 +12,30 @@ export async function updateAdvisorAction(formData: FormData): Promise<void> {
   const id = String(formData.get('id') || '');
   const capacity = Number(formData.get('daily_capacity'));
   const bio = String(formData.get('bio') || '').slice(0, 2000);
+  const years = Number(formData.get('years_experience'));
+  const priceEuros = Number(formData.get('price_per_min'));
+  const priceCents = Math.round(priceEuros * 100);
   if (!UUID_RE.test(id) || !Number.isInteger(capacity) || capacity < 1 || capacity > 24) return;
-  const { error } = await getSupabaseAdmin()
+  if (!Number.isInteger(years) || years < 1 || years > 45) return;
+  if (!Number.isInteger(priceCents) || priceCents < 50 || priceCents > 200) return;
+  const admin = getSupabaseAdmin();
+  const base = {
+    active: formData.get('active') === '1',
+    featured: formData.get('featured') === '1',
+    daily_capacity: capacity,
+    bio,
+  };
+  let { error } = await admin
     .from('advisors')
     .update({
-      active: formData.get('active') === '1',
-      featured: formData.get('featured') === '1',
-      daily_capacity: capacity,
-      bio,
+      ...base,
+      years_experience: years,
+      price_per_min_cents: priceCents,
     })
     .eq('id', id);
+  if (error && (error.code === '42703' || error.code === 'PGRST204' || /does not exist/i.test(error.message))) {
+    ({ error } = await admin.from('advisors').update(base).eq('id', id));
+  }
   if (error) console.error('Mise à jour conseiller:', error.message);
   revalidatePath('/admin/advisors');
 }

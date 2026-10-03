@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import TrustNotes from '@/components/TrustNotes';
-import { formatCurrency } from '@/lib/pricing';
+import { formatMoney, normalizeCurrency, type Currency } from '@/lib/money';
 
 interface View {
   id: string;
@@ -12,6 +12,9 @@ interface View {
   durationMin: number;
   amountCents: number;
   creditCents: number;
+  currency?: Currency;
+  amountLabel?: string;
+  creditLabel?: string;
   status: string;
   advisorName: string;
   canJoin: boolean;
@@ -54,8 +57,8 @@ export default function BookingPage() {
         <h1 className="font-[family-name:var(--font-cinzel)] text-3xl">Consultation confirmée</h1>
         <p className="text-white/80">{booking.advisorName}</p>
         <p>{when} · heure de Paris</p>
-        <p>{booking.durationMin} minutes · {formatCurrency(booking.amountCents)}
-          {booking.creditCents > 0 ? ` · avoir ${formatCurrency(booking.creditCents)}` : ''}
+        <p>{booking.durationMin} minutes · {booking.amountLabel || formatMoney(booking.amountCents, normalizeCurrency(booking.currency))}
+          {booking.creditCents > 0 ? ` · avoir ${booking.creditLabel || formatMoney(booking.creditCents, normalizeCurrency(booking.currency))}` : ''}
         </p>
         {booking.canJoin ? (
           <Link href={`/call/${booking.id}`} className="btn-primary inline-block">Rejoindre l’appel</Link>

@@ -3,6 +3,7 @@ import type Stripe from 'stripe';
 import type { UserProfile } from './supabase';
 import { getSupabaseAdmin, supabaseAvailable } from './supabase';
 import { updateUserCookie } from './session';
+import { isCurrency, type Currency } from './money';
 import { appBaseUrl, getStripe, integrationIdentifier } from './stripe';
 
 export type CheckoutPurpose = 'call_meter' | 'prepaid' | 'booking' | 'summary';
@@ -53,6 +54,7 @@ export async function createElementsCheckout(options: {
   request: NextRequest;
   user: UserProfile;
   amountCents: number;
+  currency?: Currency;
   productName: string;
   productDescription: string;
   purpose: CheckoutPurpose;
@@ -78,6 +80,8 @@ export async function createElementsCheckout(options: {
     options.metadata.sessionId ||
     `session_${Date.now()}_${options.user.id.slice(-6)}`;
 
+  const currency: Currency =
+    options.currency && isCurrency(options.currency) ? options.currency : 'eur';
   const metadata: Record<string, string> = {
     ...options.metadata,
     purpose: options.purpose,
@@ -85,6 +89,7 @@ export async function createElementsCheckout(options: {
     sessionId,
     app: 'callastral',
     amountCents: String(options.amountCents),
+    currency,
   };
 
   // ui_mode "elements" remplace "custom" depuis l'API 2026-03-25.dahlia.
@@ -101,7 +106,7 @@ export async function createElementsCheckout(options: {
       {
         quantity: 1,
         price_data: {
-          currency: 'eur',
+          currency,
           unit_amount: options.amountCents,
           product_data: {
             name: options.productName,

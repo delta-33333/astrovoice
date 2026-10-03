@@ -86,6 +86,7 @@ export async function grantPrepaidCredits(
   const seconds = Number(session.metadata?.seconds || 0);
   const packId = session.metadata?.packId;
   const amountCents = session.amount_total ?? Number(session.metadata?.amountCents || 0);
+  const currency = (session.currency || session.metadata?.currency || 'eur').toLowerCase();
 
   if (!userId || !Number.isFinite(seconds) || seconds <= 0) {
     return { granted: false };
@@ -107,6 +108,7 @@ export async function grantPrepaidCredits(
       p_seconds: seconds,
       p_amount: amountCents,
       p_pack_id: packId ?? null,
+      p_currency: currency,
     });
 
     if (!rpc.error && (rpc.data === true || rpc.data === false)) {
@@ -121,13 +123,23 @@ export async function grantPrepaidCredits(
       console.warn('grant_prepaid_seconds indisponible, repli table:', rpc.error.message);
     }
 
-    const insert = await admin.from('stripe_credit_grants').insert({
+    let insert = await admin.from('stripe_credit_grants').insert({
       checkout_session_id: session.id,
       user_id: userId,
       seconds,
       amount_cents: amountCents,
       pack_id: packId ?? null,
+      currency,
     });
+    if (insert.error && (insert.error.code === '42703' || insert.error.code === 'PGRST204')) {
+      insert = await admin.from('stripe_credit_grants').insert({
+        checkout_session_id: session.id,
+        user_id: userId,
+        seconds,
+        amount_cents: amountCents,
+        pack_id: packId ?? null,
+      });
+    }
 
     if (insert.error && insert.error.code === '23505') {
       await markCreditsGranted(session.id);

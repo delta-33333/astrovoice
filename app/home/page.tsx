@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import InstallPrompt from '@/components/InstallPrompt';
-import { formatCurrency, INTRO_CENTS, PER_MINUTE_CENTS } from '@/lib/pricing';
 
 interface UserData {
   displayName: string;
@@ -133,7 +132,7 @@ export default function HomePage() {
           </button>
 
           <div className="text-center text-sm text-white/60">
-            <p>{formatCurrency(PER_MINUTE_CENTS)}/min • {formatCurrency(INTRO_CENTS)}/min les 3 premières minutes</p>
+            <p>Le tarif de chaque conseiller est indiqué sur sa fiche.</p>
           </div>
 
           <div className="grid grid-cols-2 gap-4 mt-8">

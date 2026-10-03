@@ -1,4 +1,5 @@
 import { loadRows, loadStripePayments } from '@/lib/admin-data';
+import { formatMoney, normalizeCurrency } from '@/lib/money';
 import { formatCurrency } from '@/lib/pricing';
 import { getSupabaseAdmin, supabaseAvailable } from '@/lib/supabase';
 
@@ -43,7 +44,7 @@ export default async function AdminPaymentsPage() {
           {stripe.map((item) => (
             <li key={item.id} className="flex justify-between gap-3 border-b border-white/10 py-2">
               <span className="text-white/70">{item.purpose || 'paiement'} · {item.status}</span>
-              <span>{formatCurrency(item.amount)}</span>
+              <span>{formatMoney(item.amount, normalizeCurrency(item.currency))}</span>
             </li>
           ))}
         </ul>
