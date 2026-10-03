@@ -32,6 +32,7 @@ export interface PublicAdvisor {
   dailyCapacity: number;
   reviewCount: number;
   averageRating: number | null;
+  bookingCount: number;
   badges: AdvisorBadge[];
 }
 

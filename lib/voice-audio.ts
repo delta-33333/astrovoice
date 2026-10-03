@@ -57,7 +57,8 @@ export class GaplessPcmPlayer {
 
   constructor(
     private readonly ctx: AudioContext,
-    private readonly sourceRate: number
+    private readonly sourceRate: number,
+    private readonly output: AudioNode = ctx.destination
   ) {}
 
   enqueue(pcm: Float32Array) {
@@ -70,7 +71,7 @@ export class GaplessPcmPlayer {
     buffer.getChannelData(0).set(samples);
     const node = this.ctx.createBufferSource();
     node.buffer = buffer;
-    node.connect(this.ctx.destination);
+    node.connect(this.output);
     const now = this.ctx.currentTime;
     if (this.next < now + 0.02) this.next = now + 0.02;
     node.start(this.next);

@@ -46,6 +46,7 @@ function decorate(advisor: PublicAdvisor, starts: Date[], now: Date): DirectoryA
       reviewCount: advisor.reviewCount,
       specialties: advisor.specialties,
       age: advisor.age,
+      bookingCount: advisor.bookingCount,
       hasImmediateSlot: immediate,
     }),
     availability: {

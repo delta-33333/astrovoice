@@ -93,6 +93,9 @@ export function quoteCall(durationSeconds: number, prepaidSeconds: number) {
 
 export const BOOKING_DURATIONS = [10, 20, 30] as const;
 
+/** Résumé écrit envoyé par e-mail après la consultation. */
+export const SUMMARY_CENTS = 290;
+
 export function bookingListPriceCents(durationMin: number): number {
   return calculateCost(durationMin * 60);
 }

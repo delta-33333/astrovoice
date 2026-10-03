@@ -13,6 +13,7 @@ const SIZES = {
   md: 'h-20 w-20 text-2xl',
   lg: 'h-28 w-28 text-4xl',
   xl: 'h-40 w-40 text-5xl',
+  call: 'h-48 w-48 text-6xl',
 } as const;
 
 export default function AdvisorAvatar({

@@ -3,6 +3,7 @@ import Stripe from 'stripe';
 import { confirmBookingPayment } from '@/lib/bookings';
 import { grantPrepaidCredits } from '@/lib/credits';
 import { getStripe } from '@/lib/stripe';
+import { deliverPaidSummary, markSummaryPaid } from '@/lib/summaries';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -43,6 +44,12 @@ export async function POST(request: NextRequest) {
             paymentIntentId: paymentIntent,
           });
           console.log('Réservation', session.id, result);
+        } else if (session.metadata?.purpose === 'summary' && session.metadata.booking_id) {
+          if (session.payment_status === 'paid' || session.payment_status === 'no_payment_required') {
+            await markSummaryPaid(session.metadata.booking_id, session.id);
+            const delivery = await deliverPaidSummary(session.metadata.booking_id);
+            console.log('Résumé', session.id, delivery);
+          }
         } else if (session.metadata?.purpose === 'call_meter') {
           console.log('Empreinte consultation confirmée', session.id, session.payment_status);
         }

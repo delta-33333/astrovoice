@@ -3,6 +3,7 @@ import { evaluateVoiceCallAccess } from '@/lib/credits';
 import { getSession } from '@/lib/session';
 import { getAdvisorById } from '@/lib/astrologers';
 import { canJoinCall, getBooking } from '@/lib/bookings';
+import { ensureCallSession } from '@/lib/call-records';
 import { getVoiceSystemPrompt } from '@/lib/voice-prompts';
 import type { BirthData, NatalChart } from '@/lib/types';
 
@@ -104,6 +105,14 @@ export async function POST(request: NextRequest) {
         },
         { status: 402 }
       );
+    }
+
+    if (bookingId) {
+      try {
+        await ensureCallSession({ userId: user.id, advisorId: astrologer.id, bookingId });
+      } catch (error) {
+        console.error('Ouverture session:', error instanceof Error ? error.message : 'erreur');
+      }
     }
 
     const apiKey = process.env.XAI_API_KEY?.trim();

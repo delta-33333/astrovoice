@@ -132,6 +132,13 @@ export default function AdvisorDirectory({
                     {advisor.age} ans · {advisor.languages.map(languageLabel).join(' · ')} ·{' '}
                     {styleLabel(advisor.readingStyle)}
                   </p>
+                  {advisor.averageRating != null && advisor.reviewCount >= 5 && (
+                    <p className="text-sm text-white/70 mt-1">
+                      {advisor.averageRating.toLocaleString('fr-FR', { minimumFractionDigits: 1, maximumFractionDigits: 1 })}
+                      {' · '}
+                      {advisor.reviewCount} avis
+                    </p>
+                  )}
                   {advisor.availability.scarcity && (
                     <p className="text-sm text-celestial-gold mt-2">{advisor.availability.scarcity}</p>
                   )}
