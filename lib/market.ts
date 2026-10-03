@@ -17,6 +17,11 @@ const EUROZONE = new Set([
   'LT', 'LU', 'LV', 'MT', 'NL', 'PT', 'SI', 'SK',
 ]);
 
+/** Pays de l’UE hors zone euro, et micro-États qui utilisent l’euro : affichage en euros. */
+const EURO_DISPLAY = new Set([
+  'BG', 'CZ', 'DK', 'HU', 'PL', 'RO', 'SE', 'MC', 'AD', 'SM', 'VA', 'ME', 'XK',
+]);
+
 const MULTILINGUAL = new Set(['BE', 'CH', 'CA', 'LU']);
 
 export interface Market {
@@ -48,7 +53,8 @@ export function readRates(): FxRates {
 
 export function currencyForCountry(country: string | null): Currency {
   const code = (country || '').toUpperCase();
-  if (EUROZONE.has(code)) return 'eur';
+  // Pays inconnu (pas d’en-tête géo) : euro, la devise de référence du site.
+  if (!code || code === 'XX' || EUROZONE.has(code) || EURO_DISPLAY.has(code)) return 'eur';
   if (code === 'GB') return 'gbp';
   if (code === 'JP') return 'jpy';
   if (code === 'CH') return 'chf';

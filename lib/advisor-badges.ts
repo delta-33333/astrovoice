@@ -4,7 +4,7 @@ export const BADGE_LABELS: Record<AdvisorBadge, string> = {
   nouveau: 'Nouveau',
   populaire: 'Populaire',
   expert: 'Expert',
-  disponible: 'Disponible rapidement',
+  disponible: 'Disponible maintenant',
 };
 
 export const LANGUAGE_LABELS: Record<string, string> = {
@@ -27,9 +27,9 @@ export const STYLE_LABELS: Record<string, string> = {
 /**
  * Badges dérivés de données réelles.
  * Populaire n'apparaît qu'à partir d'un volume de réservations confirmées.
- * Disponible rapidement n'apparaît que si un créneau immédiat existe.
  * Nouveau tant qu'il y a moins de 5 avis réels.
- * Expert : profondeur de spécialité (3 domaines et 52 ans ou plus).
+ * Pas de badge fondé sur l’âge ou l’ancienneté : les conseillers sont virtuels.
+ * « Disponible maintenant » est affiché à part (libellé de disponibilité), pas en badge.
  */
 export function advisorBadges(input: {
   reviewCount: number;
@@ -41,8 +41,6 @@ export function advisorBadges(input: {
   const badges: AdvisorBadge[] = [];
   if (input.reviewCount < 5) badges.push('nouveau');
   if ((input.bookingCount ?? 0) >= 8) badges.push('populaire');
-  if (input.age >= 52 && input.specialties.length >= 3) badges.push('expert');
-  if (input.hasImmediateSlot) badges.push('disponible');
   return badges;
 }
 

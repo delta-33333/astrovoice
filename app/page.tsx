@@ -393,6 +393,11 @@ export default async function LandingPage({
             <Link href="/terms" className="hover:text-white/70">Conditions générales</Link>
             <Link href="/privacy" className="hover:text-white/70">Confidentialité</Link>
           </p>
+          <p className="mt-3 space-x-4">
+            <Link href="/a-propos" className="hover:text-white/70">À propos</Link>
+            <Link href="/fr/tarifs-voyance-telephone-2026" className="hover:text-white/70">Tarifs 2026</Link>
+            <Link href="/fr/meilleurs-sites-voyance-2026" className="hover:text-white/70">Comparatif 2026</Link>
+          </p>
         </footer>
 
       </div>

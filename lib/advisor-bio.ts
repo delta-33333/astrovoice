@@ -2,7 +2,7 @@
  * Bios conseiller dans la langue de la page.
  * - Langue principale du conseiller : la bio enregistrée (modifiable dans l’admin),
  *   avec les mots de spécialité traduits et l’accord au féminin corrigé.
- * - Autres langues : bio recomposée à partir des mêmes faits (âge, années, spécialités, style),
+ * - Autres langues : bio recomposée à partir des mêmes faits (spécialités, style), sans âge ni ancienneté,
  *   avec les mêmes gabarits que le générateur du catalogue.
  * Module pur, utilisable côté client.
  */
@@ -159,8 +159,6 @@ const SIGNATURES: Record<BioLocale, string[]> = {
 interface Ctx {
   first: string;
   last: string;
-  age: number;
-  years: number;
   specs: string;
   primary: string;
   style: string;
@@ -172,31 +170,32 @@ interface Ctx {
 
 type Tpl = (p: Ctx) => string;
 
+/** Ouvertures sans âge ni années de pratique : une persona virtuelle n’a pas de carrière humaine. */
 const OPENINGS: Record<BioLocale, Tpl[]> = {
   fr: [
-    (p) => `${p.first} ${p.last}, ${p.age} ans, accompagne depuis ${p.years} ans les personnes qui viennent parler ${p.deSpecs}.`,
-    (p) => `${p.first} ${p.last} a ${p.age} ans et tient des consultations d’astrologie depuis ${p.years} ans, surtout autour ${p.deSpecs}.`,
-    (p) => `Depuis ${p.years} ans, ${p.first} ${p.last} (${p.age} ans) reçoit celles et ceux qui arrivent avec des questions ${p.deSpecs}.`,
+    (p) => `${p.first} ${p.last} est une persona virtuelle Callastral, centrée sur les questions ${p.deSpecs}.`,
+    (p) => `${p.first} ${p.last} : persona virtuelle d’astrologie, pour les questions ${p.deSpecs}.`,
+    (p) => `Persona virtuelle Callastral, ${p.first} ${p.last} lit le thème natal autour des questions ${p.deSpecs}.`,
   ],
   en: [
-    (p) => `${p.first} ${p.last}, ${p.age}, has practiced astrology for ${p.years} years, especially around ${p.specs}.`,
-    (p) => `At ${p.age}, ${p.first} ${p.last} has spent ${p.years} years reading charts for people facing questions of ${p.specs}.`,
-    (p) => `${p.first} ${p.last} is ${p.age} and has offered natal consultations for ${p.years} years, with a focus on ${p.specs}.`,
+    (p) => `${p.first} ${p.last} is a Callastral virtual persona focused on ${p.specs}.`,
+    (p) => `${p.first} ${p.last}: a virtual astrology persona for questions of ${p.specs}.`,
+    (p) => `A Callastral virtual persona, ${p.first} ${p.last} reads natal charts around ${p.specs}.`,
   ],
   es: [
-    (p) => `${p.first} ${p.last}, ${p.age} años, acompaña desde hace ${p.years} años a quienes llegan con preguntas de ${p.specs}.`,
-    (p) => `A los ${p.age} años, ${p.first} ${p.last} lleva ${p.years} años leyendo cartas natales en torno a ${p.specs}.`,
-    (p) => `${p.first} ${p.last} tiene ${p.age} años y consulta en astrología desde hace ${p.years} años, sobre todo en ${p.specs}.`,
+    (p) => `${p.first} ${p.last} es una persona virtual de Callastral centrada en ${p.specs}.`,
+    (p) => `${p.first} ${p.last}: persona virtual de astrología para preguntas de ${p.specs}.`,
+    (p) => `Persona virtual de Callastral, ${p.first} ${p.last} lee la carta natal en torno a ${p.specs}.`,
   ],
   de: [
-    (p) => `${p.first} ${p.last}, ${p.age} Jahre, begleitet seit ${p.years} Jahren Menschen bei Fragen zu ${p.specs}.`,
-    (p) => `Mit ${p.age} Jahren liest ${p.first} ${p.last} seit ${p.years} Jahren Horoskope, vor allem zu ${p.specs}.`,
-    (p) => `${p.first} ${p.last} ist ${p.age} und bietet seit ${p.years} Jahren astrologische Gespräche zu ${p.specs} an.`,
+    (p) => `${p.first} ${p.last} ist eine virtuelle Callastral-Persona mit Schwerpunkt ${p.specs}.`,
+    (p) => `${p.first} ${p.last}: virtuelle Astrologie-Persona für Fragen zu ${p.specs}.`,
+    (p) => `Als virtuelle Callastral-Persona liest ${p.first} ${p.last} Geburtshoroskope rund um ${p.specs}.`,
   ],
   it: [
-    (p) => `${p.first} ${p.last}, ${p.age} anni, accompagna da ${p.years} anni chi arriva con domande su ${p.specs}.`,
-    (p) => `A ${p.age} anni, ${p.first} ${p.last} legge temi natali da ${p.years} anni, soprattutto su ${p.specs}.`,
-    (p) => `${p.first} ${p.last} ha ${p.age} anni e consulta in astrologia da ${p.years} anni, in particolare su ${p.specs}.`,
+    (p) => `${p.first} ${p.last} è una persona virtuale di Callastral dedicata a ${p.specs}.`,
+    (p) => `${p.first} ${p.last}: persona virtuale di astrologia per domande su ${p.specs}.`,
+    (p) => `Persona virtuale di Callastral, ${p.first} ${p.last} legge il tema natale intorno a ${p.specs}.`,
   ],
 };
 
@@ -284,14 +283,6 @@ function joinList(locale: BioLocale, items: string[]): string {
   }
 }
 
-/** Années citées dans la bio d’origine (le nombre qui n’est pas l’âge). */
-function yearsFromBio(input: BioInput): number {
-  const numbers = (input.bio.match(/\d+/g) || []).map(Number).filter((n) => n !== input.age && n > 0 && n < 80);
-  if (numbers.length > 0) return numbers[0];
-  if (input.yearsExperience && input.yearsExperience > 0) return input.yearsExperience;
-  return Math.max(4, input.age - 27);
-}
-
 function escapeRe(value: string): string {
   return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
@@ -323,8 +314,6 @@ function generate(input: BioInput, locale: BioLocale): string {
   const ctx: Ctx = {
     first: input.firstName,
     last: input.lastName,
-    age: input.age,
-    years: yearsFromBio(input),
     specs: joinList(locale, words),
     primary: words[0] || specialtyWord(locale, 'amour'),
     style,
@@ -350,9 +339,14 @@ function fromCatalog(input: BioInput): boolean {
 }
 
 /** Bio affichée dans la langue de la page. */
+const EXPERIENCE_CLAIM =
+  /\d+\s*(ans|années|years?|años|Jahren?|anni)\b|depuis\s+\d|since\s+\d{4}|seit\s+\d|desde hace\s+\d|da\s+\d+\s+anni/iu;
+
 export function localizedBio(input: BioInput, locale: string): string {
   const target: BioLocale = isBioLocale(locale) ? locale : 'fr';
   const native = input.languages[0];
-  if (native === target && input.bio && !fromCatalog(input)) return polishNative(input, target);
+  if (native === target && input.bio && !fromCatalog(input) && !EXPERIENCE_CLAIM.test(input.bio)) {
+    return polishNative(input, target);
+  }
   return generate(input, target);
 }

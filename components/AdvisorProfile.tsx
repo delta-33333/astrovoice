@@ -104,7 +104,7 @@ export default function AdvisorProfile({
             <h1 className="font-[family-name:var(--font-cinzel)] text-3xl">{advisor.name}</h1>
             <AiDisclosure gender={advisor.gender} className="mt-2" />
             <p className="text-sm text-white/55 mt-1">
-              {advisor.age} ans · {advisor.languages.map(languageLabel).join(' · ')} · {styleLabel(advisor.readingStyle)}
+              Style : {styleLabel(advisor.readingStyle)} · {advisor.languages.map(languageLabel).join(' · ')}
             </p>
             {advisor.averageRating != null && advisor.reviewCount >= 5 && (
               <p className="text-sm text-white/70 mt-1">
