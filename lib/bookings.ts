@@ -1,4 +1,5 @@
 import { trackEvent } from './events';
+import { AI_ACT_LINE } from './legal';
 import { ensureImmediateAvailability } from './slots';
 import { resolveMarket } from './market';
 import {
@@ -254,6 +255,7 @@ export async function sendBookingConfirmation(booking: BookingRow): Promise<void
     subject: 'Votre consultation Callastral est confirmée',
     html: `<p>Bonjour ${escapeHtml(user.display_name || '')},</p>
 <p>Votre consultation avec ${escapeHtml(name)} est confirmée.</p>
+<p>${escapeHtml(AI_ACT_LINE.fr)}</p>
 <ul>
 <li>Quand : ${escapeHtml(when)} (heure de Paris)</li>
 <li>Durée : ${booking.duration_min} minutes</li>

@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import AdvisorDirectory from "@/components/AdvisorDirectory";
 import InstallPrompt from "@/components/InstallPrompt";
@@ -7,7 +8,15 @@ import { VIRTUAL_ADVISOR_DISCLOSURE } from "@/lib/legal";
 import { resolveMarket } from "@/lib/market";
 import { convertEurCents, formatMoney } from "@/lib/money";
 import { MINUTE_PACKS } from "@/lib/pricing";
+import { hreflangAlternates, localeHomePath } from "@/lib/seo";
 import { listDirectoryAdvisors } from "@/lib/slots";
+
+export const metadata: Metadata = {
+  alternates: {
+    canonical: "/fr",
+    languages: hreflangAlternates(localeHomePath),
+  },
+};
 
 export default async function LandingPage({
   searchParams,

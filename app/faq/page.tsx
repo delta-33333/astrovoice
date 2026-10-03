@@ -14,7 +14,7 @@ const ENTRIES: { q: string; a: string }[] = [
   },
   {
     q: 'Comment est calculé le prix d’une consultation à la minute ?',
-    a: '0,99 € par minute pendant les trois premières minutes, puis 1,49 € par minute. Le décompte se fait à la seconde. Des packs (12,90 €, 34,90 €, 59,90 €) et une offre fondateur de 10 minutes à 4,90 € sont proposés après l’inscription.',
+    a: 'Chaque conseiller a son tarif, entre 0,50 € et 2,00 € par minute. Les trois premières minutes sont à un tarif réduit, propre à ce tarif. Des packs de minutes et une offre fondateur de 10 minutes à 4,90 € sont proposés après l’inscription.',
   },
   {
     q: 'La consultation s’appuie-t-elle sur mon thème natal ?',
