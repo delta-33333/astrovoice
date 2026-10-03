@@ -1,5 +1,5 @@
 import bcrypt from 'bcryptjs';
-import { supabase, supabaseAvailable, UserProfile } from './supabase';
+import { getSupabaseAdmin, supabaseAvailable, type UserProfile } from './supabase';
 
 const SALT_ROUNDS = 10;
 
@@ -23,7 +23,7 @@ export async function createUser(
   try {
     const passwordHash = await hashPassword(password);
     
-    const { data, error } = await supabase!
+    const { data, error } = await getSupabaseAdmin()
       .from('users')
       .insert({
         username: username.toLowerCase(),
@@ -59,7 +59,7 @@ export async function authenticateUser(
   }
 
   try {
-    const { data, error } = await supabase!
+    const { data, error } = await getSupabaseAdmin()
       .from('users')
       .select('*')
       .eq('username', username.toLowerCase())
@@ -85,7 +85,7 @@ export async function getUserById(userId: string): Promise<UserProfile | null> {
   if (!supabaseAvailable) return null;
 
   try {
-    const { data, error } = await supabase!
+    const { data, error } = await getSupabaseAdmin()
       .from('users')
       .select('*')
       .eq('id', userId)
@@ -93,7 +93,8 @@ export async function getUserById(userId: string): Promise<UserProfile | null> {
 
     if (error || !data) return null;
     return data as UserProfile;
-  } catch {
+  } catch (error) {
+    console.error('getUserById failed:', error);
     return null;
   }
 }
@@ -105,7 +106,7 @@ export async function updateUserProfile(
   // Try Supabase first if available
   if (supabaseAvailable) {
     try {
-      const { error } = await supabase!
+      const { error } = await getSupabaseAdmin()
         .from('users')
         .update(updates)
         .eq('id', userId);
