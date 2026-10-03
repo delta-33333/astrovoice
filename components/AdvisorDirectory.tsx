@@ -226,8 +226,7 @@ export default function AdvisorDirectory({
                   </h3>
                   <AiDisclosure gender={advisor.gender} className="mt-1" />
                   <p className="text-sm text-white/55 mt-1">
-                    {advisor.age} ans · {advisor.languages.map(languageLabel).join(' · ')} ·{' '}
-                    {styleLabel(advisor.readingStyle)}
+                    Style : {styleLabel(advisor.readingStyle)} · {advisor.languages.map(languageLabel).join(' · ')}
                   </p>
                   {advisor.averageRating != null && advisor.reviewCount >= 5 && (
                     <p className="text-sm text-white/70 mt-1">

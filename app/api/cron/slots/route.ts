@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { submitOncePerDeployment } from '@/lib/indexnow';
 import { ensureImmediateAvailability, regenerateSlots } from '@/lib/slots';
 
 export const dynamic = 'force-dynamic';
@@ -23,7 +24,13 @@ export async function GET(request: Request) {
       immediateError = error instanceof Error ? error.message : 'Génération immédiate impossible';
       console.error('cron slots immédiats:', immediateError);
     }
-    return NextResponse.json({ ok: true, result, immediate, immediateError });
+    let indexNow: unknown = null;
+    try {
+      indexNow = await submitOncePerDeployment('cron');
+    } catch (error) {
+      console.error('cron indexnow:', error instanceof Error ? error.message : error);
+    }
+    return NextResponse.json({ ok: true, result, immediate, immediateError, indexNow });
   } catch (error) {
     console.error('cron slots:', error instanceof Error ? error.message : error);
     return NextResponse.json({ error: 'Génération impossible' }, { status: 500 });

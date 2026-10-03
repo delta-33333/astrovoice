@@ -279,11 +279,11 @@ export function availabilitySentence(
 ): string {
   if (input.hasImmediate) {
     const now: Record<Locale, string> = {
-      fr: 'Un créneau est ouvert maintenant.',
-      en: 'An opening is available now.',
-      es: 'Hay un horario disponible ahora.',
-      de: 'Ein Termin ist jetzt frei.',
-      it: 'C’è un orario disponibile adesso.',
+      fr: 'Disponible maintenant.',
+      en: 'Available now.',
+      es: 'Disponible ahora.',
+      de: 'Jetzt verfügbar.',
+      it: 'Disponibile adesso.',
     };
     return now[locale];
   }

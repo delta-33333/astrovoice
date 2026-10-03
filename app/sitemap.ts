@@ -11,6 +11,7 @@ import {
   localeHomePath,
   type Locale,
 } from '@/lib/seo';
+import { GEO_PATHS, GEO_UPDATED_ISO, geoAlternates, type GeoPage } from '@/lib/geo-pages';
 import { appBaseUrl } from '@/lib/stripe';
 
 export const dynamic = 'force-dynamic';
@@ -33,6 +34,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       entries.push({
         url: `${origin}${hubPath(locale, specialty)}`,
         alternates: { languages: absoluteLanguages(origin, (item) => hubPath(item, specialty)) },
+      });
+    }
+  }
+
+  for (const page of Object.keys(GEO_PATHS) as GeoPage[]) {
+    const languages = Object.fromEntries(
+      Object.entries(geoAlternates(page)).map(([key, value]) => [key, `${origin}${value}`])
+    );
+    for (const locale of ['fr', 'en'] as const) {
+      entries.push({
+        url: `${origin}${GEO_PATHS[page][locale]}`,
+        lastModified: GEO_UPDATED_ISO,
+        alternates: { languages },
       });
     }
   }

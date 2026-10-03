@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import AdvisorProfile from '@/components/AdvisorProfile';
 import SiteHeader from '@/components/SiteHeader';
+import { localizedBio } from '@/lib/advisor-bio';
 import { trackEvent } from '@/lib/events';
 import { resolveMarket } from '@/lib/market';
 import { advisorPath, indexableAdvisorLocales } from '@/lib/seo';
@@ -18,7 +19,7 @@ export async function generateMetadata(
     if (!profile.advisor) return { title: 'Conseiller — Callastral' };
     return {
       title: `${profile.advisor.name} — Callastral`,
-      description: profile.advisor.bio.slice(0, 160),
+      description: localizedBio(profile.advisor, 'fr').slice(0, 160),
       robots: { index: false, follow: true },
       alternates: {
         canonical: advisorPath(

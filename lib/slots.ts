@@ -1,6 +1,6 @@
 import { advisorBadges } from './advisor-badges';
 import { listPublicAdvisors, getAdvisorById, toPublicAdvisor } from './astrologers';
-import { hasImmediateSlot, scarcityLabel } from './scarcity';
+import { availabilityLabel, hasImmediateSlot } from './scarcity';
 import { getSupabaseAdmin, supabaseAvailable } from './supabase';
 import type { AdvisorAvailability, AdvisorSlot, DirectoryAdvisor, PublicAdvisor } from './types';
 
@@ -75,7 +75,7 @@ function decorate(
       slotsWeek: extra?.slotsWeek ?? upcoming.length,
       nextSlotAt: extra?.nextSlotAt ?? (next ? next.toISOString() : null),
       hasImmediate: extra?.hasImmediate ?? immediate,
-      scarcity: scarcityLabel(now, upcoming),
+      scarcity: availabilityLabel(now, upcoming),
       immediateSlotId: extra?.immediateSlotId ?? null,
       immediateStartsAt: extra?.immediateStartsAt ?? (soon ? soon.toISOString() : null),
     },

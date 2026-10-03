@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import AiDisclosure from '@/components/AiDisclosure';
 import JsonLd from '@/components/JsonLd';
+import { GEO_PATHS } from '@/lib/geo-pages';
 import SeoChrome from '@/components/SeoChrome';
 import { readRates } from '@/lib/market';
 import { perMinuteRange, quoteAdvisor } from '@/lib/money';
@@ -128,6 +129,18 @@ export default async function LocaleHome(props: { params: Promise<{ locale: stri
             <Link href="/faq" className="underline">FAQ</Link>
             {' · '}
             <Link href="/terms" className="underline">CGV</Link>
+            {' · '}
+            <Link href={locale === 'fr' ? GEO_PATHS.about.fr : GEO_PATHS.about.en} className="underline">
+              {locale === 'fr' ? 'À propos' : 'About'}
+            </Link>
+            {' · '}
+            <Link href={locale === 'fr' ? GEO_PATHS.prices.fr : GEO_PATHS.prices.en} className="underline">
+              {locale === 'fr' ? 'Tarifs 2026' : 'Prices 2026'}
+            </Link>
+            {' · '}
+            <Link href={locale === 'fr' ? GEO_PATHS.compare.fr : GEO_PATHS.compare.en} className="underline">
+              {locale === 'fr' ? 'Comparatif 2026' : 'Comparison 2026'}
+            </Link>
           </p>
         </section>
       </div>
