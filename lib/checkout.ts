@@ -184,9 +184,11 @@ export async function createPortalSession(options: {
   if (!stripe) throw new Error('STRIPE_NOT_CONFIGURED');
   if (!options.user.stripe_customer_id) throw new Error('NO_CUSTOMER');
   const origin = appBaseUrl(options.request.nextUrl.origin);
+  const configuration = process.env.STRIPE_PORTAL_CONFIGURATION_ID?.trim();
   const session = await stripe.billingPortal.sessions.create({
     customer: options.user.stripe_customer_id,
     return_url: `${origin}/account`,
+    ...(configuration ? { configuration } : {}),
   });
   return session.url;
 }
