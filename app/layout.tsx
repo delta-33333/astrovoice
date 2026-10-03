@@ -15,7 +15,10 @@ export const metadata: Metadata = {
   description: "Consultation astrologique vocale 24/7 basée sur votre thème natal complet. Votre astrologue personnel qui vous connaît et se souvient.",
   manifest: "/manifest.json",
   icons: {
-    icon: [{ url: "/icon.png", type: "image/png" }],
+    icon: [
+      { url: "/icon.svg", type: "image/svg+xml" },
+      { url: "/icon.png", type: "image/png", sizes: "512x512" },
+    ],
     apple: [{ url: "/icon.png", type: "image/png" }],
   },
   appleWebApp: {
@@ -48,7 +51,8 @@ export default async function RootLayout({
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <meta name="apple-mobile-web-app-title" content="Callastral" />
-        <link rel="icon" href="/icon.png" type="image/png" />
+        <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+        <link rel="icon" href="/icon.png" type="image/png" sizes="512x512" />
         <link rel="apple-touch-icon" href="/icon.png" />
       </head>
       <body className={inter.className}>

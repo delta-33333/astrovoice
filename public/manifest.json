@@ -4,12 +4,12 @@
   "description": "Consultation astrologique personnalisée 24/7",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#050810",
+  "background_color": "#0b0b14",
   "theme_color": "#6b46c1",
   "orientation": "portrait",
   "icons": [
     {
-      "src": "/icon.png",
+      "src": "/icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
@@ -18,7 +18,13 @@
       "src": "/icon.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "/icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ]
 }
