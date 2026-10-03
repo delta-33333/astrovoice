@@ -95,17 +95,10 @@ export default function ConsentPage() {
             
             <div className="space-y-3 text-white/80 leading-relaxed">
               <p>
-                Vous êtes sur le point de vivre une <strong>consultation astrale digitale automatisée</strong>.
+                Vous êtes sur le point de commencer une consultation astrologique vocale, préparée à partir de votre thème natal.
               </p>
-              
               <p>
-                Cette expérience utilise un système automatisé pour analyser votre thème natal et répondre à vos questions de manière personnalisée. 
-                Votre thème est établi avec précision et rigueur.
-              </p>
-
-              <p>
-                La consultation vocale est générée par un système de conversation automatisé avancé 
-                et n'implique pas d'astrologue humain en direct.
+                Le tarif, la durée et les conditions de paiement sont décrits dans les conditions générales. Vous pouvez interrompre la consultation à tout moment.
               </p>
             </div>
           </div>
@@ -150,8 +143,7 @@ export default function ConsentPage() {
                 className="mt-1 w-5 h-5 rounded border-2 border-white/20 bg-white/10 checked:bg-celestial-purple checked:border-celestial-purple focus:ring-2 focus:ring-celestial-purple/50 cursor-pointer"
               />
               <span className="text-sm text-white/90 group-hover:text-white transition-colors">
-                Je comprends et j'accepte que cette consultation est une expérience digitale automatisée 
-                utilisant des technologies conversationnelles avancées. J'accepte les{' '}
+                J'accepte les{' '}
                 <a href="/terms" className="text-celestial-gold hover:underline" target="_blank">
                   conditions générales
                 </a>
@@ -176,8 +168,7 @@ export default function ConsentPage() {
         {/* Legal Footer */}
         <div className="mt-6 text-center text-xs text-white/40">
           <p>
-            Conformément à l'Article 50 du Règlement européen sur l'IA • 
-            Votre consentement est horodaté et stocké
+            Votre acceptation est horodatée et conservée avec votre compte.
           </p>
         </div>
       </div>

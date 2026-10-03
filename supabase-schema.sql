@@ -94,7 +94,9 @@ BEGIN
 END;
 $$;
 
--- RLS désactivé (accès serveur uniquement, comme l'ancien projet).
-GRANT USAGE ON SCHEMA callastral TO anon, authenticated, service_role;
-GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA callastral TO anon, authenticated, service_role;
-GRANT EXECUTE ON ALL FUNCTIONS IN SCHEMA callastral TO anon, authenticated, service_role;
+-- Accès serveur uniquement. anon / authenticated : aucun droit sur les tables.
+GRANT USAGE ON SCHEMA callastral TO service_role;
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA callastral TO service_role;
+GRANT EXECUTE ON ALL FUNCTIONS IN SCHEMA callastral TO service_role;
+REVOKE ALL ON ALL TABLES IN SCHEMA callastral FROM anon, authenticated;
+REVOKE ALL ON ALL FUNCTIONS IN SCHEMA callastral FROM anon, authenticated;

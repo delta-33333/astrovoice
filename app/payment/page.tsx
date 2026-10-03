@@ -3,7 +3,8 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import type { BirthData } from '@/lib/types';
-import { getAstrologerById } from '@/lib/astrologers';
+import AdvisorAvatar from '@/components/AdvisorAvatar';
+import { useAdvisor } from '@/components/use-advisor';
 import {
   CALL_HOLD_CENTS,
   formatCurrency,
@@ -16,6 +17,7 @@ export default function PaymentPage() {
   const router = useRouter();
   const [birthData, setBirthData] = useState<BirthData | null>(null);
   const [astrologerId, setAstrologerId] = useState<string | null>(null);
+  const { advisor, status: advisorStatus } = useAdvisor(astrologerId);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [sheetOpen, setSheetOpen] = useState(false);
@@ -37,7 +39,6 @@ export default function PaymentPage() {
     setAstrologerId(astrId);
   }, [router]);
 
-  const astrologer = astrologerId ? getAstrologerById(astrologerId) : null;
   const holdLabel = formatCurrency(CALL_HOLD_CENTS);
 
   const continueToCall = useCallback(
@@ -50,7 +51,7 @@ export default function PaymentPage() {
   );
 
   const handlePayment = async () => {
-    if (!birthData || !astrologerId) return;
+    if (!birthData || !advisor) return;
 
     setIsLoading(true);
     setError(null);
@@ -61,7 +62,7 @@ export default function PaymentPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           birthData,
-          astrologerId,
+          astrologerId: advisor.id,
         }),
       });
 
@@ -91,10 +92,18 @@ export default function PaymentPage() {
     setSheetOpen(false);
   }, []);
 
-  if (!birthData || !astrologer) {
+  if (!birthData || advisorStatus === 'idle' || advisorStatus === 'loading') {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-white/60">Chargement...</div>
+      </div>
+    );
+  }
+
+  if (!advisor) {
+    return (
+      <div className="min-h-screen flex items-center justify-center px-4">
+        <div className="text-white/70 text-center">Conseiller introuvable.</div>
       </div>
     );
   }
@@ -113,12 +122,12 @@ export default function PaymentPage() {
 
         <div className="bg-white/5 backdrop-blur-sm p-8 rounded-3xl border border-white/10 space-y-6 mb-8">
           <div className="flex items-center gap-4 pb-6 border-b border-white/10">
-            <div className="text-5xl">{astrologer.avatar}</div>
+            <AdvisorAvatar advisor={advisor} size="md" />
             <div>
               <h2 className="text-2xl font-[family-name:var(--font-cinzel)] font-semibold">
-                {astrologer.name}
+                {advisor.name}
               </h2>
-              <p className="text-white/60 text-sm">{astrologer.specialties.join(' • ')}</p>
+              <p className="text-white/60 text-sm">{advisor.specialties.join(' • ')}</p>
             </div>
           </div>
 

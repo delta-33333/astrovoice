@@ -3,7 +3,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import type { BirthData, NatalChart } from '@/lib/types';
-import { getAstrologerById } from '@/lib/astrologers';
+import AdvisorAvatar from '@/components/AdvisorAvatar';
+import { useAdvisor } from '@/components/use-advisor';
 import { formatDuration, formatCurrency } from '@/lib/utils';
 import { CALL_HOLD_CENTS, INTRO_CENTS, INTRO_SECONDS, PER_MINUTE_CENTS, quoteCall } from '@/lib/pricing';
 import {
@@ -123,7 +124,9 @@ export default function CallPage() {
   const astrologerIdRef = useRef<string | null>(null);
   const astrologerNameRef = useRef<string | undefined>(undefined);
 
-  const astrologer = astrologerId ? getAstrologerById(astrologerId) : null;
+  const { advisor: astrologer, status: advisorStatus } = useAdvisor(astrologerId);
+  astrologerNameRef.current = astrologer?.name;
+  if (astrologer) astrologerIdRef.current = astrologer.id;
   const quote = quoteCall(callDuration, prepaidSeconds);
   const currentCost = quote.amountCents;
 
@@ -251,7 +254,6 @@ export default function CallPage() {
 
     setAstrologerId(astrId);
     astrologerIdRef.current = astrId;
-    astrologerNameRef.current = getAstrologerById(astrId)?.name;
     sessionRef.current = sessionStorage.getItem('sessionId');
     checkoutRef.current = sessionStorage.getItem('checkoutSessionId');
 
@@ -357,7 +359,7 @@ export default function CallPage() {
   };
 
   const startCall = () => {
-    if (phaseRef.current !== 'ready' || !birthData || !astrologerId) return;
+    if (phaseRef.current !== 'ready' || !birthData || !astrologerId || !astrologer) return;
     setError(null);
     setTranscript([]);
     setCallDuration(0);
@@ -397,7 +399,7 @@ export default function CallPage() {
       },
     });
 
-    void runCall(ctx, resumePromise, micPromise, birthData, astrologerId);
+    void runCall(ctx, resumePromise, micPromise, birthData, astrologer?.id ?? astrologerId);
   };
 
   const runCall = async (
@@ -646,7 +648,11 @@ export default function CallPage() {
   if (!birthData || !astrologer) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="text-white/60">Chargement...</div>
+        <div className="text-white/60">
+          {advisorStatus === 'missing' || advisorStatus === 'error'
+            ? 'Conseiller introuvable'
+            : 'Chargement...'}
+        </div>
       </div>
     );
   }
@@ -657,7 +663,9 @@ export default function CallPage() {
     <main className="min-h-screen flex items-center justify-center px-4 py-8">
       <div className="max-w-4xl w-full">
         <div className="text-center mb-8">
-          <div className="text-6xl mb-4 animate-float">{astrologer.avatar}</div>
+          <div className="flex justify-center mb-4">
+            <AdvisorAvatar advisor={astrologer} size="xl" />
+          </div>
           <h1 className="text-3xl font-[family-name:var(--font-cinzel)] font-bold mb-2">
             {astrologer.name}
           </h1>

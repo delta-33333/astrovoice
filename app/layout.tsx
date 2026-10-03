@@ -32,7 +32,7 @@ export default function RootLayout({
         <meta name="theme-color" content="#6b46c1" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-        <meta name="apple-mobile-web-app-title" content="Lunara" />
+        <meta name="apple-mobile-web-app-title" content="Callastral" />
         <link rel="apple-touch-icon" href="/icon.svg" />
       </head>
       <body className={inter.className}>

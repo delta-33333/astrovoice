@@ -1,15 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { evaluateVoiceCallAccess } from '@/lib/credits';
 import { getSession } from '@/lib/session';
-import { getAstrologerById } from '@/lib/astrologers';
-import { getAstrologerVoice, getVoiceSystemPrompt } from '@/lib/voice-prompts';
+import { getAdvisorById } from '@/lib/astrologers';
+import { getVoiceSystemPrompt } from '@/lib/voice-prompts';
 import type { BirthData, NatalChart } from '@/lib/types';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 const MODEL = 'grok-voice-latest';
-const LANGUAGE = 'fr';
 
 function asString(value: unknown, max: number): string | null {
   if (typeof value !== 'string') return null;
@@ -63,7 +62,7 @@ export async function POST(request: NextRequest) {
 
     const body = await request.json().catch(() => null);
     const birthData = asBirthData(body?.birthData);
-    const astrologerId = asString(body?.astrologerId, 40);
+    const astrologerId = asString(body?.astrologerId, 80);
     const natalChart = asNatalChart(body?.natalChart);
     const checkoutSessionId = asString(body?.checkoutSessionId, 200);
 
@@ -71,7 +70,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Données manquantes' }, { status: 400 });
     }
 
-    const astrologer = getAstrologerById(astrologerId);
+    const astrologer = await getAdvisorById(astrologerId);
     if (!astrologer) {
       return NextResponse.json({ error: 'Astrologue introuvable' }, { status: 404 });
     }
@@ -125,9 +124,9 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({
       token: secret.value,
       model: MODEL,
-      voice: getAstrologerVoice(astrologer.id),
-      instructions: getVoiceSystemPrompt(astrologer.id, astrologer.name, birthData, natalChart),
-      language: LANGUAGE,
+      voice: astrologer.voiceId,
+      instructions: getVoiceSystemPrompt(astrologer, birthData, natalChart),
+      language: astrologer.languages[0] || 'fr',
       prepaidSeconds: access.prepaidSeconds,
       metered: access.metered,
     });

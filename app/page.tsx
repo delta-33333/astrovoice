@@ -1,5 +1,6 @@
 import Link from "next/link";
 import InstallPrompt from "@/components/InstallPrompt";
+import { VIRTUAL_ADVISOR_DISCLOSURE } from "@/lib/legal";
 
 export default function LandingPage() {
   return (
@@ -70,10 +71,7 @@ export default function LandingPage() {
               {/* Badge */}
               <div className="flex flex-wrap items-center justify-center gap-3 mb-6">
                 <div className="bg-celestial-gold text-celestial-darker px-4 py-2 rounded-full text-sm font-bold">
-                  ⭐ Cercle Fondateur
-                </div>
-                <div className="bg-white/10 backdrop-blur-sm text-white/90 px-4 py-2 rounded-full text-sm font-semibold border border-white/20">
-                  100 places uniquement
+                  Cercle Fondateur
                 </div>
               </div>
 
@@ -83,7 +81,7 @@ export default function LandingPage() {
               </h2>
               
               <p className="text-center text-white/80 text-lg mb-8 max-w-xl mx-auto">
-                Rejoignez les membres fondateurs de Callastral et bénéficiez d'un accès privilégié à vie
+                Dix minutes de consultation pour 4,90 €, une fois par compte.
               </p>
 
               {/* Main offer */}
@@ -111,40 +109,37 @@ export default function LandingPage() {
                 <div className="flex items-start gap-3 bg-white/5 backdrop-blur-sm rounded-xl p-4 border border-white/10">
                   <span className="text-celestial-gold text-xl">✓</span>
                   <div>
-                    <p className="font-semibold text-sm">Badge Membre Fondateur</p>
-                    <p className="text-xs text-white/60">Statut privilégié permanent</p>
+                    <p className="font-semibold text-sm">10 minutes</p>
+                    <p className="text-xs text-white/60">Pour 4,90 €, une fois par compte</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3 bg-white/5 backdrop-blur-sm rounded-xl p-4 border border-white/10">
                   <span className="text-celestial-gold text-xl">✓</span>
                   <div>
-                    <p className="font-semibold text-sm">Astrologue personnel</p>
-                    <p className="text-xs text-white/60">Continuité garantie</p>
+                    <p className="font-semibold text-sm">Même conseiller</p>
+                    <p className="text-xs text-white/60">Vous pouvez le rappeler ensuite</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3 bg-white/5 backdrop-blur-sm rounded-xl p-4 border border-white/10">
                   <span className="text-celestial-gold text-xl">✓</span>
                   <div>
-                    <p className="font-semibold text-sm">Horoscope du matin</p>
-                    <p className="text-xs text-white/60">Basé sur votre thème natal</p>
+                    <p className="font-semibold text-sm">Thème natal</p>
+                    <p className="text-xs text-white/60">Date, heure et lieu de naissance</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3 bg-white/5 backdrop-blur-sm rounded-xl p-4 border border-white/10">
                   <span className="text-celestial-gold text-xl">✓</span>
                   <div>
-                    <p className="font-semibold text-sm">Accès anticipé</p>
-                    <p className="text-xs text-white/60">Nouvelles fonctionnalités en avant-première</p>
+                    <p className="font-semibold text-sm">Ensuite, le tarif habituel</p>
+                    <p className="text-xs text-white/60">1,49 €/min ou packs de minutes</p>
                   </div>
                 </div>
               </div>
 
               {/* Urgency */}
-              <div className="text-center mb-6 space-y-2">
-                <p className="text-white/60 text-sm">
-                  <span className="text-celestial-gold font-semibold">Offre de lancement — 30 jours</span>
-                </p>
+              <div className="text-center mb-6">
                 <p className="text-white/50 text-xs">
-                  Places limitées • Premier arrivé, premier servi
+                  Une fois par compte, après inscription.
                 </p>
               </div>
 
@@ -254,9 +249,6 @@ export default function LandingPage() {
               </div>
 
               <div className="p-6 rounded-xl bg-celestial-purple/20 backdrop-blur-sm border border-celestial-purple/40 space-y-3 text-center relative">
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-celestial-gold text-celestial-dark text-xs font-bold rounded-full">
-                  Populaire
-                </div>
                 <div className="text-2xl font-bold text-celestial-gold">34,90 €</div>
                 <div className="text-lg font-semibold">Pack 30 min</div>
                 <div className="text-xs text-white/50">1,16 €/min</div>
@@ -282,6 +274,16 @@ export default function LandingPage() {
           </h2>
           
           <div className="max-w-3xl mx-auto space-y-6">
+            <details className="group p-6 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10" open>
+              <summary className="cursor-pointer text-lg font-semibold list-none flex items-center justify-between">
+                <span>Qui sont les conseillers Callastral ?</span>
+                <span className="text-celestial-gold transition-transform group-open:rotate-180">↓</span>
+              </summary>
+              <p className="mt-4 text-white/70 text-sm leading-relaxed">
+                {VIRTUAL_ADVISOR_DISCLOSURE}
+              </p>
+            </details>
+
             <details className="group p-6 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10">
               <summary className="cursor-pointer text-lg font-semibold list-none flex items-center justify-between">
                 <span>Est-ce vraiment mon thème natal qui guide la consultation ?</span>
@@ -318,7 +320,7 @@ export default function LandingPage() {
                 <span className="text-celestial-gold transition-transform group-open:rotate-180">↓</span>
               </summary>
               <p className="mt-4 text-white/70 text-sm leading-relaxed">
-                Nous lançons actuellement Callastral avec une offre spéciale "Cercle Fondateur" pour nos 100 premiers membres. C'est une vraie opportunité de rejoindre un service premium dès son lancement, à des tarifs exceptionnels. Cette offre ne compromet en aucun cas la qualité de nos consultations — elle reflète notre volonté de bâtir une communauté solide de passionnés d'astrologie. Au-delà de l'offre de lancement, nos tarifs restent accessibles grâce à la consultation vocale à distance et notre disponibilité 24/7, qui nous permettent d'optimiser nos coûts sans sacrifier l'expertise astrologique.
+                La consultation à la minute est à 0,99 € pendant les trois premières minutes, puis 1,49 €. L’offre fondateur est de 10 minutes pour 4,90 €, une fois par compte. Les packs de minutes sont à 12,90 €, 34,90 € et 59,90 €.
               </p>
             </details>
 
@@ -386,6 +388,11 @@ export default function LandingPage() {
         {/* Footer */}
         <footer className="pt-16 pb-8 text-center text-white/40 text-xs border-t border-white/10">
           <p>© {new Date().getFullYear()} Callastral — Consultations astrologiques personnalisées</p>
+          <p className="mt-3 space-x-4">
+            <Link href="/faq" className="hover:text-white/70">Questions fréquentes</Link>
+            <Link href="/terms" className="hover:text-white/70">Conditions générales</Link>
+            <Link href="/privacy" className="hover:text-white/70">Confidentialité</Link>
+          </p>
         </footer>
 
       </div>
