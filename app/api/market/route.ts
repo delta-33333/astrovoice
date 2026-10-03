@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { MARKET_COOKIE, marketCookieOptions, resolveMarket } from '@/lib/market';
-import { convertEurCents, formatMoney, isAdvisorLang, isCurrency, MAX_EUR_CENTS, MIN_EUR_CENTS } from '@/lib/money';
+import { convertEurCents, formatMoney, isAdvisorLang, isCurrency, perMinuteRange } from '@/lib/money';
 import {
   COMPATIBILITY_REPORT_EUR_CENTS,
   FORECAST_REPORT_EUR_CENTS,
@@ -20,13 +20,15 @@ export async function GET() {
   const money = (eurCents: number) =>
     formatMoney(convertEurCents(eurCents, market.currency, market.rates), market.currency);
 
+  const range = perMinuteRange(market.currency, market.rates);
+
   return NextResponse.json({
     language: market.language,
     currency: market.currency,
     summaryLabel: money(SUMMARY_CENTS),
     foundingLabel: money(490),
-    floorLabel: money(MIN_EUR_CENTS),
-    ceilingLabel: money(MAX_EUR_CENTS),
+    floorLabel: range.floor,
+    ceilingLabel: range.ceiling,
     offers: {
       subscriptionLabel: formatMoney(
         convertEurCents(SUBSCRIPTION_EUR_CENTS, subscriptionCurrency(market.currency), market.rates),

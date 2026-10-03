@@ -1,4 +1,4 @@
-import { AI_ACT_SPOKEN } from './legal';
+import { AI_ACT_SPOKEN, AI_ACT_SPOKEN_FEMININE } from './legal';
 import type { BirthData, NatalChart, VoiceId } from './types';
 
 const VOICES: readonly VoiceId[] = ['ara', 'eve', 'leo', 'rex', 'sal'];
@@ -55,6 +55,7 @@ export function getVoiceSystemPrompt(
     lastName: string;
     personaPrompt: string;
     languages: string[];
+    gender?: 'femme' | 'homme' | null;
   },
   birthData: BirthData,
   natalChart: NatalChart
@@ -72,7 +73,8 @@ export function getVoiceSystemPrompt(
     de: 'Horoskop (Kurzfassung)',
     it: 'Tema (riassunto)',
   };
-  const spoken = AI_ACT_SPOKEN[lang as keyof typeof AI_ACT_SPOKEN] ?? AI_ACT_SPOKEN.fr;
+  const spokenSet = advisor.gender === 'femme' ? AI_ACT_SPOKEN_FEMININE : AI_ACT_SPOKEN;
+  const spoken = spokenSet[lang as keyof typeof AI_ACT_SPOKEN] ?? spokenSet.fr;
   const opening: Record<string, string> = {
     fr: `Ouverture obligatoire. Ta toute première phrase, avant toute salutation, est exactement : « ${spoken} » Ensuite seulement, poursuis.`,
     en: `Mandatory opening. Your very first sentence, before any greeting, is exactly: "${spoken}" Only then continue.`,

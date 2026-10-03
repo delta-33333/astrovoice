@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import AdvisorAvatar from '@/components/AdvisorAvatar';
 import AiDisclosure from '@/components/AiDisclosure';
+import { localizedBio } from '@/lib/advisor-bio';
 import TrustNotes from '@/components/TrustNotes';
 import { BADGE_LABELS, languageLabel, styleLabel } from '@/lib/advisor-badges';
 import { bookPath } from '@/lib/book-path';
@@ -101,7 +102,7 @@ export default function AdvisorProfile({
           <AdvisorAvatar advisor={advisor} size="lg" />
           <div>
             <h1 className="font-[family-name:var(--font-cinzel)] text-3xl">{advisor.name}</h1>
-            <AiDisclosure className="mt-2" />
+            <AiDisclosure gender={advisor.gender} className="mt-2" />
             <p className="text-sm text-white/55 mt-1">
               {advisor.age} ans · {advisor.languages.map(languageLabel).join(' · ')} · {styleLabel(advisor.readingStyle)}
             </p>
@@ -127,7 +128,7 @@ export default function AdvisorProfile({
           <p className="mt-4 text-celestial-gold">{advisor.availability.scarcity}</p>
         )}
 
-        <p className="mt-4 text-white/75 leading-relaxed">{advisor.bio}</p>
+        <p className="mt-4 text-white/75 leading-relaxed">{localizedBio(advisor, 'fr')}</p>
 
         <div className="flex flex-wrap gap-2 mt-4">
           {advisor.specialties.map((item) => (

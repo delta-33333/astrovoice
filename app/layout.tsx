@@ -12,7 +12,7 @@ const cinzel = Cinzel({ subsets: ["latin"], variable: "--font-cinzel", weight: [
 export const metadata: Metadata = {
   metadataBase: new URL(appBaseUrl()),
   title: "Callastral — Consultation Astrologique Personnalisée",
-  description: "Consultation astrologique vocale 24/7 basée sur votre thème natal complet. Votre astrologue personnel qui vous connaît et se souvient.",
+  description: "Consultation astrologique par téléphone, 24 h/24, à partir de votre thème natal. Le tarif de chaque conseiller est affiché avant le paiement.",
   manifest: "/manifest.json",
   icons: {
     icon: [
@@ -27,8 +27,8 @@ export const metadata: Metadata = {
     title: "Callastral",
   },
   openGraph: {
-    title: "Callastral — Votre astrologue personnel 24/7",
-    description: "Consultation astrologique vocale basée sur votre thème natal. Disponible 24/7, continuité garantie.",
+    title: "Callastral — Consultation astrologique 24 h/24",
+    description: "Consultation astrologique par téléphone à partir de votre thème natal, 24 h/24.",
     type: "website",
   },
 };

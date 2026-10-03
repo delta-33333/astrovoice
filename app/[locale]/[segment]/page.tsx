@@ -107,13 +107,13 @@ export default async function SpecialtyHub(props: { params: Promise<{ locale: st
         <p className="mt-4 text-white/80 leading-relaxed">{hubIntro(locale, specialty)}</p>
         <ul className="mt-8 space-y-4">
           {matching.map((advisor) => {
-            const quote = quoteAdvisor(advisor.pricePerMinCents, currency, rates);
+            const quote = quoteAdvisor(advisor.pricePerMinCents, currency, rates, undefined, locale);
             return (
               <li key={advisor.id} className="rounded-2xl border border-white/10 p-4">
                 <h2 className="text-xl">
                   <Link href={advisorPath(locale, advisor.slug)} className="hover:text-celestial-gold">{advisor.name}</Link>
                 </h2>
-                <AiDisclosure locale={locale} className="mt-1" />
+                <AiDisclosure locale={locale} gender={advisor.gender} className="mt-1" />
                 <p className="text-sm text-white/70 mt-1">
                   {quote.introLabel} · {advisor.languages.map((code) => languageLabel(locale, code)).join(', ')}
                 </p>
