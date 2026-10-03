@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import CallScreen from '@/components/CallScreen';
 import { useAdvisor } from '@/components/use-advisor';
 import type { BirthData } from '@/lib/types';
+import { loadBirthData } from '@/lib/birth-client';
 
 export default function CallPage() {
   const router = useRouter();
@@ -19,15 +20,8 @@ export default function CallPage() {
   const sessionRef = useRef<string | null>(null);
 
   useEffect(() => {
-    const data = sessionStorage.getItem('birthData');
     const astrId = sessionStorage.getItem('astrologerId');
-    if (!data || !astrId) {
-      router.push('/birth');
-      return;
-    }
-    try {
-      setBirthData(JSON.parse(data) as BirthData);
-    } catch {
+    if (!astrId) {
       router.push('/birth');
       return;
     }
@@ -37,6 +31,13 @@ export default function CallPage() {
 
     const bookingId = sessionStorage.getItem('bookingId');
     const load = async () => {
+      const birth = await loadBirthData();
+      if (!birth) {
+        sessionStorage.setItem('afterBirth', '/call');
+        router.push('/birth');
+        return;
+      }
+      setBirthData(birth);
       const me = await fetch('/api/auth/me').then((response) => response.json()).catch(() => null);
       if (!me?.authenticated) {
         router.push('/auth');

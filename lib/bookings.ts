@@ -20,7 +20,9 @@ import { appBaseUrl } from './stripe';
 
 export type BookingDuration = (typeof BOOKING_DURATIONS)[number];
 
-const JOIN_LEAD_MS = 5 * 60 * 1000;
+// Aligné sur la fenêtre « Maintenant » (15 min) : un client qui paie « Appeler maintenant »
+// pour un créneau qui démarre dans 6 à 15 min doit pouvoir rejoindre tout de suite.
+export const JOIN_LEAD_MS = 15 * 60 * 1000;
 const IMMEDIATE_MS = 15 * 60 * 1000;
 
 export function isBookingDuration(value: number): value is BookingDuration {
@@ -396,7 +398,7 @@ export async function sendBookingConfirmation(booking: BookingRow): Promise<void
 <li>Montant réglé : ${escapeHtml(money(booking.amount_cents, booking.currency))}</li>
 </ul>
 <p><a href="${link}">Rejoindre l'appel</a></p>
-<p>Le lien s'ouvre 5 minutes avant le début.</p>`,
+<p>Le lien s'ouvre 15 minutes avant le début.</p>`,
   });
 }
 
@@ -417,7 +419,7 @@ export async function sendBookingReminder(booking: BookingRow): Promise<boolean>
     html: `<p>Bonjour ${escapeHtml(user.display_name || '')},</p>
 <p>Votre consultation avec ${escapeHtml(name)} commence à ${escapeHtml(parisWhen(booking.starts_at))} (heure de Paris).</p>
 <p><a href="${origin}/call/${booking.id}">Rejoindre l'appel</a></p>
-<p>Le lien s'ouvre 5 minutes avant le début.</p>`,
+<p>Le lien s'ouvre 15 minutes avant le début.</p>`,
   });
   return sent;
 }
@@ -467,6 +469,13 @@ export async function cancelBooking(booking: BookingRow, user: UserProfile): Pro
   if (booking.status !== 'confirmed') throw new Error('INVALID');
   const start = new Date(booking.starts_at).getTime();
   if (start <= Date.now()) throw new Error('TOO_LATE');
+  // Appel déjà commencé en avance (fenêtre de 15 min) : plus d'annulation.
+  const started = await getSupabaseAdmin()
+    .from('call_sessions')
+    .select('id')
+    .eq('booking_id', booking.id)
+    .limit(1);
+  if (!started.error && (started.data?.length ?? 0) > 0) throw new Error('TOO_LATE');
 
   const minutesBefore = (start - Date.now()) / 60000;
   const fullValue = booking.amount_cents + booking.credit_cents;

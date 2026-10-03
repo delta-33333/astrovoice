@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import AiDisclosure from '@/components/AiDisclosure';
+import { loadBirthData } from '@/lib/birth-client';
 
 interface View {
   id: string;
@@ -21,19 +22,40 @@ export default function JoinCallPage() {
   const [booking, setBooking] = useState<View | null>(null);
   const [error, setError] = useState<string | null>(null);
 
+  const [now, setNow] = useState(() => Date.now());
+  const [joining, setJoining] = useState(false);
+
   useEffect(() => {
-    fetch(`/api/bookings/${params.bookingId}`)
-      .then(async (response) => {
-        const body = await response.json();
-        if (!response.ok) throw new Error(body.error || 'Introuvable');
-        setBooking(body.booking);
-      })
-      .catch((err) => setError(err instanceof Error ? err.message : 'Introuvable'));
+    let cancelled = false;
+    const load = () =>
+      fetch(`/api/bookings/${params.bookingId}`, { cache: 'no-store' })
+        .then(async (response) => {
+          const body = await response.json();
+          if (!response.ok) throw new Error(body.error || 'Introuvable');
+          if (!cancelled) setBooking(body.booking);
+        })
+        .catch((err) => {
+          if (!cancelled) setError(err instanceof Error ? err.message : 'Introuvable');
+        });
+    void load();
+    // Rafraîchit tant que l'appel n'est pas ouvert : le bouton apparaît sans recharger la page.
+    const poll = window.setInterval(() => {
+      setNow(Date.now());
+      void load();
+    }, 15000);
+    const tick = window.setInterval(() => setNow(Date.now()), 1000);
+    return () => {
+      cancelled = true;
+      window.clearInterval(poll);
+      window.clearInterval(tick);
+    };
   }, [params.bookingId]);
 
-  const join = () => {
-    if (!booking?.canJoin) return;
-    if (!sessionStorage.getItem('birthData')) {
+  const join = async () => {
+    if (!booking?.canJoin || joining) return;
+    setJoining(true);
+    const birth = await loadBirthData();
+    if (!birth) {
       sessionStorage.setItem('afterBirth', `/call/${booking.id}`);
       sessionStorage.setItem('astrologerId', booking.advisorId);
       router.push('/birth');
@@ -62,6 +84,8 @@ export default function JoinCallPage() {
     minute: '2-digit',
   }).format(new Date(booking.startsAt));
 
+  const opensIn = Math.max(0, Math.ceil((new Date(booking.startsAt).getTime() - 15 * 60 * 1000 - now) / 1000));
+
   return (
     <main className="min-h-screen px-4 py-12">
       <div className="max-w-md mx-auto text-center space-y-5">
@@ -70,9 +94,13 @@ export default function JoinCallPage() {
         <p className="text-white/70">{when}</p>
         <p className="text-white/70">{booking.durationMin} minutes</p>
         {booking.canJoin ? (
-          <button type="button" onClick={join} className="btn-primary w-full">Rejoindre l’appel</button>
+          <button type="button" onClick={() => void join()} disabled={joining} className="btn-primary w-full disabled:opacity-60">Rejoindre l’appel</button>
         ) : (
-          <p className="text-white/60">L’appel s’ouvre 5 minutes avant le début.</p>
+          <p className="text-white/60">
+            {opensIn > 0
+              ? `L’appel s’ouvre dans ${Math.floor(opensIn / 60)} min ${String(opensIn % 60).padStart(2, '0')} s, 15 minutes avant le début. Cette page s’actualise seule.`
+              : 'Ouverture de l’appel…'}
+          </p>
         )}
         <Link href={`/bookings/${booking.id}`} className="text-sm text-white/45">Détail de la réservation</Link>
       </div>

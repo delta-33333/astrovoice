@@ -457,7 +457,7 @@ export function homeFaqs(locale: Locale, floor: string, ceiling: string): FaqIte
     ],
     en: [
       { question: 'Who are the Callastral advisors?', answer: disclosure.en },
-      { question: 'How does a phone consultation work?', answer: 'You choose an advisor and a time, then pay. The account is created at that step. The call link opens five minutes before the start.' },
+      { question: 'How does a phone consultation work?', answer: 'You choose an advisor and a time, then pay. The account is created at that step. The call link opens fifteen minutes before the start.' },
       { question: 'What are the prices?', answer: `Each advisor shows a rate between ${floor} and ${ceiling} per minute. The first three minutes use a reduced rate.` },
     ],
     es: [
