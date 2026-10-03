@@ -16,6 +16,9 @@ export default function Logo({ className = '' }: { className?: string }) {
       <img
         src="/logo.png"
         alt="Callastral"
+        width={148}
+        height={32}
+        decoding="async"
         className={ready ? 'h-8 w-auto' : 'hidden'}
         onLoad={() => setReady(true)}
         onError={() => setReady(false)}

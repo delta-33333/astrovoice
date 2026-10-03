@@ -1,14 +1,23 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
+import { headers } from "next/headers";
 import { Inter, Cinzel } from "next/font/google";
+import JsonLd from "@/components/JsonLd";
+import { isLocale, organizationGraph } from "@/lib/seo";
+import { appBaseUrl } from "@/lib/stripe";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const cinzel = Cinzel({ subsets: ["latin"], variable: "--font-cinzel", weight: ["400", "600", "700"] });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(appBaseUrl()),
   title: "Callastral — Consultation Astrologique Personnalisée",
   description: "Consultation astrologique vocale 24/7 basée sur votre thème natal complet. Votre astrologue personnel qui vous connaît et se souvient.",
   manifest: "/manifest.json",
+  icons: {
+    icon: [{ url: "/icon.png", type: "image/png" }],
+    apple: [{ url: "/icon.png", type: "image/png" }],
+  },
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
@@ -21,19 +30,26 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export const viewport: Viewport = {
+  themeColor: "#6b46c1",
+};
+
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const localeHeader = (await headers()).get("x-locale");
+  const lang = localeHeader && isLocale(localeHeader) ? localeHeader : "fr";
+  const origin = appBaseUrl();
   return (
-    <html lang="fr" className={`${inter.variable} ${cinzel.variable}`}>
+    <html lang={lang} className={`${inter.variable} ${cinzel.variable}`}>
       <head>
-        <meta name="theme-color" content="#6b46c1" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <meta name="apple-mobile-web-app-title" content="Callastral" />
-        <link rel="apple-touch-icon" href="/icon.svg" />
+        <link rel="icon" href="/icon.png" type="image/png" />
+        <link rel="apple-touch-icon" href="/icon.png" />
       </head>
       <body className={inter.className}>
         <div className="relative min-h-screen">
@@ -47,6 +63,7 @@ export default function RootLayout({
           <div className="relative z-10">
             {children}
           </div>
+          <JsonLd data={{ '@context': 'https://schema.org', '@graph': organizationGraph(origin) }} />
         </div>
       </body>
     </html>
