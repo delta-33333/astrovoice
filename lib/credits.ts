@@ -1,19 +1,21 @@
 import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 import type Stripe from 'stripe';
 import { getSession, updateUserCookie } from './session';
-import type { UserProfile } from './supabase';
+import { SUPABASE_DB_SCHEMA, type UserProfile } from './supabase';
 import { getStripe } from './stripe';
 
 const UUID_RE =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
-let adminClient: SupabaseClient | null | undefined;
+type AdminClient = SupabaseClient<any, any, any>;
+
+let adminClient: AdminClient | null | undefined;
 
 function isUuid(value: string): boolean {
   return UUID_RE.test(value);
 }
 
-function getAdmin(): SupabaseClient | null {
+function getAdmin(): AdminClient | null {
   if (adminClient !== undefined) return adminClient;
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const key =
@@ -25,6 +27,7 @@ function getAdmin(): SupabaseClient | null {
   }
   adminClient = createClient(url, key, {
     auth: { persistSession: false, autoRefreshToken: false },
+    db: { schema: SUPABASE_DB_SCHEMA },
   });
   return adminClient;
 }
@@ -64,7 +67,7 @@ async function addCookieCredits(
 }
 
 async function incrementDbPrepaid(
-  admin: SupabaseClient,
+  admin: AdminClient,
   userId: string,
   seconds: number
 ): Promise<boolean> {
