@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
+import { confirmBookingPayment } from '@/lib/bookings';
 import { grantPrepaidCredits } from '@/lib/credits';
 import { getStripe } from '@/lib/stripe';
 
@@ -34,6 +35,14 @@ export async function POST(request: NextRequest) {
         if (session.metadata?.purpose === 'prepaid') {
           const result = await grantPrepaidCredits(session, { allowCookie: false });
           console.log('Crédit minutes', session.id, result);
+        } else if (session.metadata?.purpose === 'booking' && session.metadata.booking_id) {
+          const paymentIntent = typeof session.payment_intent === 'string' ? session.payment_intent : null;
+          const result = await confirmBookingPayment({
+            bookingId: session.metadata.booking_id,
+            checkoutSessionId: session.id,
+            paymentIntentId: paymentIntent,
+          });
+          console.log('Réservation', session.id, result);
         } else if (session.metadata?.purpose === 'call_meter') {
           console.log('Empreinte consultation confirmée', session.id, session.payment_status);
         }

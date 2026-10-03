@@ -3,6 +3,10 @@
     {
       "path": "/api/cron/slots",
       "schedule": "*/10 * * * *"
+    },
+    {
+      "path": "/api/cron/reminders",
+      "schedule": "*/10 * * * *"
     }
   ]
 }

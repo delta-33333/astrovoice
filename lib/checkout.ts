@@ -5,7 +5,7 @@ import { getSupabaseAdmin, supabaseAvailable } from './supabase';
 import { updateUserCookie } from './session';
 import { appBaseUrl, getStripe, integrationIdentifier } from './stripe';
 
-export type CheckoutPurpose = 'call_meter' | 'prepaid';
+export type CheckoutPurpose = 'call_meter' | 'prepaid' | 'booking' | 'summary';
 
 function userEmail(user: UserProfile): string | undefined {
   const candidates = [user.email, user.username];
@@ -58,8 +58,8 @@ export async function createElementsCheckout(options: {
   purpose: CheckoutPurpose;
   metadata: Record<string, string>;
   manualCapture: boolean;
-  flow: 'call' | 'pack';
-  integrationFlow: 'call-meter' | 'prepaid';
+  flow: 'call' | 'pack' | 'booking' | 'summary';
+  integrationFlow: 'call-meter' | 'prepaid' | 'booking' | 'summary';
 }): Promise<{
   clientSecret: string;
   checkoutSessionId: string;

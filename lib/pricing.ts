@@ -91,6 +91,12 @@ export function quoteCall(durationSeconds: number, prepaidSeconds: number) {
   };
 }
 
+export const BOOKING_DURATIONS = [10, 20, 30] as const;
+
+export function bookingListPriceCents(durationMin: number): number {
+  return calculateCost(durationMin * 60);
+}
+
 export function formatCurrency(cents: number): string {
   return new Intl.NumberFormat('fr-FR', {
     style: 'currency',

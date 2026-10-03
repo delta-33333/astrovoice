@@ -48,7 +48,9 @@ export default function BirthDataPage() {
 
       // Store in sessionStorage for immediate use
       sessionStorage.setItem('birthData', JSON.stringify(formData));
-      router.push('/preview');
+      const next = sessionStorage.getItem('afterBirth');
+      sessionStorage.removeItem('afterBirth');
+      router.push(next && next.startsWith('/') && !next.startsWith('//') ? next : '/preview');
     } catch (error) {
       console.error('Error saving birth data:', error);
       setErrors(['Erreur lors de la sauvegarde. Veuillez réessayer.']);

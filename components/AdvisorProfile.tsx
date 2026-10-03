@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import AdvisorAvatar from '@/components/AdvisorAvatar';
@@ -41,12 +41,7 @@ export default function AdvisorProfile({
   slots: AdvisorSlot[];
 }) {
   const router = useRouter();
-  const [hasBirthData, setHasBirthData] = useState(false);
   const [selected, setSelected] = useState<string | null>(null);
-
-  useEffect(() => {
-    setHasBirthData(Boolean(sessionStorage.getItem('birthData')));
-  }, []);
 
   const groups = useMemo(() => {
     const map = new Map<string, AdvisorSlot[]>();
@@ -65,7 +60,7 @@ export default function AdvisorProfile({
     sessionStorage.setItem('astrologerId', advisor.id);
     sessionStorage.setItem('slotId', slot.id);
     sessionStorage.setItem('slotStartsAt', slot.startsAt);
-    router.push(hasBirthData ? '/preview' : '/birth');
+    router.push('/book');
   };
 
   return (

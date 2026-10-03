@@ -14,6 +14,8 @@ export default function CallPage() {
   const [astrologerId, setAstrologerId] = useState<string | null>(null);
   const { advisor, status: advisorStatus } = useAdvisor(astrologerId);
   const bootedRef = useRef(false);
+  const bookingCapRef = useRef<number | null>(null);
+  const [bookedCall, setBookedCall] = useState(false);
   const [isConnecting, setIsConnecting] = useState(true);
   const [isConnected, setIsConnected] = useState(false);
   const [callDuration, setCallDuration] = useState(0);
@@ -50,6 +52,9 @@ export default function CallPage() {
     sessionRef.current = sessId;
     checkoutRef.current = checkoutId;
     prepaidRef.current = 0;
+    const cap = Number(sessionStorage.getItem('bookingDurationSec') || 0);
+    bookingCapRef.current = cap > 0 ? cap : null;
+    setBookedCall(cap > 0);
 
     fetch('/api/auth/me')
       .then((response) => response.json())
@@ -110,8 +115,14 @@ export default function CallPage() {
         const elapsed = Math.floor((Date.now() - startTimeRef.current) / 1000);
         setCallDuration(elapsed);
 
+        const cap = bookingCapRef.current;
+        if (cap && elapsed >= cap) {
+          if (timerIntervalRef.current) clearInterval(timerIntervalRef.current);
+          void finishRef.current(elapsed);
+          return;
+        }
         const liveQuote = quoteCall(elapsed, prepaidRef.current);
-        if (liveQuote.capped || liveQuote.amountCents >= CALL_HOLD_CENTS) {
+        if (!cap && (liveQuote.capped || liveQuote.amountCents >= CALL_HOLD_CENTS)) {
           setShowCostAlert(true);
           if (timerIntervalRef.current) {
             clearInterval(timerIntervalRef.current);
@@ -142,6 +153,24 @@ export default function CallPage() {
 
     setIsConnected(false);
     const finalQuote = quoteCall(seconds, prepaidRef.current);
+    const activeBookingId = sessionStorage.getItem('bookingId');
+
+    if (activeBookingId) {
+      try {
+        await fetch(`/api/bookings/${activeBookingId}/complete`, { method: 'POST' });
+      } catch (err) {
+        console.error('Clôture réservation:', err);
+      }
+      sessionStorage.setItem('callComplete', JSON.stringify({
+        durationSeconds: seconds,
+        amountCharged: 0,
+        astrologerName: advisor?.name,
+        astrologerId: advisor?.id ?? astrologerId,
+        bookingId: activeBookingId,
+      }));
+      router.push('/complete');
+      return;
+    }
 
     try {
       const response = await fetch('/api/stripe/finalize-payment', {
@@ -253,10 +282,12 @@ export default function CallPage() {
                   {formatDuration(callDuration)}
                 </div>
                 <div className="text-2xl font-semibold">
-                  {formatCurrency(currentCost)}
+                  {bookedCall ? 'Consultation réservée' : formatCurrency(currentCost)}
                 </div>
                 <div className="text-sm text-white/50">
-                  {quote.coveredSeconds > 0 && quote.amountCents === 0 ? (
+                  {bookedCall ? (
+                    <span>Durée réservée</span>
+                  ) : quote.coveredSeconds > 0 && quote.amountCents === 0 ? (
                     <span className="text-celestial-gold">Inclus dans vos minutes</span>
                   ) : quote.billableSeconds <= INTRO_SECONDS ? (
                     <span className="text-celestial-gold">

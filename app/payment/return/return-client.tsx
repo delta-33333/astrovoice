@@ -42,6 +42,22 @@ export default function ReturnClient() {
         return;
       }
 
+      if (data.purpose === 'booking' && data.paymentStatus === 'paid' && data.status === 'complete') {
+        const confirmed = await fetch('/api/bookings/confirm', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ checkoutSessionId: sessionId }),
+        });
+        const payload = await confirmed.json();
+        if (!confirmed.ok) {
+          setFailed(true);
+          setMessage(payload.error || 'La réservation n’a pas été confirmée.');
+          return;
+        }
+        router.replace(payload.immediate ? `/call/${payload.bookingId}` : `/bookings/${payload.bookingId}`);
+        return;
+      }
+
       if (data.purpose === 'call_meter' && data.status === 'complete' && data.sessionId) {
         sessionStorage.setItem('sessionId', data.sessionId);
         sessionStorage.setItem('checkoutSessionId', sessionId);
