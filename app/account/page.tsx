@@ -3,6 +3,8 @@
 import { FormEvent, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import BirthSummary from '@/components/BirthSummary';
+import type { BirthData } from '@/lib/types';
 
 export default function AccountPage() {
   const router = useRouter();
@@ -28,7 +30,11 @@ export default function AccountPage() {
     } | null;
     reports: Array<{ id: string; title: string; status: string; createdAt: string }>;
     rebook: { percent: number; expiresAt: string } | null;
+    credits?: Array<{ id: string; label: string; expiresAt: string }>;
+    prepaidMinutes?: number;
+    summaries?: Array<{ bookingId: string | null; paidAt: string; emailed: boolean }>;
   } | null>(null);
+  const [birth, setBirth] = useState<BirthData | null | undefined>(undefined);
 
   useEffect(() => {
     fetch('/api/auth/me')
@@ -42,6 +48,10 @@ export default function AccountPage() {
         setDisplayName(payload.user.displayName || '');
         setNextEmail(payload.user.email || '');
         setReady(true);
+        fetch('/api/birth-data', { cache: 'no-store' })
+          .then((response) => (response.ok ? response.json() : null))
+          .then((data) => setBirth(data?.birthData ?? null))
+          .catch(() => setBirth(null));
         fetch('/api/account/billing')
           .then((response) => (response.ok ? response.json() : null))
           .then((payload) => {
@@ -152,6 +162,57 @@ export default function AccountPage() {
             </p>
           )}
         </section>
+
+        <section className="rounded-2xl border border-white/10 bg-white/5 p-4 space-y-3">
+          <h2 className="font-semibold">Thème natal</h2>
+          {birth === undefined ? (
+            <p className="text-sm text-white/50">Chargement…</p>
+          ) : birth ? (
+            <BirthSummary data={birth} next="/account" />
+          ) : (
+            <Link href="/birth?next=%2Faccount" className="btn-secondary inline-block">Renseigner mes coordonnées de naissance</Link>
+          )}
+        </section>
+
+        <section className="rounded-2xl border border-white/10 bg-white/5 p-4 space-y-2">
+          <h2 className="font-semibold">Crédits</h2>
+          {billing?.prepaidMinutes ? (
+            <p className="text-sm text-white/80">{billing.prepaidMinutes} minutes prépayées</p>
+          ) : null}
+          {billing?.credits?.length ? (
+            <ul className="space-y-1 text-sm text-white/80">
+              {billing.credits.map((credit) => (
+                <li key={credit.id}>
+                  Avoir {credit.label}, valable jusqu’au {new Date(credit.expiresAt).toLocaleDateString('fr-FR')}
+                </li>
+              ))}
+            </ul>
+          ) : null}
+          {!billing?.prepaidMinutes && !billing?.credits?.length && (
+            <p className="text-sm text-white/60">Aucun crédit en cours.</p>
+          )}
+          <p className="text-xs text-white/45">Les avoirs sont déduits automatiquement de la prochaine réservation.</p>
+        </section>
+
+        {billing?.summaries?.length ? (
+          <section className="rounded-2xl border border-white/10 bg-white/5 p-4 space-y-2">
+            <h2 className="font-semibold">Résumés écrits</h2>
+            <ul className="space-y-1 text-sm">
+              {billing.summaries.map((summary) => (
+                <li key={`${summary.bookingId}-${summary.paidAt}`} className="text-white/80">
+                  {summary.bookingId ? (
+                    <Link href={`/bookings/${summary.bookingId}`} className="text-celestial-gold underline">
+                      Consultation du {new Date(summary.paidAt).toLocaleDateString('fr-FR')}
+                    </Link>
+                  ) : (
+                    <>Consultation du {new Date(summary.paidAt).toLocaleDateString('fr-FR')}</>
+                  )}
+                  <span className="text-white/45"> · {summary.emailed ? 'envoyé par e-mail' : 'en préparation'}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ) : null}
 
         <section className="rounded-2xl border border-white/10 bg-white/5 p-4 space-y-3">
           <h2 className="font-semibold">Rapports</h2>

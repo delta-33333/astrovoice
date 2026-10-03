@@ -1,9 +1,11 @@
 'use client';
 
-import { FormEvent, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import PaymentSheet from '@/components/PaymentSheet';
+import { birthLine } from '@/components/BirthSummary';
+import type { BirthData } from '@/lib/types';
 
 interface BirthForm {
   name: string;
@@ -76,14 +78,64 @@ function BirthFields({ value, onChange }: { value: BirthForm; onChange: (next: B
   );
 }
 
+/** Coordonnées du compte si elles existent (avec « Modifier »), sinon le formulaire. */
+function AccountBirth({
+  saved,
+  editing,
+  onEdit,
+  value,
+  onChange,
+}: {
+  saved: BirthForm | null;
+  editing: boolean;
+  onEdit: () => void;
+  value: BirthForm;
+  onChange: (next: BirthForm) => void;
+}) {
+  if (saved && saved.name && !editing) {
+    return (
+      <div className="rounded-2xl border border-white/10 bg-white/5 p-3 text-sm text-left">
+        <p className="text-white/50">Vos coordonnées de naissance</p>
+        <p className="text-white/90">{saved.name ? `${saved.name} · ` : ''}{birthLine(saved as BirthData)}</p>
+        <button type="button" className="mt-1 text-celestial-gold underline" onClick={onEdit}>Modifier</button>
+      </div>
+    );
+  }
+  return <BirthFields value={value} onChange={onChange} />;
+}
+
 export default function OffersCatalog({ labels }: { labels: OfferLabels }) {
   const router = useRouter();
   const [natal, setNatal] = useState(emptyBirth);
   const [forecast, setForecast] = useState(emptyBirth);
   const [personA, setPersonA] = useState(emptyBirth);
   const [personB, setPersonB] = useState(emptyBirth);
+  const [saved, setSaved] = useState<BirthForm | null>(null);
+  const [editing, setEditing] = useState({ natal: false, forecast: false, a: false });
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
+
+  // Les coordonnées du compte remplissent le thème, la prévision et la première personne.
+  useEffect(() => {
+    fetch('/api/birth-data', { cache: 'no-store' })
+      .then((response) => (response.ok ? response.json() : null))
+      .then((payload: { birthData?: BirthData | null } | null) => {
+        const data = payload?.birthData;
+        if (!data?.date || !data.place) return;
+        const form: BirthForm = {
+          name: data.name || '',
+          date: data.date,
+          time: data.time || '',
+          timeUnknown: Boolean(data.timeUnknown),
+          place: data.place,
+        };
+        setSaved(form);
+        setNatal(form);
+        setForecast(form);
+        setPersonA(form);
+      })
+      .catch(() => undefined);
+  }, []);
   const [sheetOpen, setSheetOpen] = useState(false);
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [checkoutSessionId, setCheckoutSessionId] = useState<string | null>(null);
@@ -181,7 +233,7 @@ export default function OffersCatalog({ labels }: { labels: OfferLabels }) {
             void payReport('natal_pdf', natal, 'Thème natal', labels.natal);
           }}
         >
-          <BirthFields value={natal} onChange={setNatal} />
+          <AccountBirth saved={saved} editing={editing.natal} onEdit={() => setEditing({ ...editing, natal: true })} value={natal} onChange={setNatal} />
           <button className="btn-primary" type="submit" disabled={busy}>Recevoir le thème</button>
         </form>
       </section>
@@ -196,7 +248,7 @@ export default function OffersCatalog({ labels }: { labels: OfferLabels }) {
             void payReport('forecast', forecast, 'Prévision 2026 et 2027', labels.forecast);
           }}
         >
-          <BirthFields value={forecast} onChange={setForecast} />
+          <AccountBirth saved={saved} editing={editing.forecast} onEdit={() => setEditing({ ...editing, forecast: true })} value={forecast} onChange={setForecast} />
           <button className="btn-primary" type="submit" disabled={busy}>Recevoir la prévision</button>
         </form>
       </section>
@@ -213,7 +265,7 @@ export default function OffersCatalog({ labels }: { labels: OfferLabels }) {
         >
           <div>
             <p className="text-sm text-white/50 mb-2">Première personne</p>
-            <BirthFields value={personA} onChange={setPersonA} />
+            <AccountBirth saved={saved} editing={editing.a} onEdit={() => setEditing({ ...editing, a: true })} value={personA} onChange={setPersonA} />
           </div>
           <div>
             <p className="text-sm text-white/50 mb-2">Deuxième personne</p>

@@ -263,6 +263,7 @@ export async function listReports(userId: string): Promise<Array<Pick<ReportRow,
     .from('reports')
     .select('id, kind, status, created_at, delivered_at')
     .eq('user_id', userId)
+    .neq('status', 'pending') // checkout abandonné : rien n'a été payé
     .order('created_at', { ascending: false })
     .limit(30);
   if (error) {
