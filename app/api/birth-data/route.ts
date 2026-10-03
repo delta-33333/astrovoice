@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { trackEvent } from '@/lib/events';
 import { getSession } from '@/lib/session';
 import { updateUserProfile } from '@/lib/auth';
 
@@ -33,6 +34,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    await trackEvent({ name: 'birth_data', userId: user.id });
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error('Save birth data error:', error);

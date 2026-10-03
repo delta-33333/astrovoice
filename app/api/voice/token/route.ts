@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getAdvisorById } from '@/lib/astrologers';
 import { canJoinCall, getBooking } from '@/lib/bookings';
 import { ensureCallSession } from '@/lib/call-records';
+import { trackEvent } from '@/lib/events';
 import { getSession } from '@/lib/session';
 import type { BirthData, NatalChart } from '@/lib/types';
 import { getVoiceSystemPrompt } from '@/lib/voice-prompts';
@@ -41,6 +42,12 @@ export async function POST(request: NextRequest) {
 
   const advisor = await getAdvisorById(advisorId);
   if (!advisor) return NextResponse.json({ error: 'Conseiller introuvable' }, { status: 404 });
+  await trackEvent({
+    name: 'call_started',
+    userId: user.id,
+    advisorId: advisor.id,
+    bookingId,
+  });
 
   let callSessionId: string | null = null;
   try {

@@ -60,6 +60,15 @@ export default function AdvisorProfile({
     sessionStorage.setItem('astrologerId', advisor.id);
     sessionStorage.setItem('slotId', slot.id);
     sessionStorage.setItem('slotStartsAt', slot.startsAt);
+    void fetch('/api/events', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: 'slot_selected',
+        advisorId: advisor.id,
+        metadata: { slotId: slot.id },
+      }),
+    });
     router.push('/book');
   };
 

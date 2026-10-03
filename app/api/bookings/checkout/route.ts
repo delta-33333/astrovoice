@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { confirmBookingPayment, getBooking, isImmediateStart } from '@/lib/bookings';
+import { trackEvent } from '@/lib/events';
 import { createElementsCheckout } from '@/lib/checkout';
 import { formatCurrency } from '@/lib/pricing';
 import { getSession } from '@/lib/session';
@@ -33,6 +34,13 @@ export async function POST(request: NextRequest) {
   }
 
   if (booking.amount_cents === 0) {
+    await trackEvent({
+      name: 'checkout_started',
+      userId: user.id,
+      advisorId: booking.advisor_id,
+      bookingId: booking.id,
+      metadata: { purpose: 'booking' },
+    });
     await confirmBookingPayment({
       bookingId: booking.id,
       checkoutSessionId: `credit_${booking.id}`,
@@ -61,6 +69,13 @@ export async function POST(request: NextRequest) {
       manualCapture: false,
       flow: 'booking',
       integrationFlow: 'booking',
+    });
+    await trackEvent({
+      name: 'checkout_started',
+      userId: user.id,
+      advisorId: booking.advisor_id,
+      bookingId: booking.id,
+      metadata: { purpose: 'booking' },
     });
 
     return NextResponse.json({

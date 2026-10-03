@@ -1,3 +1,4 @@
+import { trackEvent } from './events';
 import { BOOKING_DURATIONS, bookingListPriceCents, formatCurrency } from './pricing';
 import { recipientEmail, sendMail } from './email';
 import { getSupabaseAdmin, supabaseAvailable, type UserProfile } from './supabase';
@@ -120,7 +121,16 @@ export async function confirmBookingPayment(input: {
   const status = String(data) as 'confirmed' | 'already' | 'missing' | 'invalid';
   if (status === 'confirmed') {
     const booking = await getBooking(input.bookingId);
-    if (booking) await sendBookingConfirmation(booking);
+    if (booking) {
+      await sendBookingConfirmation(booking);
+      await trackEvent({
+        name: 'paid',
+        userId: booking.user_id,
+        advisorId: booking.advisor_id,
+        bookingId: booking.id,
+        metadata: { purpose: 'booking' },
+      });
+    }
   }
   return status;
 }

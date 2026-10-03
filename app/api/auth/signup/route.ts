@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { createUser } from '@/lib/auth';
+import { trackEvent } from '@/lib/events';
 import { createSession } from '@/lib/session';
 import { supabaseAvailable } from '@/lib/supabase';
 
@@ -47,6 +48,7 @@ export async function POST(request: NextRequest) {
         }
 
         await createSession(result.userId!);
+        await trackEvent({ name: 'signup', userId: result.userId });
 
         return NextResponse.json({
           success: true,

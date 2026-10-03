@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getBooking } from '@/lib/bookings';
+import { trackEvent } from '@/lib/events';
 import { getSupabaseAdmin } from '@/lib/supabase';
 import { getSession } from '@/lib/session';
 
@@ -27,5 +28,11 @@ export async function POST(
     .eq('id', booking.id)
     .eq('status', 'confirmed');
   if (error) return NextResponse.json({ error: 'Clôture impossible' }, { status: 500 });
+  await trackEvent({
+    name: 'call_completed',
+    userId: user.id,
+    advisorId: booking.advisor_id,
+    bookingId: booking.id,
+  });
   return NextResponse.json({ ok: true });
 }

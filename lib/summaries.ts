@@ -1,4 +1,5 @@
 import { ensureCallSession, getCallSessionByBooking, type CallSessionRow, type TranscriptLine } from './call-records';
+import { trackEvent } from './events';
 import { recipientEmail, sendMail } from './email';
 import { SUMMARY_CENTS, formatCurrency } from './pricing';
 import { appBaseUrl } from './stripe';
@@ -238,7 +239,7 @@ export async function markSummaryPaid(bookingId: string, checkoutSessionId: stri
     bookingId,
   });
 
-  await admin
+  const paid = await admin
     .from('call_sessions')
     .update({
       summary_paid_at: new Date().toISOString(),
@@ -246,7 +247,23 @@ export async function markSummaryPaid(bookingId: string, checkoutSessionId: stri
       summary_declined: false,
     })
     .eq('booking_id', bookingId)
-    .is('summary_paid_at', null);
+    .is('summary_paid_at', null)
+    .select('id');
+  if (paid.data?.length) {
+    await trackEvent({
+      name: 'paid',
+      userId: booking.user_id,
+      advisorId: booking.advisor_id,
+      bookingId,
+      metadata: { purpose: 'summary' },
+    });
+    await trackEvent({
+      name: 'summary_bought',
+      userId: booking.user_id,
+      advisorId: booking.advisor_id,
+      bookingId,
+    });
+  }
 
   const row = await getCallSessionByBooking(bookingId);
   if (!row) throw new Error('NOT_FOUND');

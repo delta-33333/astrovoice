@@ -1,4 +1,5 @@
 import type Stripe from 'stripe';
+import { trackEvent } from './events';
 import { getSession, updateUserCookie } from './session';
 import { getSupabaseAdmin, supabaseAvailable, type AdminClient, type UserProfile } from './supabase';
 import { getStripe } from './stripe';
@@ -110,6 +111,9 @@ export async function grantPrepaidCredits(
 
     if (!rpc.error && (rpc.data === true || rpc.data === false)) {
       await markCreditsGranted(session.id);
+      if (rpc.data === true) {
+        await trackEvent({ name: 'paid', userId, metadata: { purpose: 'prepaid' } });
+      }
       return { granted: rpc.data === true, already: rpc.data === false };
     }
 
@@ -133,6 +137,7 @@ export async function grantPrepaidCredits(
     if (!insert.error) {
       await incrementDbPrepaid(admin, userId, seconds);
       await markCreditsGranted(session.id);
+      await trackEvent({ name: 'paid', userId, metadata: { purpose: 'prepaid' } });
       return { granted: true };
     }
 
@@ -143,6 +148,7 @@ export async function grantPrepaidCredits(
     const saved = await addCookieCredits(userId, session.id, seconds, packId);
     if (saved) {
       await markCreditsGranted(session.id);
+      await trackEvent({ name: 'paid', userId, metadata: { purpose: 'prepaid' } });
       return { granted: true };
     }
   }
@@ -151,6 +157,7 @@ export async function grantPrepaidCredits(
     const incremented = await incrementDbPrepaid(admin, userId, seconds);
     if (incremented) {
       await markCreditsGranted(session.id);
+      await trackEvent({ name: 'paid', userId, metadata: { purpose: 'prepaid' } });
       return { granted: true };
     }
   }
