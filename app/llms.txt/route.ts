@@ -11,7 +11,9 @@ export function GET() {
   const professions = LOCALES.map((locale) => `${locale}: /${locale}/${professionSlug(locale)}/{slug}`).join('\n');
   const body = `# Callastral
 
-Callastral propose une consultation astrologique par téléphone, à partir du thème natal (date, heure et lieu de naissance). Un conseiller a un tarif propre, entre 0,50 € et 2,00 € par minute. Les trois premières minutes sont à un tarif réduit. Le paiement se fait avant l’appel.
+Callastral propose une consultation astrologique par téléphone, à partir du thème natal (date, heure et lieu de naissance). Un conseiller a un tarif propre, entre 0,50 € et 1,99 € par minute. Les trois premières minutes sont à un tarif réduit. Le paiement se fait avant l’appel.
+
+Offres : packs de minutes, résumé écrit 2,90 €, thème natal 9,90 €, prévision 2026-2027 14,90 €, compatibilité 7,90 €, abonnement Callastral Illimité 49 € par mois (300 minutes par mois, 60 minutes par appel). Page : ${origin}/offres
 
 Les conseillers Callastral sont des voix et des personas virtuels créés par Callastral.
 

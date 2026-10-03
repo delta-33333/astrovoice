@@ -1,6 +1,7 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
+import { MAX_EUR_CENTS, MIN_EUR_CENTS } from './money';
 import { adminAuthenticated, adminConfigured } from './admin-auth';
 import { getSupabaseAdmin, supabaseAvailable } from './supabase';
 
@@ -17,7 +18,7 @@ export async function updateAdvisorAction(formData: FormData): Promise<void> {
   const priceCents = Math.round(priceEuros * 100);
   if (!UUID_RE.test(id) || !Number.isInteger(capacity) || capacity < 1 || capacity > 24) return;
   if (!Number.isInteger(years) || years < 1 || years > 45) return;
-  if (!Number.isInteger(priceCents) || priceCents < 50 || priceCents > 200) return;
+  if (!Number.isInteger(priceCents) || priceCents < MIN_EUR_CENTS || priceCents > MAX_EUR_CENTS) return;
   const admin = getSupabaseAdmin();
   const base = {
     active: formData.get('active') === '1',

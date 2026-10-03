@@ -81,6 +81,8 @@ export function getVoiceSystemPrompt(
     it: `Apertura obbligatoria. La tua primissima frase, prima di qualsiasi saluto, è esattamente: « ${spoken} » Solo dopo prosegui.`,
   };
 
+  const chartText = natalChart.voiceSummary?.trim() || trimNatalChart(natalChart);
+
   return `${opening[lang] ?? opening.fr}
 
 ${advisor.personaPrompt}
@@ -88,5 +90,5 @@ ${advisor.personaPrompt}
 ${client}
 
 ${chartLabel[lang] ?? chartLabel.fr} :
-${trimNatalChart(natalChart)}`;
+${chartText}`;
 }

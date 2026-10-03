@@ -24,6 +24,15 @@ export default function CompletePage() {
   const [comment, setComment] = useState('');
   const [reviewMessage, setReviewMessage] = useState<string | null>(null);
   const [summaryLabel, setSummaryLabel] = useState('');
+  const [offers, setOffers] = useState<{
+    subscriptionLabel?: string;
+    natalLabel?: string;
+    forecastLabel?: string;
+    compatibilityLabel?: string;
+    rebookPercent?: number;
+    fairUseMinutes?: number;
+    maxCallMinutes?: number;
+  }>({});
 
   useEffect(() => {
     const completeData = sessionStorage.getItem('callComplete');
@@ -38,6 +47,7 @@ export default function CompletePage() {
       .then((response) => response.json())
       .then((payload) => {
         if (typeof payload.summaryLabel === 'string') setSummaryLabel(payload.summaryLabel);
+        if (payload.offers) setOffers(payload.offers);
       })
       .catch(() => undefined);
     if (!parsed.bookingId) return;
@@ -157,6 +167,23 @@ export default function CompletePage() {
           </div>
         )}
 
+        <div className="bg-white/5 border border-celestial-gold/30 rounded-3xl p-6 mb-8 text-left space-y-3">
+          <h2 className="text-lg font-semibold">Pour la suite</h2>
+          <p className="text-sm text-white/75">
+            Callastral Illimité {offers.subscriptionLabel ? `· ${offers.subscriptionLabel}/mois` : ''} : parole sans
+            facturation à la minute, {offers.fairUseMinutes || 300} minutes par mois, {offers.maxCallMinutes || 60} minutes
+            par appel.
+          </p>
+          <p className="text-sm text-white/75">
+            Thème natal {offers.natalLabel || ''} · Prévision 2026 et 2027 {offers.forecastLabel || ''} · Compatibilité{' '}
+            {offers.compatibilityLabel || ''}.
+          </p>
+          <p className="text-sm text-white/75">
+            Le prochain rendez-vous payant : {offers.rebookPercent || 15} % de réduction, pendant 30 jours.
+          </p>
+          <Link href="/offres" className="btn-secondary inline-block">Voir les offres</Link>
+        </div>
+
         <div className="space-y-4 mb-8">
           {data.bookingId && (
             <Link href={`/resume/${data.bookingId}`} className="btn-primary inline-block">
@@ -169,7 +196,7 @@ export default function CompletePage() {
             </Link>
           </p>
           {data.astrologerId && (
-            <Link href={`/astrologers?recall=${data.astrologerId}`} className="text-sm text-white/60 underline">
+            <Link href={`/?recall=${data.astrologerId}`} className="text-sm text-white/60 underline">
               Rappeler {data.astrologerName}
             </Link>
           )}
@@ -195,25 +222,29 @@ export default function CompletePage() {
             </p>
           </Link>
 
-          <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 opacity-75">
+          <Link
+            href="/offres"
+            className="bg-white/5 hover:bg-white/10 backdrop-blur-sm border border-white/10 hover:border-celestial-gold/50 rounded-2xl p-6 transition-all"
+          >
             <div className="text-3xl mb-2">📜</div>
             <h3 className="font-semibold mb-2">Rapport natal écrit</h3>
             <p className="text-sm text-white/60 mb-3">
               Analyse complète de votre thème natal en PDF
             </p>
-            <p className="text-xs text-celestial-gold">4,99 €</p>
-            <p className="text-xs text-white/50 mt-2">Bientôt disponible</p>
-          </div>
+            <p className="text-xs text-celestial-gold">{offers.natalLabel || '9,90 €'}</p>
+          </Link>
 
-          <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 opacity-75">
+          <Link
+            href="/offres"
+            className="bg-white/5 hover:bg-white/10 backdrop-blur-sm border border-white/10 hover:border-celestial-gold/50 rounded-2xl p-6 transition-all"
+          >
             <div className="text-3xl mb-2">🌟</div>
-            <h3 className="font-semibold mb-2">Pass Callastral</h3>
+            <h3 className="font-semibold mb-2">Callastral Illimité</h3>
             <p className="text-sm text-white/60 mb-3">
-              Minutes incluses chaque mois
+              Sans facturation à la minute, dans la limite mensuelle
             </p>
-            <p className="text-xs text-celestial-gold">À partir de 19,99 €/mois</p>
-            <p className="text-xs text-white/50 mt-2">Bientôt disponible</p>
-          </div>
+            <p className="text-xs text-celestial-gold">{offers.subscriptionLabel || '49 €'}/mois</p>
+          </Link>
         </div>
 
         <Link href="/home" className="btn-secondary inline-block">

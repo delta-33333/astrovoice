@@ -53,6 +53,7 @@ export default function AdvisorDirectory({
   currency = 'eur',
   rates = DEFAULT_RATES,
   embedded = false,
+  highlightId = '',
 }: {
   advisors: DirectoryAdvisor[];
   unavailable: boolean;
@@ -61,6 +62,7 @@ export default function AdvisorDirectory({
   currency?: Currency;
   rates?: FxRates;
   embedded?: boolean;
+  highlightId?: string;
 }) {
   const [language, setLanguage] = useState('');
   const [specialty, setSpecialty] = useState('');
@@ -72,7 +74,8 @@ export default function AdvisorDirectory({
   }, []);
 
   const ordered = useMemo(() => {
-    return [...advisors].sort((a, b) => {
+    const pool = highlightId ? advisors.filter((advisor) => advisor.id === highlightId) : advisors;
+    return [...pool].sort((a, b) => {
       const immediate = Number(b.availability.hasImmediate) - Number(a.availability.hasImmediate);
       if (immediate !== 0) return immediate;
       const lang =
@@ -80,7 +83,7 @@ export default function AdvisorDirectory({
       if (lang !== 0) return lang;
       return Number(b.featured) - Number(a.featured);
     });
-  }, [advisors, preferredLanguage]);
+  }, [advisors, preferredLanguage, highlightId]);
 
   const strict = useMemo(
     () => ordered.filter((advisor) => matches(advisor, language, specialty, availability)),
@@ -160,6 +163,15 @@ export default function AdvisorDirectory({
           </select>
         </label>
       </div>
+
+      {highlightId && (
+        <div className="bg-white/5 border border-white/10 rounded-2xl p-5 mb-6">
+          <p className="text-white/75">Reprendre avec ce conseiller.</p>
+          <Link href="/?dispo=now" className="mt-2 inline-block text-sm text-celestial-gold underline">
+            Voir tout l’annuaire
+          </Link>
+        </div>
+      )}
 
       {unavailable && (
         <div className="bg-white/5 border border-white/10 rounded-2xl p-6 text-white/70">

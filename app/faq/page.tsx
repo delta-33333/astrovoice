@@ -14,11 +14,19 @@ const ENTRIES: { q: string; a: string }[] = [
   },
   {
     q: 'Comment est calculé le prix d’une consultation à la minute ?',
-    a: 'Chaque conseiller a son tarif, entre 0,50 € et 2,00 € par minute. Les trois premières minutes sont à un tarif réduit, propre à ce tarif. Des packs de minutes et une offre fondateur de 10 minutes à 4,90 € sont proposés après l’inscription.',
+    a: 'Chaque conseiller a son tarif, entre 0,50 € et 1,99 € par minute. Les trois premières minutes sont à un tarif réduit, propre à ce tarif. Des packs de minutes et une offre fondateur de 10 minutes à 4,90 € sont proposés après l’inscription. L’abonnement Callastral Illimité est à 49 € par mois, dans la limite de 300 minutes par mois et de 60 minutes par appel.',
   },
   {
     q: 'La consultation s’appuie-t-elle sur mon thème natal ?',
     a: 'Oui. La date, l’heure et le lieu de naissance servent à établir le thème : positions, maisons et aspects. Si l’heure est inconnue, la lecture reste plus prudente sur l’ascendant et les maisons.',
+  },
+  {
+    q: 'Que comprend Callastral Illimité ?',
+    a: '49 € par mois, parole sans facturation à la minute, dans la limite de 300 minutes par mois et de 60 minutes par appel. Ces limites sont indiquées avant le paiement et dans les conditions générales. La résiliation se fait à tout moment depuis le compte.',
+  },
+  {
+    q: 'Quels documents écrits sont proposés ?',
+    a: 'Le résumé d’une consultation coûte 2,90 €. Le thème natal écrit coûte 9,90 €, la prévision 2026 et 2027 coûte 14,90 €, la lecture de compatibilité coûte 7,90 €. Chaque document payé est envoyé par e-mail et reste dans le compte.',
   },
   {
     q: 'Puis-je interrompre une consultation ?',

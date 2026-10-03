@@ -6,7 +6,8 @@ import SiteHeader from "@/components/SiteHeader";
 import { trackEvent } from "@/lib/events";
 import { VIRTUAL_ADVISOR_DISCLOSURE } from "@/lib/legal";
 import { resolveMarket } from "@/lib/market";
-import { convertEurCents, formatMoney } from "@/lib/money";
+import { convertEurCents, formatMoney, MAX_EUR_CENTS, MIN_EUR_CENTS } from "@/lib/money";
+import { SUBSCRIPTION_EUR_CENTS, subscriptionCurrency } from "@/lib/offers";
 import { MINUTE_PACKS } from "@/lib/pricing";
 import { hreflangAlternates, localeHomePath } from "@/lib/seo";
 import { listDirectoryAdvisors } from "@/lib/slots";
@@ -21,7 +22,7 @@ export const metadata: Metadata = {
 export default async function LandingPage({
   searchParams,
 }: {
-  searchParams: Promise<{ dispo?: string }>;
+  searchParams: Promise<{ dispo?: string; recall?: string }>;
 }) {
   const params = await searchParams;
   await trackEvent({ name: 'view_home' });
@@ -38,8 +39,13 @@ export default async function LandingPage({
   const money = (eurCents: number) =>
     formatMoney(convertEurCents(eurCents, market.currency, market.rates), market.currency);
   const founding = money(490);
-  const floor = money(50);
-  const ceiling = money(200);
+  const floor = money(MIN_EUR_CENTS);
+  const ceiling = money(MAX_EUR_CENTS);
+  const subscriptionCurrencyCode = subscriptionCurrency(market.currency);
+  const subscriptionLabel = formatMoney(
+    convertEurCents(SUBSCRIPTION_EUR_CENTS, subscriptionCurrencyCode, market.rates),
+    subscriptionCurrencyCode
+  );
   const packs = MINUTE_PACKS.filter((pack) => !pack.founding);
 
   return (
@@ -53,6 +59,7 @@ export default async function LandingPage({
         currency={market.currency}
         rates={market.rates}
         initialAvailability={params.dispo === 'now' ? 'now' : ''}
+        highlightId={params.recall || ''}
       />
       <div className="max-w-4xl mx-auto px-4">
 
@@ -245,6 +252,15 @@ export default async function LandingPage({
               ))}
             </div>
 
+            <div className="p-8 rounded-2xl bg-celestial-gold/10 border border-celestial-gold/40 space-y-3">
+              <h3 className="text-xl font-semibold">Callastral Illimité</h3>
+              <p className="text-3xl font-bold text-celestial-gold">{subscriptionLabel}<span className="text-base font-normal text-white/70"> / mois</span></p>
+              <p className="text-white/75 text-sm">
+                Parole sans facturation à la minute, dans la limite de 300 minutes par mois et de 60 minutes par appel. Résiliable à tout moment.
+              </p>
+              <Link href="/offres" className="text-celestial-gold underline">Voir toutes les offres</Link>
+            </div>
+
             <p className="text-center text-white/50 text-sm pt-4">
               Les packs minutes sont disponibles après votre inscription
             </p>
@@ -314,7 +330,7 @@ export default async function LandingPage({
                 <span className="text-celestial-gold transition-transform group-open:rotate-180">↓</span>
               </summary>
               <p className="mt-4 text-white/70 text-sm leading-relaxed">
-                Oui, vous gardez toujours le contrôle. Vous pouvez mettre fin à la consultation à tout moment en raccrochant simplement. Vous ne payez que les minutes réellement écoulées. Aucun engagement, aucune facturation automatique surprise.
+                Oui, vous gardez toujours le contrôle. Vous pouvez mettre fin à la consultation à tout moment. À la minute, vous réglez la durée réellement écoulée. L’abonnement Callastral Illimité est un choix séparé, résiliable depuis le compte.
               </p>
             </details>
 
@@ -373,6 +389,7 @@ export default async function LandingPage({
         <footer className="pt-16 pb-8 text-center text-white/40 text-xs border-t border-white/10">
           <p>© {new Date().getFullYear()} Callastral — Consultations astrologiques personnalisées</p>
           <p className="mt-3 space-x-4">
+            <Link href="/offres" className="hover:text-white/70">Offres</Link>
             <Link href="/faq" className="hover:text-white/70">Questions fréquentes</Link>
             <Link href="/terms" className="hover:text-white/70">Conditions générales</Link>
             <Link href="/privacy" className="hover:text-white/70">Confidentialité</Link>

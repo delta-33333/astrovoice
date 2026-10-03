@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getBooking } from '@/lib/bookings';
 import { trackEvent } from '@/lib/events';
+import { grantRebookOffer } from '@/lib/rebook';
 import { getSupabaseAdmin } from '@/lib/supabase';
 import { getSession } from '@/lib/session';
 
@@ -34,5 +35,6 @@ export async function POST(
     advisorId: booking.advisor_id,
     bookingId: booking.id,
   });
+  await grantRebookOffer(user.id, booking.id);
   return NextResponse.json({ ok: true });
 }

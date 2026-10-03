@@ -116,7 +116,7 @@ export default async function AdminAdvisorsPage({
                   name="price_per_min"
                   type="number"
                   min={0.5}
-                  max={2}
+                  max={1.99}
                   step={0.01}
                   defaultValue={(cents / 100).toFixed(2)}
                   className="mt-1 w-full rounded-lg bg-white/10 px-2 py-2"

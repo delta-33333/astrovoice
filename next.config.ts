@@ -16,6 +16,15 @@ const contentSecurityPolicy = [
 ].join('; ');
 
 const nextConfig: NextConfig = {
+  serverExternalPackages: ['sweph', 'geo-tz'],
+  outputFileTracingIncludes: {
+    '/api/natal-chart': ['./ephemeris/**/*', './node_modules/geo-tz/data/**/*'],
+    '/api/birth-data': ['./ephemeris/**/*', './node_modules/geo-tz/data/**/*'],
+    '/api/voice-token': ['./ephemeris/**/*', './node_modules/geo-tz/data/**/*'],
+    '/api/reports/checkout': ['./ephemeris/**/*', './node_modules/geo-tz/data/**/*'],
+    '/api/reports/confirm': ['./ephemeris/**/*', './node_modules/geo-tz/data/**/*'],
+    '/api/stripe/webhook': ['./ephemeris/**/*', './node_modules/geo-tz/data/**/*'],
+  },
   typescript: {
     ignoreBuildErrors: false,
   },

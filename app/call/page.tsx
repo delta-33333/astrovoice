@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import CallScreen from '@/components/CallScreen';
 import { useAdvisor } from '@/components/use-advisor';
-import { quoteCall } from '@/lib/pricing';
 import type { BirthData } from '@/lib/types';
 
 export default function CallPage() {
@@ -62,10 +61,21 @@ export default function CallPage() {
   }, [router]);
 
   // Appelé uniquement quand la facturation a réellement démarré (socket ouvert + premier audio).
-  const finish = async (seconds: number, prepaid: number, note?: string) => {
+  const finish = async (seconds: number, _prepaid: number, note?: string) => {
     if (stoppedRef.current) return;
     stoppedRef.current = true;
     const activeBookingId = booking?.id ?? null;
+
+    void fetch('/api/billing/usage', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        seconds,
+        bookingId: activeBookingId,
+        subscription: sessionStorage.getItem('callSubscription') === '1',
+      }),
+      keepalive: true,
+    });
 
     if (activeBookingId) {
       try {
@@ -81,6 +91,20 @@ export default function CallPage() {
         astrologerName: advisor?.name,
         astrologerId: advisor?.id ?? astrologerId,
         bookingId: activeBookingId,
+        error: note,
+      }));
+      router.push('/complete');
+      return;
+    }
+
+    if (sessionStorage.getItem('callSubscription') === '1') {
+      sessionStorage.removeItem('callSubscription');
+      sessionStorage.setItem('callComplete', JSON.stringify({
+        durationSeconds: seconds,
+        amountCharged: 0,
+        subscription: true,
+        astrologerName: advisor?.name,
+        astrologerId: advisor?.id ?? astrologerId,
         error: note,
       }));
       router.push('/complete');
@@ -112,7 +136,7 @@ export default function CallPage() {
     } catch {
       sessionStorage.setItem('callComplete', JSON.stringify({
         durationSeconds: seconds,
-        amountCharged: quoteCall(seconds, prepaid).amountCents,
+        amountCharged: 0,
         astrologerName: advisor?.name,
         astrologerId: advisor?.id ?? astrologerId,
         error: note || 'Le règlement sera confirmé sous peu',

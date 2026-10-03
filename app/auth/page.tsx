@@ -36,7 +36,13 @@ export default function AuthPage() {
         return;
       }
 
-      router.push(data.needsBirthData ? '/astrologers?dispo=now' : '/home');
+      const next = sessionStorage.getItem('afterAuth');
+      if (next && next.startsWith('/') && !next.startsWith('//')) {
+        sessionStorage.removeItem('afterAuth');
+        router.push(next);
+        return;
+      }
+      router.push(data.needsBirthData ? '/?dispo=now' : '/home');
     } catch {
       setError('Erreur de connexion au serveur');
       setIsSubmitting(false);

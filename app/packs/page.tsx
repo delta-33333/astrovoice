@@ -72,7 +72,7 @@ export default function PacksPage() {
       setCheckoutSessionId(data.checkoutSessionId);
       setCollectContact(!!data.collectContact);
       setSheetTitle(data.label || 'Minutes');
-      setSheetAmount(formatCurrency(data.amount));
+      setSheetAmount(typeof data.amountLabel === 'string' && data.amountLabel ? data.amountLabel : formatCurrency(data.amount));
       setSheetDetail(
         pack.founding
           ? 'Dix minutes ajoutées à votre compte, une seule fois.'
@@ -100,6 +100,9 @@ export default function PacksPage() {
           </h1>
           <p className="text-white/70 text-lg max-w-2xl mx-auto">
             Des minutes d’avance, au calme, pour vos prochaines consultations Callastral.
+          </p>
+          <p className="text-sm text-white/60 mt-4">
+            Solde bas ou appels fréquents : <Link href="/offres" className="text-celestial-gold underline">Callastral Illimité</Link>, 300 minutes par mois, 60 minutes par appel.
           </p>
         </div>
 

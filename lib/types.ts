@@ -35,7 +35,7 @@ export interface PublicAdvisor {
   bookingCount: number;
   badges: AdvisorBadge[];
   yearsExperience: number;
-  /** Tarif minute de base, en centimes d’euro (0,50 € à 2,00 €). */
+  /** Tarif minute de base, en centimes d’euro (0,50 € à 1,99 €). */
   pricePerMinCents: number;
 }
 
@@ -63,12 +63,22 @@ export interface NatalChart {
   planets: Planet[];
   houses: House[];
   aspects: Aspect[];
+  ascendant?: string;
+  ascendantLongitude?: number;
+  sunSign?: string;
+  moonSign?: string;
+  timeKnown?: boolean;
+  engine?: 'swisseph' | 'moshier';
+  /** Résumé compact déjà calculé : signes, degrés, maisons, aspects majeurs. */
+  voiceSummary?: string;
 }
 
 export interface Planet {
   name: string;
   sign: string;
   degree: number;
+  /** Longitude écliptique brute, en degrés. */
+  longitude?: number;
   house: number;
   retrograde?: boolean;
 }
@@ -77,6 +87,7 @@ export interface House {
   number: number;
   sign: string;
   degree: number;
+  longitude?: number;
 }
 
 export interface Aspect {

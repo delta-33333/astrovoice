@@ -4,9 +4,11 @@ import type { UserProfile } from './supabase';
 import { getSupabaseAdmin, supabaseAvailable } from './supabase';
 import { updateUserCookie } from './session';
 import { isCurrency, type Currency } from './money';
+import type { SubscriptionCurrency } from './offers';
+import { ensureUnlimitedPrice } from './stripe-prices';
 import { appBaseUrl, getStripe, integrationIdentifier } from './stripe';
 
-export type CheckoutPurpose = 'call_meter' | 'prepaid' | 'booking' | 'summary';
+export type CheckoutPurpose = 'call_meter' | 'prepaid' | 'booking' | 'summary' | 'report';
 
 function userEmail(user: UserProfile): string | undefined {
   const candidates = [user.email, user.username];
@@ -60,8 +62,8 @@ export async function createElementsCheckout(options: {
   purpose: CheckoutPurpose;
   metadata: Record<string, string>;
   manualCapture: boolean;
-  flow: 'call' | 'pack' | 'booking' | 'summary';
-  integrationFlow: 'call-meter' | 'prepaid' | 'booking' | 'summary';
+  flow: 'call' | 'pack' | 'booking' | 'summary' | 'report';
+  integrationFlow: 'call-meter' | 'prepaid' | 'booking' | 'summary' | 'report';
 }): Promise<{
   clientSecret: string;
   checkoutSessionId: string;
@@ -135,4 +137,58 @@ export async function createElementsCheckout(options: {
     amountCents: options.amountCents,
     collectContact: !email,
   };
+}
+
+export async function createSubscriptionCheckout(options: {
+  request: NextRequest;
+  user: UserProfile;
+  currency: SubscriptionCurrency;
+}): Promise<{ clientSecret: string; checkoutSessionId: string; collectContact: boolean }> {
+  const stripe = getStripe();
+  if (!stripe) throw new Error('STRIPE_NOT_CONFIGURED');
+  const { customerId, email } = await ensureCustomer(stripe, options.user);
+  const priceId = await ensureUnlimitedPrice(options.currency);
+  const origin = appBaseUrl(options.request.nextUrl.origin);
+  const metadata: Record<string, string> = {
+    purpose: 'subscription',
+    userId: options.user.id,
+    app: 'callastral',
+    currency: options.currency,
+  };
+  const session = await stripe.checkout.sessions.create({
+    mode: 'subscription',
+    ui_mode: 'elements',
+    locale: 'fr',
+    customer: customerId,
+    adaptive_pricing: { enabled: false },
+    integration_identifier: integrationIdentifier('subscription'),
+    return_url: `${origin}/payment/return?session_id={CHECKOUT_SESSION_ID}&flow=subscription`,
+    line_items: [{ price: priceId, quantity: 1 }],
+    metadata,
+    subscription_data: { metadata },
+    client_reference_id: options.user.id,
+  });
+  if (!session.client_secret) throw new Error('CLIENT_SECRET_MISSING');
+  return {
+    clientSecret: session.client_secret,
+    checkoutSessionId: session.id,
+    collectContact: !email,
+  };
+}
+
+export async function createPortalSession(options: {
+  request: NextRequest;
+  user: UserProfile;
+}): Promise<string> {
+  const stripe = getStripe();
+  if (!stripe) throw new Error('STRIPE_NOT_CONFIGURED');
+  if (!options.user.stripe_customer_id) throw new Error('NO_CUSTOMER');
+  const origin = appBaseUrl(options.request.nextUrl.origin);
+  const configuration = process.env.STRIPE_PORTAL_CONFIGURATION_ID?.trim();
+  const session = await stripe.billingPortal.sessions.create({
+    customer: options.user.stripe_customer_id,
+    return_url: `${origin}/account`,
+    ...(configuration ? { configuration } : {}),
+  });
+  return session.url;
 }

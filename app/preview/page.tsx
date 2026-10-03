@@ -24,11 +24,23 @@ export default function PreviewPage() {
       return;
     }
 
-    setBirthData(JSON.parse(data));
+    const parsed = JSON.parse(data) as BirthData;
+    setBirthData(parsed);
     setAstrologerId(astrId);
-    
-    // Calculate natal chart
-    calculateNatalChart(JSON.parse(data));
+
+    const chartKey = `${parsed.date}|${parsed.timeUnknown ? 'unknown' : parsed.time || ''}|${parsed.place}`;
+    const storedChart = sessionStorage.getItem('natalChart');
+    if (storedChart && sessionStorage.getItem('natalChartKey') === chartKey) {
+      try {
+        setNatalChart(JSON.parse(storedChart) as NatalChart);
+        setIsLoading(false);
+        return;
+      } catch {
+        sessionStorage.removeItem('natalChart');
+      }
+    }
+
+    calculateNatalChart(parsed);
   }, [router]);
 
   const calculateNatalChart = async (bd: BirthData) => {
@@ -48,6 +60,10 @@ export default function PreviewPage() {
       
       // Store for later use
       sessionStorage.setItem('natalChart', JSON.stringify(chart));
+      sessionStorage.setItem(
+        'natalChartKey',
+        `${bd.date}|${bd.timeUnknown ? 'unknown' : bd.time || ''}|${bd.place}`
+      );
     } catch (err) {
       console.error('Natal chart error:', err);
       setError(err instanceof Error ? err.message : 'Erreur de calcul');

@@ -28,8 +28,8 @@ export const DEFAULT_RATES: FxRates = {
   cad: 1.47,
 };
 
-const MIN_EUR_CENTS = 50;
-const MAX_EUR_CENTS = 200;
+export const MIN_EUR_CENTS = 50;
+export const MAX_EUR_CENTS = 199;
 
 export function isCurrency(value: string): value is Currency {
   return (CURRENCIES as readonly string[]).includes(value);
@@ -59,8 +59,8 @@ export function yearsFromAge(age: number): number {
 }
 
 /**
- * Tarif minute de base, en centimes d’euro, entre 0,50 € et 2,00 €.
- * Même formule que la migration 20261004040000_advisor_prices_currency.sql.
+ * Tarif minute de base, en centimes d’euro, entre 0,50 € et 1,99 €.
+ * Même formule que la migration des tarifs conseiller, plafond resserré à 199.
  */
 export function pricePerMinCents(input: {
   years?: number | null;
@@ -93,7 +93,12 @@ function niceRound(minor: number, currency: Currency): number {
 export function convertEurCents(eurCents: number, currency: Currency, rates: FxRates): number {
   const cents = Math.max(0, Math.round(eurCents));
   if (cents === 0) return 0;
-  if (currency === 'eur') return niceRound(cents, 'eur');
+  if (currency === 'eur') {
+    const rounded = niceRound(cents, 'eur');
+    // Le plafond minute est 1,99 € : un arrondi à la dizaine ne doit pas l’afficher à 2,00 €.
+    if (cents <= MAX_EUR_CENTS && rounded > MAX_EUR_CENTS) return cents;
+    return rounded;
+  }
   const rate = rates[currency] > 0 ? rates[currency] : DEFAULT_RATES[currency];
   const major = (cents / 100) * rate;
   if (currency === 'jpy') return niceRound(Math.round(major), 'jpy');

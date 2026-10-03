@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import Link from 'next/link';
 import { motion } from 'framer-motion';
 import AdvisorAvatar from '@/components/AdvisorAvatar';
 import AiDisclosure from '@/components/AiDisclosure';
@@ -10,7 +11,6 @@ import {
   CALL_HOLD_CENTS,
   SUMMARY_CENTS,
   formatCurrency,
-  quoteCall,
 } from '@/lib/pricing';
 import type { BirthData, NatalChart, PublicAdvisor } from '@/lib/types';
 import {
@@ -47,6 +47,7 @@ type VoiceGrant = {
   language: string;
   prepaidSeconds: number;
   metered: boolean;
+  subscription?: boolean;
 };
 
 type LiveCall = {
@@ -171,6 +172,7 @@ export default function CallScreen({
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [checkoutId, setCheckoutId] = useState<string | null>(null);
   const [summaryLabel, setSummaryLabel] = useState('');
+  const [included, setIncluded] = useState(false);
   const [meter, setMeter] = useState<{
     currency: Currency;
     introMinor: number;
@@ -226,7 +228,7 @@ export default function CallScreen({
           capped: raw >= snap.holdMinor,
         };
       })()
-    : quoteCall(elapsed, prepaid);
+    : { coveredSeconds: Math.min(Math.max(0, prepaid), Math.max(0, elapsed)), amountCents: 0, capped: false };
   const moneyLabel = (minor: number) =>
     snap ? formatMoney(minor, normalizeCurrency(snap.currency)) : formatCurrency(minor);
   const remaining = booking ? booking.durationSec - elapsed : null;
@@ -442,7 +444,8 @@ export default function CallScreen({
             );
             return { amountCents: Math.min(raw, active.holdMinor), capped: raw >= active.holdMinor };
           })()
-        : quoteCall(seconds, current.prepaid);
+        : null;
+      if (!liveQuote) return;
       const holdCap = active ? active.holdMinor : CALL_HOLD_CENTS;
       if (liveQuote.capped || liveQuote.amountCents >= holdCap) {
         const holdText = active
@@ -544,15 +547,16 @@ export default function CallScreen({
       live.gain = gain;
       live.player = new GaplessPcmPlayer(ctx, VOICE_SAMPLE_RATE, gain);
 
-      const chartResponse = await fetch('/api/natal-chart', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(birthData),
-      });
-      if (!chartResponse.ok) {
-        throw new Error('Le thème natal n’a pas pu être préparé. Réessayez.');
+      let natalChart: NatalChart | undefined;
+      try {
+        const chartKey = `${birthData.date}|${birthData.timeUnknown ? 'unknown' : birthData.time || ''}|${birthData.place}`;
+        const stored = sessionStorage.getItem('natalChart');
+        if (stored && sessionStorage.getItem('natalChartKey') === chartKey) {
+          natalChart = JSON.parse(stored) as NatalChart;
+        }
+      } catch {
+        natalChart = undefined;
       }
-      const natalChart = (await chartResponse.json()) as NatalChart;
 
       const tokenResponse = await fetch('/api/voice-token', {
         method: 'POST',
@@ -585,6 +589,13 @@ export default function CallScreen({
 
       live.prepaid = tokenPayload.prepaidSeconds ?? live.prepaid;
       live.metered = Boolean(tokenPayload.metered);
+      if (tokenPayload.subscription) {
+        sessionStorage.setItem('callSubscription', '1');
+        setIncluded(true);
+      } else {
+        sessionStorage.removeItem('callSubscription');
+        setIncluded(false);
+      }
       live.cap = booking ? Math.min(booking.durationSec, live.prepaid || booking.durationSec) : null;
       setPrepaid(live.prepaid);
       if (ctx.state === 'suspended') await ctx.resume();
@@ -858,13 +869,16 @@ export default function CallScreen({
             <p className="mt-4 font-mono text-5xl tabular-nums">{mmss(elapsed)}</p>
             {booking ? (
               <p className="mt-2 text-sm text-white/55">
+                {included ? 'Inclus dans Callastral Illimité · ' : ''}
                 {remaining != null && remaining > 0 ? `${mmss(remaining)} restantes` : 'Durée réservée'}
               </p>
             ) : (
               <p className="mt-2 text-sm text-white/70">
-                {quote.coveredSeconds > 0 && quote.amountCents === 0
+                {included || (quote.coveredSeconds > 0 && quote.amountCents === 0)
                   ? 'Inclus dans vos minutes'
-                  : moneyLabel(quote.amountCents)}
+                  : snap
+                    ? moneyLabel(quote.amountCents)
+                    : 'Tarif du conseiller'}
               </p>
             )}
           </>
@@ -877,6 +891,14 @@ export default function CallScreen({
             </p>
             {!booking && prepaid > 0 && (
               <p className="text-sm text-celestial-gold">{Math.floor(prepaid / 60)} min déjà incluses</p>
+            )}
+            {!booking && prepaid < 180 && (
+              <p className="text-sm text-white/70">
+                Moins de 3 minutes d’avance.{' '}
+                <Link href="/offres" className="text-celestial-gold underline">
+                  Voir Callastral Illimité
+                </Link>
+              </p>
             )}
             <button
               type="button"

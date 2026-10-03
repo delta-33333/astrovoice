@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { evaluateVoiceCallAccess } from '@/lib/credits';
+import { chartForCall } from '@/lib/natal-store';
 import { getSession } from '@/lib/session';
+import { subscriptionVoiceAllowance } from '@/lib/subscriptions';
 import { getAdvisorById } from '@/lib/astrologers';
 import { canJoinCall, getBooking } from '@/lib/bookings';
 import { ensureCallSession } from '@/lib/call-records';
@@ -70,11 +72,12 @@ export async function POST(request: NextRequest) {
     const checkoutSessionId = asString(body?.checkoutSessionId, 200);
     const bookingId = asString(body?.bookingId, 64);
 
-    if (!birthData || !astrologerId || !natalChart) {
+    if (!birthData || !astrologerId) {
       return NextResponse.json({ error: 'Données manquantes' }, { status: 400 });
     }
 
     let advisorKey = astrologerId;
+    let subscription = false;
     let bookingAccess: { prepaidSeconds: number } | null = null;
     if (bookingId) {
       const booking = await getBooking(bookingId);
@@ -87,7 +90,16 @@ export async function POST(request: NextRequest) {
       advisorKey = booking.advisor_id;
       const end = new Date(booking.starts_at).getTime() + booking.duration_min * 60 * 1000;
       const remaining = Math.max(0, Math.floor((end - Date.now()) / 1000));
-      bookingAccess = { prepaidSeconds: Math.min(booking.duration_min * 60, remaining) };
+      let prepaidSeconds = Math.min(booking.duration_min * 60, remaining);
+      if (
+        booking.amount_cents === 0 &&
+        booking.stripe_checkout_session_id?.startsWith('subscription_')
+      ) {
+        const allowance = await subscriptionVoiceAllowance(user.id);
+        subscription = Boolean(allowance?.entitled);
+        if (allowance?.entitled) prepaidSeconds = Math.min(prepaidSeconds, allowance.seconds);
+      }
+      bookingAccess = { prepaidSeconds };
     }
 
     const astrologer = await getAdvisorById(advisorKey);
@@ -95,9 +107,22 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Astrologue introuvable' }, { status: 404 });
     }
 
-    const access = bookingAccess
-      ? { allowed: bookingAccess.prepaidSeconds > 0, prepaidSeconds: bookingAccess.prepaidSeconds, metered: false }
-      : await evaluateVoiceCallAccess(user, checkoutSessionId);
+    let access: { allowed: boolean; prepaidSeconds: number; metered: boolean };
+    if (bookingAccess) {
+      access = {
+        allowed: bookingAccess.prepaidSeconds > 0,
+        prepaidSeconds: bookingAccess.prepaidSeconds,
+        metered: false,
+      };
+    } else {
+      const allowance = await subscriptionVoiceAllowance(user.id);
+      if (allowance?.entitled) {
+        subscription = true;
+        access = { allowed: true, prepaidSeconds: allowance.seconds, metered: false };
+      } else {
+        access = await evaluateVoiceCallAccess(user, checkoutSessionId);
+      }
+    }
     if (!access.allowed) {
       return NextResponse.json(
         {
@@ -131,7 +156,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const secretResponse = await fetch('https://api.x.ai/v1/realtime/client_secrets', {
+    const secretPromise = fetch('https://api.x.ai/v1/realtime/client_secrets', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -140,6 +165,27 @@ export async function POST(request: NextRequest) {
       body: JSON.stringify({ expires_after: { seconds: 300 } }),
       cache: 'no-store',
     });
+
+    let chartForVoice = natalChart;
+    try {
+      chartForVoice = await chartForCall(user, {
+        date: birthData.date,
+        time: birthData.time,
+        timeUnknown: birthData.timeUnknown,
+        place: birthData.place,
+      });
+    } catch (error) {
+      console.warn('Thème pour la voix:', error instanceof Error ? error.message : error);
+    }
+    if (!chartForVoice) {
+      await secretPromise.catch(() => undefined);
+      return NextResponse.json(
+        { error: 'Le thème natal n’a pas pu être préparé. Réessayez.' },
+        { status: 400 }
+      );
+    }
+
+    const secretResponse = await secretPromise;
 
     if (!secretResponse.ok) {
       console.error('Jeton vocal refusé:', secretResponse.status);
@@ -162,10 +208,11 @@ export async function POST(request: NextRequest) {
       token: secret.value,
       model: MODEL,
       voice: astrologer.voiceId,
-      instructions: getVoiceSystemPrompt(astrologer, birthData, natalChart),
+      instructions: getVoiceSystemPrompt(astrologer, birthData, chartForVoice),
       language: astrologer.languages[0] || 'fr',
       prepaidSeconds: access.prepaidSeconds,
       metered: access.metered,
+      subscription,
     });
   } catch (error) {
     console.error('Création du jeton vocal:', error instanceof Error ? error.message : 'erreur');

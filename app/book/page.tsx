@@ -34,6 +34,7 @@ export default function BookPage() {
   const [perMinLabel, setPerMinLabel] = useState('');
   const [durationLabels, setDurationLabels] = useState<Record<number, string>>({});
   const [market, setMarket] = useState<{ language: AdvisorLang; currency: Currency } | null>(null);
+  const [includedSeconds, setIncludedSeconds] = useState(0);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -59,7 +60,13 @@ export default function BookPage() {
       .catch(() => undefined);
     fetch('/api/auth/me')
       .then((response) => response.json())
-      .then((payload) => setAuthed(Boolean(payload.authenticated)))
+      .then((payload) => {
+        setAuthed(Boolean(payload.authenticated));
+        const seconds = payload.user?.subscription?.seconds;
+        if (payload.user?.subscription?.entitled && typeof seconds === 'number') {
+          setIncludedSeconds(seconds);
+        }
+      })
       .catch(() => setAuthed(false));
     if (advisorId) {
       fetch(`/api/advisors/${advisorId}`)
@@ -181,9 +188,11 @@ export default function BookPage() {
         </h1>
         <p className="text-white/70 mb-2">{whenLabel} · heure de Paris</p>
         <p className="text-sm text-celestial-gold mb-4">
-          {introLabel && perMinLabel
-            ? `${introLabel} les 3 premières minutes, puis ${perMinLabel}`
-            : 'Le tarif du conseiller est confirmé au paiement.'}
+          {includedSeconds >= duration * 60
+            ? `Inclus dans Callastral Illimité · ${Math.floor(includedSeconds / 60)} min restantes ce mois-ci`
+            : introLabel && perMinLabel
+              ? `${introLabel} les 3 premières minutes, puis ${perMinLabel}`
+              : 'Le tarif du conseiller est confirmé au paiement.'}
         </p>
         <TrustNotes className="mb-6" />
 
@@ -198,7 +207,9 @@ export default function BookPage() {
               }`}
             >
               <span className="font-semibold">{minutes} minutes</span>
-              <span className="float-right text-celestial-gold">{durationLabels[minutes] || '…'}</span>
+              <span className="float-right text-celestial-gold">
+                {includedSeconds >= minutes * 60 ? 'inclus' : durationLabels[minutes] || '…'}
+              </span>
             </button>
           ))}
         </div>
@@ -267,17 +278,27 @@ export default function BookPage() {
         )}
 
         <p className="text-xs text-white/45 mt-4">
-          Le créneau est bloqué 10 minutes, le temps du paiement. Apple Pay et Google Pay s’affichent si votre appareil les propose.
+          {includedSeconds >= duration * 60
+            ? 'Le créneau est confirmé sans paiement. La durée est décomptée de Callastral Illimité.'
+            : 'Le créneau est bloqué 10 minutes, le temps du paiement. Apple Pay et Google Pay s’affichent si votre appareil les propose.'}
         </p>
         {error && <p className="text-sm text-red-200 mt-4">{error}</p>}
         <button type="button" onClick={() => void pay()} disabled={loading} className="btn-primary w-full mt-6 hidden sm:block disabled:opacity-50">
-          {loading ? 'Préparation…' : `Continuer · ${durationLabels[duration] || ''}`}
+          {loading
+            ? 'Préparation…'
+            : includedSeconds >= duration * 60
+              ? 'Rejoindre · inclus'
+              : `Continuer · ${durationLabels[duration] || ''}`}
         </button>
       </div>
 
       <div className="sm:hidden fixed bottom-0 inset-x-0 z-40 border-t border-white/10 bg-[#0c1018]/95 px-4 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
         <button type="button" onClick={() => void pay()} disabled={loading} className="btn-primary w-full disabled:opacity-50">
-          {loading ? 'Préparation…' : `Continuer · ${durationLabels[duration] || ''}`}
+          {loading
+            ? 'Préparation…'
+            : includedSeconds >= duration * 60
+              ? 'Rejoindre · inclus'
+              : `Continuer · ${durationLabels[duration] || ''}`}
         </button>
       </div>
 
