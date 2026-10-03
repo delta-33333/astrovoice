@@ -14,6 +14,7 @@ import {
 import { BOOKING_DURATIONS } from './pricing';
 import { recipientEmail, sendMail } from './email';
 import { attachRebook, consumeRebookOnBooking, discountedMinor, pendingRebook } from './rebook';
+import { subscriptionVoiceAllowance } from './subscriptions';
 import { getSupabaseAdmin, supabaseAvailable, type UserProfile } from './supabase';
 import { appBaseUrl } from './stripe';
 
@@ -137,6 +138,7 @@ export async function holdSlot(input: {
   startsAt: string;
   holdExpiresAt: string;
   currency: Currency;
+  included: boolean;
 }> {
   if (!supabaseAvailable) throw new Error('SUPABASE_NOT_CONFIGURED');
   try {
@@ -149,7 +151,11 @@ export async function holdSlot(input: {
   const eurPerMin = await eurPriceForSlot(input.slotId);
   const chargeCurrency = market.currency;
   const offer = await pendingRebook(input.userId);
+  const allowance = await subscriptionVoiceAllowance(input.userId);
+  const included =
+    Boolean(allowance?.entitled) && (allowance?.seconds ?? 0) >= input.durationMin * 60;
   const priceFor = (currency: Currency) => {
+    if (included) return { charge: 0, offerId: null as string | null };
     const list = localBookingMinor(eurPerMin, input.durationMin, currency, market.rates);
     if (!offer) return { charge: list, offerId: null as string | null };
     const charge = discountedMinor(list, offer.percent);
@@ -195,7 +201,7 @@ export async function holdSlot(input: {
     currency?: string;
   };
   if (priced.offerId) await attachRebook(row.bookingId, priced.offerId);
-  return { ...row, currency: normalizeCurrency(row.currency || currency) };
+  return { ...row, currency: normalizeCurrency(row.currency || currency), included };
 }
 
 export async function getBooking(id: string): Promise<BookingRow | null> {

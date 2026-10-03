@@ -48,6 +48,12 @@ export default function BirthDataPage() {
         latitude?: number;
         longitude?: number;
       } | null;
+      if (saveResponse.status === 401) {
+        sessionStorage.setItem('afterAuth', '/birth');
+        setIsSubmitting(false);
+        router.push('/auth');
+        return;
+      }
       if (!saveResponse.ok) {
         throw new Error(payload?.error || 'Erreur lors de la sauvegarde');
       }

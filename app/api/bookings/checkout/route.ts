@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { confirmBookingPayment, getBooking, isImmediateStart } from '@/lib/bookings';
+import { subscriptionVoiceAllowance } from '@/lib/subscriptions';
 import { trackEvent } from '@/lib/events';
 import { createElementsCheckout } from '@/lib/checkout';
 import { formatMoney, normalizeCurrency } from '@/lib/money';
@@ -34,16 +35,20 @@ export async function POST(request: NextRequest) {
   }
 
   if (booking.amount_cents === 0) {
+    const allowance = await subscriptionVoiceAllowance(user.id);
+    const included = Boolean(
+      allowance && allowance.entitled && allowance.seconds >= booking.duration_min * 60
+    );
     await trackEvent({
       name: 'checkout_start',
       userId: user.id,
       advisorId: booking.advisor_id,
       bookingId: booking.id,
-      metadata: { purpose: 'booking' },
+      metadata: { purpose: included ? 'subscription' : 'booking' },
     });
     await confirmBookingPayment({
       bookingId: booking.id,
-      checkoutSessionId: `credit_${booking.id}`,
+      checkoutSessionId: included ? `subscription_${booking.id}` : `credit_${booking.id}`,
       paymentIntentId: null,
     });
     return NextResponse.json({

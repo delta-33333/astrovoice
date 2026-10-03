@@ -22,7 +22,7 @@ export const metadata: Metadata = {
 export default async function LandingPage({
   searchParams,
 }: {
-  searchParams: Promise<{ dispo?: string }>;
+  searchParams: Promise<{ dispo?: string; recall?: string }>;
 }) {
   const params = await searchParams;
   await trackEvent({ name: 'view_home' });
@@ -59,6 +59,7 @@ export default async function LandingPage({
         currency={market.currency}
         rates={market.rates}
         initialAvailability={params.dispo === 'now' ? 'now' : ''}
+        highlightId={params.recall || ''}
       />
       <div className="max-w-4xl mx-auto px-4">
 

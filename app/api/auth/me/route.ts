@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getSession } from '@/lib/session';
+import { subscriptionVoiceAllowance } from '@/lib/subscriptions';
 
 export async function GET() {
   try {
@@ -9,6 +10,7 @@ export async function GET() {
       return NextResponse.json({ authenticated: false });
     }
 
+    const allowance = await subscriptionVoiceAllowance(user.id);
     return NextResponse.json({
       authenticated: true,
       user: {
@@ -21,6 +23,9 @@ export async function GET() {
         favoriteAstrologerId: user.favorite_astrologer_id,
         prepaidSeconds: user.prepaid_seconds,
         consentAcceptedAt: user.consent_accepted_at,
+        subscription: allowance
+          ? { entitled: allowance.entitled, seconds: allowance.seconds }
+          : { entitled: false, seconds: 0 },
       },
     });
   } catch (error) {

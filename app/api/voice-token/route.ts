@@ -77,6 +77,7 @@ export async function POST(request: NextRequest) {
     }
 
     let advisorKey = astrologerId;
+    let subscription = false;
     let bookingAccess: { prepaidSeconds: number } | null = null;
     if (bookingId) {
       const booking = await getBooking(bookingId);
@@ -89,7 +90,16 @@ export async function POST(request: NextRequest) {
       advisorKey = booking.advisor_id;
       const end = new Date(booking.starts_at).getTime() + booking.duration_min * 60 * 1000;
       const remaining = Math.max(0, Math.floor((end - Date.now()) / 1000));
-      bookingAccess = { prepaidSeconds: Math.min(booking.duration_min * 60, remaining) };
+      let prepaidSeconds = Math.min(booking.duration_min * 60, remaining);
+      if (
+        booking.amount_cents === 0 &&
+        booking.stripe_checkout_session_id?.startsWith('subscription_')
+      ) {
+        const allowance = await subscriptionVoiceAllowance(user.id);
+        subscription = Boolean(allowance?.entitled);
+        if (allowance?.entitled) prepaidSeconds = Math.min(prepaidSeconds, allowance.seconds);
+      }
+      bookingAccess = { prepaidSeconds };
     }
 
     const astrologer = await getAdvisorById(advisorKey);
@@ -97,7 +107,6 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Astrologue introuvable' }, { status: 404 });
     }
 
-    let subscription = false;
     let access: { allowed: boolean; prepaidSeconds: number; metered: boolean };
     if (bookingAccess) {
       access = {

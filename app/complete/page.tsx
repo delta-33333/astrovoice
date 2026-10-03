@@ -196,7 +196,7 @@ export default function CompletePage() {
             </Link>
           </p>
           {data.astrologerId && (
-            <Link href={`/astrologers?recall=${data.astrologerId}`} className="text-sm text-white/60 underline">
+            <Link href={`/?recall=${data.astrologerId}`} className="text-sm text-white/60 underline">
               Rappeler {data.astrologerName}
             </Link>
           )}
@@ -222,25 +222,29 @@ export default function CompletePage() {
             </p>
           </Link>
 
-          <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 opacity-75">
+          <Link
+            href="/offres"
+            className="bg-white/5 hover:bg-white/10 backdrop-blur-sm border border-white/10 hover:border-celestial-gold/50 rounded-2xl p-6 transition-all"
+          >
             <div className="text-3xl mb-2">📜</div>
             <h3 className="font-semibold mb-2">Rapport natal écrit</h3>
             <p className="text-sm text-white/60 mb-3">
               Analyse complète de votre thème natal en PDF
             </p>
-            <p className="text-xs text-celestial-gold">4,99 €</p>
-            <p className="text-xs text-white/50 mt-2">Bientôt disponible</p>
-          </div>
+            <p className="text-xs text-celestial-gold">{offers.natalLabel || '9,90 €'}</p>
+          </Link>
 
-          <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 opacity-75">
+          <Link
+            href="/offres"
+            className="bg-white/5 hover:bg-white/10 backdrop-blur-sm border border-white/10 hover:border-celestial-gold/50 rounded-2xl p-6 transition-all"
+          >
             <div className="text-3xl mb-2">🌟</div>
-            <h3 className="font-semibold mb-2">Pass Callastral</h3>
+            <h3 className="font-semibold mb-2">Callastral Illimité</h3>
             <p className="text-sm text-white/60 mb-3">
-              Minutes incluses chaque mois
+              Sans facturation à la minute, dans la limite mensuelle
             </p>
-            <p className="text-xs text-celestial-gold">À partir de 19,99 €/mois</p>
-            <p className="text-xs text-white/50 mt-2">Bientôt disponible</p>
-          </div>
+            <p className="text-xs text-celestial-gold">{offers.subscriptionLabel || '49 €'}/mois</p>
+          </Link>
         </div>
 
         <Link href="/home" className="btn-secondary inline-block">

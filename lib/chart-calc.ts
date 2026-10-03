@@ -86,7 +86,8 @@ function configureEphemeris(): boolean {
   if (ephemerisReady) return true;
   const dir = path.join(process.cwd(), 'ephemeris');
   const planets = path.join(dir, 'sepl_18.se1');
-  if (fs.existsSync(planets)) {
+  const moon = path.join(dir, 'semo_18.se1');
+  if (fs.existsSync(planets) && fs.existsSync(moon)) {
     set_ephe_path(dir);
     ephemerisReady = true;
     return true;

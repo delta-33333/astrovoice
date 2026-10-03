@@ -56,7 +56,7 @@ export default function HomePage() {
   };
 
   const startCall = () => {
-    router.push('/astrologers?dispo=now');
+    router.push('/?dispo=now');
   };
 
   if (loading) {

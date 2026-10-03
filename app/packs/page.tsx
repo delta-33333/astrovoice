@@ -72,7 +72,7 @@ export default function PacksPage() {
       setCheckoutSessionId(data.checkoutSessionId);
       setCollectContact(!!data.collectContact);
       setSheetTitle(data.label || 'Minutes');
-      setSheetAmount(formatCurrency(data.amount));
+      setSheetAmount(typeof data.amountLabel === 'string' && data.amountLabel ? data.amountLabel : formatCurrency(data.amount));
       setSheetDetail(
         pack.founding
           ? 'Dix minutes ajoutées à votre compte, une seule fois.'

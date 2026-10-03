@@ -11,7 +11,7 @@ SET years_experience = GREATEST(1, LEAST(45, COALESCE(age, 28) - 27))
 WHERE years_experience IS NULL;
 
 UPDATE callastral.advisors
-SET price_per_min_cents = GREATEST(50, LEAST(200,
+SET price_per_min_cents = GREATEST(50, LEAST(199,
   50
   + GREATEST(1, LEAST(45, COALESCE(years_experience, COALESCE(age, 28) - 27))) * 3
   + GREATEST(0, COALESCE(array_length(specialties, 1), 0) - 1) * 12
@@ -36,7 +36,7 @@ BEGIN
   ) THEN
     ALTER TABLE callastral.advisors
       ADD CONSTRAINT advisors_price_per_min_cents_check
-      CHECK (price_per_min_cents IS NULL OR price_per_min_cents BETWEEN 50 AND 200);
+      CHECK (price_per_min_cents IS NULL OR price_per_min_cents BETWEEN 50 AND 199);
   END IF;
 END $$;
 

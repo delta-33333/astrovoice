@@ -11,7 +11,6 @@ import {
   CALL_HOLD_CENTS,
   SUMMARY_CENTS,
   formatCurrency,
-  quoteCall,
 } from '@/lib/pricing';
 import type { BirthData, NatalChart, PublicAdvisor } from '@/lib/types';
 import {
@@ -173,6 +172,7 @@ export default function CallScreen({
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [checkoutId, setCheckoutId] = useState<string | null>(null);
   const [summaryLabel, setSummaryLabel] = useState('');
+  const [included, setIncluded] = useState(false);
   const [meter, setMeter] = useState<{
     currency: Currency;
     introMinor: number;
@@ -228,7 +228,7 @@ export default function CallScreen({
           capped: raw >= snap.holdMinor,
         };
       })()
-    : quoteCall(elapsed, prepaid);
+    : { coveredSeconds: Math.min(Math.max(0, prepaid), Math.max(0, elapsed)), amountCents: 0, capped: false };
   const moneyLabel = (minor: number) =>
     snap ? formatMoney(minor, normalizeCurrency(snap.currency)) : formatCurrency(minor);
   const remaining = booking ? booking.durationSec - elapsed : null;
@@ -444,7 +444,8 @@ export default function CallScreen({
             );
             return { amountCents: Math.min(raw, active.holdMinor), capped: raw >= active.holdMinor };
           })()
-        : quoteCall(seconds, current.prepaid);
+        : null;
+      if (!liveQuote) return;
       const holdCap = active ? active.holdMinor : CALL_HOLD_CENTS;
       if (liveQuote.capped || liveQuote.amountCents >= holdCap) {
         const holdText = active
@@ -588,8 +589,13 @@ export default function CallScreen({
 
       live.prepaid = tokenPayload.prepaidSeconds ?? live.prepaid;
       live.metered = Boolean(tokenPayload.metered);
-      if (tokenPayload.subscription) sessionStorage.setItem('callSubscription', '1');
-      else sessionStorage.removeItem('callSubscription');
+      if (tokenPayload.subscription) {
+        sessionStorage.setItem('callSubscription', '1');
+        setIncluded(true);
+      } else {
+        sessionStorage.removeItem('callSubscription');
+        setIncluded(false);
+      }
       live.cap = booking ? Math.min(booking.durationSec, live.prepaid || booking.durationSec) : null;
       setPrepaid(live.prepaid);
       if (ctx.state === 'suspended') await ctx.resume();
@@ -863,13 +869,16 @@ export default function CallScreen({
             <p className="mt-4 font-mono text-5xl tabular-nums">{mmss(elapsed)}</p>
             {booking ? (
               <p className="mt-2 text-sm text-white/55">
+                {included ? 'Inclus dans Callastral Illimité · ' : ''}
                 {remaining != null && remaining > 0 ? `${mmss(remaining)} restantes` : 'Durée réservée'}
               </p>
             ) : (
               <p className="mt-2 text-sm text-white/70">
-                {quote.coveredSeconds > 0 && quote.amountCents === 0
+                {included || (quote.coveredSeconds > 0 && quote.amountCents === 0)
                   ? 'Inclus dans vos minutes'
-                  : moneyLabel(quote.amountCents)}
+                  : snap
+                    ? moneyLabel(quote.amountCents)
+                    : 'Tarif du conseiller'}
               </p>
             )}
           </>

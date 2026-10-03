@@ -119,6 +119,9 @@ export default function AccountPage() {
                 {billing.subscription.fairUseMinutesUsed} min utilisées sur {billing.subscription.fairUseMinutes} ce mois-ci.
                 Maximum {billing.subscription.maxCallMinutes} min par appel.
               </p>
+              <Link href="/?dispo=now" className="btn-primary inline-block w-full text-center">
+                Appeler maintenant
+              </Link>
               <button
                 type="button"
                 className="btn-secondary w-full"
