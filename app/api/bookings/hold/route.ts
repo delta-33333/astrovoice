@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { holdSlot, isBookingDuration } from '@/lib/bookings';
+import { busyAlternatives, holdSlot, isBookingDuration } from '@/lib/bookings';
 import { getSession } from '@/lib/session';
 
 export const dynamic = 'force-dynamic';
@@ -20,16 +20,26 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Créneau invalide.' }, { status: 400 });
   }
 
+  const advisorId = typeof body?.advisorId === 'string' && UUID_RE.test(body.advisorId) ? body.advisorId : null;
+  const immediate = body?.immediate === true;
+
   try {
-    const held = await holdSlot({ userId: user.id, slotId, durationMin });
+    const held = await holdSlot({ userId: user.id, slotId, durationMin, advisorId, immediate });
     return NextResponse.json(held);
   } catch (error) {
     const code = error instanceof Error ? error.message : '';
-    if (code === 'HELD') {
-      return NextResponse.json({ error: 'Ce créneau vient d’être retenu.' }, { status: 409 });
-    }
-    if (code === 'UNAVAILABLE') {
-      return NextResponse.json({ error: 'Ce créneau n’est plus disponible.' }, { status: 409 });
+    if (code === 'ADVISOR_BUSY' || code === 'UNAVAILABLE' || code === 'HELD') {
+      const alternatives = await busyAlternatives(advisorId).catch(() => ({ nextSlot: null, alternative: null }));
+      return NextResponse.json(
+        {
+          error: code === 'ADVISOR_BUSY'
+            ? 'Ce conseiller est en consultation en ce moment.'
+            : 'Ce créneau n’est plus disponible.',
+          code: code === 'ADVISOR_BUSY' ? 'busy' : 'unavailable',
+          ...alternatives,
+        },
+        { status: 409 }
+      );
     }
     console.error('hold:', code);
     return NextResponse.json({ error: 'La réservation n’a pas pu être préparée.' }, { status: 500 });

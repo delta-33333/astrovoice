@@ -126,7 +126,123 @@ export function canJoinCall(booking: Pick<BookingRow, 'starts_at' | 'duration_mi
   return now.getTime() >= start - JOIN_LEAD_MS && now.getTime() <= end;
 }
 
+export interface HoldResult {
+  bookingId: string;
+  amountCents: number;
+  creditCents: number;
+  listPriceCents: number;
+  startsAt: string;
+  holdExpiresAt: string;
+  currency: Currency;
+  included: boolean;
+  slotId: string;
+  reallocated: boolean;
+}
+
+/**
+ * Bloque un créneau. Pour « Appeler maintenant » (immediate), un créneau périmé (début passé,
+ * supprimé, retenu ailleurs) n’est jamais bloquant : on prend ou crée côté serveur un créneau
+ * immédiat valable pour le même conseiller. ADVISOR_BUSY seulement s’il est réellement occupé.
+ */
 export async function holdSlot(input: {
+  userId: string;
+  slotId: string;
+  durationMin: BookingDuration;
+  advisorId?: string | null;
+  immediate?: boolean;
+}): Promise<HoldResult> {
+  if (!supabaseAvailable) throw new Error('SUPABASE_NOT_CONFIGURED');
+  const admin = getSupabaseAdmin();
+  let advisorId = input.advisorId ?? null;
+  if (input.immediate) {
+    const { data: slotRow } = await admin
+      .from('slots')
+      .select('advisor_id')
+      .eq('id', input.slotId)
+      .maybeSingle();
+    if (slotRow?.advisor_id) advisorId = slotRow.advisor_id as string;
+  }
+
+  try {
+    const held = await holdExactSlot(input);
+    return { ...held, slotId: input.slotId, reallocated: false };
+  } catch (error) {
+    const code = error instanceof Error ? error.message : '';
+    if (!input.immediate || !advisorId || (code !== 'UNAVAILABLE' && code !== 'HELD')) throw error;
+  }
+
+  const { data: freshId, error: allocError } = await admin.rpc('allocate_immediate_slot', {
+    p_advisor_id: advisorId,
+    p_user_id: input.userId,
+  });
+  if (allocError) {
+    console.error('allocate_immediate_slot:', allocError.message);
+    throw new Error('HOLD_FAILED');
+  }
+  if (!freshId) throw new Error('ADVISOR_BUSY');
+  const held = await holdExactSlot({ ...input, slotId: String(freshId) });
+  return { ...held, slotId: String(freshId), reallocated: true };
+}
+
+/** Propositions en un geste quand le conseiller est réellement occupé. */
+export async function busyAlternatives(advisorId: string | null): Promise<{
+  nextSlot: { id: string; startsAt: string; advisorId: string } | null;
+  alternative: { advisorId: string; name: string; slotId: string; startsAt: string } | null;
+}> {
+  if (!supabaseAvailable) return { nextSlot: null, alternative: null };
+  const admin = getSupabaseAdmin();
+  const soon = new Date(Date.now() + 60 * 1000).toISOString();
+  let nextSlot: { id: string; startsAt: string; advisorId: string } | null = null;
+  let languages: string[] = [];
+  if (advisorId) {
+    const [{ data: next }, { data: adv }] = await Promise.all([
+      admin
+        .from('slots')
+        .select('id, starts_at')
+        .eq('advisor_id', advisorId)
+        .eq('status', 'available')
+        .gt('starts_at', soon)
+        .order('starts_at', { ascending: true })
+        .limit(1)
+        .maybeSingle(),
+      admin.from('advisors').select('languages').eq('id', advisorId).maybeSingle(),
+    ]);
+    if (next) nextSlot = { id: next.id as string, startsAt: next.starts_at as string, advisorId };
+    languages = ((adv?.languages as string[] | null) ?? []).slice(0, 5);
+  }
+  const horizon = new Date(Date.now() + 15 * 60 * 1000).toISOString();
+  const { data: candidates } = await admin
+    .from('slots')
+    .select('id, starts_at, advisor_id, advisors!inner(first_name, last_name, languages, active)')
+    .eq('status', 'available')
+    .gt('starts_at', soon)
+    .lte('starts_at', horizon)
+    .order('starts_at', { ascending: true })
+    .limit(50);
+  type Candidate = {
+    id: string;
+    starts_at: string;
+    advisor_id: string;
+    advisors: { first_name: string; last_name: string; languages: string[] | null; active: boolean } | null;
+  };
+  const list = ((candidates ?? []) as unknown as Candidate[]).filter(
+    (row) => row.advisor_id !== advisorId && row.advisors?.active
+  );
+  const pick =
+    list.find((row) => languages.length === 0 || (row.advisors?.languages ?? []).some((lang) => languages.includes(lang))) ??
+    list[0];
+  const alternative = pick
+    ? {
+        advisorId: pick.advisor_id,
+        name: `${pick.advisors?.first_name ?? ''} ${pick.advisors?.last_name ?? ''}`.trim(),
+        slotId: pick.id,
+        startsAt: pick.starts_at,
+      }
+    : null;
+  return { nextSlot, alternative };
+}
+
+async function holdExactSlot(input: {
   userId: string;
   slotId: string;
   durationMin: BookingDuration;
