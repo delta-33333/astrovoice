@@ -1,5 +1,7 @@
 'use client';
 
+import { loadBirthData } from '@/lib/birth-client';
+
 import { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import type { BirthData } from '@/lib/types';
@@ -24,17 +26,20 @@ export default function PaymentPage() {
   const [holdLabel, setHoldLabel] = useState('');
 
   useEffect(() => {
-    const data = sessionStorage.getItem('birthData');
     const astrId = sessionStorage.getItem('astrologerId');
-
-    if (!data || !astrId) {
-      router.push('/birth');
+    if (!astrId) {
+      router.push('/?dispo=now');
       return;
     }
-
-    setBirthData(JSON.parse(data));
     setAstrologerId(astrId);
-    if (!astrId) return;
+    void loadBirthData().then((birth) => {
+      if (birth) {
+        setBirthData(birth);
+        return;
+      }
+      sessionStorage.setItem('afterBirth', '/payment');
+      router.push('/birth');
+    });
     fetch(`/api/advisors/${encodeURIComponent(astrId)}`)
       .then((response) => response.json())
       .then((payload) => {

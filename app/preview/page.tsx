@@ -1,5 +1,7 @@
 'use client';
 
+import { loadBirthData } from '@/lib/birth-client';
+
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import AdvisorAvatar from '@/components/AdvisorAvatar';
@@ -16,17 +18,24 @@ export default function PreviewPage() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const data = sessionStorage.getItem('birthData');
     const astrId = sessionStorage.getItem('astrologerId');
-
-    if (!data || !astrId) {
+    if (!astrId) {
       router.push('/astrologers');
       return;
     }
-
-    const parsed = JSON.parse(data) as BirthData;
-    setBirthData(parsed);
     setAstrologerId(astrId);
+    void loadBirthData().then((parsed) => {
+      if (!parsed) {
+        sessionStorage.setItem('afterBirth', '/preview');
+        router.push('/birth');
+        return;
+      }
+      setBirthData(parsed);
+      applyChart(parsed);
+    });
+  }, [router]);
+
+  const applyChart = (parsed: BirthData) => {
 
     const chartKey = `${parsed.date}|${parsed.timeUnknown ? 'unknown' : parsed.time || ''}|${parsed.place}`;
     const storedChart = sessionStorage.getItem('natalChart');
@@ -41,7 +50,7 @@ export default function PreviewPage() {
     }
 
     calculateNatalChart(parsed);
-  }, [router]);
+  };
 
   const calculateNatalChart = async (bd: BirthData) => {
     try {

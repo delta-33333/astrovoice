@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import type { BirthData } from '@/lib/types';
+import BirthSummary from '@/components/BirthSummary';
 
 export default function BirthDataPage() {
   const router = useRouter();
@@ -15,31 +16,50 @@ export default function BirthDataPage() {
   });
   const [errors, setErrors] = useState<string[]>([]);
 
-  // Préremplit avec les coordonnées déjà enregistrées sur le compte.
+  // null = chargement, 'form' = pas de données (ou modification), 'saved' = déjà enregistrées.
+  const [mode, setMode] = useState<'loading' | 'form' | 'saved'>('loading');
+  const [saved, setSaved] = useState<BirthData | null>(null);
+
+  const safeTarget = (value: string | null) =>
+    value && value.startsWith('/') && !value.startsWith('//') && !value.startsWith('/birth') ? value : null;
+
+  // Le formulaire ne s'affiche que si le compte n'a vraiment pas de coordonnées.
   useEffect(() => {
     let cancelled = false;
+    const params = new URLSearchParams(window.location.search);
+    const editing = params.get('edit') === '1';
     fetch('/api/birth-data', { cache: 'no-store' })
       .then((response) => (response.ok ? response.json() : null))
       .then((payload: { birthData?: BirthData | null } | null) => {
-        const saved = payload?.birthData;
-        if (cancelled || !saved?.date) return;
-        setFormData((current) =>
-          current.date || current.place
-            ? current
-            : {
-                name: saved.name || '',
-                date: saved.date,
-                time: saved.time || '',
-                timeUnknown: Boolean(saved.timeUnknown),
-                place: saved.place || '',
-              }
-        );
+        if (cancelled) return;
+        const data = payload?.birthData;
+        if (!data?.date || !data.place) {
+          setMode('form');
+          return;
+        }
+        const filled: BirthData = { ...data, name: data.name || '', time: data.time || '' };
+        setSaved(filled);
+        setFormData(filled);
+        if (editing) {
+          setMode('form');
+          return;
+        }
+        sessionStorage.setItem('birthData', JSON.stringify({ ...filled, name: filled.name || 'Vous' }));
+        const target = safeTarget(params.get('next')) ?? safeTarget(sessionStorage.getItem('afterBirth'));
+        if (target) {
+          sessionStorage.removeItem('afterBirth');
+          router.replace(target);
+          return;
+        }
+        setMode('saved');
       })
-      .catch(() => undefined);
+      .catch(() => {
+        if (!cancelled) setMode('form');
+      });
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [router]);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -97,15 +117,41 @@ export default function BirthDataPage() {
           `${formData.date}|${formData.timeUnknown ? 'unknown' : formData.time}|${formData.place}`
         );
       }
-      const next = sessionStorage.getItem('afterBirth');
+      const next =
+        safeTarget(new URLSearchParams(window.location.search).get('next')) ??
+        safeTarget(sessionStorage.getItem('afterBirth'));
       sessionStorage.removeItem('afterBirth');
-      router.push(next && next.startsWith('/') && !next.startsWith('//') ? next : '/preview');
+      router.push(next ?? (saved ? '/account' : '/preview'));
     } catch (error) {
       console.error('Error saving birth data:', error);
       setErrors(['Erreur lors de la sauvegarde. Veuillez réessayer.']);
       setIsSubmitting(false);
     }
   };
+
+  if (mode === 'loading') {
+    return <main className="min-h-screen grid place-items-center text-white/60">Chargement…</main>;
+  }
+
+  if (mode === 'saved' && saved) {
+    return (
+      <main className="min-h-screen flex items-center justify-center px-4 py-12">
+        <div className="max-w-md w-full space-y-6 text-center">
+          <h1 className="font-[family-name:var(--font-cinzel)] text-3xl">Votre thème natal</h1>
+          <p className="text-white/70">Vos coordonnées de naissance sont enregistrées sur votre compte.</p>
+          <BirthSummary data={saved} />
+          <div className="flex flex-col gap-3">
+            <button type="button" className="btn-primary w-full" onClick={() => router.push('/?dispo=now')}>
+              Choisir un conseiller
+            </button>
+            <button type="button" className="text-sm text-white/60 underline" onClick={() => setMode('form')}>
+              Modifier mes coordonnées
+            </button>
+          </div>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main className="min-h-screen flex items-center justify-center px-4 py-12">
