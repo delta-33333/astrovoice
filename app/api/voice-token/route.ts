@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { evaluateVoiceCallAccess } from '@/lib/credits';
+import { chartFromBirth } from '@/lib/ephemeris';
 import { getSession } from '@/lib/session';
+import { subscriptionVoiceAllowance } from '@/lib/subscriptions';
 import { getAdvisorById } from '@/lib/astrologers';
 import { canJoinCall, getBooking } from '@/lib/bookings';
 import { ensureCallSession } from '@/lib/call-records';
@@ -95,9 +97,23 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Astrologue introuvable' }, { status: 404 });
     }
 
-    const access = bookingAccess
-      ? { allowed: bookingAccess.prepaidSeconds > 0, prepaidSeconds: bookingAccess.prepaidSeconds, metered: false }
-      : await evaluateVoiceCallAccess(user, checkoutSessionId);
+    let subscription = false;
+    let access: { allowed: boolean; prepaidSeconds: number; metered: boolean };
+    if (bookingAccess) {
+      access = {
+        allowed: bookingAccess.prepaidSeconds > 0,
+        prepaidSeconds: bookingAccess.prepaidSeconds,
+        metered: false,
+      };
+    } else {
+      const allowance = await subscriptionVoiceAllowance(user.id);
+      if (allowance?.entitled) {
+        subscription = true;
+        access = { allowed: true, prepaidSeconds: allowance.seconds, metered: false };
+      } else {
+        access = await evaluateVoiceCallAccess(user, checkoutSessionId);
+      }
+    }
     if (!access.allowed) {
       return NextResponse.json(
         {
@@ -131,6 +147,18 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    let chartForVoice = natalChart;
+    try {
+      chartForVoice = await chartFromBirth({
+        date: birthData.date,
+        time: birthData.time,
+        timeUnknown: birthData.timeUnknown,
+        place: birthData.place,
+      });
+    } catch (error) {
+      console.warn('Thème pour la voix:', error instanceof Error ? error.message : error);
+    }
+
     const secretResponse = await fetch('https://api.x.ai/v1/realtime/client_secrets', {
       method: 'POST',
       headers: {
@@ -162,10 +190,11 @@ export async function POST(request: NextRequest) {
       token: secret.value,
       model: MODEL,
       voice: astrologer.voiceId,
-      instructions: getVoiceSystemPrompt(astrologer, birthData, natalChart),
+      instructions: getVoiceSystemPrompt(astrologer, birthData, chartForVoice),
       language: astrologer.languages[0] || 'fr',
       prepaidSeconds: access.prepaidSeconds,
       metered: access.metered,
+      subscription,
     });
   } catch (error) {
     console.error('Création du jeton vocal:', error instanceof Error ? error.message : 'erreur');

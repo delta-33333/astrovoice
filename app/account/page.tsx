@@ -15,6 +15,20 @@ export default function AccountPage() {
   const [emailPassword, setEmailPassword] = useState('');
   const [notice, setNotice] = useState('');
   const [error, setError] = useState('');
+  const [billing, setBilling] = useState<{
+    subscription: {
+      status: string;
+      active: boolean;
+      cancelAtPeriodEnd: boolean;
+      currentPeriodEnd: string | null;
+      fairUseMinutesUsed: number;
+      fairUseMinutes: number;
+      maxCallMinutes: number;
+      portal: boolean;
+    } | null;
+    reports: Array<{ id: string; title: string; status: string; createdAt: string }>;
+    rebook: { percent: number; expiresAt: string } | null;
+  } | null>(null);
 
   useEffect(() => {
     fetch('/api/auth/me')
@@ -28,6 +42,12 @@ export default function AccountPage() {
         setDisplayName(payload.user.displayName || '');
         setNextEmail(payload.user.email || '');
         setReady(true);
+        fetch('/api/account/billing')
+          .then((response) => (response.ok ? response.json() : null))
+          .then((payload) => {
+            if (payload) setBilling(payload);
+          })
+          .catch(() => undefined);
       })
       .catch(() => router.replace('/auth'));
   }, [router]);
@@ -88,6 +108,66 @@ export default function AccountPage() {
           <p className="text-white/70 mt-2">{displayName}</p>
           <p className="text-white/50 text-sm">{email}</p>
         </div>
+
+        <section className="rounded-2xl border border-white/10 bg-white/5 p-4 space-y-3">
+          <h2 className="font-semibold">Callastral Illimité</h2>
+          {billing?.subscription?.active ? (
+            <>
+              <p className="text-sm text-white/75">
+                Abonnement en cours
+                {billing.subscription.cancelAtPeriodEnd ? ', résiliation prévue en fin de période' : ''}.
+                {billing.subscription.fairUseMinutesUsed} min utilisées sur {billing.subscription.fairUseMinutes} ce mois-ci.
+                Maximum {billing.subscription.maxCallMinutes} min par appel.
+              </p>
+              <button
+                type="button"
+                className="btn-secondary w-full"
+                onClick={() => {
+                  void fetch('/api/billing/portal', { method: 'POST' })
+                    .then((response) => response.json())
+                    .then((payload) => {
+                      if (payload.url) window.location.href = payload.url;
+                      else setError(payload.error || 'Le portail n’a pas pu s’ouvrir.');
+                    });
+                }}
+              >
+                Gérer ou résilier
+              </button>
+            </>
+          ) : (
+            <>
+              <p className="text-sm text-white/75">
+                49 € par mois, sans facturation à la minute, dans la limite de 300 minutes par mois et de 60 minutes par appel.
+              </p>
+              <Link href="/offres" className="btn-primary inline-block w-full text-center">Voir l’offre</Link>
+            </>
+          )}
+          {billing?.rebook && (
+            <p className="text-sm text-celestial-gold">
+              Prochain rendez-vous : {billing.rebook.percent} % de réduction, jusqu’au{' '}
+              {new Date(billing.rebook.expiresAt).toLocaleDateString('fr-FR')}.
+            </p>
+          )}
+        </section>
+
+        <section className="rounded-2xl border border-white/10 bg-white/5 p-4 space-y-3">
+          <h2 className="font-semibold">Rapports</h2>
+          {billing?.reports?.length ? (
+            <ul className="space-y-2 text-sm">
+              {billing.reports.map((report) => (
+                <li key={report.id}>
+                  <Link href={`/reports/${report.id}`} className="text-celestial-gold underline">
+                    {report.title}
+                  </Link>
+                  <span className="text-white/45"> · {report.status === 'delivered' ? 'envoyé' : 'en préparation'}</span>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="text-sm text-white/60">Aucun rapport pour le moment.</p>
+          )}
+          <Link href="/offres" className="text-sm text-white/70 underline">Commander un thème, une prévision ou une compatibilité</Link>
+        </section>
 
         {notice && <p className="text-sm text-celestial-gold">{notice}</p>}
         {error && <p className="text-sm text-red-200">{error}</p>}

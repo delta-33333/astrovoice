@@ -67,6 +67,13 @@ export default function CallPage() {
     stoppedRef.current = true;
     const activeBookingId = booking?.id ?? null;
 
+    void fetch('/api/billing/usage', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ seconds, bookingId: activeBookingId }),
+      keepalive: true,
+    });
+
     if (activeBookingId) {
       try {
         await fetch(`/api/bookings/${activeBookingId}/complete`, { method: 'POST', keepalive: true });
@@ -81,6 +88,20 @@ export default function CallPage() {
         astrologerName: advisor?.name,
         astrologerId: advisor?.id ?? astrologerId,
         bookingId: activeBookingId,
+        error: note,
+      }));
+      router.push('/complete');
+      return;
+    }
+
+    if (sessionStorage.getItem('callSubscription') === '1') {
+      sessionStorage.removeItem('callSubscription');
+      sessionStorage.setItem('callComplete', JSON.stringify({
+        durationSeconds: seconds,
+        amountCharged: 0,
+        subscription: true,
+        astrologerName: advisor?.name,
+        astrologerId: advisor?.id ?? astrologerId,
         error: note,
       }));
       router.push('/complete');

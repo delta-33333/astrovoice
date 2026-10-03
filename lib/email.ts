@@ -1,7 +1,13 @@
+interface MailAttachment {
+  filename: string;
+  content: string;
+}
+
 interface MailInput {
   to: string;
   subject: string;
   html: string;
+  attachments?: MailAttachment[];
 }
 
 export async function sendMail(input: MailInput): Promise<boolean> {
@@ -22,6 +28,7 @@ export async function sendMail(input: MailInput): Promise<boolean> {
       to: [input.to],
       subject: input.subject,
       html: input.html,
+      ...(input.attachments?.length ? { attachments: input.attachments } : {}),
     }),
   });
 

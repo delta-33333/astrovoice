@@ -4,7 +4,7 @@ import AiDisclosure from '@/components/AiDisclosure';
 import JsonLd from '@/components/JsonLd';
 import SeoChrome from '@/components/SeoChrome';
 import { readRates } from '@/lib/market';
-import { convertEurCents, formatMoney, quoteAdvisor } from '@/lib/money';
+import { convertEurCents, formatMoney, MAX_EUR_CENTS, MIN_EUR_CENTS, quoteAdvisor } from '@/lib/money';
 import { listDirectoryAdvisors } from '@/lib/slots';
 import {
   SPECIALTY_IDS,
@@ -63,8 +63,8 @@ export default async function LocaleHome(props: { params: Promise<{ locale: stri
 
   const currency = localeCurrency(locale);
   const rates = readRates();
-  const floor = formatMoney(convertEurCents(50, currency, rates), currency);
-  const ceiling = formatMoney(convertEurCents(200, currency, rates), currency);
+  const floor = formatMoney(convertEurCents(MIN_EUR_CENTS, currency, rates), currency);
+  const ceiling = formatMoney(convertEurCents(MAX_EUR_CENTS, currency, rates), currency);
   let advisors: Awaited<ReturnType<typeof listDirectoryAdvisors>>['advisors'] = [];
   try {
     advisors = (await listDirectoryAdvisors()).advisors;

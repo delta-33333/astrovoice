@@ -2,7 +2,9 @@ import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { confirmBookingPayment } from '@/lib/bookings';
 import { grantPrepaidCredits } from '@/lib/credits';
+import { fulfillCheckoutReport } from '@/lib/reports';
 import { getStripe } from '@/lib/stripe';
+import { subscriptionIdFromInvoice, syncSubscription, syncSubscriptionById } from '@/lib/subscriptions';
 import { deliverPaidSummary, markSummaryPaid } from '@/lib/summaries';
 
 export const runtime = 'nodejs';
@@ -50,9 +52,33 @@ export async function POST(request: NextRequest) {
             const delivery = await deliverPaidSummary(session.metadata.booking_id);
             console.log('Résumé', session.id, delivery);
           }
+        } else if (session.metadata?.purpose === 'report' && session.metadata.report_id) {
+          const delivery = await fulfillCheckoutReport(session);
+          console.log('Rapport', session.id, delivery);
+        } else if (session.metadata?.purpose === 'subscription') {
+          const subscriptionRef = session.subscription;
+          const subscriptionId = typeof subscriptionRef === 'string' ? subscriptionRef : subscriptionRef?.id;
+          if (subscriptionId) await syncSubscriptionById(subscriptionId);
+          console.log('Abonnement', session.id, subscriptionId);
         } else if (session.metadata?.purpose === 'call_meter') {
           console.log('Empreinte consultation confirmée', session.id, session.payment_status);
         }
+        break;
+      }
+      case 'customer.subscription.created':
+      case 'customer.subscription.updated':
+      case 'customer.subscription.deleted': {
+        const subscription = event.data.object as Stripe.Subscription;
+        const saved = await syncSubscription(subscription);
+        console.log('Abonnement', event.type, subscription.id, saved);
+        break;
+      }
+      case 'invoice.paid':
+      case 'invoice.payment_failed': {
+        const invoice = event.data.object as Stripe.Invoice;
+        const subscriptionId = subscriptionIdFromInvoice(invoice);
+        if (subscriptionId) await syncSubscriptionById(subscriptionId);
+        console.log('Facture', event.type, invoice.id, subscriptionId);
         break;
       }
       case 'payment_intent.succeeded': {

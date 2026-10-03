@@ -101,6 +101,9 @@ export default function PacksPage() {
           <p className="text-white/70 text-lg max-w-2xl mx-auto">
             Des minutes d’avance, au calme, pour vos prochaines consultations Callastral.
           </p>
+          <p className="text-sm text-white/60 mt-4">
+            Solde bas ou appels fréquents : <Link href="/offres" className="text-celestial-gold underline">Callastral Illimité</Link>, 300 minutes par mois, 60 minutes par appel.
+          </p>
         </div>
 
         {error && (

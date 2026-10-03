@@ -5,12 +5,15 @@ import { resolveMarket } from './market';
 import {
   formatMoney,
   localBookingMinor,
+  MAX_EUR_CENTS,
+  MIN_EUR_CENTS,
   normalizeCurrency,
   pricePerMinCents,
   type Currency,
 } from './money';
 import { BOOKING_DURATIONS } from './pricing';
 import { recipientEmail, sendMail } from './email';
+import { attachRebook, consumeRebookOnBooking, discountedMinor, pendingRebook } from './rebook';
 import { getSupabaseAdmin, supabaseAvailable, type UserProfile } from './supabase';
 import { appBaseUrl } from './stripe';
 
@@ -103,7 +106,7 @@ async function eurPriceForSlot(slotId: string): Promise<number> {
   }
   if (full.error || !full.data) throw new Error('UNAVAILABLE');
   const stored = full.data.price_per_min_cents;
-  if (typeof stored === 'number' && stored >= 50 && stored <= 200) return stored;
+  if (typeof stored === 'number' && stored >= MIN_EUR_CENTS && stored <= MAX_EUR_CENTS) return stored;
   return pricePerMinCents({
     years: full.data.years_experience,
     age: full.data.age,
@@ -145,26 +148,33 @@ export async function holdSlot(input: {
   const market = await resolveMarket();
   const eurPerMin = await eurPriceForSlot(input.slotId);
   const chargeCurrency = market.currency;
-  const listPrice = localBookingMinor(eurPerMin, input.durationMin, chargeCurrency, market.rates);
+  const offer = await pendingRebook(input.userId);
+  const priceFor = (currency: Currency) => {
+    const list = localBookingMinor(eurPerMin, input.durationMin, currency, market.rates);
+    if (!offer) return { charge: list, offerId: null as string | null };
+    const charge = discountedMinor(list, offer.percent);
+    return { charge, offerId: charge < list ? offer.id : null };
+  };
+  let priced = priceFor(chargeCurrency);
   const admin = getSupabaseAdmin();
 
   let { data, error } = await admin.rpc('hold_slot', {
     p_user_id: input.userId,
     p_slot_id: input.slotId,
     p_duration: input.durationMin,
-    p_list_price: listPrice,
+    p_list_price: priced.charge,
     p_currency: chargeCurrency,
   });
 
   let currency: Currency = chargeCurrency;
   if (error && oldHoldSignature(error)) {
     currency = 'eur';
-    const eurList = localBookingMinor(eurPerMin, input.durationMin, 'eur', market.rates);
+    priced = priceFor('eur');
     ({ data, error } = await admin.rpc('hold_slot', {
       p_user_id: input.userId,
       p_slot_id: input.slotId,
       p_duration: input.durationMin,
-      p_list_price: eurList,
+      p_list_price: priced.charge,
     }));
   }
 
@@ -184,6 +194,7 @@ export async function holdSlot(input: {
     holdExpiresAt: string;
     currency?: string;
   };
+  if (priced.offerId) await attachRebook(row.bookingId, priced.offerId);
   return { ...row, currency: normalizeCurrency(row.currency || currency) };
 }
 
@@ -214,6 +225,7 @@ export async function confirmBookingPayment(input: {
   if (status === 'confirmed') {
     const booking = await getBooking(input.bookingId);
     if (booking) {
+      await consumeRebookOnBooking(booking.id);
       await sendBookingConfirmation(booking);
       await trackEvent({
         name: 'payment_success',

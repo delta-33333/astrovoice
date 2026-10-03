@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import Link from 'next/link';
 import { motion } from 'framer-motion';
 import AdvisorAvatar from '@/components/AdvisorAvatar';
 import AiDisclosure from '@/components/AiDisclosure';
@@ -47,6 +48,7 @@ type VoiceGrant = {
   language: string;
   prepaidSeconds: number;
   metered: boolean;
+  subscription?: boolean;
 };
 
 type LiveCall = {
@@ -585,6 +587,8 @@ export default function CallScreen({
 
       live.prepaid = tokenPayload.prepaidSeconds ?? live.prepaid;
       live.metered = Boolean(tokenPayload.metered);
+      if (tokenPayload.subscription) sessionStorage.setItem('callSubscription', '1');
+      else sessionStorage.removeItem('callSubscription');
       live.cap = booking ? Math.min(booking.durationSec, live.prepaid || booking.durationSec) : null;
       setPrepaid(live.prepaid);
       if (ctx.state === 'suspended') await ctx.resume();
@@ -877,6 +881,14 @@ export default function CallScreen({
             </p>
             {!booking && prepaid > 0 && (
               <p className="text-sm text-celestial-gold">{Math.floor(prepaid / 60)} min déjà incluses</p>
+            )}
+            {!booking && prepaid < 180 && (
+              <p className="text-sm text-white/70">
+                Moins de 3 minutes d’avance.{' '}
+                <Link href="/offres" className="text-celestial-gold underline">
+                  Voir Callastral Illimité
+                </Link>
+              </p>
             )}
             <button
               type="button"

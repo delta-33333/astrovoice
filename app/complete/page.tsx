@@ -24,6 +24,15 @@ export default function CompletePage() {
   const [comment, setComment] = useState('');
   const [reviewMessage, setReviewMessage] = useState<string | null>(null);
   const [summaryLabel, setSummaryLabel] = useState('');
+  const [offers, setOffers] = useState<{
+    subscriptionLabel?: string;
+    natalLabel?: string;
+    forecastLabel?: string;
+    compatibilityLabel?: string;
+    rebookPercent?: number;
+    fairUseMinutes?: number;
+    maxCallMinutes?: number;
+  }>({});
 
   useEffect(() => {
     const completeData = sessionStorage.getItem('callComplete');
@@ -38,6 +47,7 @@ export default function CompletePage() {
       .then((response) => response.json())
       .then((payload) => {
         if (typeof payload.summaryLabel === 'string') setSummaryLabel(payload.summaryLabel);
+        if (payload.offers) setOffers(payload.offers);
       })
       .catch(() => undefined);
     if (!parsed.bookingId) return;
@@ -156,6 +166,23 @@ export default function CompletePage() {
             )}
           </div>
         )}
+
+        <div className="bg-white/5 border border-celestial-gold/30 rounded-3xl p-6 mb-8 text-left space-y-3">
+          <h2 className="text-lg font-semibold">Pour la suite</h2>
+          <p className="text-sm text-white/75">
+            Callastral Illimité {offers.subscriptionLabel ? `· ${offers.subscriptionLabel}/mois` : ''} : parole sans
+            facturation à la minute, {offers.fairUseMinutes || 300} minutes par mois, {offers.maxCallMinutes || 60} minutes
+            par appel.
+          </p>
+          <p className="text-sm text-white/75">
+            Thème natal {offers.natalLabel || ''} · Prévision 2026 et 2027 {offers.forecastLabel || ''} · Compatibilité{' '}
+            {offers.compatibilityLabel || ''}.
+          </p>
+          <p className="text-sm text-white/75">
+            Le prochain rendez-vous payant : {offers.rebookPercent || 15} % de réduction, pendant 30 jours.
+          </p>
+          <Link href="/offres" className="btn-secondary inline-block">Voir les offres</Link>
+        </div>
 
         <div className="space-y-4 mb-8">
           {data.bookingId && (

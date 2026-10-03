@@ -74,6 +74,26 @@ export default function ReturnClient() {
         return;
       }
 
+      if (data.purpose === 'subscription' && (data.status === 'complete' || data.paymentStatus === 'paid')) {
+        await fetch('/api/billing/confirm', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ checkoutSessionId: sessionId }),
+        });
+        router.replace('/account');
+        return;
+      }
+
+      if (data.purpose === 'report' && data.paymentStatus === 'paid' && data.status === 'complete') {
+        await fetch('/api/reports/confirm', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ checkoutSessionId: sessionId }),
+        });
+        router.replace(data.reportId ? `/reports/${data.reportId}` : '/account');
+        return;
+      }
+
       if (data.purpose === 'call_meter' && data.status === 'complete' && data.sessionId) {
         sessionStorage.setItem('sessionId', data.sessionId);
         sessionStorage.setItem('checkoutSessionId', sessionId);
