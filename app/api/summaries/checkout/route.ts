@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getBooking } from '@/lib/bookings';
+import { trackEvent } from '@/lib/events';
 import { createElementsCheckout } from '@/lib/checkout';
 import { SUMMARY_CENTS, formatCurrency } from '@/lib/pricing';
 import { getSession } from '@/lib/session';
@@ -36,6 +37,13 @@ export async function POST(request: NextRequest) {
       integrationFlow: 'summary',
       manualCapture: false,
       metadata: { booking_id: booking.id },
+    });
+    await trackEvent({
+      name: 'checkout_started',
+      userId: user.id,
+      advisorId: booking.advisor_id,
+      bookingId: booking.id,
+      metadata: { purpose: 'summary' },
     });
     return NextResponse.json({
       ...checkout,

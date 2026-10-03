@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSession } from '@/lib/session';
 import { createElementsCheckout } from '@/lib/checkout';
+import { trackEvent } from '@/lib/events';
 import { foundingAlreadyClaimed } from '@/lib/credits';
 import { formatCurrency, getPack, packSeconds } from '@/lib/pricing';
 import { stripeSecretConfigured } from '@/lib/stripe';
@@ -56,6 +57,12 @@ export async function POST(request: NextRequest) {
         minutes: String(pack.minutes),
         seconds: String(packSeconds(pack)),
       },
+    });
+
+    await trackEvent({
+      name: 'checkout_started',
+      userId: user.id,
+      metadata: { purpose: 'prepaid', packId: pack.id },
     });
 
     return NextResponse.json({

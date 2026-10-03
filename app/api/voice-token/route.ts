@@ -4,6 +4,7 @@ import { getSession } from '@/lib/session';
 import { getAdvisorById } from '@/lib/astrologers';
 import { canJoinCall, getBooking } from '@/lib/bookings';
 import { ensureCallSession } from '@/lib/call-records';
+import { trackEvent } from '@/lib/events';
 import { getVoiceSystemPrompt } from '@/lib/voice-prompts';
 import type { BirthData, NatalChart } from '@/lib/types';
 
@@ -106,6 +107,13 @@ export async function POST(request: NextRequest) {
         { status: 402 }
       );
     }
+
+    await trackEvent({
+      name: 'call_started',
+      userId: user.id,
+      advisorId: astrologer.id,
+      bookingId,
+    });
 
     if (bookingId) {
       try {

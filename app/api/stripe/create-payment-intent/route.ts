@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSession } from '@/lib/session';
 import { createElementsCheckout } from '@/lib/checkout';
+import { trackEvent } from '@/lib/events';
 import { CALL_HOLD_CENTS } from '@/lib/pricing';
 import { stripeSecretConfigured } from '@/lib/stripe';
 
@@ -54,6 +55,12 @@ export async function POST(request: NextRequest) {
         birthDate: String(birthData.date).slice(0, 40),
         birthPlace: String(birthData.place || '').slice(0, 120),
       },
+    });
+
+    await trackEvent({
+      name: 'checkout_started',
+      userId: user.id,
+      metadata: { purpose: 'call_meter' },
     });
 
     return NextResponse.json({

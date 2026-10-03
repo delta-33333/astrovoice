@@ -1,8 +1,10 @@
 import Link from "next/link";
 import InstallPrompt from "@/components/InstallPrompt";
+import { trackEvent } from "@/lib/events";
 import { VIRTUAL_ADVISOR_DISCLOSURE } from "@/lib/legal";
 
-export default function LandingPage() {
+export default async function LandingPage() {
+  await trackEvent({ name: 'visit' });
   return (
     <main className="min-h-screen px-4 py-12">
       <div className="max-w-4xl mx-auto">
