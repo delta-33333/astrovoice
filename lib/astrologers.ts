@@ -33,8 +33,37 @@ function asVoice(value: string): VoiceId {
   return VOICES.includes(value as VoiceId) ? (value as VoiceId) : 'ara';
 }
 
-function toPublic(row: AdvisorRow, reviewCount = 0): PublicAdvisor {
+interface AdvisorSignal {
+  advisor_id: string;
+  review_count: number;
+  rating_sum: number | null;
+  booking_count: number;
+}
+
+async function loadSignals(): Promise<Map<string, AdvisorSignal>> {
+  const map = new Map<string, AdvisorSignal>();
+  if (!supabaseAvailable) return map;
+  const { data, error } = await getSupabaseAdmin()
+    .from('advisor_signals')
+    .select('advisor_id, review_count, rating_sum, booking_count');
+  if (error) {
+    console.warn('Signaux conseillers:', error.message);
+    return map;
+  }
+  for (const row of (data ?? []) as AdvisorSignal[]) {
+    map.set(row.advisor_id, row);
+  }
+  return map;
+}
+
+function toPublic(row: AdvisorRow, signal?: AdvisorSignal): PublicAdvisor {
   const specialties = row.specialties ?? [];
+  const reviewCount = signal?.review_count ?? 0;
+  const bookingCount = signal?.booking_count ?? 0;
+  const averageRating =
+    reviewCount >= 5 && signal?.rating_sum != null
+      ? Math.round((signal.rating_sum / reviewCount) * 10) / 10
+      : null;
   return {
     id: row.id,
     slug: row.slug,
@@ -52,11 +81,13 @@ function toPublic(row: AdvisorRow, reviewCount = 0): PublicAdvisor {
     featured: row.featured,
     dailyCapacity: row.daily_capacity,
     reviewCount,
-    averageRating: null,
+    averageRating,
+    bookingCount,
     badges: advisorBadges({
       reviewCount,
       specialties,
       age: row.age,
+      bookingCount,
     }),
   };
 }
@@ -81,8 +112,9 @@ export async function listPublicAdvisors(): Promise<{
     throw new Error('ADVISORS_UNAVAILABLE');
   }
 
+  const signals = await loadSignals();
   return {
-    advisors: ((data ?? []) as AdvisorRow[]).map((row) => toPublic(row)),
+    advisors: ((data ?? []) as AdvisorRow[]).map((row) => toPublic(row, signals.get(row.id))),
     unavailable: false,
   };
 }
@@ -108,8 +140,9 @@ export async function getAdvisorById(idOrSlug: string): Promise<AdvisorRecord | 
   if (!data) return null;
 
   const row = data as AdvisorRow;
+  const signals = await loadSignals();
   return {
-    ...toPublic(row),
+    ...toPublic(row, signals.get(row.id)),
     personaPrompt: row.persona_prompt ?? '',
   };
 }

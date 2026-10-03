@@ -10,12 +10,17 @@ interface CallCompleteData {
   amountCharged: number;
   astrologerName?: string;
   astrologerId?: string;
+  bookingId?: string;
   error?: string;
 }
 
 export default function CompletePage() {
   const router = useRouter();
   const [data, setData] = useState<CallCompleteData | null>(null);
+  const [canReview, setCanReview] = useState(false);
+  const [stars, setStars] = useState(0);
+  const [comment, setComment] = useState('');
+  const [reviewMessage, setReviewMessage] = useState<string | null>(null);
 
   useEffect(() => {
     const completeData = sessionStorage.getItem('callComplete');
@@ -24,8 +29,33 @@ export default function CompletePage() {
       return;
     }
 
-    setData(JSON.parse(completeData));
+    const parsed = JSON.parse(completeData) as CallCompleteData;
+    setData(parsed);
+    if (!parsed.bookingId) return;
+    fetch(`/api/reviews?bookingId=${encodeURIComponent(parsed.bookingId)}`)
+      .then((response) => response.json())
+      .then((payload) => {
+        if (payload.existing) setReviewMessage('Merci, votre avis est enregistré.');
+        else setCanReview(Boolean(payload.eligible));
+      })
+      .catch(() => undefined);
   }, [router]);
+
+  const sendReview = async () => {
+    if (!data?.bookingId || stars < 1) return;
+    const response = await fetch('/api/reviews', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ bookingId: data.bookingId, stars, comment }),
+    });
+    const payload = await response.json().catch(() => null);
+    if (!response.ok) {
+      setReviewMessage(payload?.error || 'L’avis n’a pas été enregistré.');
+      return;
+    }
+    setCanReview(false);
+    setReviewMessage('Merci, votre avis est enregistré.');
+  };
 
   if (!data) {
     return (
@@ -34,8 +64,6 @@ export default function CompletePage() {
       </div>
     );
   }
-
-  const minutes = Math.ceil(data.durationSeconds / 60);
 
   return (
     <main className="min-h-screen flex items-center justify-center px-4 py-12">
@@ -83,6 +111,42 @@ export default function CompletePage() {
             Un reçu a été envoyé par email • Paiement sécurisé par Stripe
           </p>
         </div>
+
+        {(canReview || reviewMessage) && (
+          <div className="bg-white/5 border border-white/10 rounded-3xl p-6 mb-8 text-left">
+            <h2 className="text-lg font-semibold mb-3">Votre avis sur cette consultation</h2>
+            {reviewMessage && <p className="text-white/75">{reviewMessage}</p>}
+            {canReview && (
+              <>
+                <div className="flex gap-2 mb-4">
+                  {[1, 2, 3, 4, 5].map((value) => (
+                    <button
+                      key={value}
+                      type="button"
+                      onClick={() => setStars(value)}
+                      className={`h-11 w-11 rounded-full border ${
+                        stars >= value ? 'bg-celestial-gold text-black border-celestial-gold' : 'border-white/20'
+                      }`}
+                      aria-label={`${value} sur 5`}
+                    >
+                      {value}
+                    </button>
+                  ))}
+                </div>
+                <textarea
+                  value={comment}
+                  onChange={(event) => setComment(event.target.value)}
+                  maxLength={1000}
+                  placeholder="Commentaire, si vous le souhaitez"
+                  className="w-full rounded-2xl bg-white/5 border border-white/10 p-3 text-sm mb-4"
+                />
+                <button type="button" onClick={() => void sendReview()} className="btn-primary" disabled={stars < 1}>
+                  Envoyer l’avis
+                </button>
+              </>
+            )}
+          </div>
+        )}
 
         <div className="space-y-4 mb-8">
           {data.astrologerId && (

@@ -79,7 +79,6 @@ export async function POST(request: NextRequest) {
         sessionToken: sessionData.id,
         initialMessage: sessionData.choices?.[0]?.message?.content,
         sessionId,
-        model: 'grok-3',
         astrologer: {
           id: astrologer.id,
           name: astrologer.name,

@@ -58,6 +58,22 @@ export default function ReturnClient() {
         return;
       }
 
+      if (data.purpose === 'summary' && data.paymentStatus === 'paid' && data.status === 'complete' && data.bookingId) {
+        const confirmed = await fetch('/api/summaries/confirm', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ checkoutSessionId: sessionId }),
+        });
+        const payload = await confirmed.json();
+        if (!confirmed.ok) {
+          setFailed(true);
+          setMessage(payload.error || 'Le résumé n’a pas été confirmé.');
+          return;
+        }
+        router.replace(`/resume/${data.bookingId}?paid=1`);
+        return;
+      }
+
       if (data.purpose === 'call_meter' && data.status === 'complete' && data.sessionId) {
         sessionStorage.setItem('sessionId', data.sessionId);
         sessionStorage.setItem('checkoutSessionId', sessionId);

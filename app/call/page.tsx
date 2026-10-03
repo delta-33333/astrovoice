@@ -1,165 +1,67 @@
 'use client';
 
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import type { BirthData, PublicAdvisor } from '@/lib/types';
-import AdvisorAvatar from '@/components/AdvisorAvatar';
+import CallScreen from '@/components/CallScreen';
 import { useAdvisor } from '@/components/use-advisor';
-import { formatDuration, formatCurrency } from '@/lib/utils';
-import { CALL_HOLD_CENTS, INTRO_CENTS, INTRO_SECONDS, PER_MINUTE_CENTS, quoteCall } from '@/lib/pricing';
+import type { BirthData } from '@/lib/types';
 
 export default function CallPage() {
   const router = useRouter();
   const [birthData, setBirthData] = useState<BirthData | null>(null);
   const [astrologerId, setAstrologerId] = useState<string | null>(null);
-  const { advisor, status: advisorStatus } = useAdvisor(astrologerId);
-  const bootedRef = useRef(false);
-  const bookingCapRef = useRef<number | null>(null);
-  const [bookedCall, setBookedCall] = useState(false);
-  const [isConnecting, setIsConnecting] = useState(true);
-  const [isConnected, setIsConnected] = useState(false);
-  const [callDuration, setCallDuration] = useState(0);
-  const [error, setError] = useState<string | null>(null);
-  const [isMocked, setIsMocked] = useState(false);
-  const [transcript, setTranscript] = useState<string[]>([]);
-  const [showCostAlert, setShowCostAlert] = useState(false);
+  const [booking, setBooking] = useState<{ id: string; durationSec: number } | null>(null);
   const [prepaidSeconds, setPrepaidSeconds] = useState(0);
-
-  const startTimeRef = useRef<number>(0);
-  const timerIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const [ready, setReady] = useState(false);
+  const { advisor, status: advisorStatus } = useAdvisor(astrologerId);
   const stoppedRef = useRef(false);
-  const prepaidRef = useRef(0);
   const checkoutRef = useRef<string | null>(null);
   const sessionRef = useRef<string | null>(null);
-  const finishRef = useRef<(seconds: number) => Promise<void>>(async () => {});
-
-  const quote = quoteCall(callDuration, prepaidSeconds);
-  const currentCost = quote.amountCents;
 
   useEffect(() => {
     const data = sessionStorage.getItem('birthData');
     const astrId = sessionStorage.getItem('astrologerId');
     const sessId = sessionStorage.getItem('sessionId');
-    const checkoutId = sessionStorage.getItem('checkoutSessionId');
-
     if (!data || !astrId || !sessId) {
       router.push('/birth');
       return;
     }
-
-    setBirthData(JSON.parse(data));
+    setBirthData(JSON.parse(data) as BirthData);
     setAstrologerId(astrId);
     sessionRef.current = sessId;
-    checkoutRef.current = checkoutId;
-    prepaidRef.current = 0;
-    const cap = Number(sessionStorage.getItem('bookingDurationSec') || 0);
-    bookingCapRef.current = cap > 0 ? cap : null;
-    setBookedCall(cap > 0);
+    checkoutRef.current = sessionStorage.getItem('checkoutSessionId');
 
-    fetch('/api/auth/me')
-      .then((response) => response.json())
-      .then((payload) => {
-        const seconds = payload?.user?.prepaidSeconds ?? 0;
-        prepaidRef.current = seconds;
-        setPrepaidSeconds(seconds);
-      })
-      .catch(() => undefined);
-
-  }, [router]);
-
-  const initializeCall = async (bd: BirthData, current: PublicAdvisor, sessId: string) => {
-    try {
-      // Get natal chart
-      const chartResponse = await fetch('/api/natal-chart', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(bd),
-      });
-
-      if (!chartResponse.ok) {
-        throw new Error('Erreur lors du calcul du thème natal');
-      }
-
-      const natalChart = await chartResponse.json();
-
-      // Create call session
-      const sessionResponse = await fetch('/api/call-session', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          sessionId: sessId,
-          birthData: bd,
-          astrologerId: current.id,
-          natalChart,
-        }),
-      });
-
-      if (!sessionResponse.ok) {
-        throw new Error('Erreur lors de la création de la session');
-      }
-
-      const sessionData = await sessionResponse.json();
-
-      if (sessionData.mock || sessionData.fallback) {
-        setIsMocked(true);
-        setError(sessionData.message || 'Mode démo actif');
-      }
-
-      // Start the call timer
-      startTimeRef.current = Date.now();
-      setIsConnected(true);
-      setIsConnecting(false);
-
-      // Start timer
-      timerIntervalRef.current = setInterval(() => {
-        const elapsed = Math.floor((Date.now() - startTimeRef.current) / 1000);
-        setCallDuration(elapsed);
-
-        const cap = bookingCapRef.current;
-        if (cap && elapsed >= cap) {
-          if (timerIntervalRef.current) clearInterval(timerIntervalRef.current);
-          void finishRef.current(elapsed);
+    const bookingId = sessionStorage.getItem('bookingId');
+    const load = async () => {
+      if (bookingId) {
+        const response = await fetch(`/api/bookings/${bookingId}`);
+        const payload = await response.json().catch(() => null);
+        if (!response.ok || !payload?.booking?.canJoin) {
+          router.replace(bookingId ? `/call/${bookingId}` : '/home');
           return;
         }
-        const liveQuote = quoteCall(elapsed, prepaidRef.current);
-        if (!cap && (liveQuote.capped || liveQuote.amountCents >= CALL_HOLD_CENTS)) {
-          setShowCostAlert(true);
-          if (timerIntervalRef.current) {
-            clearInterval(timerIntervalRef.current);
-          }
-          void finishRef.current(elapsed);
-        }
-      }, 1000);
+        setBooking({
+          id: payload.booking.id,
+          durationSec: payload.booking.durationMin * 60,
+        });
+      }
+      const me = await fetch('/api/auth/me').then((response) => response.json()).catch(() => null);
+      setPrepaidSeconds(me?.user?.prepaidSeconds ?? 0);
+      setReady(true);
+    };
+    void load();
+  }, [router]);
 
-      // Add welcome message to transcript
-      setTranscript([
-        `Bonjour ${bd.name}, je suis ${current.name}. J'ai préparé votre thème natal et je suis prêt à répondre à vos questions.`,
-      ]);
-
-    } catch (err) {
-      console.error('Call initialization error:', err);
-      setError(err instanceof Error ? err.message : 'Erreur de connexion');
-      setIsConnecting(false);
-    }
-  };
-
-  const finishCall = async (seconds: number) => {
+  const finish = async (seconds: number) => {
     if (stoppedRef.current) return;
     stoppedRef.current = true;
-
-    if (timerIntervalRef.current) {
-      clearInterval(timerIntervalRef.current);
-    }
-
-    setIsConnected(false);
-    const finalQuote = quoteCall(seconds, prepaidRef.current);
-    const activeBookingId = sessionStorage.getItem('bookingId');
+    const activeBookingId = booking?.id ?? sessionStorage.getItem('bookingId');
 
     if (activeBookingId) {
       try {
         await fetch(`/api/bookings/${activeBookingId}/complete`, { method: 'POST' });
-      } catch (err) {
-        console.error('Clôture réservation:', err);
+      } catch (error) {
+        console.error('Clôture réservation:', error);
       }
       sessionStorage.setItem('callComplete', JSON.stringify({
         durationSeconds: seconds,
@@ -182,182 +84,43 @@ export default function CallPage() {
           durationSeconds: seconds,
         }),
       });
-
-      if (!response.ok) {
-        throw new Error('Erreur lors de la finalisation du paiement');
-      }
-
-      const result = await response.json();
-
+      const result = response.ok ? await response.json() : null;
       sessionStorage.setItem('callComplete', JSON.stringify({
         durationSeconds: seconds,
-        amountCharged: result.amountCharged,
-        prepaidSecondsUsed: result.prepaidSecondsUsed,
+        amountCharged: result?.amountCharged ?? 0,
+        prepaidSecondsUsed: result?.prepaidSecondsUsed,
         astrologerName: advisor?.name,
         astrologerId: advisor?.id ?? astrologerId,
       }));
-
-      router.push('/complete');
-    } catch (err) {
-      console.error('Hangup error:', err);
+    } catch {
       sessionStorage.setItem('callComplete', JSON.stringify({
         durationSeconds: seconds,
-        amountCharged: finalQuote.amountCents,
+        amountCharged: 0,
         astrologerName: advisor?.name,
         astrologerId: advisor?.id ?? astrologerId,
         error: 'Le règlement sera confirmé sous peu',
       }));
-      router.push('/complete');
     }
+    router.push('/complete');
   };
 
-  finishRef.current = finishCall;
-
-  useEffect(() => {
-    if (!advisor || !birthData || !sessionRef.current || bootedRef.current) return;
-    bootedRef.current = true;
-    void initializeCall(birthData, advisor, sessionRef.current);
-  }, [advisor, birthData]);
-
-  if (!birthData || advisorStatus === 'idle' || advisorStatus === 'loading') {
+  if (!ready || !birthData || !advisor || advisorStatus === 'loading' || advisorStatus === 'idle') {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-white/60">
-          {advisorStatus === 'missing' || advisorStatus === 'error'
-            ? 'Conseiller introuvable'
-            : 'Chargement...'}
-        </div>
-      </div>
-    );
-  }
-
-  if (!advisor) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-white/60">Conseiller introuvable</div>
-      </div>
+      <main className="call-stage min-h-screen grid place-items-center text-white/70">
+        {advisorStatus === 'missing' || advisorStatus === 'error' ? 'Conseiller introuvable' : 'Connexion…'}
+      </main>
     );
   }
 
   return (
-    <main className="min-h-screen flex items-center justify-center px-4 py-8">
-      <div className="max-w-4xl w-full">
-        {/* Header */}
-        <div className="text-center mb-8">
-          <div className="flex justify-center mb-4">
-            <AdvisorAvatar advisor={advisor} size="xl" />
-          </div>
-          <h1 className="text-3xl font-[family-name:var(--font-cinzel)] font-bold mb-2">
-            {advisor.name}
-          </h1>
-          <p className="text-white/60">Consultation en cours</p>
-        </div>
-
-        {/* Call Interface */}
-        <div className="bg-white/5 backdrop-blur-sm rounded-3xl border border-white/10 p-8 space-y-6">
-          {/* Status */}
-          {isConnecting && (
-            <div className="text-center py-8">
-              <div className="inline-block w-12 h-12 border-4 border-celestial-purple border-t-transparent rounded-full animate-spin mb-4"></div>
-              <p className="text-white/70">Connexion avec {advisor.name}...</p>
-            </div>
-          )}
-
-          {error && !isConnected && (
-            <div className="bg-yellow-500/10 border border-yellow-500/50 rounded-xl p-4">
-              <p className="text-sm text-yellow-200">⚠️ {error}</p>
-              {isMocked && (
-                <p className="text-xs text-yellow-200/70 mt-2">
-                  La consultation continue en mode limité. Configurez les clés API pour activer toutes les fonctionnalités.
-                </p>
-              )}
-            </div>
-          )}
-
-          {/* Timer and Cost */}
-          {isConnected && (
-            <>
-              <div className="text-center py-8 space-y-4">
-                <div className="text-6xl font-mono font-bold text-celestial-gold">
-                  {formatDuration(callDuration)}
-                </div>
-                <div className="text-2xl font-semibold">
-                  {bookedCall ? 'Consultation réservée' : formatCurrency(currentCost)}
-                </div>
-                <div className="text-sm text-white/50">
-                  {bookedCall ? (
-                    <span>Durée réservée</span>
-                  ) : quote.coveredSeconds > 0 && quote.amountCents === 0 ? (
-                    <span className="text-celestial-gold">Inclus dans vos minutes</span>
-                  ) : quote.billableSeconds <= INTRO_SECONDS ? (
-                    <span className="text-celestial-gold">
-                      Offre découverte : {formatCurrency(INTRO_CENTS)}/min les 3 premières minutes
-                    </span>
-                  ) : (
-                    <span>{formatCurrency(PER_MINUTE_CENTS)}/min · facturation à la seconde</span>
-                  )}
-                </div>
-              </div>
-
-              {/* Cost Alert */}
-              {showCostAlert && (
-                <div className="bg-yellow-500/10 border-2 border-yellow-500/50 rounded-xl p-4 mb-4 animate-pulse">
-                  <div className="flex items-start gap-3">
-                    <span className="text-2xl">⚠️</span>
-                    <div>
-                      <p className="font-semibold text-yellow-200 mb-1">
-                        Empreinte atteinte : {formatCurrency(CALL_HOLD_CENTS)}
-                      </p>
-                      <p className="text-sm text-yellow-200/80">
-                        La consultation s’arrête ici. Seul ce montant, ou moins si vos minutes couvrent une partie, est encaissé.
-                      </p>
-                      <button
-                        onClick={() => setShowCostAlert(false)}
-                        className="mt-2 text-xs underline hover:no-underline"
-                      >
-                        J'ai compris
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* Transcript */}
-              {transcript.length > 0 && (
-                <div className="max-h-48 overflow-y-auto bg-white/5 rounded-xl p-4 space-y-3">
-                  <div className="text-xs text-white/50 uppercase tracking-wide mb-2">
-                    Transcription
-                  </div>
-                  {transcript.map((msg, i) => (
-                    <p key={i} className="text-sm text-white/80 leading-relaxed">
-                      {msg}
-                    </p>
-                  ))}
-                </div>
-              )}
-
-              {/* Mic indicator */}
-              <div className="flex items-center justify-center gap-3 py-4">
-                <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
-                <span className="text-sm text-white/70">Microphone actif</span>
-              </div>
-
-              {/* Hangup button */}
-              <button
-                onClick={() => void finishCall(callDuration)}
-                className="w-full bg-red-500 hover:bg-red-600 text-white font-semibold py-4 rounded-full transition-all duration-300 hover:scale-105"
-              >
-                Terminer la consultation
-              </button>
-            </>
-          )}
-        </div>
-
-        {/* Info */}
-        <div className="mt-6 text-center text-xs text-white/40">
-          <p>Le montant exact est encaissé à la fin. L’empreinte non utilisée est libérée.</p>
-        </div>
-      </div>
-    </main>
+    <CallScreen
+      advisor={advisor}
+      birthData={birthData}
+      booking={booking}
+      prepaidSeconds={prepaidSeconds}
+      onFinished={(seconds) => {
+        void finish(seconds);
+      }}
+    />
   );
 }
