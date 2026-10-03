@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
+import { motion } from 'framer-motion';
 import Link from 'next/link';
 import AdvisorAvatar from '@/components/AdvisorAvatar';
 import { BADGE_LABELS, languageLabel, styleLabel } from '@/lib/advisor-badges';
@@ -113,9 +114,12 @@ export default function AdvisorDirectory({
         )}
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-          {visible.map((advisor) => (
-            <article
+          {visible.map((advisor, index) => (
+            <motion.article
               key={advisor.id}
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.35, delay: Math.min(index * 0.04, 0.32), ease: 'easeOut' }}
               className={`p-5 sm:p-6 bg-white/5 backdrop-blur-sm rounded-2xl border text-left ${
                 advisor.featured ? 'border-celestial-gold/40' : 'border-white/10'
               }`}
@@ -174,7 +178,7 @@ export default function AdvisorDirectory({
               >
                 Voir les créneaux
               </Link>
-            </article>
+            </motion.article>
           ))}
         </div>
       </div>
