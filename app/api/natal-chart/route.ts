@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { ChartError, chartFromBirth } from '@/lib/ephemeris';
+import { ChartError } from '@/lib/ephemeris';
+import { loadOrComputeChart, profileMatchesBirth } from '@/lib/natal-store';
+import { getSession } from '@/lib/session';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -16,22 +18,14 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Date et lieu requis' }, { status: 400 });
     }
 
-    const chart = await chartFromBirth({ date, time, timeUnknown, place });
-    return NextResponse.json({
-      planets: chart.planets,
-      houses: chart.houses,
-      aspects: chart.aspects,
-      ascendant: chart.ascendant,
-      sunSign: chart.sunSign,
-      moonSign: chart.moonSign,
-      summary: chart.summary,
-      coords: chart.coords,
-      timeUsed: chart.timeUsed,
-      timeZone: chart.timeZone,
-      timeKnown: chart.timeKnown,
-      engine: chart.engine,
-      placeLabel: chart.placeLabel,
-    });
+    const user = await getSession();
+    const birth = { date, time, timeUnknown, place };
+    const persistUser = Boolean(user && (!user.birth_date || profileMatchesBirth(user, birth)));
+    const chart = await loadOrComputeChart(
+      birth,
+      user ? { userId: user.id, displayName: user.display_name, persistUser } : undefined
+    );
+    return NextResponse.json(chart);
   } catch (error) {
     if (error instanceof ChartError) {
       const status = error.code === 'EPHEMERIS' ? 503 : 400;

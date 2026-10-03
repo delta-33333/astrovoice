@@ -80,6 +80,7 @@ export interface UserProfile {
   birth_place: string;
   birth_latitude?: number;
   birth_longitude?: number;
+  birth_timezone?: string;
   natal_chart_json?: string;
   favorite_astrologer_id?: string;
   consent_accepted_at?: string;

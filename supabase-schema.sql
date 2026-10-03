@@ -17,6 +17,7 @@ CREATE TABLE IF NOT EXISTS callastral.users (
   birth_place text,
   birth_latitude numeric,
   birth_longitude numeric,
+  birth_timezone text,
   natal_chart_json text,
   favorite_astrologer_id text,
   consent_accepted_at text,
@@ -52,6 +53,29 @@ CREATE TABLE IF NOT EXISTS callastral.call_sessions (
   created_at timestamptz DEFAULT now()
 );
 CREATE INDEX IF NOT EXISTS idx_call_sessions_user ON callastral.call_sessions (user_id);
+
+CREATE TABLE IF NOT EXISTS callastral.natal_charts (
+  fingerprint text PRIMARY KEY,
+  birth_date text NOT NULL,
+  birth_time text,
+  birth_time_unknown boolean NOT NULL DEFAULT false,
+  birth_place text NOT NULL,
+  latitude numeric,
+  longitude numeric,
+  time_zone text,
+  engine text,
+  chart jsonb NOT NULL,
+  created_at timestamptz NOT NULL DEFAULT now()
+);
+
+CREATE TABLE IF NOT EXISTS callastral.place_geocodes (
+  place_key text PRIMARY KEY,
+  label text,
+  latitude numeric NOT NULL,
+  longitude numeric NOT NULL,
+  time_zone text,
+  updated_at timestamptz NOT NULL DEFAULT now()
+);
 
 -- Atomique : une session Checkout ne crédite qu'une fois.
 CREATE OR REPLACE FUNCTION callastral.grant_prepaid_seconds(

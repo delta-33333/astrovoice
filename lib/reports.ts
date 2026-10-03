@@ -1,6 +1,7 @@
 import 'server-only';
 import type Stripe from 'stripe';
-import { chartAtUtcNoon, chartFromBirth, type ComputedChart } from './ephemeris';
+import { chartAtUtcNoon, type ComputedChart } from './ephemeris';
+import { loadOrComputeChart } from './natal-store';
 import { escapeHtml, recipientEmail, sendMail } from './email';
 import { isMissingRelation } from './missing-relation';
 import { readRates } from './market';
@@ -98,8 +99,8 @@ async function compose(kind: ReportKind, input: BirthFields | { a: BirthFields; 
   chart: unknown;
 }> {
   if (kind === 'compatibility' && 'a' in input) {
-    const chartA = await chartFromBirth(input.a);
-    const chartB = await chartFromBirth(input.b);
+    const chartA = await loadOrComputeChart(input.a);
+    const chartB = await loadOrComputeChart(input.b);
     const body = await writeProse(
       REPORT_SYSTEM,
       `Rédige une lecture de compatibilité entre ${input.a.name} et ${input.b.name}.\n` +
@@ -109,7 +110,7 @@ async function compose(kind: ReportKind, input: BirthFields | { a: BirthFields; 
     return { body, chart: { a: chartA, b: chartB } };
   }
   const birth = input as BirthFields;
-  const natal = await chartFromBirth(birth);
+  const natal = await loadOrComputeChart(birth);
   if (kind === 'forecast') {
     const skies = FORECAST_YEARS.map((year) =>
       chartAtUtcNoon(year, 1, 1, natal.coords.lat, natal.coords.lon, natal.placeLabel)

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { evaluateVoiceCallAccess } from '@/lib/credits';
-import { chartFromBirth } from '@/lib/ephemeris';
+import { chartForCall } from '@/lib/natal-store';
 import { getSession } from '@/lib/session';
 import { subscriptionVoiceAllowance } from '@/lib/subscriptions';
 import { getAdvisorById } from '@/lib/astrologers';
@@ -72,7 +72,7 @@ export async function POST(request: NextRequest) {
     const checkoutSessionId = asString(body?.checkoutSessionId, 200);
     const bookingId = asString(body?.bookingId, 64);
 
-    if (!birthData || !astrologerId || !natalChart) {
+    if (!birthData || !astrologerId) {
       return NextResponse.json({ error: 'Données manquantes' }, { status: 400 });
     }
 
@@ -147,19 +147,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    let chartForVoice = natalChart;
-    try {
-      chartForVoice = await chartFromBirth({
-        date: birthData.date,
-        time: birthData.time,
-        timeUnknown: birthData.timeUnknown,
-        place: birthData.place,
-      });
-    } catch (error) {
-      console.warn('Thème pour la voix:', error instanceof Error ? error.message : error);
-    }
-
-    const secretResponse = await fetch('https://api.x.ai/v1/realtime/client_secrets', {
+    const secretPromise = fetch('https://api.x.ai/v1/realtime/client_secrets', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -168,6 +156,27 @@ export async function POST(request: NextRequest) {
       body: JSON.stringify({ expires_after: { seconds: 300 } }),
       cache: 'no-store',
     });
+
+    let chartForVoice = natalChart;
+    try {
+      chartForVoice = await chartForCall(user, {
+        date: birthData.date,
+        time: birthData.time,
+        timeUnknown: birthData.timeUnknown,
+        place: birthData.place,
+      });
+    } catch (error) {
+      console.warn('Thème pour la voix:', error instanceof Error ? error.message : error);
+    }
+    if (!chartForVoice) {
+      await secretPromise.catch(() => undefined);
+      return NextResponse.json(
+        { error: 'Le thème natal n’a pas pu être préparé. Réessayez.' },
+        { status: 400 }
+      );
+    }
+
+    const secretResponse = await secretPromise;
 
     if (!secretResponse.ok) {
       console.error('Jeton vocal refusé:', secretResponse.status);

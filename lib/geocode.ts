@@ -1,5 +1,7 @@
 import 'server-only';
 import { find as findTimeZone } from 'geo-tz';
+import { isMissingRelation } from './missing-relation';
+import { getSupabaseAdmin, supabaseAvailable } from './supabase';
 
 export interface PlaceLocation {
   lat: number;
@@ -74,20 +76,71 @@ async function fromNominatim(place: string): Promise<PlaceLocation | null> {
   };
 }
 
+async function readStoredPlace(key: string): Promise<PlaceLocation | null> {
+  if (!supabaseAvailable) return null;
+  try {
+    const { data, error } = await getSupabaseAdmin()
+      .from('place_geocodes')
+      .select('label, latitude, longitude, time_zone')
+      .eq('place_key', key)
+      .maybeSingle();
+    if (error) {
+      if (!isMissingRelation(error)) console.warn('Lecture lieu:', error.message);
+      return null;
+    }
+    if (!data || typeof data.latitude !== 'number' || typeof data.longitude !== 'number') return null;
+    return {
+      lat: data.latitude,
+      lon: data.longitude,
+      label: typeof data.label === 'string' && data.label ? data.label : key,
+      timeZone: typeof data.time_zone === 'string' && data.time_zone ? data.time_zone : 'UTC',
+    };
+  } catch (error) {
+    console.warn('Lecture lieu:', error instanceof Error ? error.message : error);
+    return null;
+  }
+}
+
+async function writeStoredPlace(key: string, place: PlaceLocation): Promise<void> {
+  if (!supabaseAvailable) return;
+  try {
+    const { error } = await getSupabaseAdmin().from('place_geocodes').upsert(
+      {
+        place_key: key,
+        label: place.label,
+        latitude: place.lat,
+        longitude: place.lon,
+        time_zone: place.timeZone,
+      },
+      { onConflict: 'place_key' }
+    );
+    if (error && !isMissingRelation(error)) console.warn('Écriture lieu:', error.message);
+  } catch (error) {
+    console.warn('Écriture lieu:', error instanceof Error ? error.message : error);
+  }
+}
+
 export async function locatePlace(place: string): Promise<PlaceLocation | null> {
   const key = cacheKey(place);
   if (!key) return null;
   if (cache.has(key)) return cache.get(key) ?? null;
 
+  const stored = await readStoredPlace(key);
+  if (stored) return remember(key, stored);
+
   try {
     const openMeteo = await fromOpenMeteo(place.trim());
-    if (openMeteo) return remember(key, openMeteo);
+    if (openMeteo) {
+      await writeStoredPlace(key, openMeteo);
+      return remember(key, openMeteo);
+    }
   } catch (error) {
     console.warn('Géocodage Open-Meteo:', error instanceof Error ? error.message : error);
   }
 
   try {
     const nominatim = await fromNominatim(place.trim());
+    if (nominatim) await writeStoredPlace(key, nominatim);
     return remember(key, nominatim);
   } catch (error) {
     console.warn('Géocodage Nominatim:', error instanceof Error ? error.message : error);

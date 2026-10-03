@@ -546,15 +546,16 @@ export default function CallScreen({
       live.gain = gain;
       live.player = new GaplessPcmPlayer(ctx, VOICE_SAMPLE_RATE, gain);
 
-      const chartResponse = await fetch('/api/natal-chart', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(birthData),
-      });
-      if (!chartResponse.ok) {
-        throw new Error('Le thème natal n’a pas pu être préparé. Réessayez.');
+      let natalChart: NatalChart | undefined;
+      try {
+        const chartKey = `${birthData.date}|${birthData.timeUnknown ? 'unknown' : birthData.time || ''}|${birthData.place}`;
+        const stored = sessionStorage.getItem('natalChart');
+        if (stored && sessionStorage.getItem('natalChartKey') === chartKey) {
+          natalChart = JSON.parse(stored) as NatalChart;
+        }
+      } catch {
+        natalChart = undefined;
       }
-      const natalChart = (await chartResponse.json()) as NatalChart;
 
       const tokenResponse = await fetch('/api/voice-token', {
         method: 'POST',

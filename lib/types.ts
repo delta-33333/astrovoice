@@ -64,16 +64,21 @@ export interface NatalChart {
   houses: House[];
   aspects: Aspect[];
   ascendant?: string;
+  ascendantLongitude?: number;
   sunSign?: string;
   moonSign?: string;
   timeKnown?: boolean;
   engine?: 'swisseph' | 'moshier';
+  /** Résumé compact déjà calculé : signes, degrés, maisons, aspects majeurs. */
+  voiceSummary?: string;
 }
 
 export interface Planet {
   name: string;
   sign: string;
   degree: number;
+  /** Longitude écliptique brute, en degrés. */
+  longitude?: number;
   house: number;
   retrograde?: boolean;
 }
@@ -82,6 +87,7 @@ export interface House {
   number: number;
   sign: string;
   degree: number;
+  longitude?: number;
 }
 
 export interface Aspect {

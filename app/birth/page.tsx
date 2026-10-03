@@ -42,12 +42,29 @@ export default function BirthDataPage() {
         body: JSON.stringify(formData),
       });
 
+      const payload = (await saveResponse.json().catch(() => null)) as {
+        error?: string;
+        chart?: unknown;
+        latitude?: number;
+        longitude?: number;
+      } | null;
       if (!saveResponse.ok) {
-        throw new Error('Failed to save birth data');
+        throw new Error(payload?.error || 'Erreur lors de la sauvegarde');
       }
 
-      // Store in sessionStorage for immediate use
-      sessionStorage.setItem('birthData', JSON.stringify(formData));
+      const stored: BirthData = {
+        ...formData,
+        latitude: typeof payload?.latitude === 'number' ? payload.latitude : undefined,
+        longitude: typeof payload?.longitude === 'number' ? payload.longitude : undefined,
+      };
+      sessionStorage.setItem('birthData', JSON.stringify(stored));
+      if (payload?.chart) {
+        sessionStorage.setItem('natalChart', JSON.stringify(payload.chart));
+        sessionStorage.setItem(
+          'natalChartKey',
+          `${formData.date}|${formData.timeUnknown ? 'unknown' : formData.time}|${formData.place}`
+        );
+      }
       const next = sessionStorage.getItem('afterBirth');
       sessionStorage.removeItem('afterBirth');
       router.push(next && next.startsWith('/') && !next.startsWith('//') ? next : '/preview');
