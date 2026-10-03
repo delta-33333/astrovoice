@@ -1,11 +1,11 @@
 import AdvisorDirectory from '@/components/AdvisorDirectory';
-import { listPublicAdvisors } from '@/lib/astrologers';
+import { listDirectoryAdvisors } from '@/lib/slots';
 
 export const dynamic = 'force-dynamic';
 
 export default async function AstrologersPage() {
   try {
-    const result = await listPublicAdvisors();
+    const result = await listDirectoryAdvisors();
     return <AdvisorDirectory advisors={result.advisors} unavailable={result.unavailable} />;
   } catch {
     return <AdvisorDirectory advisors={[]} unavailable />;

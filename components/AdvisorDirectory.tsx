@@ -1,42 +1,103 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useMemo, useState } from 'react';
+import Link from 'next/link';
 import AdvisorAvatar from '@/components/AdvisorAvatar';
 import { BADGE_LABELS, languageLabel, styleLabel } from '@/lib/advisor-badges';
-import type { PublicAdvisor } from '@/lib/types';
+import type { DirectoryAdvisor } from '@/lib/types';
+
+const LANGUAGES = [
+  { value: 'fr', label: 'Français' },
+  { value: 'en', label: 'Anglais' },
+  { value: 'es', label: 'Espagnol' },
+  { value: 'de', label: 'Allemand' },
+  { value: 'it', label: 'Italien' },
+];
+
+const SPECIALTIES = [
+  'amour',
+  'carrière',
+  'spiritualité',
+  'transition de vie',
+  'compatibilité',
+  'argent',
+  'famille',
+];
 
 export default function AdvisorDirectory({
   advisors,
   unavailable,
 }: {
-  advisors: PublicAdvisor[];
+  advisors: DirectoryAdvisor[];
   unavailable: boolean;
 }) {
-  const router = useRouter();
-  const [hasBirthData, setHasBirthData] = useState(false);
+  const [language, setLanguage] = useState('');
+  const [specialty, setSpecialty] = useState('');
+  const [availability, setAvailability] = useState('');
 
-  useEffect(() => {
-    setHasBirthData(Boolean(sessionStorage.getItem('birthData')));
-  }, []);
-
-  const choose = (advisorId: string) => {
-    sessionStorage.setItem('astrologerId', advisorId);
-    router.push(hasBirthData ? '/preview' : '/birth');
-  };
+  const visible = useMemo(() => {
+    return advisors.filter((advisor) => {
+      if (language && !advisor.languages.includes(language)) return false;
+      if (specialty && !advisor.specialties.includes(specialty)) return false;
+      if (availability === 'today' && advisor.availability.slotsToday < 1) return false;
+      if (availability === 'now' && !advisor.availability.hasImmediate) return false;
+      return true;
+    });
+  }, [advisors, language, specialty, availability]);
 
   return (
     <main className="min-h-screen px-4 py-8 sm:py-12">
       <div className="max-w-6xl mx-auto">
-        <div className="mb-8 sm:mb-12 sm:text-center">
+        <div className="mb-6 sm:mb-10 sm:text-center">
           <h1 className="font-[family-name:var(--font-cinzel)] text-3xl sm:text-5xl font-bold mb-3 text-glow">
             Choisissez votre astrologue
           </h1>
           <p className="text-white/70 text-base sm:text-lg max-w-2xl sm:mx-auto">
             {advisors.length > 0
-              ? `${advisors.length} conseillers. Chacun lit le thème à sa manière.`
+              ? `${visible.length} conseiller${visible.length > 1 ? 's' : ''} affiché${visible.length > 1 ? 's' : ''}.`
               : 'Les fiches des conseillers apparaîtront ici.'}
           </p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
+          <label className="text-sm text-white/70">
+            Langue
+            <select
+              value={language}
+              onChange={(event) => setLanguage(event.target.value)}
+              className="mt-1 w-full rounded-xl bg-white/10 border border-white/15 px-3 py-3 text-white"
+            >
+              <option value="">Toutes</option>
+              {LANGUAGES.map((item) => (
+                <option key={item.value} value={item.value}>{item.label}</option>
+              ))}
+            </select>
+          </label>
+          <label className="text-sm text-white/70">
+            Spécialité
+            <select
+              value={specialty}
+              onChange={(event) => setSpecialty(event.target.value)}
+              className="mt-1 w-full rounded-xl bg-white/10 border border-white/15 px-3 py-3 text-white"
+            >
+              <option value="">Toutes</option>
+              {SPECIALTIES.map((item) => (
+                <option key={item} value={item}>{item}</option>
+              ))}
+            </select>
+          </label>
+          <label className="text-sm text-white/70">
+            Disponibilité
+            <select
+              value={availability}
+              onChange={(event) => setAvailability(event.target.value)}
+              className="mt-1 w-full rounded-xl bg-white/10 border border-white/15 px-3 py-3 text-white"
+            >
+              <option value="">Toutes</option>
+              <option value="today">Aujourd’hui</option>
+              <option value="now">Disponible maintenant</option>
+            </select>
+          </label>
         </div>
 
         {unavailable && (
@@ -45,14 +106,14 @@ export default function AdvisorDirectory({
           </div>
         )}
 
-        {!unavailable && advisors.length === 0 && (
+        {!unavailable && visible.length === 0 && (
           <div className="bg-white/5 border border-white/10 rounded-2xl p-6 text-white/70">
-            Aucun conseiller n’est disponible pour le moment.
+            Aucun conseiller ne correspond à ces filtres.
           </div>
         )}
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-          {advisors.map((advisor) => (
+          {visible.map((advisor) => (
             <article
               key={advisor.id}
               className={`p-5 sm:p-6 bg-white/5 backdrop-blur-sm rounded-2xl border text-left ${
@@ -63,12 +124,17 @@ export default function AdvisorDirectory({
                 <AdvisorAvatar advisor={advisor} size="md" />
                 <div className="min-w-0">
                   <h2 className="text-xl sm:text-2xl font-[family-name:var(--font-cinzel)] font-semibold">
-                    {advisor.name}
+                    <Link href={`/advisors/${advisor.slug}`} className="hover:text-celestial-gold">
+                      {advisor.name}
+                    </Link>
                   </h2>
                   <p className="text-sm text-white/55 mt-1">
                     {advisor.age} ans · {advisor.languages.map(languageLabel).join(' · ')} ·{' '}
                     {styleLabel(advisor.readingStyle)}
                   </p>
+                  {advisor.availability.scarcity && (
+                    <p className="text-sm text-celestial-gold mt-2">{advisor.availability.scarcity}</p>
+                  )}
                   <div className="flex flex-wrap gap-2 mt-3">
                     {advisor.badges.map((badge) => (
                       <span
@@ -82,26 +148,25 @@ export default function AdvisorDirectory({
                 </div>
               </div>
 
-              <p className="text-white/75 text-sm mt-4 leading-relaxed">{advisor.bio}</p>
+              <p className="text-white/75 text-sm mt-4 leading-relaxed line-clamp-4">{advisor.bio}</p>
 
               <div className="flex flex-wrap gap-2 mt-4">
-                {advisor.specialties.map((specialty) => (
+                {advisor.specialties.map((item) => (
                   <span
-                    key={specialty}
+                    key={item}
                     className="text-xs px-3 py-1 bg-celestial-purple/20 rounded-full text-celestial-gold border border-celestial-gold/30"
                   >
-                    {specialty}
+                    {item}
                   </span>
                 ))}
               </div>
 
-              <button
-                type="button"
-                onClick={() => choose(advisor.id)}
-                className="mt-5 w-full px-6 py-3 bg-gradient-to-r from-celestial-purple to-celestial-blue text-white font-semibold rounded-full"
+              <Link
+                href={`/advisors/${advisor.slug}`}
+                className="mt-5 block text-center w-full px-6 py-3 bg-gradient-to-r from-celestial-purple to-celestial-blue text-white font-semibold rounded-full"
               >
-                Consulter {advisor.firstName}
-              </button>
+                Voir les créneaux
+              </Link>
             </article>
           ))}
         </div>

@@ -35,6 +35,24 @@ export interface PublicAdvisor {
   badges: AdvisorBadge[];
 }
 
+export interface AdvisorAvailability {
+  slotsToday: number;
+  slotsWeek: number;
+  nextSlotAt: string | null;
+  hasImmediate: boolean;
+  scarcity: string | null;
+}
+
+export interface DirectoryAdvisor extends PublicAdvisor {
+  availability: AdvisorAvailability;
+}
+
+export interface AdvisorSlot {
+  id: string;
+  startsAt: string;
+  durationMin: number;
+}
+
 export interface NatalChart {
   planets: Planet[];
   houses: House[];

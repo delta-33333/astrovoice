@@ -53,6 +53,11 @@
   animation: twinkle 3s ease-in-out infinite;
 }
 
+select option {
+  background: #0a0e1a;
+  color: #fff;
+}
+
 .advisor-avatar-fallback {
   background-size: 220% 220%;
   animation: advisor-gradient 8s ease infinite;
