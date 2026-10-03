@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import CallScreen from '@/components/CallScreen';
 import { useAdvisor } from '@/components/use-advisor';
+import { quoteCall } from '@/lib/pricing';
 import type { BirthData } from '@/lib/types';
 
 export default function CallPage() {
@@ -21,23 +22,32 @@ export default function CallPage() {
   useEffect(() => {
     const data = sessionStorage.getItem('birthData');
     const astrId = sessionStorage.getItem('astrologerId');
-    const sessId = sessionStorage.getItem('sessionId');
-    if (!data || !astrId || !sessId) {
+    if (!data || !astrId) {
       router.push('/birth');
       return;
     }
-    setBirthData(JSON.parse(data) as BirthData);
+    try {
+      setBirthData(JSON.parse(data) as BirthData);
+    } catch {
+      router.push('/birth');
+      return;
+    }
     setAstrologerId(astrId);
-    sessionRef.current = sessId;
+    sessionRef.current = sessionStorage.getItem('sessionId');
     checkoutRef.current = sessionStorage.getItem('checkoutSessionId');
 
     const bookingId = sessionStorage.getItem('bookingId');
     const load = async () => {
+      const me = await fetch('/api/auth/me').then((response) => response.json()).catch(() => null);
+      if (!me?.authenticated) {
+        router.push('/auth');
+        return;
+      }
       if (bookingId) {
         const response = await fetch(`/api/bookings/${bookingId}`);
         const payload = await response.json().catch(() => null);
         if (!response.ok || !payload?.booking?.canJoin) {
-          router.replace(bookingId ? `/call/${bookingId}` : '/home');
+          router.replace(`/call/${bookingId}`);
           return;
         }
         setBooking({
@@ -45,30 +55,33 @@ export default function CallPage() {
           durationSec: payload.booking.durationMin * 60,
         });
       }
-      const me = await fetch('/api/auth/me').then((response) => response.json()).catch(() => null);
       setPrepaidSeconds(me?.user?.prepaidSeconds ?? 0);
       setReady(true);
     };
     void load();
   }, [router]);
 
-  const finish = async (seconds: number) => {
+  // Appelé uniquement quand la facturation a réellement démarré (socket ouvert + premier audio).
+  const finish = async (seconds: number, prepaid: number, note?: string) => {
     if (stoppedRef.current) return;
     stoppedRef.current = true;
-    const activeBookingId = booking?.id ?? sessionStorage.getItem('bookingId');
+    const activeBookingId = booking?.id ?? null;
 
     if (activeBookingId) {
       try {
-        await fetch(`/api/bookings/${activeBookingId}/complete`, { method: 'POST' });
+        await fetch(`/api/bookings/${activeBookingId}/complete`, { method: 'POST', keepalive: true });
       } catch (error) {
-        console.error('Clôture réservation:', error);
+        console.error('Clôture réservation:', error instanceof Error ? error.message : 'erreur');
       }
+      sessionStorage.removeItem('bookingId');
+      sessionStorage.removeItem('bookingDurationSec');
       sessionStorage.setItem('callComplete', JSON.stringify({
         durationSeconds: seconds,
         amountCharged: 0,
         astrologerName: advisor?.name,
         astrologerId: advisor?.id ?? astrologerId,
         bookingId: activeBookingId,
+        error: note,
       }));
       router.push('/complete');
       return;
@@ -83,22 +96,25 @@ export default function CallPage() {
           checkoutSessionId: checkoutRef.current,
           durationSeconds: seconds,
         }),
+        keepalive: true,
       });
-      const result = response.ok ? await response.json() : null;
+      if (!response.ok) throw new Error('settlement');
+      const result = await response.json();
       sessionStorage.setItem('callComplete', JSON.stringify({
         durationSeconds: seconds,
         amountCharged: result?.amountCharged ?? 0,
         prepaidSecondsUsed: result?.prepaidSecondsUsed,
         astrologerName: advisor?.name,
         astrologerId: advisor?.id ?? astrologerId,
+        error: note,
       }));
     } catch {
       sessionStorage.setItem('callComplete', JSON.stringify({
         durationSeconds: seconds,
-        amountCharged: 0,
+        amountCharged: quoteCall(seconds, prepaid).amountCents,
         astrologerName: advisor?.name,
         astrologerId: advisor?.id ?? astrologerId,
-        error: 'Le règlement sera confirmé sous peu',
+        error: note || 'Le règlement sera confirmé sous peu',
       }));
     }
     router.push('/complete');
@@ -118,8 +134,10 @@ export default function CallPage() {
       birthData={birthData}
       booking={booking}
       prepaidSeconds={prepaidSeconds}
-      onFinished={(seconds) => {
-        void finish(seconds);
+      checkoutSessionId={checkoutRef.current}
+      onUnauthorized={() => router.push('/auth')}
+      onFinished={(seconds, prepaid, note) => {
+        void finish(seconds, prepaid, note);
       }}
     />
   );

@@ -10,6 +10,24 @@ import {
   quoteCall,
 } from '@/lib/pricing';
 import type { BirthData, NatalChart, PublicAdvisor } from '@/lib/types';
+import {
+  GaplessPcmPlayer,
+  VOICE_SAMPLE_RATE,
+  attachMicWorklet,
+  createVoiceAudioContext,
+  int16ToBase64,
+  pcm16Base64ToFloat32,
+} from '@/lib/voice-audio';
+
+/*
+ * Écran d’appel façon messagerie autour du client vocal temps réel :
+ * - le micro et l’audio sont ouverts dans le geste « Démarrer l’appel » (iOS) ;
+ * - capture AudioWorklet PCM16 24 kHz, lecture sans trou, coupure à la prise de parole ;
+ * - le compteur (et donc la facturation) ne démarre qu’après ouverture du socket
+ *   ET réception du premier audio ; aucune facturation en cas d’échec.
+ */
+
+type Phase = 'ready' | 'connecting' | 'live' | 'ending';
 
 interface Bubble {
   id: string;
@@ -18,13 +36,67 @@ interface Bubble {
   at: string;
 }
 
-interface VoicePayload {
-  unavailable?: boolean;
-  message?: string;
-  token?: string;
-  session?: Record<string, unknown>;
-  socketUrl?: string;
-  callSessionId?: string | null;
+type VoiceGrant = {
+  token: string;
+  model: string;
+  voice: string;
+  instructions: string;
+  language: string;
+  prepaidSeconds: number;
+  metered: boolean;
+};
+
+type LiveCall = {
+  stopped: boolean;
+  billingStarted: boolean;
+  socketOpen: boolean;
+  heardAudio: boolean;
+  canSendAudio: boolean;
+  localClose: boolean;
+  greeted: boolean;
+  startMs: number;
+  prepaid: number;
+  metered: boolean;
+  cap: number | null;
+  player: GaplessPcmPlayer | null;
+  gain: GainNode | null;
+  ws: WebSocket | null;
+  ctx: AudioContext | null;
+  stream: MediaStream | null;
+  worklet: AudioWorkletNode | null;
+  timer: ReturnType<typeof setInterval> | null;
+  greetTimer: number;
+  pcmChunks: Int16Array[];
+  pcmSamples: number;
+  assistantId: string;
+  levelAt: number;
+};
+
+const PCM_FLUSH_SAMPLES = 2400;
+const PCM_BUFFER_CAP = VOICE_SAMPLE_RATE * 2;
+
+function scrub(text: string): string {
+  return text
+    .replace(/\bx[\s.-]*ai\b/gi, '')
+    .replace(/\bgrok\b/gi, '')
+    .replace(/\b(bot|chatgpt|openai)\b/gi, '')
+    .replace(/\b(IA|AI)\b/g, '')
+    .replace(/\s{2,}/g, ' ')
+    .trim();
+}
+
+function mediaError(err: unknown): string {
+  const name = err instanceof DOMException ? err.name : '';
+  if (name === 'NotAllowedError' || name === 'PermissionDeniedError' || name === 'SecurityError') {
+    return 'Micro refusé. Ouvrez Réglages > Safari > Micro, autorisez le micro pour ce site, puis réessayez.';
+  }
+  if (name === 'NotFoundError' || name === 'DevicesNotFoundError') {
+    return 'Aucun microphone n’a été trouvé sur cet appareil.';
+  }
+  if (name === 'NotReadableError' || name === 'AbortError') {
+    return 'Le microphone est indisponible. Fermez les autres applications qui l’utilisent, puis réessayez.';
+  }
+  return 'Impossible d’accéder au microphone. Réessayez.';
 }
 
 function mmss(total: number): string {
@@ -34,56 +106,32 @@ function mmss(total: number): string {
   return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
 }
 
-function downsample(input: Float32Array, fromRate: number, toRate: number): Float32Array {
-  if (fromRate === toRate) return input;
-  const ratio = fromRate / toRate;
-  const length = Math.max(1, Math.floor(input.length / ratio));
-  const out = new Float32Array(length);
-  for (let i = 0; i < length; i += 1) {
-    const start = Math.floor(i * ratio);
-    const end = Math.min(input.length, Math.floor((i + 1) * ratio));
-    let sum = 0;
-    let count = 0;
-    for (let j = start; j < end; j += 1) {
-      sum += input[j];
-      count += 1;
-    }
-    out[i] = count ? sum / count : 0;
-  }
-  return out;
-}
-
-function floatToBase64(samples: Float32Array): string {
-  const buffer = new ArrayBuffer(samples.length * 2);
-  const view = new DataView(buffer);
-  for (let i = 0; i < samples.length; i += 1) {
-    const sample = Math.max(-1, Math.min(1, samples[i]));
-    view.setInt16(i * 2, sample < 0 ? sample * 0x8000 : sample * 0x7fff, true);
-  }
-  const bytes = new Uint8Array(buffer);
-  let binary = '';
-  for (let i = 0; i < bytes.length; i += 1) binary += String.fromCharCode(bytes[i]);
-  return btoa(binary);
-}
-
-function playPcm16(context: AudioContext, gain: GainNode, b64: string, cursor: { time: number }) {
-  const binary = atob(b64);
-  const bytes = new Uint8Array(binary.length);
-  for (let i = 0; i < binary.length; i += 1) bytes[i] = binary.charCodeAt(i);
-  const samples = new Float32Array(Math.floor(bytes.length / 2));
-  const view = new DataView(bytes.buffer);
-  for (let i = 0; i < samples.length; i += 1) {
-    samples[i] = view.getInt16(i * 2, true) / 0x8000;
-  }
-  if (!samples.length) return;
-  const buffer = context.createBuffer(1, samples.length, 24000);
-  buffer.copyToChannel(samples, 0);
-  const source = context.createBufferSource();
-  source.buffer = buffer;
-  source.connect(gain);
-  const start = Math.max(context.currentTime + 0.05, cursor.time);
-  source.start(start);
-  cursor.time = start + buffer.duration;
+function emptyLive(): LiveCall {
+  return {
+    stopped: false,
+    billingStarted: false,
+    socketOpen: false,
+    heardAudio: false,
+    canSendAudio: false,
+    localClose: false,
+    greeted: false,
+    startMs: 0,
+    prepaid: 0,
+    metered: false,
+    cap: null,
+    player: null,
+    gain: null,
+    ws: null,
+    ctx: null,
+    stream: null,
+    worklet: null,
+    timer: null,
+    greetTimer: 0,
+    pcmChunks: [],
+    pcmSamples: 0,
+    assistantId: '',
+    levelAt: 0,
+  };
 }
 
 export default function CallScreen({
@@ -91,62 +139,73 @@ export default function CallScreen({
   birthData,
   booking,
   prepaidSeconds,
+  checkoutSessionId,
   onFinished,
+  onUnauthorized,
 }: {
   advisor: PublicAdvisor;
   birthData: BirthData;
   booking: { id: string; durationSec: number } | null;
   prepaidSeconds: number;
-  onFinished: (seconds: number) => void;
+  checkoutSessionId: string | null;
+  onFinished: (seconds: number, prepaid: number, note?: string) => void;
+  onUnauthorized: () => void;
 }) {
-  const [status, setStatus] = useState<'en ligne' | 'appel en cours'>('en ligne');
+  const [phase, setPhase] = useState<Phase>('ready');
   const [elapsed, setElapsed] = useState(0);
+  const [prepaid, setPrepaid] = useState(prepaidSeconds);
   const [muted, setMuted] = useState(false);
   const [speakerOn, setSpeakerOn] = useState(true);
+  const [micLevel, setMicLevel] = useState(0);
   const [chatOpen, setChatOpen] = useState(false);
   const [draft, setDraft] = useState('');
   const [bubbles, setBubbles] = useState<Bubble[]>([]);
   const [notice, setNotice] = useState<string | null>(null);
-  const [limited, setLimited] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [showUpsell, setShowUpsell] = useState(false);
   const [summaryState, setSummaryState] = useState<'idle' | 'paying' | 'bought' | 'declined'>('idle');
   const [payOpen, setPayOpen] = useState(false);
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [checkoutId, setCheckoutId] = useState<string | null>(null);
 
+  const phaseRef = useRef<Phase>('ready');
+  const liveRef = useRef<LiveCall>(emptyLive());
   const mutedRef = useRef(false);
-  const chartRef = useRef<NatalChart | null>(null);
   const linesRef = useRef<Bubble[]>([]);
   const elapsedRef = useRef(0);
   const declinedRef = useRef(false);
-  const stoppedRef = useRef(false);
-  const wsRef = useRef<WebSocket | null>(null);
-  const audioRef = useRef<AudioContext | null>(null);
-  const gainRef = useRef<GainNode | null>(null);
-  const playCursor = useRef({ time: 0 });
-  const streamRef = useRef<MediaStream | null>(null);
   const onFinishedRef = useRef(onFinished);
   onFinishedRef.current = onFinished;
 
-  const quote = quoteCall(elapsed, prepaidSeconds);
+  useEffect(() => {
+    setPrepaid(prepaidSeconds);
+  }, [prepaidSeconds]);
+
+  const quote = quoteCall(elapsed, prepaid);
   const remaining = booking ? booking.durationSec - elapsed : null;
 
+  const setCallPhase = (next: Phase) => {
+    phaseRef.current = next;
+    setPhase(next);
+  };
+
   const syncLines = (next: Bubble[]) => {
-    linesRef.current = next;
-    setBubbles(next);
+    linesRef.current = next.slice(-80);
+    setBubbles(linesRef.current);
   };
 
   const upsert = (id: string, role: Bubble['role'], text: string, replace: boolean) => {
+    const clean = replace ? scrub(text) : text;
     const current = linesRef.current;
     const index = current.findIndex((item) => item.id === id);
     const next = current.slice();
     if (index >= 0) {
       next[index] = {
         ...next[index],
-        text: replace ? text : `${next[index].text}${text}`,
+        text: replace ? clean : `${next[index].text}${clean}`,
       };
-    } else if (text) {
-      next.push({ id, role, text, at: new Date().toISOString() });
+    } else if (clean) {
+      next.push({ id, role, text: clean, at: new Date().toISOString() });
     }
     syncLines(next);
   };
@@ -158,23 +217,86 @@ export default function CallScreen({
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         bookingId: booking.id,
-        lines: linesRef.current.map((line) => ({ role: line.role, text: line.text, at: line.at })),
+        lines: linesRef.current.map((line) => ({ role: line.role, text: scrub(line.text), at: line.at })),
         ended,
         durationSeconds: elapsedRef.current,
         declined: declinedRef.current,
       }),
+      keepalive: ended,
     }).catch(() => undefined);
   };
 
-  const finish = async (seconds: number) => {
-    if (stoppedRef.current) return;
-    stoppedRef.current = true;
+  const teardown = () => {
+    const live = liveRef.current;
+    live.localClose = true;
+    live.canSendAudio = false;
+    if (live.timer) {
+      clearInterval(live.timer);
+      live.timer = null;
+    }
+    if (live.greetTimer) {
+      window.clearTimeout(live.greetTimer);
+      live.greetTimer = 0;
+    }
+    live.player?.stop();
+    live.worklet?.port.close();
+    live.worklet?.disconnect();
+    live.stream?.getTracks().forEach((track) => track.stop());
+    if (live.ws && live.ws.readyState < WebSocket.CLOSING) {
+      live.ws.close();
+    }
+    const ctx = live.ctx;
+    live.ctx = null;
+    live.stream = null;
+    live.worklet = null;
+    live.ws = null;
+    live.player = null;
+    live.gain = null;
+    if (ctx && ctx.state !== 'closed') {
+      void ctx.close().catch(() => undefined);
+    }
+  };
+
+  const finishRef = useRef<(note?: string) => Promise<void>>(async () => {});
+
+  const finishCall = async (note?: string) => {
+    const live = liveRef.current;
+    if (live.stopped) return;
+    const shouldBill = live.billingStarted;
+    const raw = shouldBill ? Math.max(0, Math.floor((Date.now() - live.startMs) / 1000)) : 0;
+    const capped = live.cap ? Math.min(raw, live.cap) : raw;
+    const seconds = live.metered ? capped : Math.min(capped, live.prepaid);
+    live.stopped = true;
+    teardown();
+    setMicLevel(0);
+
+    if (!shouldBill) {
+      setCallPhase('ready');
+      liveRef.current = emptyLive();
+      return;
+    }
+
+    setCallPhase('ending');
     elapsedRef.current = seconds;
-    wsRef.current?.close();
-    streamRef.current?.getTracks().forEach((track) => track.stop());
-    void audioRef.current?.close();
     await flush(true);
-    onFinishedRef.current(seconds);
+    onFinishedRef.current(seconds, live.prepaid, note);
+  };
+
+  finishRef.current = finishCall;
+
+  const fail = (message: string) => {
+    const live = liveRef.current;
+    if (live.stopped) return;
+    if (live.billingStarted) {
+      void finishCall(message);
+      return;
+    }
+    live.stopped = true;
+    teardown();
+    setMicLevel(0);
+    setError(message);
+    setCallPhase('ready');
+    liveRef.current = emptyLive();
   };
 
   useEffect(() => {
@@ -182,176 +304,26 @@ export default function CallScreen({
   }, [muted]);
 
   useEffect(() => {
-    const gain = gainRef.current;
+    const gain = liveRef.current.gain;
     if (gain) gain.gain.value = speakerOn ? 1 : 0;
   }, [speakerOn]);
 
   useEffect(() => {
-    let cancelled = false;
-    const audio = new AudioContext();
-    audioRef.current = audio;
-    const gain = audio.createGain();
-    gain.gain.value = 1;
-    gain.connect(audio.destination);
-    gainRef.current = gain;
-
-    let timer = 0;
-    const startTimer = () => {
-      if (timer) return;
-      const started = Date.now();
-      setStatus('appel en cours');
-      timer = window.setInterval(() => {
-        const seconds = Math.floor((Date.now() - started) / 1000);
-        elapsedRef.current = seconds;
-        setElapsed(seconds);
-        if (booking && seconds >= booking.durationSec) {
-          window.clearInterval(timer);
-          void finish(seconds);
-          return;
-        }
-        if (!booking) {
-          const live = quoteCall(seconds, prepaidSeconds);
-          if (live.capped || live.amountCents >= CALL_HOLD_CENTS) {
-            window.clearInterval(timer);
-            void finish(seconds);
-          }
-        }
-      }, 1000);
-    };
-
-    const boot = async () => {
-      let chart: NatalChart;
-      try {
-        const chartResponse = await fetch('/api/natal-chart', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(birthData),
-        });
-        if (!chartResponse.ok) throw new Error('chart');
-        chart = await chartResponse.json();
-        chartRef.current = chart;
-      } catch {
-        if (!cancelled) setNotice('Le thème n’a pas pu être préparé. Réessayez dans un instant.');
-        return;
-      }
-
-      const tokenResponse = await fetch('/api/voice/token', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          bookingId: booking?.id ?? null,
-          advisorId: advisor.id,
-          birthData,
-          natalChart: chart,
-        }),
-      });
-      const tokenBody = (await tokenResponse.json()) as VoicePayload;
-      if (cancelled) return;
-      if (!tokenResponse.ok || tokenBody.unavailable || !tokenBody.token || !tokenBody.socketUrl) {
-        setLimited(true);
-        setNotice(tokenBody.message || 'La voix en direct est momentanément indisponible. La consultation continue en mode limité.');
-        startTimer();
-        return;
-      }
-
-      const ws = new WebSocket(tokenBody.socketUrl, [`xai-client-secret.${tokenBody.token}`]);
-      wsRef.current = ws;
-      ws.onopen = () => {
-        if (tokenBody.session) {
-          ws.send(JSON.stringify({ type: 'session.update', session: tokenBody.session }));
-        }
-        ws.send(JSON.stringify({ type: 'response.create' }));
-        startTimer();
-      };
-      ws.onmessage = (message) => {
-        if (typeof message.data !== 'string') return;
-        let event: Record<string, unknown>;
-        try {
-          event = JSON.parse(message.data) as Record<string, unknown>;
-        } catch {
-          return;
-        }
-        const type = String(event.type || '');
-        const delta = typeof event.delta === 'string' ? event.delta : '';
-        if ((type === 'response.output_audio.delta' || type === 'response.audio.delta') && delta && audioRef.current && gainRef.current) {
-          playPcm16(audioRef.current, gainRef.current, delta, playCursor.current);
-        }
-        if (type === 'response.output_audio_transcript.delta' || type === 'response.audio_transcript.delta') {
-          const id = String(event.response_id || event.item_id || 'advisor-live');
-          if (delta) upsert(id, 'advisor', delta, false);
-        }
-        if (type === 'response.output_audio_transcript.done' || type === 'response.audio_transcript.done') {
-          const transcript = typeof event.transcript === 'string' ? event.transcript : '';
-          const id = String(event.response_id || event.item_id || 'advisor-live');
-          if (transcript) upsert(id, 'advisor', transcript, true);
-        }
-        if (type.includes('input_audio_transcription')) {
-          const transcript = typeof event.transcript === 'string' ? event.transcript : '';
-          const id = String(event.item_id || 'user-live');
-          if (transcript) upsert(id, 'user', transcript, true);
-        }
-      };
-      ws.onerror = () => {
-        if (!cancelled) {
-          setLimited(true);
-          setNotice('La voix en direct est momentanément indisponible. La consultation continue en mode limité.');
-          startTimer();
-        }
-      };
-
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({
-          audio: { echoCancellation: true, noiseSuppression: true },
-        });
-        if (cancelled) {
-          stream.getTracks().forEach((track) => track.stop());
-          return;
-        }
-        streamRef.current = stream;
-        const source = audio.createMediaStreamSource(stream);
-        const processor = audio.createScriptProcessor(4096, 1, 1);
-        const sink = audio.createGain();
-        sink.gain.value = 0;
-        processor.onaudioprocess = (event) => {
-          if (mutedRef.current || ws.readyState !== WebSocket.OPEN) return;
-          const channel = event.inputBuffer.getChannelData(0);
-          const pcm = downsample(channel, audio.sampleRate, 24000);
-          ws.send(JSON.stringify({
-            type: 'input_audio_buffer.append',
-            audio: floatToBase64(pcm),
-          }));
-        };
-        source.connect(processor);
-        processor.connect(sink);
-        sink.connect(audio.destination);
-      } catch {
-        if (!cancelled) setNotice('Le micro est indisponible. Vous pouvez écrire dans la conversation.');
-      }
-    };
-
-    void boot();
-
     const persist = window.setInterval(() => {
-      void flush(false);
+      if (liveRef.current.billingStarted && !liveRef.current.stopped) void flush(false);
     }, 12000);
-
-    const resume = () => {
-      void audio.resume();
-    };
-    window.addEventListener('pointerdown', resume);
-
     return () => {
-      cancelled = true;
-      window.clearInterval(timer);
       window.clearInterval(persist);
-      window.removeEventListener('pointerdown', resume);
-      wsRef.current?.close();
-      streamRef.current?.getTracks().forEach((track) => track.stop());
-      void audio.close();
+      const live = liveRef.current;
+      if (live.billingStarted && !live.stopped) {
+        void finishRef.current();
+        return;
+      }
+      teardown();
     };
-    // La session vocale démarre une fois pour cet appel.
+    // Une seule session par montage de l’écran.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [advisor.id, booking?.id]);
+  }, []);
 
   useEffect(() => {
     if (!booking || summaryState !== 'idle') return;
@@ -360,42 +332,396 @@ export default function CallScreen({
     }
   }, [booking, elapsed, summaryState]);
 
-  const sendText = async () => {
+  const flushPcm = () => {
+    const live = liveRef.current;
+    const ws = live.ws;
+    if (!live.canSendAudio || !ws || ws.readyState !== WebSocket.OPEN || live.pcmSamples === 0) {
+      return;
+    }
+    const merged = new Int16Array(live.pcmSamples);
+    let offset = 0;
+    for (const chunk of live.pcmChunks) {
+      merged.set(chunk, offset);
+      offset += chunk.length;
+    }
+    live.pcmChunks = [];
+    live.pcmSamples = 0;
+    ws.send(JSON.stringify({ type: 'input_audio_buffer.append', audio: int16ToBase64(merged) }));
+  };
+
+  const queuePcm = (frame: Int16Array) => {
+    const live = liveRef.current;
+    if (live.stopped || mutedRef.current) return;
+    live.pcmChunks.push(frame);
+    live.pcmSamples += frame.length;
+    while (live.pcmSamples > PCM_BUFFER_CAP && live.pcmChunks.length > 1) {
+      const dropped = live.pcmChunks.shift();
+      if (dropped) live.pcmSamples -= dropped.length;
+    }
+    if (live.canSendAudio && live.pcmSamples >= PCM_FLUSH_SAMPLES) {
+      flushPcm();
+    }
+  };
+
+  const maybeBill = () => {
+    const live = liveRef.current;
+    if (live.billingStarted || live.stopped || !live.socketOpen || !live.heardAudio) return;
+    live.billingStarted = true;
+    live.startMs = Date.now();
+    elapsedRef.current = 0;
+    setElapsed(0);
+    setCallPhase('live');
+    live.timer = setInterval(() => {
+      const current = liveRef.current;
+      if (current.stopped || !current.billingStarted) return;
+      const seconds = Math.max(0, Math.floor((Date.now() - current.startMs) / 1000));
+      elapsedRef.current = seconds;
+      setElapsed(seconds);
+      if (current.cap) {
+        if (seconds >= current.cap) void finishRef.current();
+        return;
+      }
+      if (!current.metered) {
+        if (seconds >= current.prepaid) void finishRef.current();
+        return;
+      }
+      const liveQuote = quoteCall(seconds, current.prepaid);
+      if (liveQuote.capped || liveQuote.amountCents >= CALL_HOLD_CENTS) {
+        setNotice(`Empreinte atteinte : ${formatCurrency(CALL_HOLD_CENTS)}. La consultation s’arrête ici.`);
+        void finishRef.current();
+      }
+    }, 1000);
+  };
+
+  const playPcm = (samples: Float32Array) => {
+    const live = liveRef.current;
+    if (live.stopped || samples.length === 0) return;
+    live.heardAudio = true;
+    void live.ctx?.resume();
+    live.player?.enqueue(samples);
+    maybeBill();
+  };
+
+  const startCall = () => {
+    if (phaseRef.current !== 'ready') return;
+    setError(null);
+    setNotice(null);
+    syncLines([]);
+    setElapsed(0);
+    elapsedRef.current = 0;
+    setCallPhase('connecting');
+
+    const live = emptyLive();
+    live.prepaid = prepaid;
+    liveRef.current = live;
+
+    const audioSession = (navigator as Navigator & { audioSession?: { type: string } }).audioSession;
+    if (audioSession) {
+      try {
+        audioSession.type = 'play-and-record';
+      } catch {
+        /* ignoré si le navigateur refuse l’affectation */
+      }
+    }
+
+    const ctx = createVoiceAudioContext();
+    live.ctx = ctx;
+    const resumePromise = ctx.resume();
+
+    if (!navigator.mediaDevices?.getUserMedia) {
+      live.stopped = true;
+      void ctx.close().catch(() => undefined);
+      setError('Le microphone n’est pas disponible dans ce navigateur.');
+      setCallPhase('ready');
+      return;
+    }
+
+    const micPromise = navigator.mediaDevices.getUserMedia({
+      audio: {
+        echoCancellation: true,
+        noiseSuppression: true,
+        autoGainControl: true,
+      },
+    });
+
+    void runCall(ctx, resumePromise, micPromise);
+  };
+
+  const runCall = async (
+    ctx: AudioContext,
+    resumePromise: Promise<void>,
+    micPromise: Promise<MediaStream>
+  ) => {
+    const live = liveRef.current;
+    try {
+      const stream = await micPromise;
+      await resumePromise;
+      if (live.stopped) {
+        stream.getTracks().forEach((track) => track.stop());
+        return;
+      }
+      live.stream = stream;
+      if (ctx.state === 'suspended') await ctx.resume();
+
+      live.worklet = await attachMicWorklet(ctx, stream);
+      const owner = live;
+      live.worklet.port.onmessage = (event: MessageEvent<{ pcm?: Int16Array; rms?: number }>) => {
+        if (liveRef.current !== owner || owner.stopped) return;
+        const data = event.data;
+        if (typeof data?.rms === 'number') {
+          const now = performance.now();
+          if (now - owner.levelAt > 80) {
+            owner.levelAt = now;
+            setMicLevel(mutedRef.current ? 0 : Math.min(1, Math.sqrt(data.rms) * 1.6));
+          }
+        }
+        if (data?.pcm?.length) queuePcm(data.pcm);
+      };
+      const gain = ctx.createGain();
+      gain.gain.value = speakerOn ? 1 : 0;
+      gain.connect(ctx.destination);
+      live.gain = gain;
+      live.player = new GaplessPcmPlayer(ctx, VOICE_SAMPLE_RATE, gain);
+
+      const chartResponse = await fetch('/api/natal-chart', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(birthData),
+      });
+      if (!chartResponse.ok) {
+        throw new Error('Le thème natal n’a pas pu être préparé. Réessayez.');
+      }
+      const natalChart = (await chartResponse.json()) as NatalChart;
+
+      const tokenResponse = await fetch('/api/voice-token', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          birthData,
+          astrologerId: advisor.id,
+          natalChart,
+          checkoutSessionId,
+          bookingId: booking?.id ?? null,
+        }),
+      });
+      const tokenPayload = (await tokenResponse.json().catch(() => null)) as
+        | (VoiceGrant & { error?: string })
+        | null;
+      if (!tokenResponse.ok || !tokenPayload?.token) {
+        if (tokenResponse.status === 401) {
+          live.stopped = true;
+          teardown();
+          onUnauthorized();
+          return;
+        }
+        throw new Error(
+          tokenResponse.status === 402 || tokenResponse.status === 409 || tokenResponse.status === 404
+            ? tokenPayload?.error ||
+              'Crédits insuffisants. Ajoutez des minutes ou confirmez le paiement avant d’appeler.'
+            : 'La consultation vocale est momentanément indisponible.'
+        );
+      }
+
+      live.prepaid = tokenPayload.prepaidSeconds ?? live.prepaid;
+      live.metered = Boolean(tokenPayload.metered);
+      live.cap = booking ? Math.min(booking.durationSec, live.prepaid || booking.durationSec) : null;
+      setPrepaid(live.prepaid);
+      if (ctx.state === 'suspended') await ctx.resume();
+      openSocket(tokenPayload);
+    } catch (err) {
+      if (live.stopped) return;
+      const message =
+        err instanceof DOMException ? mediaError(err) : err instanceof Error ? err.message : mediaError(err);
+      const friendly = /NotAllowed|micro/i.test(message) ? mediaError(err) : scrub(message);
+      fail(friendly || 'La consultation n’a pas pu démarrer. Réessayez.');
+    }
+  };
+
+  const openSocket = (grant: VoiceGrant) => {
+    const live = liveRef.current;
+    if (live.stopped || !live.ctx) return;
+
+    const protocol = grant.token.startsWith('xai-client-secret.')
+      ? grant.token
+      : `xai-client-secret.${grant.token}`;
+    const ws = new WebSocket('wss://api.x.ai/v1/realtime?model=grok-voice-latest', [protocol]);
+    ws.binaryType = 'arraybuffer';
+    live.ws = ws;
+
+    const sendUpdate = () => {
+      if (ws.readyState !== WebSocket.OPEN) return;
+      ws.send(
+        JSON.stringify({
+          type: 'session.update',
+          session: {
+            voice: grant.voice,
+            instructions: grant.instructions,
+            turn_detection: { type: 'server_vad' },
+            audio: {
+              input: {
+                format: { type: 'audio/pcm', rate: VOICE_SAMPLE_RATE },
+                transport: 'json',
+                transcription: { language_hint: grant.language || 'fr' },
+              },
+              output: {
+                format: { type: 'audio/pcm', rate: VOICE_SAMPLE_RATE },
+                transport: 'json',
+              },
+            },
+          },
+        })
+      );
+    };
+
+    const greet = () => {
+      if (liveRef.current !== live || live.greeted || live.stopped || ws.readyState !== WebSocket.OPEN) {
+        return;
+      }
+      live.greeted = true;
+      live.canSendAudio = true;
+      flushPcm();
+      ws.send(JSON.stringify({ type: 'response.create' }));
+    };
+
+    ws.onopen = () => {
+      if (liveRef.current !== live || live.stopped) {
+        ws.close();
+        return;
+      }
+      live.socketOpen = true;
+      void live.ctx?.resume();
+      sendUpdate();
+      live.greetTimer = window.setTimeout(greet, 1200);
+    };
+
+    ws.onmessage = (event) => {
+      if (liveRef.current !== live || live.stopped) return;
+
+      if (event.data instanceof ArrayBuffer) {
+        const view = new DataView(event.data);
+        const count = Math.floor(event.data.byteLength / 2);
+        const samples = new Float32Array(count);
+        for (let i = 0; i < count; i += 1) {
+          samples[i] = view.getInt16(i * 2, true) / 32768;
+        }
+        playPcm(samples);
+        return;
+      }
+
+      let message: {
+        type?: string;
+        delta?: string;
+        audio?: string;
+        transcript?: string;
+        item_id?: string;
+        response_id?: string;
+      };
+      try {
+        message = JSON.parse(String(event.data));
+      } catch {
+        return;
+      }
+
+      const type = message.type || '';
+      if (type === 'session.updated') {
+        greet();
+        return;
+      }
+      if (type === 'input_audio_buffer.speech_started' || type.endsWith('speech_started')) {
+        live.player?.stop();
+        return;
+      }
+      if (type === 'response.output_audio.delta' || type === 'response.audio.delta') {
+        const payload = message.delta || message.audio;
+        if (payload) playPcm(pcm16Base64ToFloat32(payload));
+        return;
+      }
+      if (
+        type === 'response.output_audio_transcript.delta' ||
+        type === 'response.audio_transcript.delta'
+      ) {
+        const id = `advisor-${message.response_id || message.item_id || live.assistantId || 'live'}`;
+        live.assistantId = message.response_id || message.item_id || live.assistantId;
+        if (message.delta) upsert(id, 'advisor', message.delta, false);
+        return;
+      }
+      if (
+        type === 'response.output_audio_transcript.done' ||
+        type === 'response.audio_transcript.done'
+      ) {
+        const id = `advisor-${message.response_id || message.item_id || live.assistantId || 'live'}`;
+        if (message.transcript) upsert(id, 'advisor', message.transcript, true);
+        live.assistantId = '';
+        return;
+      }
+      if (type === 'conversation.item.input_audio_transcription.completed') {
+        if (message.transcript) upsert(`user-${message.item_id || Date.now()}`, 'user', message.transcript, true);
+        return;
+      }
+      if (type === 'error') {
+        console.error('Liaison vocale interrompue');
+        if (live.billingStarted) {
+          void finishRef.current('La liaison vocale a été interrompue. Le temps déjà écoulé est comptabilisé.');
+        } else {
+          fail('La consultation vocale a rencontré un problème. Réessayez.');
+        }
+      }
+    };
+
+    ws.onerror = () => {
+      if (liveRef.current !== live || live.localClose || live.stopped) return;
+      if (live.billingStarted) {
+        void finishRef.current('La liaison vocale a été interrompue. Le temps déjà écoulé est comptabilisé.');
+      } else {
+        fail('La liaison vocale a été interrompue. Réessayez.');
+      }
+    };
+
+    ws.onclose = () => {
+      if (liveRef.current !== live || live.localClose || live.stopped) return;
+      if (live.billingStarted) {
+        void finishRef.current('La liaison vocale a été coupée. Le temps déjà écoulé est comptabilisé.');
+        return;
+      }
+      fail('La liaison vocale a été interrompue. Réessayez.');
+    };
+  };
+
+  const hangUp = () => {
+    const live = liveRef.current;
+    if (live.billingStarted) {
+      void finishCall();
+      return;
+    }
+    live.stopped = true;
+    teardown();
+    setMicLevel(0);
+    setCallPhase('ready');
+    liveRef.current = emptyLive();
+  };
+
+  const sendText = () => {
     const text = draft.trim();
     if (!text) return;
+    const live = liveRef.current;
+    const ws = live.ws;
+    if (phaseRef.current !== 'live' || !ws || ws.readyState !== WebSocket.OPEN) {
+      setNotice('Démarrez l’appel pour écrire à votre conseiller.');
+      return;
+    }
     setDraft('');
-    const history = linesRef.current.slice(-8).map((line) => ({ role: line.role, text: line.text }));
-    const id = `user-${Date.now()}`;
-    upsert(id, 'user', text, true);
-    const ws = wsRef.current;
-    if (ws && ws.readyState === WebSocket.OPEN && !limited) {
-      ws.send(JSON.stringify({
+    upsert(`user-${Date.now()}`, 'user', text, true);
+    ws.send(
+      JSON.stringify({
         type: 'conversation.item.create',
         item: {
           type: 'message',
           role: 'user',
           content: [{ type: 'input_text', text }],
         },
-      }));
-      ws.send(JSON.stringify({ type: 'response.create' }));
-      return;
-    }
-    const response = await fetch('/api/call/turn', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        bookingId: booking?.id ?? null,
-        advisorId: advisor.id,
-        birthData,
-        natalChart: chartRef.current,
-        text,
-        history,
-      }),
-    });
-    const payload = await response.json().catch(() => null);
-    if (response.ok && typeof payload?.reply === 'string') {
-      upsert(`advisor-${Date.now()}`, 'advisor', payload.reply, true);
-    }
+      })
+    );
+    ws.send(JSON.stringify({ type: 'response.create' }));
   };
 
   const buySummary = async () => {
@@ -442,22 +768,69 @@ export default function CallScreen({
     setShowUpsell(false);
   };
 
+  const statusLabel =
+    phase === 'live'
+      ? 'appel en cours'
+      : phase === 'connecting'
+        ? 'connexion…'
+        : phase === 'ending'
+          ? 'fin de l’appel…'
+          : 'en ligne';
+
   return (
     <main className="call-stage fixed inset-0 z-40 text-white flex flex-col">
-      <div className="flex-1 flex flex-col items-center justify-center px-6 pb-36">
-        <div className={status === 'appel en cours' ? 'call-pulse rounded-full' : 'rounded-full'}>
+      <div className="flex-1 flex flex-col items-center justify-center px-6 pb-40">
+        <div className={phase === 'live' ? 'call-pulse rounded-full' : 'rounded-full'}>
           <AdvisorAvatar advisor={advisor} size="call" />
         </div>
         <h1 className="mt-6 font-[family-name:var(--font-cinzel)] text-3xl text-center">{advisor.name}</h1>
-        <p className="mt-2 text-sm uppercase tracking-[0.18em] text-emerald-100/80">{status}</p>
-        <p className="mt-4 font-mono text-5xl tabular-nums">{mmss(elapsed)}</p>
-        {booking ? (
-          <p className="mt-2 text-sm text-white/55">
-            {remaining != null && remaining > 0 ? `${mmss(remaining)} restantes` : 'Durée réservée'}
-          </p>
+        <p className="mt-2 text-sm uppercase tracking-[0.18em] text-emerald-100/80">{statusLabel}</p>
+
+        {phase === 'live' || phase === 'ending' ? (
+          <>
+            <p className="mt-4 font-mono text-5xl tabular-nums">{mmss(elapsed)}</p>
+            {booking ? (
+              <p className="mt-2 text-sm text-white/55">
+                {remaining != null && remaining > 0 ? `${mmss(remaining)} restantes` : 'Durée réservée'}
+              </p>
+            ) : (
+              <p className="mt-2 text-sm text-white/70">
+                {quote.coveredSeconds > 0 && quote.amountCents === 0
+                  ? 'Inclus dans vos minutes'
+                  : formatCurrency(quote.amountCents)}
+              </p>
+            )}
+          </>
+        ) : phase === 'connecting' ? (
+          <div className="mt-6 inline-block w-10 h-10 border-4 border-emerald-300 border-t-transparent rounded-full animate-spin" />
         ) : (
-          <p className="mt-2 text-sm text-white/70">{formatCurrency(quote.amountCents)}</p>
+          <div className="mt-6 w-full max-w-xs space-y-3 text-center">
+            <p className="text-sm text-white/70">
+              Touchez le bouton pour autoriser le micro et joindre {advisor.firstName || advisor.name}.
+            </p>
+            {!booking && prepaid > 0 && (
+              <p className="text-sm text-celestial-gold">{Math.floor(prepaid / 60)} min déjà incluses</p>
+            )}
+            <button
+              type="button"
+              onClick={startCall}
+              className="w-full rounded-full bg-emerald-500 py-4 text-lg font-semibold text-white shadow-lg active:scale-95 transition"
+            >
+              Démarrer l’appel
+            </button>
+          </div>
         )}
+
+        {(phase === 'connecting' || phase === 'live') && (
+          <div className="mt-5 h-1.5 w-40 rounded-full bg-white/10 overflow-hidden" aria-hidden="true">
+            <div
+              className="h-full bg-emerald-400 transition-[width] duration-100"
+              style={{ width: `${Math.round(micLevel * 100)}%` }}
+            />
+          </div>
+        )}
+
+        {error && <p className="mt-4 max-w-sm text-center text-sm text-red-200">{error}</p>}
         {notice && <p className="mt-4 max-w-sm text-center text-sm text-emerald-50/80">{notice}</p>}
       </div>
 
@@ -476,32 +849,34 @@ export default function CallScreen({
         </div>
       )}
 
-      <div className="absolute bottom-0 inset-x-0 px-6 pb-8 pt-4 flex items-center justify-center gap-5">
-        <button
-          type="button"
-          onClick={() => setMuted((value) => !value)}
-          className={`h-14 w-14 rounded-full border border-white/20 ${muted ? 'bg-white text-black' : 'bg-white/10'}`}
-          aria-pressed={muted}
-        >
-          {muted ? 'Muet' : 'Micro'}
-        </button>
-        <button
-          type="button"
-          onClick={() => void finish(elapsedRef.current)}
-          className="h-16 w-16 rounded-full bg-red-600 text-white text-sm font-semibold"
-          aria-label="Raccrocher"
-        >
-          Stop
-        </button>
-        <button
-          type="button"
-          onClick={() => setSpeakerOn((value) => !value)}
-          className={`h-14 w-14 rounded-full border border-white/20 text-xs ${speakerOn ? 'bg-white/10' : 'bg-white text-black'}`}
-          aria-pressed={speakerOn}
-        >
-          Son
-        </button>
-      </div>
+      {(phase === 'connecting' || phase === 'live') && (
+        <div className="absolute bottom-0 inset-x-0 px-6 pb-8 pt-4 flex items-center justify-center gap-5">
+          <button
+            type="button"
+            onClick={() => setMuted((value) => !value)}
+            className={`h-14 w-14 rounded-full border border-white/20 text-xs ${muted ? 'bg-white text-black' : 'bg-white/10'}`}
+            aria-pressed={muted}
+          >
+            {muted ? 'Muet' : 'Micro'}
+          </button>
+          <button
+            type="button"
+            onClick={hangUp}
+            className="h-16 w-16 rounded-full bg-red-600 text-white text-sm font-semibold"
+            aria-label="Raccrocher"
+          >
+            Stop
+          </button>
+          <button
+            type="button"
+            onClick={() => setSpeakerOn((value) => !value)}
+            className={`h-14 w-14 rounded-full border border-white/20 text-xs ${speakerOn ? 'bg-white/10' : 'bg-white text-black'}`}
+            aria-pressed={!speakerOn}
+          >
+            Son
+          </button>
+        </div>
+      )}
 
       <button
         type="button"
@@ -537,16 +912,21 @@ export default function CallScreen({
             className="flex gap-2 p-3 border-t border-white/10"
             onSubmit={(event) => {
               event.preventDefault();
-              void sendText();
+              sendText();
             }}
           >
             <input
               value={draft}
               onChange={(event) => setDraft(event.target.value)}
-              placeholder="Écrire un message"
-              className="flex-1 rounded-full bg-white/10 px-4 py-3 text-sm outline-none"
+              placeholder={phase === 'live' ? 'Écrire un message' : 'Démarrez l’appel pour écrire'}
+              disabled={phase !== 'live'}
+              className="flex-1 rounded-full bg-white/10 px-4 py-3 text-sm outline-none disabled:opacity-50"
             />
-            <button type="submit" className="rounded-full bg-emerald-700 px-4 text-sm font-semibold">
+            <button
+              type="submit"
+              disabled={phase !== 'live'}
+              className="rounded-full bg-emerald-700 px-4 text-sm font-semibold disabled:opacity-50"
+            >
               Envoyer
             </button>
           </form>

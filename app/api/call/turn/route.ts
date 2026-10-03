@@ -20,7 +20,11 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Message incomplet' }, { status: 400 });
   }
 
-  let advisorId = typeof body?.advisorId === 'string' ? body.advisorId : '';
+  if (!bookingId) {
+    return NextResponse.json({ error: 'Démarrez l’appel pour écrire.' }, { status: 403 });
+  }
+
+  let advisorId = '';
   if (bookingId) {
     const booking = await getBooking(bookingId);
     if (!booking || booking.user_id !== user.id) {
