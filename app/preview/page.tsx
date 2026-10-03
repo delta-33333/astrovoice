@@ -2,18 +2,18 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { getAstrologerById } from '@/lib/astrologers';
+import AdvisorAvatar from '@/components/AdvisorAvatar';
+import { useAdvisor } from '@/components/use-advisor';
 import type { BirthData, NatalChart } from '@/lib/types';
 
 export default function PreviewPage() {
   const router = useRouter();
   const [birthData, setBirthData] = useState<BirthData | null>(null);
   const [astrologerId, setAstrologerId] = useState<string | null>(null);
+  const { advisor, status: advisorStatus } = useAdvisor(astrologerId);
   const [natalChart, setNatalChart] = useState<NatalChart | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
-  const astrologer = astrologerId ? getAstrologerById(astrologerId) : null;
 
   useEffect(() => {
     const data = sessionStorage.getItem('birthData');
@@ -60,7 +60,7 @@ export default function PreviewPage() {
     router.push('/consent');
   };
 
-  if (!birthData || !astrologer) {
+  if (!birthData) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-white/60">Chargement...</div>
@@ -73,12 +73,18 @@ export default function PreviewPage() {
       <div className="max-w-3xl w-full">
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="text-5xl mb-4">{astrologer.avatar}</div>
+          <div className="flex justify-center mb-4">
+            {advisor ? <AdvisorAvatar advisor={advisor} size="lg" /> : null}
+          </div>
           <h1 className="font-[family-name:var(--font-cinzel)] text-3xl sm:text-4xl font-bold mb-2 text-glow">
             Votre Thème Natal
           </h1>
           <p className="text-white/70">
-            {astrologer.name} a préparé votre consultation
+            {advisorStatus === 'missing'
+              ? 'Conseiller introuvable'
+              : advisor
+                ? `${advisor.name} prépare votre consultation`
+                : 'Préparation de votre consultation'}
           </p>
         </div>
 
@@ -156,7 +162,7 @@ export default function PreviewPage() {
               <div className="bg-celestial-purple/10 border border-celestial-purple/30 rounded-xl p-4">
                 <p className="text-sm text-white/80 leading-relaxed">
                   ✨ Votre thème a été établi avec précision. 
-                  {astrologer.name} utilisera ces données pour une consultation personnalisée.
+                  {advisor ? `${advisor.name} utilisera ces données pour une consultation personnalisée.` : 'Ces données servent à préparer la consultation.'}
                 </p>
               </div>
             </div>

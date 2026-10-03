@@ -9,13 +9,30 @@ export interface BirthData {
   longitude?: number;
 }
 
-export interface Astrologer {
+export type VoiceId = 'ara' | 'eve' | 'leo' | 'rex' | 'sal';
+
+export type AdvisorBadge = 'nouveau' | 'populaire' | 'expert' | 'disponible';
+
+/** Fiche publique renvoyée au navigateur. Jamais de persona ni de prompt. */
+export interface PublicAdvisor {
   id: string;
+  slug: string;
+  firstName: string;
+  lastName: string;
   name: string;
-  voice: 'ara' | 'eve' | 'leo' | 'rex' | 'sal';
-  bio: string;
+  age: number;
+  gender: 'femme' | 'homme';
+  languages: string[];
   specialties: string[];
-  avatar: string;
+  readingStyle: string;
+  bio: string;
+  photoUrl: string | null;
+  voiceId: VoiceId;
+  featured: boolean;
+  dailyCapacity: number;
+  reviewCount: number;
+  averageRating: number | null;
+  badges: AdvisorBadge[];
 }
 
 export interface NatalChart {

@@ -1,125 +1,81 @@
-import type { BirthData, NatalChart } from './types';
+import type { BirthData, NatalChart, VoiceId } from './types';
 
-interface PersonaConfig {
-  focus: string;
-  elements: string;
-  style: string;
-}
-
-const PERSONA_CONFIGS: Record<string, PersonaConfig> = {
-  celestine: {
-    focus: 'Relations, carrière, transitions de vie',
-    elements: 'Maisons 7/10, Vénus, Saturne — psychologie moderne + astrologie classique',
-    style: 'Profonde, empathique, structure les insights avec nuance',
-  },
-  aurelia: {
-    focus: 'Spiritualité, mission de vie',
-    elements: 'Nœuds lunaires, Neptune, maisons 12/9 — karmique et évolutif',
-    style: 'Poétique mais concrète : maximum une image puis conseil pratique',
-  },
-  raphael: {
-    focus: 'Prévisions, timing, cycles',
-    elements: 'Transits, progressions, fenêtres temporelles (maintenant/bientôt/plus tard)',
-    style: 'Structuré, clair, donne des repères temporels précis',
-  },
-  soren: {
-    focus: 'Décisions, stratégie, action',
-    elements: 'Options A/B, prochaine étape concrète, Mars et angles',
-    style: 'Direct, pragmatique, focus sur le « quoi faire »',
-  },
-  luna: {
-    focus: 'Émotions, guérison, cycles lunaires',
-    elements: 'Lune, maisons d\'eau (4/8/12), planètes en Cancer/Scorpion/Poissons',
-    style: 'Douce, validante, accueille les ressentis',
-  },
-};
+const VOICES: readonly VoiceId[] = ['ara', 'eve', 'leo', 'rex', 'sal'];
 
 function trimNatalChart(chart: NatalChart): string {
-  // Trim large natal chart to essential elements for token efficiency
   const summary = {
-    planets: chart.planets.slice(0, 10).map(p => ({
+    planets: (chart.planets ?? []).slice(0, 10).map((p) => ({
       name: p.name,
       sign: p.sign,
       house: p.house,
       degree: Math.round(p.degree),
     })),
-    houses: chart.houses.slice(0, 4).map(h => ({
+    houses: (chart.houses ?? []).slice(0, 4).map((h) => ({
       num: h.number,
       sign: h.sign,
     })),
-    aspects: chart.aspects.slice(0, 8).map(a => ({
+    aspects: (chart.aspects ?? []).slice(0, 8).map((a) => ({
       p1: a.planet1,
       p2: a.planet2,
       type: a.type,
     })),
   };
-  return JSON.stringify(summary, null, 2);
+  return JSON.stringify(summary);
+}
+
+const CLIENT_BLOCK: Record<string, (name: string, birth: string, place: string, timeNote: string) => string> = {
+  fr: (name, birth, place, timeNote) =>
+    `Personne en consultation\nPrénom : ${name}\nNaissance : ${birth}\nLieu : ${place}\n${timeNote}\nParle français.`,
+  en: (name, birth, place, timeNote) =>
+    `Person in consultation\nFirst name: ${name}\nBirth: ${birth}\nPlace: ${place}\n${timeNote}\nSpeak English.`,
+  es: (name, birth, place, timeNote) =>
+    `Persona en consulta\nNombre: ${name}\nNacimiento: ${birth}\nLugar: ${place}\n${timeNote}\nHabla español.`,
+  de: (name, birth, place, timeNote) =>
+    `Person in der Beratung\nVorname: ${name}\nGeburt: ${birth}\nOrt: ${place}\n${timeNote}\nSprich Deutsch.`,
+  it: (name, birth, place, timeNote) =>
+    `Persona in consulenza\nNome: ${name}\nNascita: ${birth}\nLuogo: ${place}\n${timeNote}\nParla italiano.`,
+};
+
+const TIME_UNKNOWN: Record<string, string> = {
+  fr: "Heure inconnue : ne t'appuie pas sur l'Ascendant ni sur les maisons ; reste sur le Soleil et la Lune.",
+  en: 'Birth time unknown: do not rely on the Ascendant or the houses; stay with the Sun and the Moon.',
+  es: 'Hora desconocida: no te apoyes en el Ascendente ni en las casas; quédate con el Sol y la Luna.',
+  de: 'Geburtszeit unbekannt: stütze dich nicht auf den Aszendenten oder die Häuser; bleib bei Sonne und Mond.',
+  it: "Ora sconosciuta: non appoggiarti all'Ascendente né alle case; resta su Sole e Luna.",
+};
+
+export function asVoiceId(value: string | null | undefined): VoiceId {
+  return value && VOICES.includes(value as VoiceId) ? (value as VoiceId) : 'ara';
 }
 
 export function getVoiceSystemPrompt(
-  astrologerId: string,
-  astrologerName: string,
+  advisor: {
+    firstName: string;
+    lastName: string;
+    personaPrompt: string;
+    languages: string[];
+  },
   birthData: BirthData,
   natalChart: NatalChart
 ): string {
-  const persona = PERSONA_CONFIGS[astrologerId] || PERSONA_CONFIGS['celestine'];
-  const natalSummary = trimNatalChart(natalChart);
-  const birthTimeNote = birthData.timeUnknown
-    ? '⚠️ HEURE INCONNUE : sois prudent·e avec l\'Ascendant et les maisons ; privilégie Soleil/Lune avec nuance.'
-    : '';
+  const lang = advisor.languages[0] || 'fr';
+  const block = CLIENT_BLOCK[lang] ?? CLIENT_BLOCK.fr;
+  const birth = `${birthData.date}${birthData.time ? ` ${birthData.time}` : ''}`;
+  const timeNote = birthData.timeUnknown ? TIME_UNKNOWN[lang] ?? TIME_UNKNOWN.fr : '';
+  const client = block(birthData.name, birth, birthData.place, timeNote);
 
-  return `Tu es ${astrologerName}, astrologue professionnel·le sur Lunara, en consultation vocale payée à la minute avec un·e client·e.
-
-═══ DONNÉES CLIENT ═══
-Nom : ${birthData.name}
-Naissance : ${birthData.date}${birthData.time ? ` à ${birthData.time}` : ' (heure inconnue)'}
-Lieu : ${birthData.place}
-${birthTimeNote}
-
-═══ THÈME NATAL (résumé) ═══
-${natalSummary}
-
-═══ TON RÔLE ═══
-Tu es ${astrologerName}, spécialiste en ${persona.focus}.
-Focus technique : ${persona.elements}.
-Style : ${persona.style}.
-
-Tu es un·e astrologue humain·e en direct, pas un bot. Si on te demande : « C'est une consultation à distance en voix, en live. Je suis ${astrologerName}. »
-
-═══ OUVERTURE (10–15 secondes) ═══
-1. Salue par prénom
-2. Une phrase sur ta spécialité
-3. UNE question ouverte pour démarrer
-
-Exemple : « Bonjour ${birthData.name} ! Moi c'est ${astrologerName}. Je suis spécialisé·e en ${persona.focus.split(',')[0]}. Qu'est-ce qui t'amène aujourd'hui ? »
-
-═══ PENDANT L'APPEL ═══
-• Écoute et reformule
-• Relie 1–2 éléments du thème à leur situation (pas tout d'un coup)
-• Pattern : insight natal → question → conseil concret
-• Parle comme au téléphone : phrases courtes, une idée à la fois
-• 2–4 phrases sauf si demande d'approfondir
-
-Interdits :
-❌ Pas de conseil médical/légal/financier dur
-❌ Pas de promesses magiques
-❌ Pas de jargon sans explication
-❌ Ne dis JAMAIS que tu es une IA/bot/Grok/xAI/système automatisé
-
-═══ CLÔTURE ═══
-2 phrases : résumé du fil + UNE action concrète pour les 7 prochains jours.
-
-═══ LANGUE & TON ═══
-Français, tutoiement. Chaleureux·se, professionnel·le, humain·e.`;
-}
-
-export function getAstrologerVoice(astrologerId: string): 'ara' | 'eve' | 'leo' | 'rex' | 'sal' {
-  const voiceMap: Record<string, 'ara' | 'eve' | 'leo' | 'rex' | 'sal'> = {
-    celestine: 'ara',
-    aurelia: 'eve',
-    raphael: 'leo',
-    soren: 'rex',
-    luna: 'sal',
+  const chartLabel: Record<string, string> = {
+    fr: 'Thème (résumé)',
+    en: 'Chart (summary)',
+    es: 'Carta (resumen)',
+    de: 'Horoskop (Kurzfassung)',
+    it: 'Tema (riassunto)',
   };
-  return voiceMap[astrologerId] || 'ara';
+
+  return `${advisor.personaPrompt}
+
+${client}
+
+${chartLabel[lang] ?? chartLabel.fr} :
+${trimNatalChart(natalChart)}`;
 }

@@ -52,3 +52,14 @@
   border-radius: 50%;
   animation: twinkle 3s ease-in-out infinite;
 }
+
+.advisor-avatar-fallback {
+  background-size: 220% 220%;
+  animation: advisor-gradient 8s ease infinite;
+}
+
+@keyframes advisor-gradient {
+  0% { background-position: 0% 40%; }
+  50% { background-position: 100% 60%; }
+  100% { background-position: 0% 40%; }
+}

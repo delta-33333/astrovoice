@@ -2,8 +2,9 @@
 
 import { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
-import type { BirthData } from '@/lib/types';
-import { getAstrologerById } from '@/lib/astrologers';
+import type { BirthData, PublicAdvisor } from '@/lib/types';
+import AdvisorAvatar from '@/components/AdvisorAvatar';
+import { useAdvisor } from '@/components/use-advisor';
 import { formatDuration, formatCurrency } from '@/lib/utils';
 import { CALL_HOLD_CENTS, INTRO_CENTS, INTRO_SECONDS, PER_MINUTE_CENTS, quoteCall } from '@/lib/pricing';
 
@@ -11,6 +12,8 @@ export default function CallPage() {
   const router = useRouter();
   const [birthData, setBirthData] = useState<BirthData | null>(null);
   const [astrologerId, setAstrologerId] = useState<string | null>(null);
+  const { advisor, status: advisorStatus } = useAdvisor(astrologerId);
+  const bootedRef = useRef(false);
   const [isConnecting, setIsConnecting] = useState(true);
   const [isConnected, setIsConnected] = useState(false);
   const [callDuration, setCallDuration] = useState(0);
@@ -28,7 +31,6 @@ export default function CallPage() {
   const sessionRef = useRef<string | null>(null);
   const finishRef = useRef<(seconds: number) => Promise<void>>(async () => {});
 
-  const astrologer = astrologerId ? getAstrologerById(astrologerId) : null;
   const quote = quoteCall(callDuration, prepaidSeconds);
   const currentCost = quote.amountCents;
 
@@ -58,11 +60,9 @@ export default function CallPage() {
       })
       .catch(() => undefined);
 
-    // Initialize call session
-    initializeCall(JSON.parse(data), astrId, sessId);
   }, [router]);
 
-  const initializeCall = async (bd: BirthData, astrId: string, sessId: string) => {
+  const initializeCall = async (bd: BirthData, current: PublicAdvisor, sessId: string) => {
     try {
       // Get natal chart
       const chartResponse = await fetch('/api/natal-chart', {
@@ -84,7 +84,7 @@ export default function CallPage() {
         body: JSON.stringify({
           sessionId: sessId,
           birthData: bd,
-          astrologerId: astrId,
+          astrologerId: current.id,
           natalChart,
         }),
       });
@@ -122,7 +122,7 @@ export default function CallPage() {
 
       // Add welcome message to transcript
       setTranscript([
-        `Bonjour ${bd.name}, je suis ${astrologer?.name}. J'ai préparé votre thème natal et je suis prêt à répondre à vos questions.`,
+        `Bonjour ${bd.name}, je suis ${current.name}. J'ai préparé votre thème natal et je suis prêt à répondre à vos questions.`,
       ]);
 
     } catch (err) {
@@ -164,8 +164,8 @@ export default function CallPage() {
         durationSeconds: seconds,
         amountCharged: result.amountCharged,
         prepaidSecondsUsed: result.prepaidSecondsUsed,
-        astrologerName: astrologer?.name,
-        astrologerId,
+        astrologerName: advisor?.name,
+        astrologerId: advisor?.id ?? astrologerId,
       }));
 
       router.push('/complete');
@@ -174,8 +174,8 @@ export default function CallPage() {
       sessionStorage.setItem('callComplete', JSON.stringify({
         durationSeconds: seconds,
         amountCharged: finalQuote.amountCents,
-        astrologerName: astrologer?.name,
-        astrologerId,
+        astrologerName: advisor?.name,
+        astrologerId: advisor?.id ?? astrologerId,
         error: 'Le règlement sera confirmé sous peu',
       }));
       router.push('/complete');
@@ -184,10 +184,28 @@ export default function CallPage() {
 
   finishRef.current = finishCall;
 
-  if (!birthData || !astrologer) {
+  useEffect(() => {
+    if (!advisor || !birthData || !sessionRef.current || bootedRef.current) return;
+    bootedRef.current = true;
+    void initializeCall(birthData, advisor, sessionRef.current);
+  }, [advisor, birthData]);
+
+  if (!birthData || advisorStatus === 'idle' || advisorStatus === 'loading') {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="text-white/60">Chargement...</div>
+        <div className="text-white/60">
+          {advisorStatus === 'missing' || advisorStatus === 'error'
+            ? 'Conseiller introuvable'
+            : 'Chargement...'}
+        </div>
+      </div>
+    );
+  }
+
+  if (!advisor) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-white/60">Conseiller introuvable</div>
       </div>
     );
   }
@@ -197,9 +215,11 @@ export default function CallPage() {
       <div className="max-w-4xl w-full">
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="text-6xl mb-4 animate-float">{astrologer.avatar}</div>
+          <div className="flex justify-center mb-4">
+            <AdvisorAvatar advisor={advisor} size="xl" />
+          </div>
           <h1 className="text-3xl font-[family-name:var(--font-cinzel)] font-bold mb-2">
-            {astrologer.name}
+            {advisor.name}
           </h1>
           <p className="text-white/60">Consultation en cours</p>
         </div>
@@ -210,7 +230,7 @@ export default function CallPage() {
           {isConnecting && (
             <div className="text-center py-8">
               <div className="inline-block w-12 h-12 border-4 border-celestial-purple border-t-transparent rounded-full animate-spin mb-4"></div>
-              <p className="text-white/70">Connexion avec {astrologer.name}...</p>
+              <p className="text-white/70">Connexion avec {advisor.name}...</p>
             </div>
           )}
 
