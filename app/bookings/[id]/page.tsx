@@ -65,7 +65,7 @@ export default function BookingPage() {
         {booking.canJoin ? (
           <Link href={`/call/${booking.id}`} className="btn-primary inline-block">Rejoindre l’appel</Link>
         ) : (
-          <p className="text-sm text-white/60">Le bouton « Rejoindre l’appel » s’ouvre 5 minutes avant le début.</p>
+          <p className="text-sm text-white/60">Le bouton « Rejoindre l’appel » s’ouvre 15 minutes avant le début.</p>
         )}
         {booking.status === 'confirmed' && (
           <p>

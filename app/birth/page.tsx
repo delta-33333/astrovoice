@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import type { BirthData } from '@/lib/types';
 
@@ -14,6 +14,32 @@ export default function BirthDataPage() {
     place: '',
   });
   const [errors, setErrors] = useState<string[]>([]);
+
+  // Préremplit avec les coordonnées déjà enregistrées sur le compte.
+  useEffect(() => {
+    let cancelled = false;
+    fetch('/api/birth-data', { cache: 'no-store' })
+      .then((response) => (response.ok ? response.json() : null))
+      .then((payload: { birthData?: BirthData | null } | null) => {
+        const saved = payload?.birthData;
+        if (cancelled || !saved?.date) return;
+        setFormData((current) =>
+          current.date || current.place
+            ? current
+            : {
+                name: saved.name || '',
+                date: saved.date,
+                time: saved.time || '',
+                timeUnknown: Boolean(saved.timeUnknown),
+                place: saved.place || '',
+              }
+        );
+      })
+      .catch(() => undefined);
+    return () => {
+      cancelled = true;
+    };
+  }, []);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {

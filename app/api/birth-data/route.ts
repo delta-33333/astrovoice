@@ -7,6 +7,26 @@ import { getSession } from '@/lib/session';
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
+/** Coordonnées de naissance déjà enregistrées, pour ne pas les redemander sur un nouvel appareil. */
+export async function GET() {
+  const user = await getSession();
+  if (!user) return NextResponse.json({ error: 'Non authentifié' }, { status: 401 });
+  if (!user.birth_date || !user.birth_place) return NextResponse.json({ birthData: null });
+  const extra = user as unknown as { birth_latitude?: number | null; birth_longitude?: number | null };
+  const time = typeof user.birth_time === 'string' ? user.birth_time.slice(0, 5) : '';
+  return NextResponse.json({
+    birthData: {
+      name: user.display_name || '',
+      date: user.birth_date,
+      time,
+      timeUnknown: Boolean(user.birth_time_unknown) || !time,
+      place: user.birth_place,
+      latitude: typeof extra.birth_latitude === 'number' ? extra.birth_latitude : undefined,
+      longitude: typeof extra.birth_longitude === 'number' ? extra.birth_longitude : undefined,
+    },
+  });
+}
+
 export async function POST(request: NextRequest) {
   try {
     const user = await getSession();
