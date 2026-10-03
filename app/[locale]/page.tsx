@@ -4,7 +4,7 @@ import AiDisclosure from '@/components/AiDisclosure';
 import JsonLd from '@/components/JsonLd';
 import SeoChrome from '@/components/SeoChrome';
 import { readRates } from '@/lib/market';
-import { convertEurCents, formatMoney, MAX_EUR_CENTS, MIN_EUR_CENTS, quoteAdvisor } from '@/lib/money';
+import { perMinuteRange, quoteAdvisor } from '@/lib/money';
 import { listDirectoryAdvisors } from '@/lib/slots';
 import {
   SPECIALTY_IDS,
@@ -63,8 +63,7 @@ export default async function LocaleHome(props: { params: Promise<{ locale: stri
 
   const currency = localeCurrency(locale);
   const rates = readRates();
-  const floor = formatMoney(convertEurCents(MIN_EUR_CENTS, currency, rates), currency);
-  const ceiling = formatMoney(convertEurCents(MAX_EUR_CENTS, currency, rates), currency);
+  const { floor, ceiling } = perMinuteRange(currency, rates, locale);
   let advisors: Awaited<ReturnType<typeof listDirectoryAdvisors>>['advisors'] = [];
   try {
     advisors = (await listDirectoryAdvisors()).advisors;
@@ -97,13 +96,13 @@ export default async function LocaleHome(props: { params: Promise<{ locale: stri
 
         <ul className="mt-8 space-y-4">
           {ordered.map((advisor) => {
-            const quote = quoteAdvisor(advisor.pricePerMinCents, currency, rates);
+            const quote = quoteAdvisor(advisor.pricePerMinCents, currency, rates, undefined, locale);
             return (
               <li key={advisor.id} className="rounded-2xl border border-white/10 p-4">
                 <h2 className="text-xl font-[family-name:var(--font-cinzel)]">
                   <Link href={advisorPath(locale, advisor.slug)} className="hover:text-celestial-gold">{advisor.name}</Link>
                 </h2>
-                <AiDisclosure locale={locale} className="mt-1" />
+                <AiDisclosure locale={locale} gender={advisor.gender} className="mt-1" />
                 <p className="text-sm text-white/70 mt-1">
                   {advisor.specialties.map((item) => specialtyLabel(locale, item)).join(' · ')}
                   {' · '}

@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import OffersCatalog from '@/components/OffersCatalog';
 import SiteHeader from '@/components/SiteHeader';
 import { resolveMarket } from '@/lib/market';
-import { convertEurCents, formatMoney, MAX_EUR_CENTS, MIN_EUR_CENTS } from '@/lib/money';
+import { convertEurCents, formatMoney, perMinuteRange } from '@/lib/money';
 import {
   COMPATIBILITY_REPORT_EUR_CENTS,
   FORECAST_REPORT_EUR_CENTS,
@@ -23,6 +23,7 @@ export default async function OffersPage() {
   const subCurrency = subscriptionCurrency(market.currency);
   const money = (eurCents: number) =>
     formatMoney(convertEurCents(eurCents, market.currency, market.rates), market.currency);
+  const range = perMinuteRange(market.currency, market.rates);
   const subscription = formatMoney(
     convertEurCents(SUBSCRIPTION_EUR_CENTS, subCurrency, market.rates),
     subCurrency
@@ -51,8 +52,8 @@ export default async function OffersPage() {
             natal: money(NATAL_REPORT_EUR_CENTS),
             forecast: money(FORECAST_REPORT_EUR_CENTS),
             compatibility: money(COMPATIBILITY_REPORT_EUR_CENTS),
-            floor: money(MIN_EUR_CENTS),
-            ceiling: money(MAX_EUR_CENTS),
+            floor: range.floor,
+            ceiling: range.ceiling,
             currencyNote,
           }}
         />

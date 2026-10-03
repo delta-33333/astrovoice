@@ -112,16 +112,46 @@ export interface LocalRates {
   introLocal: number;
 }
 
+/**
+ * Tarif minute converti : même règle pour le plancher, le plafond et chaque conseiller.
+ * EUR : arrondi à 0,10 € (plafond 1,99 € conservé). Autres devises : conversion au centime
+ * (au yen pour JPY), pour que 0,50 € devienne bien 0,54 $, 0,42 £, 86 ¥, etc.
+ */
+export function convertPerMinute(eurCents: number, currency: Currency, rates: FxRates): number {
+  if (currency === 'eur') return convertEurCents(eurCents, currency, rates);
+  const cents = Math.max(0, Math.round(eurCents));
+  if (cents === 0) return 0;
+  const rate = rates[currency] > 0 ? rates[currency] : DEFAULT_RATES[currency];
+  const major = (cents / 100) * rate;
+  return Math.max(1, currency === 'jpy' ? Math.round(major) : Math.round(major * 100));
+}
+
 export function localRates(eurPerMinCents: number, currency: Currency, rates: FxRates): LocalRates {
   const standardEur = clamp(Math.round(eurPerMinCents), MIN_EUR_CENTS, MAX_EUR_CENTS);
   const introEur = introCentsFromStandard(standardEur);
-  let standardLocal = convertEurCents(standardEur, currency, rates);
-  let introLocal = convertEurCents(introEur, currency, rates);
-  const step = 10;
+  const standardLocal = convertPerMinute(standardEur, currency, rates);
+  let introLocal = convertPerMinute(introEur, currency, rates);
+  const step = currency === 'eur' ? 10 : 1;
   if (introLocal >= standardLocal) {
-    introLocal = Math.max(step, standardLocal - step);
+    introLocal = Math.max(1, standardLocal - step);
   }
   return { standardEur, introEur, standardLocal, introLocal };
+}
+
+/** Plancher et plafond du tarif minute, convertis comme les tarifs des conseillers. */
+export function perMinuteRange(
+  currency: Currency,
+  rates: FxRates,
+  locale?: string
+): { floorMinor: number; ceilingMinor: number; floor: string; ceiling: string } {
+  const floorMinor = convertPerMinute(MIN_EUR_CENTS, currency, rates);
+  const ceilingMinor = convertPerMinute(MAX_EUR_CENTS, currency, rates);
+  return {
+    floorMinor,
+    ceilingMinor,
+    floor: formatMoney(floorMinor, currency, locale),
+    ceiling: formatMoney(ceilingMinor, currency, locale),
+  };
 }
 
 /** Réservation = minutes d’intro × tarif intro local + reste × tarif du conseiller. */
@@ -145,14 +175,39 @@ export function meterMinor(seconds: number, introPerMin: number, standardPerMin:
   return Math.ceil((introSeconds * introPerMin) / 60) + Math.ceil((rest * standardPerMin) / 60);
 }
 
-export function formatMoney(minor: number, currency: Currency): string {
+const MONEY_LOCALE: Record<string, string> = {
+  fr: 'fr-FR',
+  en: 'en-US',
+  es: 'es-ES',
+  de: 'de-DE',
+  it: 'it-IT',
+};
+
+/** Locale Intl pour l’affichage des montants ('fr' → 'fr-FR'…). Accepte aussi une locale BCP 47. */
+export function moneyLocale(locale?: string | null): string {
+  if (!locale) return 'fr-FR';
+  return MONEY_LOCALE[locale] ?? (/^[a-z]{2}(-[A-Z]{2})?$/.test(locale) ? locale : 'fr-FR');
+}
+
+/**
+ * Montant localisé avec le symbole court : 52,90 $ / $52.90, 41,20 £ / £41.20, 8 430 ¥ / ¥8,430.
+ * CAD garde « CA$ » / « $CA » pour ne pas se confondre avec le dollar US.
+ */
+export function formatMoney(minor: number, currency: Currency, locale?: string | null): string {
   const zero = isZeroDecimal(currency);
-  return new Intl.NumberFormat('fr-FR', {
+  const options: Intl.NumberFormatOptions = {
     style: 'currency',
     currency: currency.toUpperCase(),
+    currencyDisplay: currency === 'cad' ? 'symbol' : 'narrowSymbol',
     minimumFractionDigits: zero ? 0 : 2,
     maximumFractionDigits: zero ? 0 : 2,
-  }).format(zero ? minor : minor / 100);
+  };
+  const value = zero ? minor : minor / 100;
+  try {
+    return new Intl.NumberFormat(moneyLocale(locale), options).format(value);
+  } catch {
+    return new Intl.NumberFormat(moneyLocale(locale), { ...options, currencyDisplay: 'symbol' }).format(value);
+  }
 }
 
 export interface DurationQuote {
@@ -174,18 +229,19 @@ export function quoteAdvisor(
   eurPerMinCents: number,
   currency: Currency,
   rates: FxRates,
-  durations: readonly number[] = [10, 20, 30]
+  durations: readonly number[] = [10, 20, 30],
+  locale?: string | null
 ): AdvisorQuote {
   const local = localRates(eurPerMinCents, currency, rates);
   return {
     currency,
     perMinMinor: local.standardLocal,
     introMinor: local.introLocal,
-    perMinLabel: `${formatMoney(local.standardLocal, currency)}/min`,
-    introLabel: `${formatMoney(local.introLocal, currency)}/min`,
+    perMinLabel: `${formatMoney(local.standardLocal, currency, locale)}/min`,
+    introLabel: `${formatMoney(local.introLocal, currency, locale)}/min`,
     durations: durations.map((minutes) => {
       const minor = localBookingMinor(eurPerMinCents, minutes, currency, rates);
-      return { minutes, minor, label: formatMoney(minor, currency) };
+      return { minutes, minor, label: formatMoney(minor, currency, locale) };
     }),
   };
 }

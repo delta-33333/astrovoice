@@ -322,8 +322,10 @@ export function advisorFaqs(input: {
   intro: string;
   standard: string;
   availability: string;
+  gender?: 'femme' | 'homme' | null;
 }): FaqItem[] {
   const { locale, name, specialties, style, languages, intro, standard, availability } = input;
+  const pronoun = input.gender === 'femme' ? 'elle' : 'il';
   const copy: Record<Locale, FaqItem[]> = {
     fr: [
       {
@@ -331,7 +333,7 @@ export function advisorFaqs(input: {
         answer: `Ouvrez la fiche de ${name}, choisissez un créneau, puis créez le compte au moment du paiement. ${availability}`,
       },
       {
-        question: `Quelles questions ${name} traite-t-il ?`,
+        question: `Quelles questions ${name} traite-t-${pronoun} ?`,
         answer: `${name} consulte sur ${specialties}, avec un style ${style}.`,
       },
       {
@@ -339,11 +341,11 @@ export function advisorFaqs(input: {
         answer: `La consultation commence à ${intro} pendant les trois premières minutes, puis ${standard}. Le montant d’un rendez-vous est le nombre de minutes multiplié par ces tarifs.`,
       },
       {
-        question: `En quelles langues ${name} consulte-t-il ?`,
+        question: `En quelles langues ${name} consulte-t-${pronoun} ?`,
         answer: `${name} consulte en ${languages}.`,
       },
       {
-        question: `Quand ${name} est-il disponible ?`,
+        question: `Quand ${name} est-${pronoun} disponible ?`,
         answer: availability,
       },
     ],

@@ -7,11 +7,11 @@ import AdvisorAvatar from '@/components/AdvisorAvatar';
 import AiDisclosure from '@/components/AiDisclosure';
 import TrustNotes from '@/components/TrustNotes';
 import { BADGE_LABELS, languageLabel, styleLabel } from '@/lib/advisor-badges';
+import { localizedBio } from '@/lib/advisor-bio';
 import { bookPath } from '@/lib/book-path';
 import {
-  convertEurCents,
   DEFAULT_RATES,
-  formatMoney,
+  perMinuteRange,
   quoteAdvisor,
   type AdvisorLang,
   type Currency,
@@ -109,7 +109,7 @@ export default function AdvisorDirectory({
 
   const visible = strict.length > 0 ? strict : fallback;
   const lead = visible.find((advisor) => advisor.availability.hasImmediate && advisor.availability.immediateSlotId);
-  const floor = formatMoney(convertEurCents(50, currency, rates), currency);
+  const floor = perMinuteRange(currency, rates).floor;
 
   const reset = () => {
     setLanguage('');
@@ -224,7 +224,7 @@ export default function AdvisorDirectory({
                       {advisor.name}
                     </Link>
                   </h3>
-                  <AiDisclosure className="mt-1" />
+                  <AiDisclosure gender={advisor.gender} className="mt-1" />
                   <p className="text-sm text-white/55 mt-1">
                     {advisor.age} ans · {advisor.languages.map(languageLabel).join(' · ')} ·{' '}
                     {styleLabel(advisor.readingStyle)}
@@ -252,7 +252,7 @@ export default function AdvisorDirectory({
                 </div>
               </div>
 
-              <p className="text-white/75 text-sm mt-4 leading-relaxed line-clamp-4">{advisor.bio}</p>
+              <p className="text-white/75 text-sm mt-4 leading-relaxed line-clamp-4">{localizedBio(advisor, 'fr')}</p>
 
               <div className="flex flex-wrap gap-2 mt-4">
                 {advisor.specialties.map((item) => (

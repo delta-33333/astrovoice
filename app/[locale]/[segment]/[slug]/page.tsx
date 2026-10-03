@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import AiDisclosure from '@/components/AiDisclosure';
 import JsonLd from '@/components/JsonLd';
 import SeoChrome from '@/components/SeoChrome';
+import { localizedBio } from '@/lib/advisor-bio';
 import { bookPath } from '@/lib/book-path';
 import { readRates } from '@/lib/market';
 import { quoteAdvisor } from '@/lib/money';
@@ -49,7 +50,7 @@ export async function generateMetadata(
   const advisor = await load(locale, segment, slug);
   if (!advisor || !isLocale(locale)) return {};
   const currency = localeCurrency(locale);
-  const quote = quoteAdvisor(advisor.pricePerMinCents, currency, readRates());
+  const quote = quoteAdvisor(advisor.pricePerMinCents, currency, readRates(), undefined, locale);
   const topic = specialtyLabel(locale, advisor.specialties[0] || 'amour');
   const title = `${advisor.name} — ${topic} — ${phonePhrase(locale)} dès ${quote.introLabel}`;
   const description = `${advisor.name} : ${phonePhrase(locale)} sur ${advisor.specialties.map((item) => specialtyLabel(locale, item)).join(', ')}. ${styleLabel(locale, advisor.readingStyle)}. Dès ${quote.introLabel}.`.slice(0, 160);
@@ -79,7 +80,7 @@ export default async function AdvisorSeoPage(
 
   const currency = localeCurrency(locale);
   const rates = readRates();
-  const quote = quoteAdvisor(advisor.pricePerMinCents, currency, rates);
+  const quote = quoteAdvisor(advisor.pricePerMinCents, currency, rates, undefined, locale);
   const topics = advisor.specialties.map((item) => specialtyLabel(locale, item));
   const languages = advisor.languages.map((code) => languageLabel(locale, code));
   const availability = availabilitySentence(locale, advisor.availability);
@@ -93,7 +94,9 @@ export default async function AdvisorSeoPage(
     intro: quote.introLabel,
     standard: quote.perMinLabel,
     availability,
+    gender: advisor.gender,
   });
+  const bio = localizedBio(advisor, locale);
   const origin = appBaseUrl();
   const pageUrl = `${origin}${advisorPath(locale, advisor.slug)}`;
   const bookHref = advisor.availability.immediateSlotId && advisor.availability.immediateStartsAt
@@ -144,7 +147,7 @@ export default async function AdvisorSeoPage(
           <span>{advisor.name}</span>
         </nav>
         <h1 className="font-[family-name:var(--font-cinzel)] text-3xl sm:text-5xl">{advisor.name}</h1>
-        <AiDisclosure locale={locale} className="mt-3" />
+        <AiDisclosure locale={locale} gender={advisor.gender} className="mt-3" />
         <p className="mt-4 text-lg text-white/85 leading-relaxed">{intro[locale]}</p>
         <p className="mt-3 text-celestial-gold">{quote.introLabel} · {quote.perMinLabel}</p>
         <Link href={bookHref} className="btn-primary inline-block mt-6">{cta[locale]}</Link>
@@ -180,7 +183,7 @@ export default async function AdvisorSeoPage(
           )}
         </dl>
 
-        {advisor.bio && <p className="mt-6 text-white/75 leading-relaxed">{advisor.bio}</p>}
+        {bio && <p className="mt-6 text-white/75 leading-relaxed">{bio}</p>}
 
         <section className="mt-10 space-y-4">
           <h2 className="text-2xl font-[family-name:var(--font-cinzel)]">FAQ</h2>
@@ -223,17 +226,6 @@ export default async function AdvisorSeoPage(
               url: pageUrl,
               provider: { '@id': orgId },
               serviceType: phonePhrase(locale),
-              ...(showRating
-                ? {
-                    aggregateRating: {
-                      '@type': 'AggregateRating',
-                      ratingValue: advisor.averageRating,
-                      reviewCount: advisor.reviewCount,
-                      bestRating: 5,
-                      worstRating: 1,
-                    },
-                  }
-                : {}),
               offers: {
                 '@type': 'Offer',
                 url: pageUrl,

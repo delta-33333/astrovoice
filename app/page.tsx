@@ -6,7 +6,7 @@ import SiteHeader from "@/components/SiteHeader";
 import { trackEvent } from "@/lib/events";
 import { VIRTUAL_ADVISOR_DISCLOSURE } from "@/lib/legal";
 import { resolveMarket } from "@/lib/market";
-import { convertEurCents, formatMoney, MAX_EUR_CENTS, MIN_EUR_CENTS } from "@/lib/money";
+import { convertEurCents, formatMoney, perMinuteRange } from "@/lib/money";
 import { SUBSCRIPTION_EUR_CENTS, subscriptionCurrency } from "@/lib/offers";
 import { MINUTE_PACKS } from "@/lib/pricing";
 import { hreflangAlternates, localeHomePath } from "@/lib/seo";
@@ -39,8 +39,7 @@ export default async function LandingPage({
   const money = (eurCents: number) =>
     formatMoney(convertEurCents(eurCents, market.currency, market.rates), market.currency);
   const founding = money(490);
-  const floor = money(MIN_EUR_CENTS);
-  const ceiling = money(MAX_EUR_CENTS);
+  const { floor, ceiling } = perMinuteRange(market.currency, market.rates);
   const subscriptionCurrencyCode = subscriptionCurrency(market.currency);
   const subscriptionLabel = formatMoney(
     convertEurCents(SUBSCRIPTION_EUR_CENTS, subscriptionCurrencyCode, market.rates),
@@ -290,27 +289,27 @@ export default async function LandingPage({
                 <span className="text-celestial-gold transition-transform group-open:rotate-180">↓</span>
               </summary>
               <p className="mt-4 text-white/70 text-sm leading-relaxed">
-                Oui, absolument. Dès votre inscription, nous calculons votre thème natal complet à partir de votre date, heure et lieu de naissance précis. Chaque consultation est guidée par la carte du ciel qui était la vôtre au moment de votre naissance : positions planétaires, maisons, aspects, nœuds lunaires. Votre astrologue a accès à toutes ces données pour vous offrir une lecture personnalisée et précise.
+                Oui. Quand vous enregistrez votre date, votre heure et votre lieu de naissance, nous calculons votre thème natal : positions des planètes, aspects, et maisons et Ascendant si l’heure est connue. Ce résumé du thème est transmis au conseiller au début de chaque appel, pour que la lecture parte de votre carte du ciel.
               </p>
             </details>
 
             <details className="group p-6 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10">
               <summary className="cursor-pointer text-lg font-semibold list-none flex items-center justify-between">
-                <span>Puis-je garder le même astrologue d'un appel à l'autre ?</span>
+                <span>Puis-je rappeler le même conseiller ?</span>
                 <span className="text-celestial-gold transition-transform group-open:rotate-180">↓</span>
               </summary>
               <p className="mt-4 text-white/70 text-sm leading-relaxed">
-                Oui, c'est même le cœur de notre approche. Une fois que vous avez choisi votre astrologue, il devient votre accompagnant personnel. À chaque nouvelle consultation, vous retrouvez la même voix, le même regard, la même sensibilité. Cette continuité permet une relation de confiance et un accompagnement en profondeur.
+                Oui. Vous pouvez reprendre rendez-vous avec le conseiller de votre choix : même nom, même voix, même style de lecture. Votre thème natal est repris à chaque appel.
               </p>
             </details>
 
             <details className="group p-6 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10">
               <summary className="cursor-pointer text-lg font-semibold list-none flex items-center justify-between">
-                <span>Mon historique de consultations est-il conservé ?</span>
+                <span>Le conseiller se souvient-il de nos appels précédents ?</span>
                 <span className="text-celestial-gold transition-transform group-open:rotate-180">↓</span>
               </summary>
               <p className="mt-4 text-white/70 text-sm leading-relaxed">
-                Oui. Votre astrologue a accès à l'historique de vos échanges. Si vous avez déjà parlé d'un transit, d'une question relationnelle ou d'un projet professionnel lors d'une consultation précédente, il s'en souviendra et pourra faire des liens avec votre situation actuelle. Vous n'avez pas besoin de tout réexpliquer à chaque fois.
+                Non. Chaque appel repart de votre thème natal et de ce que vous dites pendant l’appel ; les échanges précédents ne sont pas repris. Si un point compte pour vous, rappelez-le en début d’appel. Après la consultation, vous pouvez commander un résumé écrit envoyé par e-mail.
               </p>
             </details>
 
@@ -330,7 +329,7 @@ export default async function LandingPage({
                 <span className="text-celestial-gold transition-transform group-open:rotate-180">↓</span>
               </summary>
               <p className="mt-4 text-white/70 text-sm leading-relaxed">
-                Oui, vous gardez toujours le contrôle. Vous pouvez mettre fin à la consultation à tout moment. À la minute, vous réglez la durée réellement écoulée. L’abonnement Callastral Illimité est un choix séparé, résiliable depuis le compte.
+                Oui, vous pouvez raccrocher à tout moment. Un rendez-vous réservé est payé à l’avance pour la durée choisie. En l’annulant plus de 24 h avant, vous êtes remboursé ; ensuite, le montant devient un avoir valable 30 jours. L’abonnement Callastral Illimité est un choix séparé, résiliable depuis le compte.
               </p>
             </details>
 
@@ -340,7 +339,7 @@ export default async function LandingPage({
                 <span className="text-celestial-gold transition-transform group-open:rotate-180">↓</span>
               </summary>
               <p className="mt-4 text-white/70 text-sm leading-relaxed">
-                Absolument. Vos données personnelles et votre thème natal sont stockés de manière sécurisée et ne sont jamais partagés avec des tiers. Nous respectons la confidentialité de vos informations et de vos échanges avec votre astrologue.
+                Vos données de naissance et votre thème sont stockés sur nos serveurs et ne sont pas vendus. Ils ne sont transmis qu’aux prestataires nécessaires au service (hébergement, paiement, voix de l’appel). Le détail figure dans la page Confidentialité.
               </p>
             </details>
 
@@ -356,11 +355,11 @@ export default async function LandingPage({
 
             <details className="group p-6 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10">
               <summary className="cursor-pointer text-lg font-semibold list-none flex items-center justify-between">
-                <span>Y a-t-il un horoscope quotidien ou un espace personnel ?</span>
+                <span>Qu’y a-t-il dans l’espace personnel ?</span>
                 <span className="text-celestial-gold transition-transform group-open:rotate-180">↓</span>
               </summary>
               <p className="mt-4 text-white/70 text-sm leading-relaxed">
-                Nous travaillons actuellement sur des fonctionnalités complémentaires : horoscope personnalisé basé sur votre thème natal, espace de suivi de vos transits importants, et journal de vos consultations. Ces outils seront progressivement déployés dans les prochains mois pour enrichir votre expérience.
+                Le compte regroupe votre abonnement Callastral Illimité s’il est actif, les rapports écrits achetés (thème natal, prévision, compatibilité) et les réglages de mot de passe et d’e-mail. Il n’y a pas d’horoscope quotidien.
               </p>
             </details>
           </div>
