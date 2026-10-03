@@ -1,4 +1,5 @@
 import { trackEvent } from './events';
+import { ensureImmediateAvailability } from './slots';
 import { BOOKING_DURATIONS, bookingListPriceCents, formatCurrency } from './pricing';
 import { recipientEmail, sendMail } from './email';
 import { getSupabaseAdmin, supabaseAvailable, type UserProfile } from './supabase';
@@ -71,6 +72,11 @@ export async function holdSlot(input: {
   holdExpiresAt: string;
 }> {
   if (!supabaseAvailable) throw new Error('SUPABASE_NOT_CONFIGURED');
+  try {
+    await ensureImmediateAvailability();
+  } catch (error) {
+    console.warn('Créneaux immédiats:', error instanceof Error ? error.message : error);
+  }
   const { data, error } = await getSupabaseAdmin().rpc('hold_slot', {
     p_user_id: input.userId,
     p_slot_id: input.slotId,
@@ -124,7 +130,7 @@ export async function confirmBookingPayment(input: {
     if (booking) {
       await sendBookingConfirmation(booking);
       await trackEvent({
-        name: 'paid',
+        name: 'payment_success',
         userId: booking.user_id,
         advisorId: booking.advisor_id,
         bookingId: booking.id,

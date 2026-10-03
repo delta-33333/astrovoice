@@ -26,12 +26,7 @@ export default function HomePage() {
         const data = await response.json();
 
         if (!data.authenticated) {
-          router.push('/auth');
-          return;
-        }
-
-        if (!data.user.hasBirthData) {
-          router.push('/birth');
+          router.push('/');
           return;
         }
 
@@ -62,12 +57,7 @@ export default function HomePage() {
   };
 
   const startCall = () => {
-    if (user?.favoriteAstrologerId) {
-      sessionStorage.setItem('astrologerId', user.favoriteAstrologerId);
-      router.push('/consent');
-    } else {
-      router.push('/astrologers');
-    }
+    router.push('/astrologers?dispo=now');
   };
 
   if (loading) {
@@ -89,16 +79,21 @@ export default function HomePage() {
         <div className="flex justify-between items-center mb-12">
           <div>
             <h1 className="font-[family-name:var(--font-cinzel)] text-3xl font-bold text-glow">
-              Lunara
+              Callastral
             </h1>
             <p className="text-white/60 text-sm mt-1">Bonjour, {user.displayName}</p>
           </div>
-          <button
-            onClick={handleLogout}
-            className="text-white/60 hover:text-white text-sm"
-          >
-            Déconnexion
-          </button>
+          <div className="flex items-center gap-4">
+            <Link href="/account" className="text-white/60 hover:text-white text-sm">
+              Compte
+            </Link>
+            <button
+              onClick={handleLogout}
+              className="text-white/60 hover:text-white text-sm"
+            >
+              Déconnexion
+            </button>
+          </div>
         </div>
 
         <div className="flex-1 flex flex-col justify-center space-y-8">

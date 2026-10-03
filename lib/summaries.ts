@@ -251,7 +251,7 @@ export async function markSummaryPaid(bookingId: string, checkoutSessionId: stri
     .select('id');
   if (paid.data?.length) {
     await trackEvent({
-      name: 'paid',
+      name: 'payment_success',
       userId: booking.user_id,
       advisorId: booking.advisor_id,
       bookingId,

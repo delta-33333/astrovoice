@@ -1,12 +1,13 @@
 import Link from "next/link";
 import InstallPrompt from "@/components/InstallPrompt";
+import TrustNotes from "@/components/TrustNotes";
 import { trackEvent } from "@/lib/events";
 import { VIRTUAL_ADVISOR_DISCLOSURE } from "@/lib/legal";
 
 export default async function LandingPage() {
-  await trackEvent({ name: 'visit' });
+  await trackEvent({ name: 'view_home' });
   return (
-    <main className="min-h-screen px-4 py-12">
+    <main className="min-h-screen px-4 pt-12 pb-28 sm:pb-12">
       <div className="max-w-4xl mx-auto">
         
         {/* Hero Section */}
@@ -30,12 +31,14 @@ export default async function LandingPage() {
             <span>les 3 premières minutes</span>
           </div>
 
+          <TrustNotes className="justify-center" />
+
           <div className="flex flex-col sm:flex-row gap-4 justify-center pt-6">
             <Link 
-              href="/auth"
+              href="/astrologers?dispo=now"
               className="btn-primary text-lg"
             >
-              Commencer ma consultation
+              Appeler maintenant
             </Link>
             <Link 
               href="/auth"
@@ -171,40 +174,40 @@ export default async function LandingPage() {
             <div className="space-y-3 p-6 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10">
               <div className="flex items-center gap-3">
                 <span className="text-celestial-gold font-bold text-2xl">1</span>
-                <h3 className="text-lg font-semibold">Créez votre compte</h3>
+                <h3 className="text-lg font-semibold">Choisissez un conseiller</h3>
               </div>
               <p className="text-white/70 text-sm leading-relaxed">
-                Indiquez votre date, heure et lieu de naissance pour établir votre thème natal complet.
+                Ouvrez l’annuaire et prenez quelqu’un de disponible maintenant, dans votre langue.
               </p>
             </div>
 
             <div className="space-y-3 p-6 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10">
               <div className="flex items-center gap-3">
                 <span className="text-celestial-gold font-bold text-2xl">2</span>
-                <h3 className="text-lg font-semibold">Choisissez votre astrologue</h3>
+                <h3 className="text-lg font-semibold">Prenez un créneau</h3>
               </div>
               <p className="text-white/70 text-sm leading-relaxed">
-                Sélectionnez l'astrologue qui résonne avec vous. Il deviendra votre accompagnant personnel.
+                Le prix est affiché avant le paiement : 0,99 €/min les trois premières minutes, puis 1,49 €/min.
               </p>
             </div>
 
             <div className="space-y-3 p-6 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10">
               <div className="flex items-center gap-3">
                 <span className="text-celestial-gold font-bold text-2xl">3</span>
-                <h3 className="text-lg font-semibold">Parlez librement</h3>
+                <h3 className="text-lg font-semibold">Créez le compte au paiement</h3>
               </div>
               <p className="text-white/70 text-sm leading-relaxed">
-                Consultation vocale en direct. Posez vos questions, explorez vos transits, approfondissez votre chemin.
+                Prénom, e-mail et mot de passe suffisent. Apple Pay et Google Pay sont proposés quand votre téléphone les a.
               </p>
             </div>
 
             <div className="space-y-3 p-6 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10">
               <div className="flex items-center gap-3">
                 <span className="text-celestial-gold font-bold text-2xl">4</span>
-                <h3 className="text-lg font-semibold">Retrouvez votre historique</h3>
+                <h3 className="text-lg font-semibold">Rejoignez l’appel</h3>
               </div>
               <p className="text-white/70 text-sm leading-relaxed">
-                Toutes vos consultations sont sauvegardées. Votre astrologue se souvient de votre parcours.
+                Après le paiement, ouvrez l’appel ou ajoutez le rendez-vous à votre calendrier. Vous pouvez annuler jusqu’à 24 h avant.
               </p>
             </div>
           </div>
@@ -375,15 +378,15 @@ export default async function LandingPage() {
               Prêt à explorer votre carte du ciel ?
             </h2>
             <p className="text-white/70 text-lg">
-              Créez votre compte en 2 minutes et commencez votre première consultation.
+              Un conseiller est disponible maintenant. Le compte se crée juste avant le paiement.
             </p>
           </div>
           
           <Link 
-            href="/auth"
+            href="/astrologers?dispo=now"
             className="btn-primary text-lg inline-block"
           >
-            Commencer maintenant
+            Appeler maintenant
           </Link>
         </section>
 
@@ -399,7 +402,12 @@ export default async function LandingPage() {
 
       </div>
 
-      <InstallPrompt />
+      <div className="sm:hidden fixed bottom-0 inset-x-0 z-40 border-t border-white/10 bg-[#0c1018]/95 px-4 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
+        <Link href="/astrologers?dispo=now" className="btn-primary block text-center w-full">
+          Appeler maintenant
+        </Link>
+      </div>
+      <InstallPrompt lifted />
     </main>
   );
 }

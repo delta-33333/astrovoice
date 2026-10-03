@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
+import TrustNotes from '@/components/TrustNotes';
 import { formatCurrency } from '@/lib/pricing';
 
 interface View {
@@ -59,8 +60,16 @@ export default function BookingPage() {
         {booking.canJoin ? (
           <Link href={`/call/${booking.id}`} className="btn-primary inline-block">Rejoindre l’appel</Link>
         ) : (
-          <p className="text-sm text-white/60">Le lien « Rejoindre l’appel » s’ouvre 5 minutes avant le début.</p>
+          <p className="text-sm text-white/60">Le bouton « Rejoindre l’appel » s’ouvre 5 minutes avant le début.</p>
         )}
+        {booking.status === 'confirmed' && (
+          <p>
+            <a href={`/api/bookings/${booking.id}/calendar`} className="btn-secondary inline-block">
+              Ajouter au calendrier
+            </a>
+          </p>
+        )}
+        <TrustNotes />
         {booking.status === 'confirmed' && (
           <p>
             <Link href={`/bookings/${booking.id}/cancel`} className="text-sm text-white/50 underline">

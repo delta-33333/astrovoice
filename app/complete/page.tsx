@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { SUMMARY_CENTS, formatCurrency as formatPrice } from '@/lib/pricing';
 import { formatCurrency, formatDuration } from '@/lib/utils';
 
 interface CallCompleteData {
@@ -149,8 +150,18 @@ export default function CompletePage() {
         )}
 
         <div className="space-y-4 mb-8">
+          {data.bookingId && (
+            <Link href={`/resume/${data.bookingId}`} className="btn-primary inline-block">
+              Recevoir le résumé écrit · {formatPrice(SUMMARY_CENTS)}
+            </Link>
+          )}
+          <p>
+            <Link href="/astrologers?dispo=now" className="btn-secondary inline-block">
+              Reprendre un créneau
+            </Link>
+          </p>
           {data.astrologerId && (
-            <Link href={`/astrologers?recall=${data.astrologerId}`} className="btn-primary inline-block">
+            <Link href={`/astrologers?recall=${data.astrologerId}`} className="text-sm text-white/60 underline">
               Rappeler {data.astrologerName}
             </Link>
           )}

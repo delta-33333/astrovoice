@@ -42,6 +42,8 @@ export interface AdvisorAvailability {
   nextSlotAt: string | null;
   hasImmediate: boolean;
   scarcity: string | null;
+  immediateSlotId: string | null;
+  immediateStartsAt: string | null;
 }
 
 export interface DirectoryAdvisor extends PublicAdvisor {

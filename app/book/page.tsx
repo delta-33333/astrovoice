@@ -4,14 +4,20 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import PaymentSheet from '@/components/PaymentSheet';
-import { BOOKING_DURATIONS, bookingListPriceCents, formatCurrency } from '@/lib/pricing';
+import TrustNotes from '@/components/TrustNotes';
+import { BOOKING_DURATIONS, bookingListPriceCents, formatCurrency, INTRO_CENTS, PER_MINUTE_CENTS } from '@/lib/pricing';
 
 export default function BookPage() {
   const router = useRouter();
   const [slotId, setSlotId] = useState<string | null>(null);
   const [startsAt, setStartsAt] = useState<string | null>(null);
+  const [advisorName, setAdvisorName] = useState('');
   const [duration, setDuration] = useState<10 | 20 | 30>(20);
   const [authed, setAuthed] = useState<boolean | null>(null);
+  const [accountMode, setAccountMode] = useState<'signup' | 'login'>('signup');
+  const [firstName, setFirstName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [clientSecret, setClientSecret] = useState<string | null>(null);
@@ -23,18 +29,31 @@ export default function BookPage() {
   const [immediate, setImmediate] = useState(false);
 
   useEffect(() => {
-    const slot = sessionStorage.getItem('slotId');
-    const when = sessionStorage.getItem('slotStartsAt');
+    const params = new URLSearchParams(window.location.search);
+    const slot = params.get('slot') || sessionStorage.getItem('slotId');
+    const when = params.get('at') || sessionStorage.getItem('slotStartsAt');
+    const advisorId = params.get('advisor') || sessionStorage.getItem('astrologerId');
     if (!slot) {
       router.replace('/astrologers');
       return;
     }
+    sessionStorage.setItem('slotId', slot);
+    if (when) sessionStorage.setItem('slotStartsAt', when);
+    if (advisorId) sessionStorage.setItem('astrologerId', advisorId);
     setSlotId(slot);
     setStartsAt(when);
     fetch('/api/auth/me')
       .then((response) => response.json())
       .then((payload) => setAuthed(Boolean(payload.authenticated)))
       .catch(() => setAuthed(false));
+    if (advisorId) {
+      fetch(`/api/advisors/${advisorId}`)
+        .then((response) => response.json())
+        .then((payload) => {
+          if (payload.advisor?.name) setAdvisorName(payload.advisor.name);
+        })
+        .catch(() => undefined);
+    }
   }, [router]);
 
   const whenLabel = startsAt
@@ -48,11 +67,29 @@ export default function BookPage() {
       }).format(new Date(startsAt))
     : '';
 
+  const ensureAccount = async () => {
+    if (authed) return;
+    const endpoint = accountMode === 'signup' ? '/api/auth/signup' : '/api/auth/login';
+    const response = await fetch(endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(
+        accountMode === 'signup'
+          ? { email, password, displayName: firstName }
+          : { email, password }
+      ),
+    });
+    const payload = await response.json().catch(() => null);
+    if (!response.ok) throw new Error(payload?.error || 'Le compte n’a pas pu être ouvert.');
+    setAuthed(true);
+  };
+
   const pay = async () => {
     if (!slotId) return;
     setLoading(true);
     setError(null);
     try {
+      await ensureAccount();
       const heldResponse = await fetch('/api/bookings/hold', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -110,44 +147,110 @@ export default function BookPage() {
   }
 
   return (
-    <main className="min-h-screen px-4 py-8">
+    <main className="min-h-screen px-4 pt-8 pb-28">
       <div className="max-w-lg mx-auto">
         <Link href="/astrologers" className="text-sm text-white/50">← Annuaire</Link>
-        <h1 className="font-[family-name:var(--font-cinzel)] text-3xl mt-4 mb-2">Réserver</h1>
-        <p className="text-white/70 mb-6">{whenLabel} · heure de Paris</p>
+        <h1 className="font-[family-name:var(--font-cinzel)] text-3xl mt-4 mb-2">
+          {advisorName ? `Appeler ${advisorName}` : 'Réserver'}
+        </h1>
+        <p className="text-white/70 mb-2">{whenLabel} · heure de Paris</p>
+        <p className="text-sm text-celestial-gold mb-4">
+          {formatCurrency(INTRO_CENTS)}/min les 3 premières minutes, puis {formatCurrency(PER_MINUTE_CENTS)}/min
+        </p>
+        <TrustNotes className="mb-6" />
+
+        <div className="space-y-3">
+          {BOOKING_DURATIONS.map((minutes) => (
+            <button
+              key={minutes}
+              type="button"
+              onClick={() => setDuration(minutes)}
+              className={`w-full text-left rounded-2xl border px-4 py-4 ${
+                duration === minutes ? 'border-celestial-gold bg-white/10' : 'border-white/10 bg-white/5'
+              }`}
+            >
+              <span className="font-semibold">{minutes} minutes</span>
+              <span className="float-right text-celestial-gold">{formatCurrency(bookingListPriceCents(minutes))}</span>
+            </button>
+          ))}
+        </div>
 
         {authed === false && (
-          <div className="space-y-4">
-            <p className="text-white/80">Connectez-vous pour bloquer ce créneau pendant 10 minutes et le régler.</p>
-            <Link href="/auth" className="btn-primary inline-block">Se connecter</Link>
+          <div className="mt-6 space-y-4 rounded-2xl border border-white/10 bg-white/5 p-4">
+            <div className="flex gap-2 text-sm">
+              <button
+                type="button"
+                onClick={() => setAccountMode('signup')}
+                className={accountMode === 'signup' ? 'text-celestial-gold' : 'text-white/50'}
+              >
+                Créer un compte
+              </button>
+              <span className="text-white/30">·</span>
+              <button
+                type="button"
+                onClick={() => setAccountMode('login')}
+                className={accountMode === 'login' ? 'text-celestial-gold' : 'text-white/50'}
+              >
+                Déjà un compte
+              </button>
+            </div>
+            {accountMode === 'signup' && (
+              <label className="block text-sm text-white/70">
+                Prénom
+                <input
+                  value={firstName}
+                  onChange={(event) => setFirstName(event.target.value)}
+                  autoComplete="given-name"
+                  required
+                  className="mt-1 w-full rounded-xl bg-white/10 border border-white/15 px-3 py-3 text-white"
+                />
+              </label>
+            )}
+            <label className="block text-sm text-white/70">
+              E-mail
+              <input
+                type="email"
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+                autoComplete="email"
+                required
+                className="mt-1 w-full rounded-xl bg-white/10 border border-white/15 px-3 py-3 text-white"
+              />
+            </label>
+            <label className="block text-sm text-white/70">
+              Mot de passe
+              <input
+                type="password"
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
+                autoComplete={accountMode === 'login' ? 'current-password' : 'new-password'}
+                minLength={8}
+                required
+                className="mt-1 w-full rounded-xl bg-white/10 border border-white/15 px-3 py-3 text-white"
+              />
+            </label>
+            {accountMode === 'signup' && (
+              <p className="text-xs text-white/45">Au moins 8 caractères. Le compte est créé au moment du paiement.</p>
+            )}
+            {accountMode === 'login' && (
+              <Link href="/auth/forgot" className="text-sm text-celestial-gold underline">Mot de passe oublié</Link>
+            )}
           </div>
         )}
 
-        {authed && (
-          <>
-            <div className="space-y-3">
-              {BOOKING_DURATIONS.map((minutes) => (
-                <button
-                  key={minutes}
-                  type="button"
-                  onClick={() => setDuration(minutes)}
-                  className={`w-full text-left rounded-2xl border px-4 py-4 ${
-                    duration === minutes ? 'border-celestial-gold bg-white/10' : 'border-white/10 bg-white/5'
-                  }`}
-                >
-                  <span className="font-semibold">{minutes} minutes</span>
-                  <span className="float-right text-celestial-gold">{formatCurrency(bookingListPriceCents(minutes))}</span>
-                  <p className="text-xs text-white/50 mt-1">0,99 €/min les 3 premières minutes, puis 1,49 €/min</p>
-                </button>
-              ))}
-            </div>
-            <p className="text-xs text-white/45 mt-4">Le créneau est bloqué 10 minutes, le temps du paiement. Un avoir encore valable est déduit automatiquement.</p>
-            {error && <p className="text-sm text-red-200 mt-4">{error}</p>}
-            <button type="button" onClick={() => void pay()} disabled={loading} className="btn-primary w-full mt-6 disabled:opacity-50">
-              {loading ? 'Préparation…' : 'Bloquer et payer'}
-            </button>
-          </>
-        )}
+        <p className="text-xs text-white/45 mt-4">
+          Le créneau est bloqué 10 minutes, le temps du paiement. Apple Pay et Google Pay s’affichent si votre appareil les propose.
+        </p>
+        {error && <p className="text-sm text-red-200 mt-4">{error}</p>}
+        <button type="button" onClick={() => void pay()} disabled={loading} className="btn-primary w-full mt-6 hidden sm:block disabled:opacity-50">
+          {loading ? 'Préparation…' : `Continuer · ${formatCurrency(bookingListPriceCents(duration))}`}
+        </button>
+      </div>
+
+      <div className="sm:hidden fixed bottom-0 inset-x-0 z-40 border-t border-white/10 bg-[#0c1018]/95 px-4 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
+        <button type="button" onClick={() => void pay()} disabled={loading} className="btn-primary w-full disabled:opacity-50">
+          {loading ? 'Préparation…' : `Continuer · ${formatCurrency(bookingListPriceCents(duration))}`}
+        </button>
       </div>
 
       <PaymentSheet

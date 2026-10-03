@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import AdvisorProfile from '@/components/AdvisorProfile';
+import { trackEvent } from '@/lib/events';
 import { getAdvisorProfile } from '@/lib/slots';
 
 export const dynamic = 'force-dynamic';
@@ -34,6 +35,7 @@ export default async function AdvisorPage(props: { params: Promise<{ slug: strin
       );
     }
     if (!profile.advisor) notFound();
+    await trackEvent({ name: 'view_advisor', advisorId: profile.advisor.id });
     return <AdvisorProfile advisor={profile.advisor} slots={profile.slots} />;
   } catch {
     return (

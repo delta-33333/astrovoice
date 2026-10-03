@@ -14,7 +14,9 @@ export async function GET() {
       user: {
         id: user.id,
         username: user.username,
+        email: user.email || (user.username?.includes('@') ? user.username : ''),
         displayName: user.display_name,
+        hasPassword: Boolean(user.password_hash),
         hasBirthData: !!user.birth_date,
         favoriteAstrologerId: user.favorite_astrologer_id,
         prepaidSeconds: user.prepaid_seconds,

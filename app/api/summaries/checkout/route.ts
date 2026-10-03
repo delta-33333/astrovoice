@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
       metadata: { booking_id: booking.id },
     });
     await trackEvent({
-      name: 'checkout_started',
+      name: 'checkout_start',
       userId: user.id,
       advisorId: booking.advisor_id,
       bookingId: booking.id,

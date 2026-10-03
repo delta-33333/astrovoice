@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
 
   if (booking.amount_cents === 0) {
     await trackEvent({
-      name: 'checkout_started',
+      name: 'checkout_start',
       userId: user.id,
       advisorId: booking.advisor_id,
       bookingId: booking.id,
@@ -71,7 +71,7 @@ export async function POST(request: NextRequest) {
       integrationFlow: 'booking',
     });
     await trackEvent({
-      name: 'checkout_started',
+      name: 'checkout_start',
       userId: user.id,
       advisorId: booking.advisor_id,
       bookingId: booking.id,

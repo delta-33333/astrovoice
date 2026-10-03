@@ -60,7 +60,7 @@ export async function POST(request: NextRequest) {
     });
 
     await trackEvent({
-      name: 'checkout_started',
+      name: 'checkout_start',
       userId: user.id,
       metadata: { purpose: 'prepaid', packId: pack.id },
     });
