@@ -52,7 +52,8 @@ export type VercelStats = {
   visitors: number;
   topPages: { path: string; pageviews: number; visitors: number }[];
   topReferrers: { referrer: string; pageviews: number; visitors: number }[];
-  events: { name: string; count: number; visitors: number }[];
+  /** null : événements personnalisés indisponibles (offre Vercel Hobby). */
+  events: { name: string; count: number; visitors: number }[] | null;
 };
 
 export const VERCEL_ANALYTICS_URL = 'https://vercel.com/alpha-ais-projects-d439fdc7/lunara/analytics';
@@ -86,14 +87,16 @@ type Rows = { data?: Record<string, unknown>[] };
 
 export async function loadVercelStats(days = 7): Promise<VercelStats | null> {
   if (!process.env.VERCEL_ANALYTICS_TOKEN) return null;
-  const until = new Date().toISOString().slice(0, 10);
+  // `until` est exclusif côté API (date = minuit) : demain pour inclure aujourd'hui.
+  const until = new Date(Date.now() + 86_400_000).toISOString().slice(0, 10);
   const since = new Date(Date.now() - days * 86_400_000).toISOString().slice(0, 10);
   try {
     const [pages, referrers, events] = (await Promise.all([
       vercelQuery('visits/aggregate', { since, until, by: 'requestPath', limit: '10' }),
       vercelQuery('visits/aggregate', { since, until, by: 'referrerHostname', limit: '10' }),
-      vercelQuery('events/aggregate', { since, until, by: 'eventName', limit: '20' }),
-    ])) as Rows[];
+      // Événements personnalisés : offre Pro/Enterprise uniquement (402 sinon) — non bloquant.
+      vercelQuery('events/aggregate', { since, until, by: 'eventName', limit: '20' }).catch(() => null),
+    ])) as (Rows | null)[];
     const topPages = (pages?.data ?? []).map((row) => ({
       path: String(row.requestPath ?? '—'),
       pageviews: num(row.pageviews),
@@ -114,11 +117,13 @@ export async function loadVercelStats(days = 7): Promise<VercelStats | null> {
       visitors: num(count?.data?.visitors ?? totals.visitors),
       topPages,
       topReferrers,
-      events: (events?.data ?? []).map((row) => ({
-        name: String(row.eventName ?? '—'),
-        count: num(row.count),
-        visitors: num(row.visitors),
-      })),
+      events: events
+        ? (events.data ?? []).map((row) => ({
+            name: String(row.eventName ?? '—'),
+            count: num(row.count),
+            visitors: num(row.visitors),
+          }))
+        : null,
     };
   } catch (error) {
     console.warn('Vercel Analytics:', error instanceof Error ? error.message : error);
