@@ -508,3 +508,11 @@ export function organizationGraph(origin: string): Record<string, unknown>[] {
     },
   ];
 }
+
+/** Index des conseillers d'une langue : /fr/astrologue, /en/astrologer… */
+export function advisorIndexPath(locale: Locale): string {
+  return `/${locale}/${PROFESSION_SLUG[locale]}`;
+}
+
+/** Date de dernière modification éditoriale des pages de marque (sitemap lastmod). */
+export const BRAND_PAGES_UPDATED_ISO = '2026-10-06';
