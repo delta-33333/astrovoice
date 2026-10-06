@@ -9,6 +9,7 @@ import {
   PaymentElement,
   useCheckoutElements,
 } from '@stripe/react-stripe-js/checkout';
+import { funnel } from '@/lib/funnel-client';
 
 const publishableKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || '';
 
@@ -44,10 +45,24 @@ type PaymentSheetProps = {
   collectContact?: boolean;
   onClose: () => void;
   onSuccess: () => void;
+  /** Type d'achat pour la mesure du parcours (checkout_start / payment_success). */
+  funnelKind?: string;
 };
 
 export default function PaymentSheet(props: PaymentSheetProps) {
-  const { open, onClose } = props;
+  const { open, onClose, funnelKind, clientSecret } = props;
+  const trackedSecret = useRef<string | null>(null);
+
+  useEffect(() => {
+    if (!open || !funnelKind || !clientSecret || trackedSecret.current === clientSecret) return;
+    trackedSecret.current = clientSecret;
+    funnel('checkout_start', { kind: funnelKind });
+  }, [open, funnelKind, clientSecret]);
+
+  const handleSuccess = () => {
+    if (funnelKind) funnel('payment_success', { kind: funnelKind });
+    props.onSuccess();
+  };
 
   useEffect(() => {
     if (!open) return;
@@ -118,7 +133,7 @@ export default function PaymentSheet(props: PaymentSheetProps) {
               payLabel={props.payLabel}
               note={props.note}
               collectContact={props.collectContact}
-              onSuccess={props.onSuccess}
+              onSuccess={handleSuccess}
             />
           </CheckoutElementsProvider>
         )}

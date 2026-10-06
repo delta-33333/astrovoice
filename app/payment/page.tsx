@@ -217,6 +217,7 @@ export default function PaymentPage() {
       </div>
 
       <PaymentSheet
+        funnelKind="hold"
         open={sheetOpen}
         title="Empreinte de consultation"
         amountLabel={holdLabel}

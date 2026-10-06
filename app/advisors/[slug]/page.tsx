@@ -4,7 +4,6 @@ import { notFound } from 'next/navigation';
 import AdvisorProfile from '@/components/AdvisorProfile';
 import SiteHeader from '@/components/SiteHeader';
 import { localizedBio } from '@/lib/advisor-bio';
-import { trackEvent } from '@/lib/events';
 import { resolveMarket } from '@/lib/market';
 import { advisorPath, indexableAdvisorLocales } from '@/lib/seo';
 import { getAdvisorProfile } from '@/lib/slots';
@@ -47,7 +46,6 @@ export default async function AdvisorPage(props: { params: Promise<{ slug: strin
       );
     }
     if (!profile.advisor) notFound();
-    await trackEvent({ name: 'view_advisor', advisorId: profile.advisor.id });
     const market = await resolveMarket();
     return (
       <>

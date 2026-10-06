@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createUser, normalizeEmail, normalizeFirstName, passwordError } from '@/lib/auth';
-import { trackEvent } from '@/lib/events';
+import { recordFirstTouch, trackEvent } from '@/lib/events';
 import { clientIp, rateLimit } from '@/lib/rate-limit';
 import { createSession } from '@/lib/session';
 import { supabaseAvailable } from '@/lib/supabase';
@@ -53,6 +53,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'La connexion sécurisée n’est pas configurée.' }, { status: 503 });
     }
 
+    await recordFirstTouch(result.userId);
     await trackEvent({ name: 'signup', userId: result.userId });
     return NextResponse.json({ success: true, needsBirthData: true });
   } catch (error) {

@@ -33,6 +33,7 @@ export async function loadFunnel(days = 14): Promise<{ days: FunnelDay[]; unavai
   const { data, error } = await getSupabaseAdmin()
     .from('events')
     .select('name, created_at')
+    .eq('is_bot', false)
     .gte('created_at', since)
     .order('created_at', { ascending: true })
     .limit(8000);

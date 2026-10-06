@@ -285,6 +285,7 @@ export default function OffersCatalog({ labels }: { labels: OfferLabels }) {
       </section>
 
       <PaymentSheet
+        funnelKind="offer"
         open={sheetOpen}
         title={sheetTitle}
         amountLabel={sheetAmount}
