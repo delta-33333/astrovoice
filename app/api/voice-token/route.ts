@@ -209,6 +209,8 @@ export async function POST(request: NextRequest) {
       model: MODEL,
       voice: astrologer.voiceId,
       instructions: getVoiceSystemPrompt(astrologer, birthData, chartForVoice),
+      /* Base des relances après silence : même prompt, sans la phrase d’ouverture. */
+      followupInstructions: getVoiceSystemPrompt(astrologer, birthData, chartForVoice, { opening: false }),
       language: astrologer.languages[0] || 'fr',
       prepaidSeconds: access.prepaidSeconds,
       metered: access.metered,

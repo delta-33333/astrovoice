@@ -52,6 +52,7 @@ type VoiceGrant = {
   model: string;
   voice: string;
   instructions: string;
+  followupInstructions?: string;
   language: string;
   prepaidSeconds: number;
   metered: boolean;
@@ -554,7 +555,7 @@ export default function CallScreen({
       const attempt = live.reengageCount + 1;
       if (sendNudge(live, reengageInstructions(live.instructions, live.language, attempt))) {
         live.reengageCount = attempt;
-        reportCallEvent('call_reengage', { attempt, silentMs, elapsed: elapsedRef.current });
+        reportCallEvent('call_reengage', { attempt, silentMs: Math.round(silentMs), elapsed: elapsedRef.current });
       }
       return;
     }
@@ -696,7 +697,7 @@ export default function CallScreen({
       }
 
       live.prepaid = tokenPayload.prepaidSeconds ?? live.prepaid;
-      live.instructions = tokenPayload.instructions || '';
+      live.instructions = tokenPayload.followupInstructions || tokenPayload.instructions || '';
       live.language = tokenPayload.language || 'fr';
       live.metered = Boolean(tokenPayload.metered);
       if (tokenPayload.subscription) {

@@ -39,37 +39,38 @@ export function silenceRule(lang: string): string {
 const REENGAGE: Record<Lang, (attempt: number) => string> = {
   fr: (attempt) =>
     `## Relance (consigne pour cette réponse uniquement)
-La personne est silencieuse depuis quelques secondes (relance ${attempt} sur 2). Ne commente pas son silence et ne répète rien de ce que tu as déjà dit. Pose une seule question ouverte, courte et chaleureuse, personnalisée à partir d’un élément précis de son thème natal (planète, maison ou aspect) en lien avec le sujet de l’appel${attempt > 1 ? ', sous un angle différent de ta relance précédente' : ''}. Puis tais-toi et laisse-la répondre.`,
+La personne est silencieuse depuis quelques secondes (relance ${attempt} sur 2). Tu es en pleine consultation : ne te présente pas, ne salue pas, ne redis pas la phrase d’ouverture. Ne commente pas son silence et ne répète rien de ce que tu as déjà dit. Pose une seule question ouverte, courte et chaleureuse, personnalisée à partir d’un élément précis de son thème natal (planète, maison ou aspect) en lien avec le sujet de l’appel${attempt > 1 ? ', sous un angle différent de ta relance précédente' : ''}. Puis tais-toi et laisse-la répondre.`,
   en: (attempt) =>
     `## Re-engagement (instruction for this response only)
-The person has been silent for a few seconds (re-engagement ${attempt} of 2). Do not comment on the silence and do not repeat anything you already said. Ask one short, warm, open question, personalised from a specific element of their birth chart (planet, house or aspect) related to the topic of the call${attempt > 1 ? ', from a different angle than your previous re-engagement' : ''}. Then stop and let them answer.`,
+The person has been silent for a few seconds (re-engagement ${attempt} of 2). You are in the middle of the consultation: do not introduce yourself, do not greet, do not repeat the opening sentence. Do not comment on the silence and do not repeat anything you already said. Ask one short, warm, open question, personalised from a specific element of their birth chart (planet, house or aspect) related to the topic of the call${attempt > 1 ? ', from a different angle than your previous re-engagement' : ''}. Then stop and let them answer.`,
   es: (attempt) =>
     `## Retomar (instrucción solo para esta respuesta)
-La persona lleva unos segundos en silencio (intento ${attempt} de 2). No comentes el silencio ni repitas nada de lo ya dicho. Haz una sola pregunta abierta, breve y cálida, personalizada a partir de un elemento concreto de su carta natal (planeta, casa o aspecto) relacionado con el tema de la llamada${attempt > 1 ? ', desde un ángulo distinto al del intento anterior' : ''}. Luego calla y deja que responda.`,
+La persona lleva unos segundos en silencio (intento ${attempt} de 2). Estás en plena consulta: no te presentes, no saludes, no repitas la frase de apertura. No comentes el silencio ni repitas nada de lo ya dicho. Haz una sola pregunta abierta, breve y cálida, personalizada a partir de un elemento concreto de su carta natal (planeta, casa o aspecto) relacionado con el tema de la llamada${attempt > 1 ? ', desde un ángulo distinto al del intento anterior' : ''}. Luego calla y deja que responda.`,
   de: (attempt) =>
     `## Nachfragen (Anweisung nur für diese Antwort)
-Die Person schweigt seit einigen Sekunden (Nachfrage ${attempt} von 2). Kommentiere das Schweigen nicht und wiederhole nichts, was du schon gesagt hast. Stelle eine einzige kurze, warme, offene Frage, persönlich zugeschnitten auf ein bestimmtes Element ihres Geburtshoroskops (Planet, Haus oder Aspekt) im Zusammenhang mit dem Thema des Gesprächs${attempt > 1 ? ', aus einem anderen Blickwinkel als bei der vorigen Nachfrage' : ''}. Dann schweig und lass sie antworten.`,
+Die Person schweigt seit einigen Sekunden (Nachfrage ${attempt} von 2). Ihr seid mitten in der Beratung: Stell dich nicht vor, begrüße nicht, wiederhole nicht den Eröffnungssatz. Kommentiere das Schweigen nicht und wiederhole nichts, was du schon gesagt hast. Stelle eine einzige kurze, warme, offene Frage, persönlich zugeschnitten auf ein bestimmtes Element ihres Geburtshoroskops (Planet, Haus oder Aspekt) im Zusammenhang mit dem Thema des Gesprächs${attempt > 1 ? ', aus einem anderen Blickwinkel als bei der vorigen Nachfrage' : ''}. Dann schweig und lass sie antworten.`,
   it: (attempt) =>
     `## Ripresa (istruzione solo per questa risposta)
-La persona è in silenzio da qualche secondo (ripresa ${attempt} di 2). Non commentare il silenzio e non ripetere nulla di ciò che hai già detto. Fai una sola domanda aperta, breve e calorosa, personalizzata a partire da un elemento preciso del suo tema natale (pianeta, casa o aspetto) legato all’argomento della chiamata${attempt > 1 ? ', da un’angolazione diversa rispetto alla ripresa precedente' : ''}. Poi taci e lasciala rispondere.`,
+La persona è in silenzio da qualche secondo (ripresa ${attempt} di 2). Sei nel pieno della consulenza: non presentarti, non salutare, non ripetere la frase di apertura. Non commentare il silenzio e non ripetere nulla di ciò che hai già detto. Fai una sola domanda aperta, breve e calorosa, personalizzata a partire da un elemento preciso del suo tema natale (pianeta, casa o aspetto) legato all’argomento della chiamata${attempt > 1 ? ', da un’angolazione diversa rispetto alla ripresa precedente' : ''}. Poi taci e lasciala rispondere.`,
 };
 
 const GOODBYE: Record<Lang, string> = {
   fr: `## Fin de l’appel (consigne pour cette réponse uniquement)
-La personne ne répond plus depuis longtemps. Dis-lui au revoir en une ou deux phrases courtes et chaleureuses : indique que tu mets fin à l’appel faute de réponse et qu’elle peut rappeler quand elle le souhaite. Ne pose aucune question.`,
+La personne ne répond plus depuis longtemps. Ne redis pas la phrase d’ouverture. Dis-lui au revoir en une ou deux phrases courtes et chaleureuses : indique que tu mets fin à l’appel faute de réponse et qu’elle peut rappeler quand elle le souhaite. Ne pose aucune question.`,
   en: `## End of call (instruction for this response only)
-The person has not answered for a long time. Say goodbye in one or two short, warm sentences: say you are ending the call since there is no answer and that they can call back whenever they like. Ask no question.`,
+The person has not answered for a long time. Do not repeat the opening sentence. Say goodbye in one or two short, warm sentences: say you are ending the call since there is no answer and that they can call back whenever they like. Ask no question.`,
   es: `## Fin de la llamada (instrucción solo para esta respuesta)
-La persona no responde desde hace rato. Despídete en una o dos frases cortas y cálidas: di que terminas la llamada por falta de respuesta y que puede volver a llamar cuando quiera. No hagas ninguna pregunta.`,
+La persona no responde desde hace rato. No repitas la frase de apertura. Despídete en una o dos frases cortas y cálidas: di que terminas la llamada por falta de respuesta y que puede volver a llamar cuando quiera. No hagas ninguna pregunta.`,
   de: `## Gesprächsende (Anweisung nur für diese Antwort)
-Die Person antwortet schon lange nicht mehr. Verabschiede dich in ein oder zwei kurzen, warmen Sätzen: Sag, dass du das Gespräch mangels Antwort beendest und dass sie jederzeit wieder anrufen kann. Stelle keine Frage.`,
+Die Person antwortet schon lange nicht mehr. Wiederhole nicht den Eröffnungssatz. Verabschiede dich in ein oder zwei kurzen, warmen Sätzen: Sag, dass du das Gespräch mangels Antwort beendest und dass sie jederzeit wieder anrufen kann. Stelle keine Frage.`,
   it: `## Fine della chiamata (istruzione solo per questa risposta)
-La persona non risponde da molto tempo. Salutala in una o due frasi brevi e calorose: di’ che chiudi la chiamata per mancanza di risposta e che può richiamare quando vuole. Non fare domande.`,
+La persona non risponde da molto tempo. Non ripetere la frase di apertura. Salutala in una o due frasi brevi e calorose: di’ che chiudi la chiamata per mancanza di risposta e che può richiamare quando vuole. Non fare domande.`,
 };
 
 /**
  * Consigne d’une réponse de relance. `response.create.instructions` remplace les instructions
- * de session pour cette réponse : on renvoie donc le prompt complet (persona + thème) suivi de la consigne.
+ * de session pour cette réponse : `base` est donc le prompt complet (persona + thème), sans la phrase
+ * d’ouverture (`followupInstructions` du jeton vocal), suivi de la consigne.
  */
 export function reengageInstructions(base: string, lang: string, attempt: number): string {
   return `${base}\n\n${pick(REENGAGE, lang)(attempt)}`;
