@@ -59,7 +59,8 @@ export function getVoiceSystemPrompt(
     gender?: 'femme' | 'homme' | null;
   },
   birthData: BirthData,
-  natalChart: NatalChart
+  natalChart: NatalChart,
+  options: { opening?: boolean } = {}
 ): string {
   const lang = advisor.languages[0] || 'fr';
   const block = CLIENT_BLOCK[lang] ?? CLIENT_BLOCK.fr;
@@ -84,9 +85,18 @@ export function getVoiceSystemPrompt(
     it: `Apertura obbligatoria. La tua primissima frase, prima di qualsiasi saluto, è esattamente: « ${spoken} » Solo dopo prosegui.`,
   };
 
+  const underway: Record<string, string> = {
+    fr: 'Consultation déjà en cours. Tu t’es déjà présenté·e et la phrase d’ouverture a déjà été dite : ne la répète pas, ne salue pas à nouveau et ne réexplique pas ta façon de lire un thème.',
+    en: 'The consultation is already under way. You have already introduced yourself and said the opening sentence: do not repeat it, do not greet again and do not re-explain how you read a chart.',
+    es: 'La consulta ya está en curso. Ya te presentaste y ya dijiste la frase de apertura: no la repitas, no vuelvas a saludar y no vuelvas a explicar cómo lees una carta.',
+    de: 'Die Beratung läuft bereits. Du hast dich schon vorgestellt und den Eröffnungssatz gesagt: Wiederhole ihn nicht, begrüße nicht erneut und erkläre nicht noch einmal, wie du ein Horoskop liest.',
+    it: 'La consulenza è già in corso. Ti sei già presentata/o e hai già detto la frase di apertura: non ripeterla, non salutare di nuovo e non rispiegare come leggi un tema.',
+  };
+  const head = options.opening === false ? underway[lang] ?? underway.fr : opening[lang] ?? opening.fr;
+
   const chartText = natalChart.voiceSummary?.trim() || trimNatalChart(natalChart);
 
-  return `${opening[lang] ?? opening.fr}
+  return `${head}
 
 ${advisor.personaPrompt}
 
