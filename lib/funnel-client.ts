@@ -29,16 +29,20 @@ const SERVER_NAME: Partial<Record<FunnelEvent, string>> = {
 
 type Props = Record<string, string | number | boolean | null>;
 
+// document.referrer ne change pas lors des navigations internes : on ne l'envoie qu'une fois par chargement.
+let referrerSent = false;
+
 export function postEvent(name: string, extra: { advisorId?: string | null; metadata?: Record<string, string> } = {}) {
   try {
     const body = JSON.stringify({
       name,
       path: window.location.pathname,
       search: window.location.search,
-      referrer: document.referrer || null,
+      referrer: referrerSent ? null : document.referrer || null,
       advisorId: extra.advisorId ?? null,
       metadata: extra.metadata ?? {},
     });
+    referrerSent = true;
     if (navigator.sendBeacon) {
       const sent = navigator.sendBeacon('/api/events', new Blob([body], { type: 'application/json' }));
       if (sent) return;
