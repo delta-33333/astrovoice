@@ -3,7 +3,7 @@ import AiDisclosure from '@/components/AiDisclosure';
 import JsonLd from '@/components/JsonLd';
 import { GeoFooter, GeoHeader, Updated } from '@/components/GeoShell';
 import { GEO_PATHS, GEO_UPDATED_ISO, callastralFacts, type GeoLocale } from '@/lib/geo-pages';
-import { AI_ACT_LINE, AI_ACT_SPOKEN } from '@/lib/legal';
+import { AI_ACT_SPOKEN, AI_VOICE_SHORT } from '@/lib/legal';
 import { appBaseUrl } from '@/lib/stripe';
 
 const OPERATOR = 'Julien Descostes';
@@ -67,7 +67,7 @@ export default function GeoAboutPage({ locale }: { locale: GeoLocale }) {
           title: 'Comment fonctionnent les conseillers virtuels',
           body: [
             'Les conseillers sont des personas virtuelles créées par Callastral : un prénom, un style de lecture et des domaines de prédilection. Ils n’ont ni âge réel, ni années de pratique, ni parcours humain.',
-            `Avant l’appel, chaque fiche affiche : « ${AI_ACT_LINE.fr} ». Au début de l’appel, le conseiller le dit : « ${AI_ACT_SPOKEN.fr} »`,
+            `Avant le paiement, la page de réservation indique « ${AI_VOICE_SHORT.fr} ». Au début de l’appel, le conseiller le dit : « ${AI_ACT_SPOKEN.fr} » Les conditions générales d’utilisation détaillent ce fonctionnement.`,
             'Votre thème natal est calculé à partir de la date, de l’heure et du lieu de naissance avec Swiss Ephemeris (positions des planètes et des maisons). Le conseiller s’appuie sur ce calcul et sur les transits du moment pour répondre à votre question.',
           ],
         },
@@ -123,7 +123,7 @@ export default function GeoAboutPage({ locale }: { locale: GeoLocale }) {
           title: 'How the virtual advisors work',
           body: [
             'The advisors are virtual personas created by Callastral: a first name, a reading style and preferred topics. They have no real age, no years of practice and no human career.',
-            `Before the call, each profile shows: “${AI_ACT_LINE.en}”. At the start of the call, the advisor says: “${AI_ACT_SPOKEN.en}”`,
+            `Before payment, the booking page states “${AI_VOICE_SHORT.en}”. At the start of the call, the advisor says: “${AI_ACT_SPOKEN.en}” The terms of use (in French) describe how this works.`,
             'Your birth chart is computed from your date, time and place of birth with Swiss Ephemeris (planet and house positions). The advisor uses this calculation and current transits to answer your question.',
           ],
         },

@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import AdvisorAvatar from '@/components/AdvisorAvatar';
-import AiDisclosure from '@/components/AiDisclosure';
+import AdvisorLabel from '@/components/AdvisorLabel';
 import TrustNotes from '@/components/TrustNotes';
 import { BADGE_LABELS, languageLabel, styleLabel } from '@/lib/advisor-badges';
 import { localizedBio } from '@/lib/advisor-bio';
@@ -224,7 +224,7 @@ export default function AdvisorDirectory({
                       {advisor.name}
                     </Link>
                   </h3>
-                  <AiDisclosure gender={advisor.gender} className="mt-1" />
+                  <AdvisorLabel gender={advisor.gender} className="mt-1" />
                   <p className="text-sm text-white/55 mt-1">
                     Style : {styleLabel(advisor.readingStyle)} · {advisor.languages.map(languageLabel).join(' · ')}
                   </p>

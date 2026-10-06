@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import PaymentSheet from '@/components/PaymentSheet';
+import { AI_VOICE_SHORT } from '@/lib/legal';
 import TrustNotes from '@/components/TrustNotes';
 import Logo from '@/components/Logo';
 import MarketSwitch from '@/components/MarketSwitch';
@@ -339,6 +340,7 @@ export default function BookPage() {
               ? 'Rejoindre · inclus'
               : `Continuer · ${durationLabels[duration] || ''}`}
         </button>
+        <p className="mt-2 hidden sm:block text-center text-xs text-white/45">{AI_VOICE_SHORT.fr}</p>
       </div>
 
       <div className="sm:hidden fixed bottom-0 inset-x-0 z-40 border-t border-white/10 bg-[#0c1018]/95 px-4 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
@@ -349,6 +351,7 @@ export default function BookPage() {
               ? 'Rejoindre · inclus'
               : `Continuer · ${durationLabels[duration] || ''}`}
         </button>
+        <p className="mt-1.5 text-center text-[11px] text-white/45">{AI_VOICE_SHORT.fr}</p>
       </div>
 
       <PaymentSheet
@@ -357,6 +360,7 @@ export default function BookPage() {
         amountLabel={amountLabel}
         detail="Le créneau est confirmé dès que le paiement est accepté."
         payLabel={`Payer ${amountLabel}`}
+        note={AI_VOICE_SHORT.fr}
         clientSecret={clientSecret}
         collectContact={collectContact}
         onClose={() => setSheetOpen(false)}

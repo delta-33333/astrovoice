@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import AiDisclosure from '@/components/AiDisclosure';
+import AdvisorLabel from '@/components/AdvisorLabel';
+import { advisorLabel, AI_MODEL_SUMMARY } from '@/lib/legal';
 import JsonLd from '@/components/JsonLd';
 import SeoChrome from '@/components/SeoChrome';
 import { localizedBio } from '@/lib/advisor-bio';
@@ -53,7 +54,7 @@ export async function generateMetadata(
   const quote = quoteAdvisor(advisor.pricePerMinCents, currency, readRates(), undefined, locale);
   const topic = specialtyLabel(locale, advisor.specialties[0] || 'amour');
   const title = `${advisor.name} — ${topic} — ${phonePhrase(locale)} dès ${quote.introLabel}`;
-  const description = `${advisor.name} : ${phonePhrase(locale)} sur ${advisor.specialties.map((item) => specialtyLabel(locale, item)).join(', ')}. ${styleLabel(locale, advisor.readingStyle)}. Dès ${quote.introLabel}.`.slice(0, 160);
+  const description = `${advisor.name}, ${advisorLabel(locale, advisor.gender)} : ${phonePhrase(locale)} sur ${advisor.specialties.map((item) => specialtyLabel(locale, item)).join(', ')}. ${styleLabel(locale, advisor.readingStyle)}. Dès ${quote.introLabel}.`.slice(0, 160);
   const path = advisorPath(locale, advisor.slug);
   const indexable = indexableAdvisorLocales(advisor.languages);
   const listed = indexable.includes(locale);
@@ -147,7 +148,7 @@ export default async function AdvisorSeoPage(
           <span>{advisor.name}</span>
         </nav>
         <h1 className="font-[family-name:var(--font-cinzel)] text-3xl sm:text-5xl">{advisor.name}</h1>
-        <AiDisclosure locale={locale} gender={advisor.gender} className="mt-3" />
+        <AdvisorLabel locale={locale} gender={advisor.gender} className="mt-3" />
         <p className="mt-4 text-lg text-white/85 leading-relaxed">{intro[locale]}</p>
         <p className="mt-3 text-celestial-gold">{quote.introLabel} · {quote.perMinLabel}</p>
         <Link href={bookHref} className="btn-primary inline-block mt-6">{cta[locale]}</Link>
@@ -226,6 +227,7 @@ export default async function AdvisorSeoPage(
               url: pageUrl,
               provider: { '@id': orgId },
               serviceType: phonePhrase(locale),
+              description: `${advisorLabel(locale, advisor.gender)}. ${AI_MODEL_SUMMARY[locale]}.`,
               offers: {
                 '@type': 'Offer',
                 url: pageUrl,

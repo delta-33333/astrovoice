@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import AiTermsSection from '@/components/AiTermsSection';
 import { VIRTUAL_ADVISOR_DISCLOSURE } from '@/lib/legal';
 
 export const metadata: Metadata = {
@@ -24,8 +25,13 @@ export default function TermsPage() {
             Callastral propose des consultations astrologiques vocales à distance, fondées sur le thème
             natal établi à partir des données de naissance communiquées par la personne.
           </p>
-          <p className="text-sm text-white/55">{VIRTUAL_ADVISOR_DISCLOSURE}</p>
+          <p className="text-sm text-white/55">
+            {VIRTUAL_ADVISOR_DISCLOSURE}{' '}
+            <Link href="/cgu" className="text-celestial-gold hover:underline">Voir les CGU</Link>.
+          </p>
         </section>
+
+        <AiTermsSection />
 
         <section className="space-y-3">
           <h2 className="text-white text-lg font-semibold">Tarifs</h2>
@@ -73,7 +79,8 @@ export default function TermsPage() {
           </p>
         </section>
 
-        <p className="text-sm">
+        <p className="text-sm space-x-4">
+          <Link href="/cgu" className="text-celestial-gold hover:underline">CGU</Link>
           <Link href="/faq" className="text-celestial-gold hover:underline">
             Questions fréquentes
           </Link>

@@ -1,17 +1,14 @@
-import { aiActLine } from '@/lib/legal';
+import { AI_VOICE_SHORT } from '@/lib/legal';
 import type { Locale } from '@/lib/seo';
 
-/** Mention courte exigée avant l’interaction. Réservée à ces lignes. */
+/** Mention discrète « Voix générée par IA » (sous le bouton de réservation, avant l'appel). */
 export default function AiDisclosure({
   locale = 'fr',
-  gender,
   className = '',
 }: {
   locale?: Locale;
   gender?: 'femme' | 'homme' | null;
   className?: string;
 }) {
-  return (
-    <p className={`text-xs leading-snug text-white/55 ${className}`}>{aiActLine(locale, gender)}</p>
-  );
+  return <p className={`text-xs leading-snug text-white/45 ${className}`}>{AI_VOICE_SHORT[locale]}</p>;
 }

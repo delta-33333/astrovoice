@@ -21,6 +21,14 @@ import {
   int16ToBase64,
   pcm16Base64ToFloat32,
 } from '@/lib/voice-audio';
+import {
+  SILENCE_GOODBYE_GRACE_MS,
+  SILENCE_HANGUP_MS,
+  SILENCE_MAX_REENGAGE,
+  SILENCE_REENGAGE_MS,
+  goodbyeInstructions,
+  reengageInstructions,
+} from '@/lib/voice-silence';
 
 /*
  * Écran d’appel façon messagerie autour du client vocal temps réel :
@@ -74,6 +82,18 @@ type LiveCall = {
   pcmSamples: number;
   assistantId: string;
   levelAt: number;
+  /* Relance en cas de silence */
+  instructions: string;
+  language: string;
+  responding: boolean;
+  respondingAt: number;
+  userSpeaking: boolean;
+  /** Début du silence (ms epoch, éventuellement dans le futur tant que l’audio joue) ; 0 = non armé. */
+  quietSince: number;
+  reengageCount: number;
+  lastNudgeAt: number;
+  goodbye: 'none' | 'pending' | 'done';
+  goodbyeTimer: number;
 };
 
 const PCM_FLUSH_SAMPLES = 2400;
@@ -135,6 +155,16 @@ function emptyLive(): LiveCall {
     pcmSamples: 0,
     assistantId: '',
     levelAt: 0,
+    instructions: '',
+    language: 'fr',
+    responding: false,
+    respondingAt: 0,
+    userSpeaking: false,
+    quietSince: 0,
+    reengageCount: 0,
+    lastNudgeAt: 0,
+    goodbye: 'none',
+    goodbyeTimer: 0,
   };
 }
 
@@ -287,6 +317,10 @@ export default function CallScreen({
       window.clearTimeout(live.greetTimer);
       live.greetTimer = 0;
     }
+    if (live.goodbyeTimer) {
+      window.clearTimeout(live.goodbyeTimer);
+      live.goodbyeTimer = 0;
+    }
     live.player?.stop();
     live.worklet?.port.close();
     live.worklet?.disconnect();
@@ -426,6 +460,7 @@ export default function CallScreen({
       const seconds = Math.max(0, Math.floor((Date.now() - current.startMs) / 1000));
       elapsedRef.current = seconds;
       setElapsed(seconds);
+      checkSilence(current);
       if (current.cap) {
         if (seconds >= current.cap) void finishRef.current();
         return;
@@ -455,6 +490,79 @@ export default function CallScreen({
         void finishRef.current();
       }
     }, 1000);
+  };
+
+  const reportCallEvent = (name: 'call_reengage' | 'call_silence_end', metadata: Record<string, string | number>) => {
+    void fetch('/api/events', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, bookingId: booking?.id ?? null, advisorId: advisor.id, metadata }),
+      keepalive: true,
+    }).catch(() => undefined);
+  };
+
+  /** Toute parole (ou message écrit) de la personne remet la relance à zéro. */
+  const noteUserActivity = (live: LiveCall) => {
+    live.reengageCount = 0;
+    if (live.goodbye !== 'none') {
+      live.goodbye = 'none';
+      if (live.goodbyeTimer) {
+        window.clearTimeout(live.goodbyeTimer);
+        live.goodbyeTimer = 0;
+      }
+    }
+  };
+
+  /** Fin de la réponse du conseiller : le silence commence quand l’audio reçu a fini de jouer. */
+  const armSilence = (live: LiveCall) => {
+    live.responding = false;
+    live.quietSince = Date.now() + (live.player?.pendingMs() ?? 0);
+  };
+
+  const sendNudge = (live: LiveCall, instructions: string) => {
+    const ws = live.ws;
+    if (!ws || ws.readyState !== WebSocket.OPEN) return false;
+    live.responding = true;
+    live.respondingAt = Date.now();
+    live.lastNudgeAt = Date.now();
+    live.quietSince = 0;
+    ws.send(JSON.stringify({ type: 'response.create', response: { instructions } }));
+    return true;
+  };
+
+  const endAfterGoodbye = (live: LiveCall, delayMs: number) => {
+    if (live.goodbyeTimer) window.clearTimeout(live.goodbyeTimer);
+    live.goodbyeTimer = window.setTimeout(() => {
+      if (liveRef.current !== live || live.stopped || live.goodbye === 'none') return;
+      reportCallEvent('call_silence_end', { elapsed: elapsedRef.current });
+      void finishRef.current('Appel terminé automatiquement après un long silence. Le décompte s’est arrêté.');
+    }, Math.max(0, delayMs));
+  };
+
+  const checkSilence = (live: LiveCall) => {
+    if (live.stopped || !live.billingStarted || !live.greeted || live.goodbye !== 'none') return;
+    const now = Date.now();
+    if (live.responding) {
+      // Filet de sécurité si la fin de réponse n’est jamais signalée.
+      if (now - live.respondingAt > 45_000) armSilence(live);
+      return;
+    }
+    if (live.userSpeaking || !live.quietSince) return;
+    const silentMs = now - live.quietSince;
+    if (live.reengageCount < SILENCE_MAX_REENGAGE) {
+      if (silentMs < SILENCE_REENGAGE_MS) return;
+      const attempt = live.reengageCount + 1;
+      if (sendNudge(live, reengageInstructions(live.instructions, live.language, attempt))) {
+        live.reengageCount = attempt;
+        reportCallEvent('call_reengage', { attempt, silentMs, elapsed: elapsedRef.current });
+      }
+      return;
+    }
+    if (silentMs < SILENCE_HANGUP_MS) return;
+    if (sendNudge(live, goodbyeInstructions(live.instructions, live.language))) {
+      live.goodbye = 'pending';
+      endAfterGoodbye(live, SILENCE_GOODBYE_GRACE_MS);
+    }
   };
 
   const playPcm = (samples: Float32Array) => {
@@ -588,6 +696,8 @@ export default function CallScreen({
       }
 
       live.prepaid = tokenPayload.prepaidSeconds ?? live.prepaid;
+      live.instructions = tokenPayload.instructions || '';
+      live.language = tokenPayload.language || 'fr';
       live.metered = Boolean(tokenPayload.metered);
       if (tokenPayload.subscription) {
         sessionStorage.setItem('callSubscription', '1');
@@ -687,6 +797,7 @@ export default function CallScreen({
         transcript?: string;
         item_id?: string;
         response_id?: string;
+        error?: { code?: string; message?: string; type?: string };
       };
       try {
         message = JSON.parse(String(event.data));
@@ -701,6 +812,28 @@ export default function CallScreen({
       }
       if (type === 'input_audio_buffer.speech_started' || type.endsWith('speech_started')) {
         live.player?.stop();
+        live.userSpeaking = true;
+        live.quietSince = 0;
+        noteUserActivity(live);
+        return;
+      }
+      if (type === 'input_audio_buffer.speech_stopped' || type.endsWith('speech_stopped')) {
+        live.userSpeaking = false;
+        if (!live.responding) live.quietSince = Date.now();
+        return;
+      }
+      if (type === 'response.created') {
+        live.responding = true;
+        live.respondingAt = Date.now();
+        live.quietSince = 0;
+        return;
+      }
+      if (type === 'response.done') {
+        armSilence(live);
+        if (live.goodbye === 'pending') {
+          live.goodbye = 'done';
+          endAfterGoodbye(live, (live.player?.pendingMs() ?? 0) + 800);
+        }
         return;
       }
       if (type === 'response.output_audio.delta' || type === 'response.audio.delta') {
@@ -727,10 +860,20 @@ export default function CallScreen({
         return;
       }
       if (type === 'conversation.item.input_audio_transcription.completed') {
-        if (message.transcript) upsert(`user-${message.item_id || Date.now()}`, 'user', message.transcript, true);
+        if (message.transcript) {
+          upsert(`user-${message.item_id || Date.now()}`, 'user', message.transcript, true);
+          if (message.transcript.trim()) noteUserActivity(live);
+        }
         return;
       }
       if (type === 'error') {
+        if (Date.now() - live.lastNudgeAt < 5000) {
+          // Relance refusée (réponse déjà en cours, par exemple) : l’appel continue.
+          console.warn('Relance ignorée:', message.error?.code || message.error?.type || 'erreur');
+          if (live.goodbye === 'pending') live.goodbye = 'none';
+          armSilence(live);
+          return;
+        }
         console.error('Liaison vocale interrompue');
         if (live.billingStarted) {
           void finishRef.current('La liaison vocale a été interrompue. Le temps déjà écoulé est comptabilisé.');
@@ -782,6 +925,7 @@ export default function CallScreen({
       return;
     }
     setDraft('');
+    noteUserActivity(live);
     upsert(`user-${Date.now()}`, 'user', text, true);
     ws.send(
       JSON.stringify({

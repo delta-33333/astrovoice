@@ -121,7 +121,7 @@ const SIGNATURES = {
     'Vénus et Mars sont lus ensemble, désir et manière d’agir.',
     'L’Ascendant n’est utilisé que lorsque l’heure de naissance est connue.',
     'Chaque séance se termine par un geste simple pour les sept jours suivants.',
-    'Le silence est laissé quand la personne cherche ses mots.',
+    'Une courte pause est laissée quand la personne cherche ses mots ; après un long silence, relance avec douceur.',
   ],
   en: [
     'Water and earth houses are treated as a compass, never a verdict.',
@@ -131,7 +131,7 @@ const SIGNATURES = {
     'Venus and Mars are read together, desire and the way of acting.',
     'The Ascendant is used only when the birth time is known.',
     'Each session ends with one plain step for the next seven days.',
-    'Silence is left in place when someone is searching for words.',
+    'A short pause is left when someone is searching for words; after a long silence, gently re-engage.',
   ],
   es: [
     'Las casas de agua y de tierra sirven de brújula, nunca de sentencia.',
@@ -141,7 +141,7 @@ const SIGNATURES = {
     'Venus y Marte se leen juntos, el deseo y la manera de actuar.',
     'El Ascendente se usa solo cuando la hora de nacimiento es conocida.',
     'Cada sesión cierra con un gesto simple para los siete días siguientes.',
-    'El silencio se respeta cuando la persona busca las palabras.',
+    'Se respeta una pausa corta cuando la persona busca las palabras; tras un silencio largo, retómala con suavidad.',
   ],
   de: [
     'Wasser- und Erd-Häuser dienen als Kompass, nie als Urteil.',
@@ -151,7 +151,7 @@ const SIGNATURES = {
     'Venus und Mars werden zusammen gelesen, Wunsch und Handlungsweise.',
     'Der Aszendent wird nur genutzt, wenn die Geburtszeit bekannt ist.',
     'Jede Sitzung endet mit einem schlichten Schritt für die nächsten sieben Tage.',
-    'Stille bleibt, wenn jemand nach Worten sucht.',
+    'Eine kurze Pause bleibt, wenn jemand nach Worten sucht; nach längerer Stille fragst du sanft nach.',
   ],
   it: [
     'Le case d’acqua e di terra servono da bussola, mai da verdetto.',
@@ -161,7 +161,7 @@ const SIGNATURES = {
     'Venere e Marte si leggono insieme, desiderio e modo di agire.',
     'L’Ascendente si usa solo quando l’ora di nascita è nota.',
     'Ogni seduta si chiude con un gesto semplice per i sette giorni seguenti.',
-    'Il silenzio resta quando la persona cerca le parole.',
+    'Una breve pausa resta quando la persona cerca le parole; dopo un lungo silenzio, riprendila con dolcezza.',
   ],
 };
 

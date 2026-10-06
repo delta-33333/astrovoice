@@ -11,7 +11,7 @@ import {
   priceRows,
   type GeoLocale,
 } from '@/lib/geo-pages';
-import { aiActLine } from '@/lib/legal';
+import { AI_MODEL_SUMMARY } from '@/lib/legal';
 import { appBaseUrl } from '@/lib/stripe';
 
 export function pricesCopy(locale: GeoLocale) {
@@ -22,7 +22,7 @@ export function pricesCopy(locale: GeoLocale) {
       description: `En 2026, une consultation par téléphone coûte de 0,80 €/min (audiotel) à 9,50 €/min (voyant premium par carte) ; chez Callastral, ${c.min} à ${c.max}/min. Prix relevés et sourcés.`,
       answer: `En 2026, une consultation par téléphone coûte de 0,80 €/min (audiotel, plus le prix de l’appel) à 9,50 €/min (voyant premium payé par carte) ; chez Callastral, de ${c.min} à ${c.max}/min, avec des conseillers virtuels.`,
       notVoyance: 'Callastral fait de l’astrologie à partir du thème natal, pas de la voyance : si vous cherchez un voyant humain, les services listés ci-dessous sont plus adaptés.',
-      ourModel: `${aiActLine('fr')} ; 24 h/24 ; 5 langues ; thème natal calculé`,
+      ourModel: `${AI_MODEL_SUMMARY.fr} ; 24 h/24 ; 5 langues ; thème natal calculé`,
       tableCaption: 'Prix publics relevés le 3 octobre 2026 sur les grilles officielles',
       cols: ['Service', 'Modèle', 'Prix public relevé', 'Source'],
       methodTitle: 'Méthode',
@@ -60,7 +60,7 @@ export function pricesCopy(locale: GeoLocale) {
     description: `In 2026, a phone reading in France costs from €0.80/min (audiotel) to €9.50/min (premium psychic by card); at Callastral, ${c.min} to ${c.max}/min. Sourced, dated prices.`,
     answer: `In 2026, a phone psychic or astrology reading in France costs from €0.80/min (audiotel premium-rate line, plus the price of the call) to €9.50/min (premium psychic paid by card); at Callastral, ${c.min} to ${c.max}/min, with virtual advisors.`,
     notVoyance: 'Callastral offers astrology based on your birth chart, not psychic readings: if you want a human psychic, the services listed below are a better fit.',
-    ourModel: `${aiActLine('en')}; 24/7; 5 languages; computed birth chart`,
+    ourModel: `${AI_MODEL_SUMMARY.en}; 24/7; 5 languages; computed birth chart`,
     tableCaption: 'Public prices collected on 3 October 2026 from official price pages',
     cols: ['Service', 'Model', 'Public price collected', 'Source'],
     methodTitle: 'Method',
