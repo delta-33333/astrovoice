@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
+import { funnel } from '@/lib/funnel-client';
 
 export default function ReturnClient() {
   const router = useRouter();
@@ -38,6 +39,7 @@ export default function ReturnClient() {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ checkoutSessionId: sessionId }),
         });
+        funnel('payment_success', { kind: 'pack', redirect: true });
         router.replace('/home?pack_success=1');
         return;
       }
@@ -54,6 +56,8 @@ export default function ReturnClient() {
           setMessage(payload.error || 'La réservation n’a pas été confirmée.');
           return;
         }
+        funnel('payment_success', { kind: 'booking', redirect: true });
+        if (payload.rebook) funnel('rebook', { kind: 'booking' });
         router.replace(payload.immediate ? `/call/${payload.bookingId}` : `/bookings/${payload.bookingId}`);
         return;
       }
@@ -70,6 +74,7 @@ export default function ReturnClient() {
           setMessage(payload.error || 'Le résumé n’a pas été confirmé.');
           return;
         }
+        funnel('payment_success', { kind: 'summary', redirect: true });
         router.replace(`/resume/${data.bookingId}?paid=1`);
         return;
       }

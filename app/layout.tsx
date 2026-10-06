@@ -1,6 +1,9 @@
 import type { Metadata, Viewport } from "next";
 import { headers } from "next/headers";
 import { Inter, Cinzel } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import FunnelTracker from "@/components/FunnelTracker";
 import JsonLd from "@/components/JsonLd";
 import { isLocale, organizationGraph } from "@/lib/seo";
 import { appBaseUrl } from "@/lib/stripe";
@@ -69,6 +72,9 @@ export default async function RootLayout({
           </div>
           <JsonLd data={{ '@context': 'https://schema.org', '@graph': organizationGraph(origin) }} />
         </div>
+        <FunnelTracker />
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );

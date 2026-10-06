@@ -3,7 +3,6 @@ import Link from "next/link";
 import AdvisorDirectory from "@/components/AdvisorDirectory";
 import InstallPrompt from "@/components/InstallPrompt";
 import SiteHeader from "@/components/SiteHeader";
-import { trackEvent } from "@/lib/events";
 import { VIRTUAL_ADVISOR_DISCLOSURE } from "@/lib/legal";
 import { resolveMarket } from "@/lib/market";
 import { convertEurCents, formatMoney, perMinuteRange } from "@/lib/money";
@@ -25,7 +24,6 @@ export default async function LandingPage({
   searchParams: Promise<{ dispo?: string; recall?: string }>;
 }) {
   const params = await searchParams;
-  await trackEvent({ name: 'view_home' });
   const market = await resolveMarket();
   let advisors: Awaited<ReturnType<typeof listDirectoryAdvisors>>['advisors'] = [];
   let unavailable = false;

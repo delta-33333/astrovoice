@@ -1,9 +1,10 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import type { BirthData } from '@/lib/types';
 import BirthSummary from '@/components/BirthSummary';
+import { funnel } from '@/lib/funnel-client';
 
 export default function BirthDataPage() {
   const router = useRouter();
@@ -61,6 +62,12 @@ export default function BirthDataPage() {
     };
   }, [router]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const birthStarted = useRef(false);
+  const markBirthStart = () => {
+    if (birthStarted.current) return;
+    birthStarted.current = true;
+    funnel('birth_start', { from: 'birth' }, { log: true, metadata: { source: 'birth' } });
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -109,6 +116,7 @@ export default function BirthDataPage() {
         latitude: typeof payload?.latitude === 'number' ? payload.latitude : undefined,
         longitude: typeof payload?.longitude === 'number' ? payload.longitude : undefined,
       };
+      funnel('birth_submit', { from: 'birth' });
       sessionStorage.setItem('birthData', JSON.stringify(stored));
       if (payload?.chart) {
         sessionStorage.setItem('natalChart', JSON.stringify(payload.chart));
@@ -167,7 +175,7 @@ export default function BirthDataPage() {
         </div>
 
         {/* Form */}
-        <form onSubmit={handleSubmit} className="space-y-6 bg-white/5 backdrop-blur-sm p-8 rounded-3xl border border-white/10">
+        <form onSubmit={handleSubmit} onFocusCapture={markBirthStart} className="space-y-6 bg-white/5 backdrop-blur-sm p-8 rounded-3xl border border-white/10">
           {/* Name */}
           <div>
             <label htmlFor="name" className="block text-sm font-medium mb-2">

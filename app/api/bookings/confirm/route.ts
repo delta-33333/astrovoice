@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { confirmBookingPayment, getBooking, isImmediateStart } from '@/lib/bookings';
+import { confirmBookingPayment, getBooking, isImmediateStart, isRepeatBooking } from '@/lib/bookings';
 import { getSession } from '@/lib/session';
 import { getStripe } from '@/lib/stripe';
 
@@ -40,5 +40,6 @@ export async function POST(request: NextRequest) {
     result,
     bookingId,
     immediate: booking ? isImmediateStart(booking.starts_at) : false,
+    rebook: booking ? await isRepeatBooking(booking) : false,
   });
 }

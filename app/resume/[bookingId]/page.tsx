@@ -92,6 +92,7 @@ function ResumeClient() {
         <Link href="/home" className="block text-sm text-white/45">Retour à l’accueil</Link>
       </div>
       <PaymentSheet
+        funnelKind="summary"
         open={open}
         title="Résumé écrit"
         amountLabel={summaryLabel}

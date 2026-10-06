@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 import AdvisorAvatar from '@/components/AdvisorAvatar';
 import AiDisclosure from '@/components/AiDisclosure';
 import PaymentSheet from '@/components/PaymentSheet';
+import { funnel } from '@/lib/funnel-client';
 import { formatMoney, meterMinor, normalizeCurrency, type Currency } from '@/lib/money';
 import {
   CALL_HOLD_CENTS,
@@ -361,6 +362,7 @@ export default function CallScreen({
     }
 
     setCallPhase('ending');
+    funnel('call_completed', { seconds });
     elapsedRef.current = seconds;
     await flush(true);
     onFinishedRef.current(seconds, live.prepaid, note);
@@ -452,6 +454,7 @@ export default function CallScreen({
     if (live.billingStarted || live.stopped || !live.socketOpen || !live.heardAudio) return;
     live.billingStarted = true;
     live.startMs = Date.now();
+    funnel('call_start', { metered: Boolean(live.metered) });
     elapsedRef.current = 0;
     setElapsed(0);
     setCallPhase('live');
@@ -1168,6 +1171,7 @@ export default function CallScreen({
       )}
 
       <PaymentSheet
+        funnelKind="summary"
         open={payOpen}
         title="Résumé écrit"
         amountLabel={summaryLabel || formatCurrency(SUMMARY_CENTS)}

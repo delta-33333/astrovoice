@@ -4,6 +4,7 @@ import { useMemo, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import AdvisorAvatar from '@/components/AdvisorAvatar';
+import { funnel } from '@/lib/funnel-client';
 import AdvisorLabel from '@/components/AdvisorLabel';
 import { localizedBio } from '@/lib/advisor-bio';
 import TrustNotes from '@/components/TrustNotes';
@@ -71,15 +72,8 @@ export default function AdvisorProfile({
     sessionStorage.setItem('astrologerId', advisor.id);
     sessionStorage.setItem('slotId', slot.id);
     sessionStorage.setItem('slotStartsAt', slot.startsAt);
-    void fetch('/api/events', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        name: 'select_slot',
-        advisorId: advisor.id,
-        metadata: { slotId: slot.id },
-      }),
-    });
+    funnel('slot_selected', { advisor: advisor.slug }, { log: true, advisorId: advisor.id, metadata: { slotId: slot.id } });
+    funnel('book_click', { advisor: advisor.slug }, { log: true, advisorId: advisor.id, metadata: { source: 'advisor_profile' } });
     router.push(bookPath(slot.id, slot.startsAt, advisor.id));
   };
 

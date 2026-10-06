@@ -215,6 +215,7 @@ export default function PacksPage() {
       </div>
 
       <PaymentSheet
+        funnelKind="pack"
         open={sheetOpen}
         title={sheetTitle}
         amountLabel={sheetAmount}

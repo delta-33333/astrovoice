@@ -1,8 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { funnel } from '@/lib/funnel-client';
 
 export default function AuthPage() {
   const router = useRouter();
@@ -13,6 +14,10 @@ export default function AuthPage() {
     displayName: '',
   });
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    if (mode === 'signup') funnel('signup_view', { from: 'auth' }, { log: true, metadata: { source: 'auth' } });
+  }, [mode]);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -36,6 +41,7 @@ export default function AuthPage() {
         return;
       }
 
+      if (mode === 'signup') funnel('signup_submit', { from: 'auth' });
       const next = sessionStorage.getItem('afterAuth');
       if (next && next.startsWith('/') && !next.startsWith('//')) {
         sessionStorage.removeItem('afterAuth');

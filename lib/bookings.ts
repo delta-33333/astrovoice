@@ -358,9 +358,30 @@ export async function confirmBookingPayment(input: {
         bookingId: booking.id,
         metadata: { purpose: 'booking' },
       });
+      if (await isRepeatBooking(booking)) {
+        await trackEvent({
+          name: 'rebook',
+          userId: booking.user_id,
+          advisorId: booking.advisor_id,
+          bookingId: booking.id,
+          metadata: { purpose: 'booking' },
+        });
+      }
     }
   }
   return status;
+}
+
+/** Vrai si le client avait déjà une consultation payée ou réalisée avant celle-ci. */
+export async function isRepeatBooking(booking: Pick<BookingRow, 'id' | 'user_id'>): Promise<boolean> {
+  if (!supabaseAvailable) return false;
+  const { count } = await getSupabaseAdmin()
+    .from('bookings')
+    .select('id', { count: 'exact', head: true })
+    .eq('user_id', booking.user_id)
+    .neq('id', booking.id)
+    .in('status', ['confirmed', 'completed']);
+  return (count ?? 0) > 0;
 }
 
 async function advisorName(advisorId: string): Promise<string> {

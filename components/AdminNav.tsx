@@ -2,6 +2,7 @@ import Link from 'next/link';
 
 const LINKS = [
   ['/admin', 'Entonnoir'],
+  ['/admin/acquisition', 'Acquisition'],
   ['/admin/bookings', 'Réservations'],
   ['/admin/payments', 'Paiements'],
   ['/admin/users', 'Comptes'],

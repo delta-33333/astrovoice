@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import PaymentSheet from '@/components/PaymentSheet';
+import { funnel } from '@/lib/funnel-client';
 import { AI_VOICE_SHORT } from '@/lib/legal';
 import TrustNotes from '@/components/TrustNotes';
 import Logo from '@/components/Logo';
@@ -109,6 +110,12 @@ export default function BookPage() {
       }).format(new Date(startsAt))
     : '';
 
+  useEffect(() => {
+    if (authed === false && accountMode === 'signup') {
+      funnel('signup_view', { from: 'book' }, { log: true, metadata: { source: 'book' } });
+    }
+  }, [authed, accountMode]);
+
   const ensureAccount = async () => {
     if (authed) return;
     const endpoint = accountMode === 'signup' ? '/api/auth/signup' : '/api/auth/login';
@@ -123,6 +130,7 @@ export default function BookPage() {
     });
     const payload = await response.json().catch(() => null);
     if (!response.ok) throw new Error(payload?.error || 'Le compte n’a pas pu être ouvert.');
+    if (accountMode === 'signup') funnel('signup_submit', { from: 'book' });
     setAuthed(true);
   };
 
@@ -163,9 +171,11 @@ export default function BookPage() {
       const checkout = await checkoutResponse.json();
       if (!checkoutResponse.ok) throw new Error(checkout.error || 'Paiement impossible');
 
+      funnel('checkout_start', { kind: 'booking', duration, free: Boolean(checkout.free) });
       setBookingId(checkout.bookingId || held.bookingId);
       setImmediate(Boolean(checkout.immediate));
       if (checkout.free) {
+        funnel('payment_success', { kind: 'booking', duration, free: true });
         router.push(checkout.immediate ? `/call/${held.bookingId}` : `/bookings/${held.bookingId}`);
         return;
       }
@@ -194,6 +204,8 @@ export default function BookPage() {
       setSheetOpen(false);
       return;
     }
+    funnel('payment_success', { kind: 'booking', duration });
+    if (payload.rebook) funnel('rebook', { kind: 'booking' });
     router.push(payload.immediate || immediate ? `/call/${bookingId}` : `/bookings/${bookingId}`);
   };
 
