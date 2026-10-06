@@ -4,7 +4,7 @@ import { useMemo, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import AdvisorAvatar from '@/components/AdvisorAvatar';
-import AiDisclosure from '@/components/AiDisclosure';
+import AdvisorLabel from '@/components/AdvisorLabel';
 import { localizedBio } from '@/lib/advisor-bio';
 import TrustNotes from '@/components/TrustNotes';
 import { BADGE_LABELS, languageLabel, styleLabel } from '@/lib/advisor-badges';
@@ -102,7 +102,7 @@ export default function AdvisorProfile({
           <AdvisorAvatar advisor={advisor} size="lg" />
           <div>
             <h1 className="font-[family-name:var(--font-cinzel)] text-3xl">{advisor.name}</h1>
-            <AiDisclosure gender={advisor.gender} className="mt-2" />
+            <AdvisorLabel gender={advisor.gender} className="mt-2" />
             <p className="text-sm text-white/55 mt-1">
               Style : {styleLabel(advisor.readingStyle)} · {advisor.languages.map(languageLabel).join(' · ')}
             </p>

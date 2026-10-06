@@ -38,6 +38,8 @@ type PaymentSheetProps = {
   amountLabel: string;
   detail: string;
   payLabel: string;
+  /** Mention discrète affichée juste sous le bouton de paiement. */
+  note?: string;
   clientSecret: string | null;
   collectContact?: boolean;
   onClose: () => void;
@@ -114,6 +116,7 @@ export default function PaymentSheet(props: PaymentSheetProps) {
           >
             <CheckoutFields
               payLabel={props.payLabel}
+              note={props.note}
               collectContact={props.collectContact}
               onSuccess={props.onSuccess}
             />
@@ -130,10 +133,12 @@ export default function PaymentSheet(props: PaymentSheetProps) {
 
 function CheckoutFields({
   payLabel,
+  note,
   collectContact,
   onSuccess,
 }: {
   payLabel: string;
+  note?: string;
   collectContact?: boolean;
   onSuccess: () => void;
 }) {
@@ -239,6 +244,7 @@ function CheckoutFields({
       >
         {submitting ? 'Paiement…' : payLabel}
       </button>
+      {note && <p className="-mt-2 text-center text-xs text-white/45">{note}</p>}
       <p className="text-center text-xs text-white/40">
         Paiement sécurisé par Stripe · Apple Pay et Google Pay s’affichent lorsque votre appareil les propose.
       </p>

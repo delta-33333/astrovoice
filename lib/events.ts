@@ -15,6 +15,8 @@ export const EVENT_NAMES = [
   'checkout_started',
   'paid',
   'summary_bought',
+  'call_reengage',
+  'call_silence_end',
 ] as const;
 
 export type EventName = (typeof EVENT_NAMES)[number];

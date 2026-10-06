@@ -11,7 +11,7 @@ import {
   type GeoLocale,
   type Source,
 } from '@/lib/geo-pages';
-import { aiActLine } from '@/lib/legal';
+import { AI_MODEL_SUMMARY } from '@/lib/legal';
 import { appBaseUrl } from '@/lib/stripe';
 
 interface Entry {
@@ -35,7 +35,7 @@ export function compareCopy(locale: GeoLocale) {
         name: 'Callastral (notre service)',
         url: origin,
         ours: true,
-        kind: aiActLine('fr'),
+        kind: AI_MODEL_SUMMARY.fr,
         price: `${c.min} à ${c.max}/min selon le conseiller`,
         welcome: c.founding ? `${c.founding.minutes} min à ${c.founding.price} (offre fondateur)` : '—',
         language: 'Français, anglais, espagnol, allemand, italien',
@@ -118,7 +118,7 @@ export function compareCopy(locale: GeoLocale) {
       name: 'Callastral (our service)',
       url: origin,
       ours: true,
-      kind: aiActLine('en'),
+      kind: AI_MODEL_SUMMARY.en,
       price: `${c.min} to ${c.max}/min depending on the advisor`,
       welcome: c.founding ? `${c.founding.minutes} min for ${c.founding.price} (founder offer)` : '—',
       language: 'French, English, Spanish, German, Italian',

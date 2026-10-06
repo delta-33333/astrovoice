@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import AiDisclosure from '@/components/AiDisclosure';
+import AdvisorLabel from '@/components/AdvisorLabel';
 import JsonLd from '@/components/JsonLd';
 import { GEO_PATHS } from '@/lib/geo-pages';
 import SeoChrome from '@/components/SeoChrome';
@@ -103,7 +103,7 @@ export default async function LocaleHome(props: { params: Promise<{ locale: stri
                 <h2 className="text-xl font-[family-name:var(--font-cinzel)]">
                   <Link href={advisorPath(locale, advisor.slug)} className="hover:text-celestial-gold">{advisor.name}</Link>
                 </h2>
-                <AiDisclosure locale={locale} gender={advisor.gender} className="mt-1" />
+                <AdvisorLabel locale={locale} gender={advisor.gender} className="mt-1" />
                 <p className="text-sm text-white/70 mt-1">
                   {advisor.specialties.map((item) => specialtyLabel(locale, item)).join(' · ')}
                   {' · '}
@@ -127,6 +127,8 @@ export default async function LocaleHome(props: { params: Promise<{ locale: stri
           ))}
           <p className="text-sm text-white/50">
             <Link href="/faq" className="underline">FAQ</Link>
+            {' · '}
+            <Link href="/cgu" className="underline">CGU</Link>
             {' · '}
             <Link href="/terms" className="underline">CGV</Link>
             {' · '}

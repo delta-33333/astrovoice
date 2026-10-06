@@ -43,3 +43,45 @@ export const AI_ACT_SPOKEN_FEMININE = {
   de: 'Ich bin eine virtuelle Callastral-Beraterin, und meine Stimme wird von künstlicher Intelligenz erzeugt.',
   it: 'Sono una consulente virtuale Callastral e la mia voce è generata dall’intelligenza artificiale.',
 } as const;
+
+/** Libellé neutre des fiches conseillers (annuaire, cartes, profils). */
+export const ADVISOR_LABEL = {
+  fr: { homme: 'Conseiller Callastral', femme: 'Conseillère Callastral' },
+  en: { homme: 'Callastral advisor', femme: 'Callastral advisor' },
+  es: { homme: 'Consejero de Callastral', femme: 'Consejera de Callastral' },
+  de: { homme: 'Callastral-Berater', femme: 'Callastral-Beraterin' },
+  it: { homme: 'Consulente Callastral', femme: 'Consulente Callastral' },
+} as const;
+
+export function advisorLabel(locale: keyof typeof ADVISOR_LABEL, gender?: 'femme' | 'homme' | null): string {
+  return ADVISOR_LABEL[locale][gender === 'femme' ? 'femme' : 'homme'];
+}
+
+/** Mention discrète sous le bouton de réservation / paiement et avant l'appel. */
+export const AI_VOICE_SHORT = {
+  fr: 'Voix générée par IA',
+  en: 'AI-generated voice',
+  es: 'Voz generada por IA',
+  de: 'KI-generierte Stimme',
+  it: 'Voce generata dall’IA',
+} as const;
+
+/** Clause complète des CGU sur les conseillers virtuels. */
+export const AI_TERMS_CLAUSE = {
+  title: 'Conseillers virtuels et intelligence artificielle',
+  paragraphs: [
+    'Les conseillers Callastral sont des personas virtuels créés par Callastral. Ce ne sont pas des personnes humaines. Leur voix et leurs réponses sont générées par intelligence artificielle (IA), en temps réel, pendant l’appel. Cette information est rappelée sur la page de réservation et dite par le conseiller au début de chaque appel.',
+    'Le thème natal est calculé à partir de la date, de l’heure et du lieu de naissance communiqués, avec la bibliothèque d’éphémérides Swiss Ephemeris. Les positions calculées servent de base à la conversation.',
+    'Les interprétations astrologiques sont proposées à titre de divertissement et de réflexion personnelle. Elles ne constituent ni un avis médical, psychologique, juridique ou financier, ni une prédiction certaine. Pour toute question de santé, de droit, d’argent ou en situation de détresse, adressez-vous à un professionnel qualifié ou aux services d’urgence (112, ou 3114 pour la prévention du suicide en France).',
+    'Les conseillers ne gardent pas la mémoire des appels précédents. Une transcription peut être conservée pour fournir le résumé écrit demandé et pour la sécurité du service, dans les conditions de la politique de confidentialité.',
+  ],
+} as const;
+
+/** Résumé du modèle pour les tableaux comparatifs et données structurées. */
+export const AI_MODEL_SUMMARY = {
+  fr: 'Conseillers virtuels, voix générée par IA',
+  en: 'Virtual advisors, AI-generated voice',
+  es: 'Consejeros virtuales, voz generada por IA',
+  de: 'Virtuelle Berater, KI-generierte Stimme',
+  it: 'Consulenti virtuali, voce generata dall’IA',
+} as const;

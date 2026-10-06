@@ -390,6 +390,7 @@ export default async function LandingPage({
           <p className="mt-3 space-x-4">
             <Link href="/offres" className="hover:text-white/70">Offres</Link>
             <Link href="/faq" className="hover:text-white/70">Questions fréquentes</Link>
+            <Link href="/cgu" className="hover:text-white/70">CGU</Link>
             <Link href="/terms" className="hover:text-white/70">Conditions générales</Link>
             <Link href="/privacy" className="hover:text-white/70">Confidentialité</Link>
           </p>

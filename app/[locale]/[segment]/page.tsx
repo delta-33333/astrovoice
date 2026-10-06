@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import AiDisclosure from '@/components/AiDisclosure';
+import AdvisorLabel from '@/components/AdvisorLabel';
 import JsonLd from '@/components/JsonLd';
 import SeoChrome from '@/components/SeoChrome';
 import { readRates } from '@/lib/market';
@@ -113,7 +113,7 @@ export default async function SpecialtyHub(props: { params: Promise<{ locale: st
                 <h2 className="text-xl">
                   <Link href={advisorPath(locale, advisor.slug)} className="hover:text-celestial-gold">{advisor.name}</Link>
                 </h2>
-                <AiDisclosure locale={locale} gender={advisor.gender} className="mt-1" />
+                <AdvisorLabel locale={locale} gender={advisor.gender} className="mt-1" />
                 <p className="text-sm text-white/70 mt-1">
                   {quote.introLabel} · {advisor.languages.map((code) => languageLabel(locale, code)).join(', ')}
                 </p>

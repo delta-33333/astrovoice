@@ -82,6 +82,12 @@ export class GaplessPcmPlayer {
     };
   }
 
+  /** Durée (ms) de l’audio déjà reçu qui reste à jouer. */
+  pendingMs(): number {
+    if (this.ctx.state === 'closed' || this.nodes.length === 0) return 0;
+    return Math.max(0, (this.next - this.ctx.currentTime) * 1000);
+  }
+
   stop() {
     for (const node of this.nodes) {
       try {

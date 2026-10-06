@@ -1,4 +1,5 @@
 import { AI_ACT_SPOKEN, AI_ACT_SPOKEN_FEMININE } from './legal';
+import { silenceRule } from './voice-silence';
 import type { BirthData, NatalChart, VoiceId } from './types';
 
 const VOICES: readonly VoiceId[] = ['ara', 'eve', 'leo', 'rex', 'sal'];
@@ -88,6 +89,8 @@ export function getVoiceSystemPrompt(
   return `${opening[lang] ?? opening.fr}
 
 ${advisor.personaPrompt}
+
+${silenceRule(lang)}
 
 ${client}
 

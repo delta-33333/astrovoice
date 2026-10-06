@@ -61,6 +61,7 @@ export function GeoFooter({ locale }: { locale: GeoLocale }) {
       <Link href={GEO_PATHS.prices[locale]} className="hover:text-white">{fr ? 'Tarifs 2026' : 'Prices 2026'}</Link>
       <Link href={GEO_PATHS.compare[locale]} className="hover:text-white">{fr ? 'Comparatif 2026' : 'Comparison 2026'}</Link>
       <Link href={GEO_PATHS.about[locale]} className="hover:text-white">{fr ? 'À propos' : 'About'}</Link>
+      <Link href="/cgu" className="hover:text-white">{fr ? 'CGU' : 'CGU (terms of use, FR)'}</Link>
       <Link href="/terms" className="hover:text-white">{fr ? 'Conditions générales' : 'Terms (FR)'}</Link>
       <Link href="/privacy" className="hover:text-white">{fr ? 'Confidentialité' : 'Privacy (FR)'}</Link>
     </footer>
