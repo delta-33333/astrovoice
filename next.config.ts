@@ -31,6 +31,21 @@ const nextConfig: NextConfig = {
   eslint: {
     ignoreDuringBuilds: false,
   },
+  // Liens courts TikTok (temporaires : 307). Next ajoute la query entrante à la destination.
+  async redirects() {
+    return [
+      {
+        source: '/live',
+        destination: '/fr?utm_source=tiktok&utm_medium=live&utm_campaign=elopartner_live',
+        permanent: false,
+      },
+      {
+        source: '/tiktok',
+        destination: '/fr?utm_source=tiktok&utm_medium=bio&utm_campaign=elopartner_bio',
+        permanent: false,
+      },
+    ];
+  },
   async headers() {
     return [
       {
