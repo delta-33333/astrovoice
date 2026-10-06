@@ -241,7 +241,10 @@ export default async function AcquisitionPage() {
               </ul>
               <ul className="space-y-1">
                 <li className="text-white/45">Événements du parcours</li>
-                {vercel.events.map((row) => (
+                {vercel.events === null && (
+                  <li className="text-white/50">Disponibles avec l’offre Vercel Pro (envoyés, non consultables en Hobby).</li>
+                )}
+                {vercel.events?.map((row) => (
                   <li key={row.name} className="flex justify-between gap-3"><span className="truncate">{row.name}</span><span>{row.count}</span></li>
                 ))}
               </ul>
