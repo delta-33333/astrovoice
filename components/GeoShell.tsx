@@ -1,5 +1,7 @@
 import Link from 'next/link';
 import CallastralLockup from '@/components/CallastralLockup';
+import { ascendantPath } from '@/lib/ascendant-tool';
+import { getCopy } from '@/lib/ascendant-copy';
 import { GEO_PATHS, updatedLabel, type GeoLocale, type GeoPage, type Source } from '@/lib/geo-pages';
 
 export function GeoHeader({ locale, page }: { locale: GeoLocale; page: GeoPage }) {
@@ -61,7 +63,7 @@ export function GeoFooter({ locale }: { locale: GeoLocale }) {
       <Link href={GEO_PATHS.prices[locale]} className="hover:text-white">{fr ? 'Tarifs 2026' : 'Prices 2026'}</Link>
       <Link href={GEO_PATHS.compare[locale]} className="hover:text-white">{fr ? 'Comparatif 2026' : 'Comparison 2026'}</Link>
       <Link href={GEO_PATHS.about[locale]} className="hover:text-white">{fr ? 'À propos' : 'About'}</Link>
-      {fr && <Link href="/fr/calcul-ascendant-gratuit" className="hover:text-white">Calcul ascendant gratuit</Link>}
+      <Link href={ascendantPath(locale)} className="hover:text-white">{getCopy(locale).h1}</Link>
       <Link href="/cgu" className="hover:text-white">{fr ? 'CGU' : 'CGU (terms of use, FR)'}</Link>
       <Link href="/terms" className="hover:text-white">{fr ? 'Conditions générales' : 'Terms (FR)'}</Link>
       <Link href="/privacy" className="hover:text-white">{fr ? 'Confidentialité' : 'Privacy (FR)'}</Link>

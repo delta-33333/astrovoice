@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { signProfile } from '../lib/ascendant-tool.ts';
+import { signProfile } from '../lib/ascendant-copy.ts';
 import { chartAtInstant, civilToUtc, formatArcminute, type ComputedChart } from '../lib/chart-calc.ts';
 
 const ARCMINUTE = 1 / 60;

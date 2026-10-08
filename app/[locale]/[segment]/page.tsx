@@ -6,6 +6,8 @@ import JsonLd from '@/components/JsonLd';
 import SeoChrome from '@/components/SeoChrome';
 import { readRates } from '@/lib/market';
 import { quoteAdvisor } from '@/lib/money';
+import { ascendantHubNote } from '@/lib/ascendant-copy';
+import { ascendantPath } from '@/lib/ascendant-tool';
 import { appBaseUrl } from '@/lib/stripe';
 import { listDirectoryAdvisors } from '@/lib/slots';
 import {
@@ -93,6 +95,7 @@ export default async function SpecialtyHub(props: { params: Promise<{ locale: st
   const title = hubTitle(locale, specialty).replace(' | Callastral', '');
   const origin = appBaseUrl();
   const pageUrl = `${origin}${hubPath(locale, specialty)}`;
+  const toolNote = ascendantHubNote(locale, specialty);
 
   return (
     <main>
@@ -105,17 +108,11 @@ export default async function SpecialtyHub(props: { params: Promise<{ locale: st
         </nav>
         <h1 className="font-[family-name:var(--font-cinzel)] text-3xl sm:text-4xl">{title}</h1>
         <p className="mt-4 text-white/80 leading-relaxed">{hubIntro(locale, specialty)}</p>
-        {locale === 'fr' && (specialty === 'amour' || specialty === 'spiritualité') && (
+        {toolNote && (
           <p className="mt-3 text-sm text-white/70">
-            Avant une consultation :{' '}
-            <Link href="/fr/calcul-ascendant-gratuit" className="underline text-celestial-gold">calcul ascendant gratuit</Link>
-            {' '}(date, heure et lieu, sans inscription).
-          </p>
-        )}
-        {locale === 'fr' && specialty === 'compatibilité' && (
-          <p className="mt-3 text-sm text-white/70">
-            Cette page liste les conseillers IA de ce thème. Pour le signe qui se levait à la naissance :{' '}
-            <Link href="/fr/calcul-ascendant-gratuit" className="underline text-celestial-gold">calcul ascendant gratuit</Link>.
+            {toolNote.before}
+            <Link href={ascendantPath(locale)} className="underline text-celestial-gold">{toolNote.label}</Link>
+            {toolNote.after}
           </p>
         )}
         <ul className="mt-8 space-y-4">

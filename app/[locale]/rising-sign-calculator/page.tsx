@@ -3,9 +3,9 @@ import AscendantToolScreen, { generateAscendantMetadata } from '@/components/Asc
 export const dynamic = 'force-dynamic';
 
 export function generateMetadata(props: { params: Promise<{ locale: string }> }) {
-  return generateAscendantMetadata(props, 'calcul-ascendant-gratuit');
+  return generateAscendantMetadata(props, 'rising-sign-calculator');
 }
 
 export default function Page(props: { params: Promise<{ locale: string }> }) {
-  return <AscendantToolScreen {...props} slug="calcul-ascendant-gratuit" />;
+  return <AscendantToolScreen {...props} slug="rising-sign-calculator" />;
 }
