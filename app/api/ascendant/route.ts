@@ -35,7 +35,7 @@ function tooMany(ip: string): boolean {
 export async function POST(request: NextRequest) {
   if (tooMany(clientIp(request))) {
     return NextResponse.json(
-      { error: 'Trop de calculs d’affilée. Réessayez dans une minute.' },
+      { error: 'RATE' },
       { status: 429, headers: { 'Cache-Control': 'no-store' } }
     );
   }
@@ -47,13 +47,13 @@ export async function POST(request: NextRequest) {
 
   if (!/^\d{4}-\d{2}-\d{2}$/.test(date) || !/^\d{1,2}:\d{2}$/.test(time)) {
     return NextResponse.json(
-      { error: 'Indiquez une date et une heure de naissance.' },
+      { error: 'DATE' },
       { status: 400, headers: { 'Cache-Control': 'no-store' } }
     );
   }
   if (place.length < 2 || place.length > 80 || /[<>]/.test(place)) {
     return NextResponse.json(
-      { error: 'Indiquez une commune et un pays, par exemple « Lyon, France ».' },
+      { error: 'PLACE' },
       { status: 400, headers: { 'Cache-Control': 'no-store' } }
     );
   }
@@ -74,14 +74,15 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     if (error instanceof ChartError) {
       const status = error.code === 'EPHEMERIS' ? 503 : 400;
+      const code = error.code === 'DATE' || error.code === 'PLACE' || error.code === 'EPHEMERIS' ? error.code : 'FAIL';
       return NextResponse.json(
-        { error: error.message },
+        { error: code },
         { status, headers: { 'Cache-Control': 'no-store' } }
       );
     }
     console.error('Ascendant:', error instanceof Error ? error.message : 'erreur');
     return NextResponse.json(
-      { error: 'Le calcul n’a pas abouti.' },
+      { error: 'FAIL' },
       { status: 500, headers: { 'Cache-Control': 'no-store' } }
     );
   }

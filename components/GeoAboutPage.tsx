@@ -2,6 +2,8 @@ import Link from 'next/link';
 import AiDisclosure from '@/components/AiDisclosure';
 import JsonLd from '@/components/JsonLd';
 import { GeoFooter, GeoHeader, Updated } from '@/components/GeoShell';
+import { ascendantPath } from '@/lib/ascendant-tool';
+import { getCopy } from '@/lib/ascendant-copy';
 import { GEO_PATHS, GEO_UPDATED_ISO, callastralFacts, type GeoLocale } from '@/lib/geo-pages';
 import { AI_ACT_SPOKEN, AI_VOICE_SHORT } from '@/lib/legal';
 import { appBaseUrl } from '@/lib/stripe';
@@ -183,7 +185,7 @@ export default function GeoAboutPage({ locale }: { locale: GeoLocale }) {
         ))}
         <p className="mt-10 space-x-4 text-sm">
           <Link href={GEO_PATHS.prices[locale]} className="underline text-celestial-gold">{fr ? 'Tarifs comparés 2026' : '2026 price comparison'}</Link>
-          {fr && <Link href="/fr/calcul-ascendant-gratuit" className="underline text-celestial-gold">Calcul ascendant gratuit</Link>}
+          <Link href={ascendantPath(locale)} className="underline text-celestial-gold">{getCopy(locale).h1}</Link>
           <Link href="/terms" className="underline text-celestial-gold">{fr ? 'Conditions générales' : 'Terms (French)'}</Link>
         </p>
       </article>
