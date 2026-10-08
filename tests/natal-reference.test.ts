@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { chartAtInstant, civilToUtc, type ComputedChart } from '../lib/chart-calc.ts';
+import { signProfile } from '../lib/ascendant-tool.ts';
+import { chartAtInstant, civilToUtc, formatArcminute, type ComputedChart } from '../lib/chart-calc.ts';
 
 const ARCMINUTE = 1 / 60;
 
@@ -142,6 +143,9 @@ test('thèmes de référence astro.com à moins d’une minute d’arc', () => {
     expectWithinArcminute(bodyLongitude(chart, 'Soleil'), sample.sun, `${sample.label} Soleil`);
     expectWithinArcminute(bodyLongitude(chart, 'Lune'), sample.moon, `${sample.label} Lune`);
     expectWithinArcminute(chart.ascendantLongitude, sample.asc, `${sample.label} Ascendant`);
+    const rising = formatArcminute(chart.ascendantLongitude).sign;
+    assert.equal(signProfile(rising).sign, rising);
+    assert.ok(signProfile(rising).reading.length > 40, `${sample.label} lecture ascendant`);
     assert.match(chart.voiceSummary, /Soleil .+maison \d+/);
     assert.match(chart.voiceSummary, /Aspects majeurs:/);
     assert.ok(elapsed < 200, `${sample.label} calculé en ${elapsed.toFixed(1)} ms`);

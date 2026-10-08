@@ -60,6 +60,10 @@ export default function FaqPage() {
           <Link href="/terms" className="text-celestial-gold hover:underline">
             Conditions générales de vente
           </Link>
+          {' · '}
+          <Link href="/fr/calcul-ascendant-gratuit" className="text-celestial-gold hover:underline">
+            Calcul ascendant gratuit
+          </Link>
         </p>
       </div>
     </main>

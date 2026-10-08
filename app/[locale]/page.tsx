@@ -143,6 +143,12 @@ export default async function LocaleHome(props: { params: Promise<{ locale: stri
             <Link href={locale === 'fr' ? GEO_PATHS.compare.fr : GEO_PATHS.compare.en} className="underline">
               {locale === 'fr' ? 'Comparatif 2026' : 'Comparison 2026'}
             </Link>
+            {locale === 'fr' && (
+              <>
+                {' · '}
+                <Link href="/fr/calcul-ascendant-gratuit" className="underline">Calcul ascendant gratuit</Link>
+              </>
+            )}
           </p>
         </section>
       </div>
