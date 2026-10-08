@@ -11,6 +11,7 @@ import {
   localeHomePath,
   type Locale,
 } from '@/lib/seo';
+import { ASCENDANT_PATH } from '@/lib/ascendant-tool';
 import { GEO_PATHS, GEO_UPDATED_ISO, geoAlternates, type GeoPage } from '@/lib/geo-pages';
 import { appBaseUrl } from '@/lib/stripe';
 
@@ -37,6 +38,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       });
     }
   }
+
+  entries.push({
+    url: `${origin}${ASCENDANT_PATH}`,
+    lastModified: '2026-10-08',
+  });
 
   for (const page of Object.keys(GEO_PATHS) as GeoPage[]) {
     const languages = Object.fromEntries(

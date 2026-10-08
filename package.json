@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "type-check": "tsc --noEmit",
-    "test": "node --experimental-strip-types --test tests/natal-reference.test.ts"
+    "test": "node --experimental-strip-types --test tests/natal-reference.test.ts tests/ascendant-seo.test.ts"
   },
   "dependencies": {
     "@stripe/react-stripe-js": "^6.12.0",

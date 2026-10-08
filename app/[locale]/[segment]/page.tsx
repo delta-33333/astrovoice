@@ -105,6 +105,19 @@ export default async function SpecialtyHub(props: { params: Promise<{ locale: st
         </nav>
         <h1 className="font-[family-name:var(--font-cinzel)] text-3xl sm:text-4xl">{title}</h1>
         <p className="mt-4 text-white/80 leading-relaxed">{hubIntro(locale, specialty)}</p>
+        {locale === 'fr' && (specialty === 'amour' || specialty === 'spiritualité') && (
+          <p className="mt-3 text-sm text-white/70">
+            Avant une consultation :{' '}
+            <Link href="/fr/calcul-ascendant-gratuit" className="underline text-celestial-gold">calcul ascendant gratuit</Link>
+            {' '}(date, heure et lieu, sans inscription).
+          </p>
+        )}
+        {locale === 'fr' && specialty === 'compatibilité' && (
+          <p className="mt-3 text-sm text-white/70">
+            Cette page liste les conseillers IA de ce thème. Pour le signe qui se levait à la naissance :{' '}
+            <Link href="/fr/calcul-ascendant-gratuit" className="underline text-celestial-gold">calcul ascendant gratuit</Link>.
+          </p>
+        )}
         <ul className="mt-8 space-y-4">
           {matching.map((advisor) => {
             const quote = quoteAdvisor(advisor.pricePerMinCents, currency, rates, undefined, locale);

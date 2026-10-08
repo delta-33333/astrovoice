@@ -183,6 +183,7 @@ export default function GeoAboutPage({ locale }: { locale: GeoLocale }) {
         ))}
         <p className="mt-10 space-x-4 text-sm">
           <Link href={GEO_PATHS.prices[locale]} className="underline text-celestial-gold">{fr ? 'Tarifs comparés 2026' : '2026 price comparison'}</Link>
+          {fr && <Link href="/fr/calcul-ascendant-gratuit" className="underline text-celestial-gold">Calcul ascendant gratuit</Link>}
           <Link href="/terms" className="underline text-celestial-gold">{fr ? 'Conditions générales' : 'Terms (French)'}</Link>
         </p>
       </article>
