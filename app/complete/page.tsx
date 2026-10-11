@@ -193,7 +193,7 @@ export default function CompletePage() {
 
         <div className="space-y-4 mb-8">
           {data.bookingId && (
-            <Link href={`/resume/${data.bookingId}`} className="btn-primary inline-block">
+            <Link href={`/resume/${data.bookingId}`} className="btn-secondary inline-block">
               Recevoir le résumé écrit · {summaryLabel || '…'}
             </Link>
           )}
@@ -208,7 +208,7 @@ export default function CompletePage() {
             </Link>
           )}
           {!data.astrologerId && (
-            <Link href="/home" className="btn-primary inline-block">
+            <Link href="/home" className="btn-secondary inline-block">
               Nouvelle consultation
             </Link>
           )}

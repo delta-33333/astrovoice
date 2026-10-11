@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { authenticateUser, normalizeEmail } from '@/lib/auth';
+import { honeypotTripped } from '@/lib/form-checks';
+import { tooManyRequests } from '@/lib/guard';
 import { clientIp, rateLimit } from '@/lib/rate-limit';
 import { createSession } from '@/lib/session';
 import { supabaseAvailable } from '@/lib/supabase';
@@ -13,6 +15,12 @@ export async function POST(request: NextRequest) {
 
   try {
     const body = await request.json().catch(() => null);
+    if (honeypotTripped(body)) {
+      return NextResponse.json({ error: 'E-mail ou mot de passe incorrect' }, { status: 401 });
+    }
+    if (tooManyRequests(request, 'login', 30, 15 * 60 * 1000)) {
+      return NextResponse.json({ error: 'Trop de tentatives. Réessayez dans quelques minutes.' }, { status: 429 });
+    }
     const email = normalizeEmail(body?.email ?? body?.username);
     const password = typeof body?.password === 'string' ? body.password : '';
 

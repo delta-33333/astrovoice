@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { notFound, permanentRedirect } from 'next/navigation';
 import AscendantCalculator from '@/components/AscendantCalculator';
 import JsonLd from '@/components/JsonLd';
+import PromoStrip from '@/components/PromoStrip';
 import SeoChrome from '@/components/SeoChrome';
 import { getCopy } from '@/lib/ascendant-copy';
 import {
@@ -195,13 +196,11 @@ export default async function AscendantToolScreen(
         </section>
       </article>
 
-      <footer className="max-w-3xl mx-auto px-4 py-8 text-xs text-white/50 border-t border-white/10 mt-4 space-x-4">
-        <Link href={localeHomePath(locale)} className="hover:text-white">{copy.home}</Link>
-        <Link href={copy.aboutHref} className="hover:text-white">{copy.footerAbout}</Link>
-        <Link href="/faq" className="hover:text-white">{copy.footerFaq}</Link>
-        <Link href="/cgu" className="hover:text-white">{copy.footerTerms}</Link>
-        <Link href="/privacy" className="hover:text-white">{copy.footerPrivacy}</Link>
-      </footer>
+      {locale === 'fr' && (
+        <div className="max-w-3xl mx-auto px-4">
+          <PromoStrip ids={['10']} />
+        </div>
+      )}
 
       <JsonLd data={ascendantJsonLd({
         origin,

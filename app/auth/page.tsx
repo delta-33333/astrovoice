@@ -3,6 +3,8 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import HoneypotField from '@/components/HoneypotField';
+import { HONEYPOT_FIELD, normalizeEmail, passwordError } from '@/lib/form-checks';
 import { funnel } from '@/lib/funnel-client';
 
 export default function AuthPage() {
@@ -14,6 +16,7 @@ export default function AuthPage() {
     displayName: '',
   });
   const [error, setError] = useState('');
+  const [honeypot, setHoneypot] = useState('');
 
   useEffect(() => {
     if (mode === 'signup') funnel('signup_view', { from: 'auth' }, { log: true, metadata: { source: 'auth' } });
@@ -23,6 +26,24 @@ export default function AuthPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    if (!normalizeEmail(formData.email)) {
+      setError('Indiquez un e-mail valide.');
+      return;
+    }
+    if (mode === 'signup') {
+      if (!formData.displayName.trim()) {
+        setError('Indiquez votre prénom.');
+        return;
+      }
+      const issue = passwordError(formData.password);
+      if (issue) {
+        setError(issue);
+        return;
+      }
+    } else if (!formData.password) {
+      setError('E-mail et mot de passe requis.');
+      return;
+    }
     setIsSubmitting(true);
 
     try {
@@ -30,7 +51,7 @@ export default function AuthPage() {
       const response = await fetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({ ...formData, [HONEYPOT_FIELD]: honeypot }),
       });
 
       const data = await response.json();
@@ -69,7 +90,8 @@ export default function AuthPage() {
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-5 bg-white/5 backdrop-blur-sm p-8 rounded-3xl border border-white/10">
+        <form onSubmit={handleSubmit} className="relative space-y-5 bg-white/5 backdrop-blur-sm p-8 rounded-3xl border border-white/10">
+          <HoneypotField value={honeypot} onChange={setHoneypot} />
           {mode === 'signup' && (
             <div>
               <label htmlFor="displayName" className="block text-sm font-medium mb-2">

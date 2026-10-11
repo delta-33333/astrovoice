@@ -8,6 +8,7 @@ import {
   validVisitorId,
   type Utm,
 } from './attribution';
+import { CONSENT_COOKIE, analyticsAllowed } from './consent';
 import { getSupabaseAdmin, supabaseAvailable } from './supabase';
 
 export const EVENT_NAMES = [
@@ -152,12 +153,14 @@ async function requestContext(given: EventContext | undefined, userId: string | 
     } catch {
       refererPath = undefined;
     }
-    const firstTouch = decodeFirstTouch(jar.get(FIRST_TOUCH_COOKIE)?.value);
+    const allowAnalytics = analyticsAllowed(jar.get(CONSENT_COOKIE)?.value);
+    const firstTouch = allowAnalytics ? decodeFirstTouch(jar.get(FIRST_TOUCH_COOKIE)?.value) : null;
     const utm = given?.utm && Object.keys(given.utm).length > 0 ? given.utm : firstTouch ?? {};
-    const visitor =
-      validVisitorId(given?.visitorId) ??
-      validVisitorId(jar.get(VISITOR_COOKIE)?.value) ??
-      validVisitorId(head.get('x-cl-vid'));
+    const visitor = allowAnalytics
+      ? validVisitorId(given?.visitorId) ??
+        validVisitorId(jar.get(VISITOR_COOKIE)?.value) ??
+        validVisitorId(head.get('x-cl-vid'))
+      : null;
     const referrer =
       given && 'referrer' in given ? cleanReferrer(given.referrer) : refererPath ? undefined : cleanReferrer(rawReferer);
     return {
@@ -209,6 +212,16 @@ export async function recordFirstTouch(userId: string): Promise<void> {
     const { cookies, headers } = await import('next/headers');
     const jar = await cookies();
     const head = await headers();
+    const allowAnalytics = analyticsAllowed(jar.get(CONSENT_COOKIE)?.value);
+    if (!allowAnalytics) {
+      const { error } = await getSupabaseAdmin()
+        .from('users')
+        .update({ first_seen_at: new Date().toISOString() })
+        .eq('id', userId)
+        .is('first_seen_at', null);
+      if (error) console.warn('Première source non enregistrée:', error.message);
+      return;
+    }
     const visitorId = validVisitorId(jar.get(VISITOR_COOKIE)?.value) ?? validVisitorId(head.get('x-cl-vid'));
     const touch = decodeFirstTouch(jar.get(FIRST_TOUCH_COOKIE)?.value);
     const admin = getSupabaseAdmin();

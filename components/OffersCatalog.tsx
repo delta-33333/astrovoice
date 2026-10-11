@@ -234,7 +234,7 @@ export default function OffersCatalog({ labels }: { labels: OfferLabels }) {
           }}
         >
           <AccountBirth saved={saved} editing={editing.natal} onEdit={() => setEditing({ ...editing, natal: true })} value={natal} onChange={setNatal} />
-          <button className="btn-primary" type="submit" disabled={busy}>Recevoir le thème</button>
+          <button className="btn-secondary" type="submit" disabled={busy}>Recevoir le thème</button>
         </form>
       </section>
 
@@ -249,7 +249,7 @@ export default function OffersCatalog({ labels }: { labels: OfferLabels }) {
           }}
         >
           <AccountBirth saved={saved} editing={editing.forecast} onEdit={() => setEditing({ ...editing, forecast: true })} value={forecast} onChange={setForecast} />
-          <button className="btn-primary" type="submit" disabled={busy}>Recevoir la prévision</button>
+          <button className="btn-secondary" type="submit" disabled={busy}>Recevoir la prévision</button>
         </form>
       </section>
 
@@ -271,7 +271,7 @@ export default function OffersCatalog({ labels }: { labels: OfferLabels }) {
             <p className="text-sm text-white/50 mb-2">Deuxième personne</p>
             <BirthFields value={personB} onChange={setPersonB} />
           </div>
-          <button className="btn-primary" type="submit" disabled={busy}>Recevoir la lecture</button>
+          <button className="btn-secondary" type="submit" disabled={busy}>Recevoir la lecture</button>
         </form>
       </section>
 

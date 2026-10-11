@@ -3,6 +3,7 @@ import CallastralLockup from '@/components/CallastralLockup';
 import { ascendantPath } from '@/lib/ascendant-tool';
 import { getCopy } from '@/lib/ascendant-copy';
 import { GEO_PATHS, updatedLabel, type GeoLocale, type GeoPage, type Source } from '@/lib/geo-pages';
+import { privacyPath } from '@/lib/privacy-copy';
 
 export function GeoHeader({ locale, page }: { locale: GeoLocale; page: GeoPage }) {
   return (
@@ -66,7 +67,8 @@ export function GeoFooter({ locale }: { locale: GeoLocale }) {
       <Link href={ascendantPath(locale)} className="hover:text-white">{getCopy(locale).h1}</Link>
       <Link href="/cgu" className="hover:text-white">{fr ? 'CGU' : 'CGU (terms of use, FR)'}</Link>
       <Link href="/terms" className="hover:text-white">{fr ? 'Conditions générales' : 'Terms (FR)'}</Link>
-      <Link href="/privacy" className="hover:text-white">{fr ? 'Confidentialité' : 'Privacy (FR)'}</Link>
+      <Link href={privacyPath(locale)} className="hover:text-white">{fr ? 'Confidentialité' : 'Privacy'}</Link>
+      <Link href="/fr/videos" className="hover:text-white">{fr ? 'Vidéos' : 'Videos (FR)'}</Link>
     </footer>
   );
 }

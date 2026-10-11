@@ -1,10 +1,7 @@
+import { clientIp } from './request-ip';
 import { getSupabaseAdmin, supabaseAvailable } from './supabase';
 
-export function clientIp(request: Request): string {
-  const forwarded = request.headers.get('x-forwarded-for');
-  const raw = forwarded?.split(',')[0]?.trim() || request.headers.get('x-real-ip') || '0.0.0.0';
-  return raw.slice(0, 64);
-}
+export { clientIp };
 
 function missingTable(message: string, code?: string): boolean {
   return code === '42P01' || code === 'PGRST205' || /auth_attempts/i.test(message);

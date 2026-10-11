@@ -32,6 +32,24 @@ export default function CguPage() {
         <AiTermsSection />
 
         <section className="space-y-3">
+          <h2 className="text-white text-lg font-semibold">Compte</h2>
+          <p>
+            L’accès aux consultations payantes suppose un compte : e-mail, prénom et mot de passe. Vous pouvez
+            demander la suppression du compte et des données associées dans les conditions de la politique de
+            confidentialité.
+          </p>
+        </section>
+
+        <section className="space-y-3">
+          <h2 className="text-white text-lg font-semibold">Usage acceptable</h2>
+          <p>
+            Le service est un divertissement. Il est interdit de l’utiliser pour harceler, pour obtenir un avis
+            médical, juridique ou financier présenté comme certain, ou pour tenter de contourner le paiement.
+            Callastral peut suspendre un compte en cas d’abus.
+          </p>
+        </section>
+
+        <section className="space-y-3">
           <h2 className="text-white text-lg font-semibold">Déroulement d’un appel</h2>
           <p>
             La personne peut mettre fin à l’appel à tout moment. Si elle reste silencieuse, le conseiller la relance
@@ -41,9 +59,35 @@ export default function CguPage() {
           </p>
         </section>
 
+        <section className="space-y-3">
+          <h2 className="text-white text-lg font-semibold">Paiement</h2>
+          <p>
+            Les prix, l’encaissement par Stripe, l’annulation et les avoirs sont décrits dans les conditions
+            générales de vente. Le tarif du conseiller est affiché avant le paiement.
+          </p>
+        </section>
+
+        <section className="space-y-3">
+          <h2 className="text-white text-lg font-semibold">Responsabilité</h2>
+          <p>
+            Les lectures sont symboliques. Elles ne garantissent aucun événement. Callastral n’est pas responsable
+            des décisions prises à partir d’une consultation. En cas de détresse, contactez les services d’urgence
+            (112, ou 3114 en France).
+          </p>
+        </section>
+
+        <section className="space-y-3">
+          <h2 className="text-white text-lg font-semibold">Données et contact</h2>
+          <p>
+            Le traitement des données est décrit dans la politique de confidentialité. L’éditeur est celui indiqué
+            sur la page À propos lorsque l’entité légale est renseignée. À défaut, les champs restent des marqueurs
+            à compléter, sans valeur inventée.
+          </p>
+        </section>
+
         <p className="text-sm space-x-4">
           <Link href="/terms" className="text-celestial-gold hover:underline">Conditions générales de vente</Link>
-          <Link href="/privacy" className="text-celestial-gold hover:underline">Confidentialité</Link>
+          <Link href="/fr/confidentialite" className="text-celestial-gold hover:underline">Confidentialité</Link>
           <Link href="/faq" className="text-celestial-gold hover:underline">Questions fréquentes</Link>
         </p>
       </article>

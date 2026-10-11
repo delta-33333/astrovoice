@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import AdvisorDirectory from "@/components/AdvisorDirectory";
 import InstallPrompt from "@/components/InstallPrompt";
+import PromoStrip from "@/components/PromoStrip";
+import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
 import { VIRTUAL_ADVISOR_DISCLOSURE } from "@/lib/legal";
 import { resolveMarket } from "@/lib/market";
@@ -12,9 +14,18 @@ import { hreflangAlternates, localeHomePath } from "@/lib/seo";
 import { listDirectoryAdvisors } from "@/lib/slots";
 
 export const metadata: Metadata = {
+  title: "Consultation par téléphone avec un astrologue | Callastral",
+  description:
+    "Callastral met en relation avec un astrologue pour une consultation par téléphone, à partir de votre thème natal. Tarif affiché avant le paiement.",
   alternates: {
     canonical: "/fr",
     languages: hreflangAlternates(localeHomePath),
+  },
+  openGraph: {
+    title: "Consultation par téléphone avec un astrologue | Callastral",
+    description:
+      "Consultation par téléphone à partir du thème natal. Le tarif de chaque conseiller est affiché avant le paiement.",
+    url: "/fr",
   },
 };
 
@@ -48,6 +59,14 @@ export default async function LandingPage({
   return (
     <main className="min-h-screen pb-28 sm:pb-12">
       <SiteHeader />
+      <div className="max-w-4xl mx-auto px-4 pt-8">
+        <h1 className="font-[family-name:var(--font-cinzel)] text-3xl sm:text-4xl text-glow">
+          Consultation astrologique par téléphone
+        </h1>
+        <p className="mt-3 text-white/80 leading-relaxed">
+          Un conseiller virtuel, une voix générée par IA, à partir de votre thème natal. Le tarif est affiché avant le paiement.
+        </p>
+      </div>
       <AdvisorDirectory
         embedded
         advisors={advisors}
@@ -141,7 +160,7 @@ export default async function LandingPage({
               <div className="text-center">
                 <Link 
                   href="/auth"
-                  className="btn-primary text-lg inline-block"
+                  className="btn-secondary text-lg inline-block"
                 >
                   Rejoindre le Cercle Fondateur
                 </Link>
@@ -376,29 +395,14 @@ export default async function LandingPage({
           
           <Link 
             href="#annuaire"
-            className="btn-primary text-lg inline-block"
+            className="btn-secondary text-lg inline-block"
           >
-            Appeler maintenant
+            Voir les conseillers
           </Link>
         </section>
 
-        {/* Footer */}
-        <footer className="pt-16 pb-8 text-center text-white/40 text-xs border-t border-white/10">
-          <p>© {new Date().getFullYear()} Callastral — Consultations astrologiques personnalisées</p>
-          <p className="mt-3 space-x-4">
-            <Link href="/offres" className="hover:text-white/70">Offres</Link>
-            <Link href="/faq" className="hover:text-white/70">Questions fréquentes</Link>
-            <Link href="/cgu" className="hover:text-white/70">CGU</Link>
-            <Link href="/terms" className="hover:text-white/70">Conditions générales</Link>
-            <Link href="/privacy" className="hover:text-white/70">Confidentialité</Link>
-          </p>
-          <p className="mt-3 space-x-4">
-            <Link href="/a-propos" className="hover:text-white/70">À propos</Link>
-            <Link href="/fr/tarifs-voyance-telephone-2026" className="hover:text-white/70">Tarifs 2026</Link>
-            <Link href="/fr/meilleurs-sites-voyance-2026" className="hover:text-white/70">Comparatif 2026</Link>
-            <Link href="/fr/calcul-ascendant-gratuit" className="hover:text-white/70">Calcul ascendant gratuit</Link>
-          </p>
-        </footer>
+        <PromoStrip ids={['10']} />
+        <SiteFooter locale="fr" />
 
       </div>
 

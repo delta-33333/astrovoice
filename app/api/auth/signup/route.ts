@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createUser, normalizeEmail, normalizeFirstName, passwordError } from '@/lib/auth';
+import { honeypotTripped } from '@/lib/form-checks';
+import { tooManyRequests } from '@/lib/guard';
 import { recordFirstTouch, trackEvent } from '@/lib/events';
 import { clientIp, rateLimit } from '@/lib/rate-limit';
 import { createSession } from '@/lib/session';
@@ -14,6 +16,12 @@ export async function POST(request: NextRequest) {
 
   try {
     const body = await request.json().catch(() => null);
+    if (honeypotTripped(body)) {
+      return NextResponse.json({ error: 'Indiquez un e-mail valide.' }, { status: 400 });
+    }
+    if (tooManyRequests(request, 'signup', 20, 15 * 60 * 1000)) {
+      return NextResponse.json({ error: 'Trop de tentatives. Réessayez dans quelques minutes.' }, { status: 429 });
+    }
     const email = normalizeEmail(body?.email);
     const firstName = normalizeFirstName(body?.displayName ?? body?.firstName);
     const passwordIssue = passwordError(body?.password);

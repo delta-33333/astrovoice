@@ -10,6 +10,7 @@
 
 @layer base {
   body {
+    overflow-wrap: anywhere;
     color: rgb(var(--foreground-rgb));
     background: linear-gradient(
       to bottom,
@@ -56,6 +57,17 @@
 select option {
   background: #0a0e1a;
   color: #fff;
+}
+
+/* white/40 et white/45 passent sous 4,5:1 sur #050810. Plancher lisible WCAG AA. */
+.text-white\/30,
+.text-white\/40,
+.text-white\/45 {
+  color: rgba(255, 255, 255, 0.78);
+}
+
+::placeholder {
+  color: rgba(255, 255, 255, 0.72);
 }
 
 .advisor-avatar-fallback {

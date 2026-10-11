@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import type { PublicAdvisor } from '@/lib/types';
 
 function hueFromName(name: string): number {
@@ -26,11 +27,15 @@ export default function AdvisorAvatar({
   const initials = `${advisor.firstName.charAt(0)}${advisor.lastName.charAt(0)}`.toUpperCase();
 
   if (advisor.photoUrl) {
+    const local = advisor.photoUrl.startsWith('/');
     return (
-      // eslint-disable-next-line @next/next/no-img-element
-      <img
+      <Image
         src={advisor.photoUrl}
-        alt=""
+        alt={advisor.name}
+        width={160}
+        height={160}
+        sizes="160px"
+        unoptimized={!local}
         className={`${SIZES[size]} rounded-full object-cover border border-white/15`}
       />
     );

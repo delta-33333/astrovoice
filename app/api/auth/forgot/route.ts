@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createPasswordReset, normalizeEmail } from '@/lib/auth';
+import { honeypotTripped } from '@/lib/form-checks';
+import { tooManyRequests } from '@/lib/guard';
 import { sendPasswordResetMail } from '@/lib/email';
 import { clientIp, rateLimit } from '@/lib/rate-limit';
 import { appBaseUrl } from '@/lib/stripe';
@@ -15,6 +17,12 @@ export async function POST(request: NextRequest) {
   }
 
   const body = await request.json().catch(() => null);
+  if (honeypotTripped(body)) {
+    return NextResponse.json({ success: true, message: MESSAGE });
+  }
+  if (tooManyRequests(request, 'forgot', 10, 60 * 60 * 1000)) {
+    return NextResponse.json({ error: 'Trop de demandes. Réessayez dans une heure.' }, { status: 429 });
+  }
   const email = normalizeEmail(body?.email);
   if (!email) {
     return NextResponse.json({ error: 'Indiquez un e-mail valide.' }, { status: 400 });

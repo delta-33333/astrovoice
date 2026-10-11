@@ -2,23 +2,30 @@
 
 import { FormEvent, useState } from 'react';
 import Link from 'next/link';
+import HoneypotField from '@/components/HoneypotField';
+import { HONEYPOT_FIELD, normalizeEmail } from '@/lib/form-checks';
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const [sending, setSending] = useState(false);
+  const [honeypot, setHoneypot] = useState('');
 
   const submit = async (event: FormEvent) => {
     event.preventDefault();
-    setSending(true);
     setError('');
     setMessage('');
+    if (!normalizeEmail(email)) {
+      setError('Indiquez un e-mail valide.');
+      return;
+    }
+    setSending(true);
     try {
       const response = await fetch('/api/auth/forgot', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email, [HONEYPOT_FIELD]: honeypot }),
       });
       const payload = await response.json();
       if (!response.ok) {
@@ -41,7 +48,8 @@ export default function ForgotPasswordPage() {
           Indiquez l’e-mail du compte. Un lien à usage unique, valable 1 heure, vous permettra d’en choisir un nouveau.
           Un compte déjà ouvert sans mot de passe peut en définir un par ici.
         </p>
-        <form onSubmit={(event) => void submit(event)} className="space-y-4">
+        <form onSubmit={(event) => void submit(event)} className="relative space-y-4">
+          <HoneypotField value={honeypot} onChange={setHoneypot} />
           <label className="block text-sm text-white/70">
             E-mail
             <input

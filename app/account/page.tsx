@@ -257,7 +257,7 @@ export default function AccountPage() {
             className="w-full rounded-xl bg-white/10 border border-white/15 px-3 py-3"
             required
           />
-          <button type="submit" className="btn-primary w-full">Enregistrer</button>
+          <button type="submit" className="btn-secondary w-full">Enregistrer</button>
           <p className="text-xs text-white/45">
             Un compte sans mot de passe passe par <Link href="/auth/forgot" className="underline">Mot de passe oublié</Link>.
           </p>

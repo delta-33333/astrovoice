@@ -1,4 +1,5 @@
 import { notFound } from 'next/navigation';
+import SiteFooter from '@/components/SiteFooter';
 import { isLocale } from '@/lib/seo';
 
 export default async function LocaleLayout({
@@ -10,5 +11,10 @@ export default async function LocaleLayout({
 }) {
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
-  return <div lang={locale}>{children}</div>;
+  return (
+    <div lang={locale}>
+      {children}
+      <SiteFooter locale={locale} />
+    </div>
+  );
 }

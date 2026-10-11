@@ -1,30 +1,17 @@
 import { createHash, randomBytes } from 'crypto';
 import bcrypt from 'bcryptjs';
+import { normalizeEmail, passwordError } from './form-checks';
 import { getSupabaseAdmin, supabaseAvailable, type UserProfile } from './supabase';
 
-const SALT_ROUNDS = 10;
-const EMAIL_RE = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/;
+export { normalizeEmail, passwordError };
 
-export function normalizeEmail(value: unknown): string | null {
-  if (typeof value !== 'string') return null;
-  const email = value.trim().toLowerCase();
-  if (email.length > 254 || !EMAIL_RE.test(email)) return null;
-  return email;
-}
+const SALT_ROUNDS = 10;
 
 export function normalizeFirstName(value: unknown): string | null {
   if (typeof value !== 'string') return null;
   const name = value.trim().replace(/\s+/g, ' ');
   if (name.length < 1 || name.length > 40) return null;
   return name;
-}
-
-export function passwordError(password: unknown): string | null {
-  if (typeof password !== 'string' || password.length < 8) {
-    return 'Le mot de passe doit contenir au moins 8 caractères';
-  }
-  if (password.length > 200) return 'Mot de passe trop long';
-  return null;
 }
 
 export async function hashPassword(password: string): Promise<string> {
