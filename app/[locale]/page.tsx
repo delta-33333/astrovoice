@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import AdvisorLabel from '@/components/AdvisorLabel';
 import JsonLd from '@/components/JsonLd';
+import PromoStrip from '@/components/PromoStrip';
 import { ascendantPath } from '@/lib/ascendant-tool';
 import { getCopy } from '@/lib/ascendant-copy';
 import { GEO_PATHS } from '@/lib/geo-pages';
@@ -130,10 +131,6 @@ export default async function LocaleHome(props: { params: Promise<{ locale: stri
           <p className="text-sm text-white/50">
             <Link href="/faq" className="underline">FAQ</Link>
             {' · '}
-            <Link href="/cgu" className="underline">CGU</Link>
-            {' · '}
-            <Link href="/terms" className="underline">CGV</Link>
-            {' · '}
             <Link href={locale === 'fr' ? GEO_PATHS.about.fr : GEO_PATHS.about.en} className="underline">
               {locale === 'fr' ? 'À propos' : 'About'}
             </Link>
@@ -148,6 +145,7 @@ export default async function LocaleHome(props: { params: Promise<{ locale: stri
             {' · '}
             <Link href={ascendantPath(locale)} className="underline">{getCopy(locale).h1}</Link>
           </p>
+          {locale === 'fr' && <PromoStrip ids={['10']} />}
         </section>
       </div>
       <JsonLd data={{

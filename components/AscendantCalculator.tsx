@@ -1,8 +1,10 @@
 'use client';
 
 import { useState, type FormEvent } from 'react';
+import HoneypotField from '@/components/HoneypotField';
 import type { AscendantResult } from '@/lib/ascendant-tool';
 import type { AscendantFormCopy, SignCopy } from '@/lib/ascendant-copy';
+import { HONEYPOT_FIELD } from '@/lib/form-checks';
 
 const inputClass =
   'mt-1 w-full px-4 py-3 text-base bg-white/10 border border-white/20 rounded-xl focus:outline-none focus:border-celestial-purple focus:ring-2 focus:ring-celestial-purple/50';
@@ -28,6 +30,7 @@ export default function AscendantCalculator({
   const [pending, setPending] = useState(false);
   const [error, setError] = useState('');
   const [result, setResult] = useState<AscendantResult | null>(null);
+  const [honeypot, setHoneypot] = useState('');
 
   const named = (key: string) => signs[key]?.name ?? key;
 
@@ -43,7 +46,7 @@ export default function AscendantCalculator({
       const response = await fetch('/api/ascendant', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ date, time, place: place.trim() }),
+        body: JSON.stringify({ date, time, place: place.trim(), [HONEYPOT_FIELD]: honeypot }),
       });
       const payload = (await response.json().catch(() => null)) as (AscendantResult & { error?: string }) | null;
       if (!response.ok || !payload || typeof payload.sign !== 'string' || typeof payload.arc !== 'string') {
@@ -65,7 +68,8 @@ export default function AscendantCalculator({
   const signName = result ? named(result.sign) : '';
 
   return (
-    <form onSubmit={onSubmit} className="[color-scheme:dark] rounded-3xl border border-white/10 bg-white/5 p-4 sm:p-6">
+    <form onSubmit={onSubmit} className="relative [color-scheme:dark] rounded-3xl border border-white/10 bg-white/5 p-4 sm:p-6">
+      <HoneypotField value={honeypot} onChange={setHoneypot} />
       <div className="grid gap-4">
         <div>
           <label htmlFor="asc-date" className="text-sm font-medium">

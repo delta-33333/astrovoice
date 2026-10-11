@@ -1,6 +1,7 @@
 'use client';
 
 import { track } from '@vercel/analytics';
+import { analyticsAllowed } from '@/lib/consent';
 
 /*
  * Étapes du parcours côté navigateur.
@@ -58,15 +59,25 @@ export function postEvent(name: string, extra: { advisorId?: string | null; meta
   }
 }
 
+function consentCookie(): string | null {
+  if (typeof document === 'undefined') return null;
+  const match = document.cookie.match(/(?:^|; )cl_ck=([^;]*)/);
+  return match ? decodeURIComponent(match[1]) : null;
+}
+
 export function funnel(
   event: FunnelEvent,
   props: Props = {},
   options: { log?: boolean; advisorId?: string | null; metadata?: Record<string, string> } = {}
 ) {
-  try {
-    track(event, props);
-  } catch {
-    /* Web Analytics indisponible */
+  const choice = consentCookie();
+  if (!choice) return;
+  if (analyticsAllowed(choice)) {
+    try {
+      track(event, props);
+    } catch {
+      /* Web Analytics indisponible */
+    }
   }
   const serverName = SERVER_NAME[event];
   if (options.log && serverName) {

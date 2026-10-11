@@ -148,7 +148,7 @@ export default function ConsentPage() {
                   conditions générales
                 </a>
                 {' '}et la{' '}
-                <a href="/privacy" className="text-celestial-gold hover:underline" target="_blank">
+                <a href="/fr/confidentialite" className="text-celestial-gold hover:underline" target="_blank">
                   politique de confidentialité
                 </a>.
               </span>

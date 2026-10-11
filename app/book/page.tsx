@@ -9,6 +9,8 @@ import { AI_VOICE_SHORT } from '@/lib/legal';
 import TrustNotes from '@/components/TrustNotes';
 import Logo from '@/components/Logo';
 import MarketSwitch from '@/components/MarketSwitch';
+import HoneypotField from '@/components/HoneypotField';
+import { HONEYPOT_FIELD, normalizeEmail, passwordError } from '@/lib/form-checks';
 import { BOOKING_DURATIONS } from '@/lib/pricing';
 import { bookPath } from '@/lib/book-path';
 import type { AdvisorLang, Currency } from '@/lib/money';
@@ -24,6 +26,7 @@ export default function BookPage() {
   const [firstName, setFirstName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [honeypot, setHoneypot] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [clientSecret, setClientSecret] = useState<string | null>(null);
@@ -118,14 +121,22 @@ export default function BookPage() {
 
   const ensureAccount = async () => {
     if (authed) return;
+    if (!normalizeEmail(email)) throw new Error('Indiquez un e-mail valide.');
+    if (accountMode === 'signup') {
+      if (!firstName.trim()) throw new Error('Indiquez votre prénom.');
+      const issue = passwordError(password);
+      if (issue) throw new Error(issue);
+    } else if (!password) {
+      throw new Error('E-mail et mot de passe requis.');
+    }
     const endpoint = accountMode === 'signup' ? '/api/auth/signup' : '/api/auth/login';
     const response = await fetch(endpoint, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(
         accountMode === 'signup'
-          ? { email, password, displayName: firstName }
-          : { email, password }
+          ? { email, password, displayName: firstName, [HONEYPOT_FIELD]: honeypot }
+          : { email, password, [HONEYPOT_FIELD]: honeypot }
       ),
     });
     const payload = await response.json().catch(() => null);
@@ -136,6 +147,10 @@ export default function BookPage() {
 
   const pay = async () => {
     if (!slotId) return;
+    if (!(BOOKING_DURATIONS as readonly number[]).includes(duration)) {
+      setError('Durée invalide.');
+      return;
+    }
     setLoading(true);
     setError(null);
     setChoices(null);
@@ -255,7 +270,8 @@ export default function BookPage() {
         </div>
 
         {authed === false && (
-          <div className="mt-6 space-y-4 rounded-2xl border border-white/10 bg-white/5 p-4">
+          <div className="relative mt-6 space-y-4 rounded-2xl border border-white/10 bg-white/5 p-4">
+            <HoneypotField value={honeypot} onChange={setHoneypot} />
             <div className="flex gap-2 text-sm">
               <button
                 type="button"

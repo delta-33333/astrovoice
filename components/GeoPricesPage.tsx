@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import AiDisclosure from '@/components/AiDisclosure';
 import JsonLd from '@/components/JsonLd';
-import { GeoFooter, GeoHeader, SourceLinks, Updated } from '@/components/GeoShell';
+import { GeoHeader, SourceLinks, Updated } from '@/components/GeoShell';
 import {
   GEO_PATHS,
   GEO_PUBLISHED_ISO,
@@ -166,7 +166,6 @@ export default function GeoPricesPage({ locale }: { locale: GeoLocale }) {
           <Link href={GEO_PATHS.compare[locale]} className="underline text-celestial-gold">{copy.compare}</Link>
         </p>
       </article>
-      <GeoFooter locale={locale} />
       <JsonLd data={{
         '@context': 'https://schema.org',
         '@graph': [

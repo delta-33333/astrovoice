@@ -182,7 +182,7 @@ export default function AdvisorProfile({
           type="button"
           disabled={!selected}
           onClick={confirm}
-          className="btn-primary w-full mt-8 hidden sm:block disabled:opacity-40 disabled:cursor-not-allowed"
+          className={`${immediate ? 'btn-secondary' : 'btn-primary'} w-full mt-8 hidden sm:block disabled:opacity-40 disabled:cursor-not-allowed`}
         >
           Continuer avec ce créneau
         </button>

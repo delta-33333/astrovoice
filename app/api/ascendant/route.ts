@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { formatArcminute } from '@/lib/chart-calc';
 import { presentAscendant } from '@/lib/ascendant-tool';
 import { ChartError, chartFromBirth } from '@/lib/ephemeris';
+import { honeypotTripped } from '@/lib/form-checks';
 import { clientIp } from '@/lib/rate-limit';
 
 export const runtime = 'nodejs';
@@ -41,6 +42,9 @@ export async function POST(request: NextRequest) {
   }
 
   const body = await request.json().catch(() => null);
+  if (honeypotTripped(body)) {
+    return NextResponse.json({ error: 'FAIL' }, { status: 400, headers: { 'Cache-Control': 'no-store' } });
+  }
   const date = typeof body?.date === 'string' ? body.date.trim() : '';
   const time = typeof body?.time === 'string' ? body.time.trim() : '';
   const place = typeof body?.place === 'string' ? body.place.trim() : '';

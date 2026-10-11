@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import AdvisorLabel from '@/components/AdvisorLabel';
 import JsonLd from '@/components/JsonLd';
+import PromoStrip from '@/components/PromoStrip';
 import SeoChrome from '@/components/SeoChrome';
 import { readRates } from '@/lib/market';
 import { quoteAdvisor } from '@/lib/money';
@@ -137,6 +138,7 @@ export default async function SpecialtyHub(props: { params: Promise<{ locale: st
             <Link href={localeHomePath(locale)} className="underline">{homeLabel(locale)}</Link>
           </p>
         )}
+        {locale === 'fr' && specialty === 'compatibilité' && <PromoStrip ids={['03', '09']} />}
       </article>
       <JsonLd data={{
         '@context': 'https://schema.org',

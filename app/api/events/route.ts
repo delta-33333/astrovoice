@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { cleanPath, cleanReferrer, isInternalReferrer, utmFrom, type Utm } from '@/lib/attribution';
 import { getBooking } from '@/lib/bookings';
 import { trackEvent, type EventName } from '@/lib/events';
+import { tooManyRequests } from '@/lib/guard';
 import { getSession } from '@/lib/session';
 import { getSupabaseAdmin, supabaseAvailable } from '@/lib/supabase';
 
@@ -38,6 +39,9 @@ function str(value: unknown, max: number): string | undefined {
 }
 
 export async function POST(request: NextRequest) {
+  if (tooManyRequests(request, 'events', 90, 60_000)) {
+    return NextResponse.json({ ok: true, skipped: true });
+  }
   const body = await request.json().catch(() => null);
   const name = typeof body?.name === 'string' ? body.name : '';
 

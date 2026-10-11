@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { birthIssue, honeypotTripped } from '@/lib/form-checks';
 import { trackEvent } from '@/lib/events';
 import { ChartError } from '@/lib/ephemeris';
 import { loadOrComputeChart } from '@/lib/natal-store';
@@ -36,14 +37,17 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json().catch(() => null);
+    if (honeypotTripped(body)) {
+      return NextResponse.json({ error: 'Données de naissance invalides' }, { status: 400 });
+    }
     const name = typeof body?.name === 'string' ? body.name.trim().slice(0, 80) : '';
     const date = typeof body?.date === 'string' ? body.date.trim() : '';
     const place = typeof body?.place === 'string' ? body.place.trim().slice(0, 160) : '';
     const time = typeof body?.time === 'string' ? body.time.trim().slice(0, 8) : '';
     const timeUnknown = Boolean(body?.timeUnknown) || !time;
-
-    if (!date || !place) {
-      return NextResponse.json({ error: 'Date et lieu requis' }, { status: 400 });
+    const issue = birthIssue({ name, date, time, timeUnknown, place });
+    if (issue) {
+      return NextResponse.json({ error: issue }, { status: 400 });
     }
 
     const chart = await loadOrComputeChart(

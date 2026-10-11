@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation';
+import { useConsent } from '@/components/Consent';
 import { funnel, postEvent } from '@/lib/funnel-client';
 
 /**
@@ -11,12 +12,13 @@ import { funnel, postEvent } from '@/lib/funnel-client';
 export default function FunnelTracker() {
   const pathname = usePathname();
   const last = useRef<string | null>(null);
+  const { choice, ready } = useConsent();
 
   useEffect(() => {
-    if (!pathname || pathname === last.current || pathname.startsWith('/admin')) return;
+    if (!ready || !choice || !pathname || pathname === last.current || pathname.startsWith('/admin')) return;
     last.current = pathname;
     postEvent('page_view');
-  }, [pathname]);
+  }, [pathname, choice, ready]);
 
   useEffect(() => {
     const onClick = (event: MouseEvent) => {

@@ -12,6 +12,8 @@ import {
   type Locale,
 } from '@/lib/seo';
 import { ascendantPath } from '@/lib/ascendant-tool';
+import { privacyPath } from '@/lib/privacy-copy';
+import { VIDEOS_PATH } from '@/lib/videos';
 import { GEO_PATHS, GEO_UPDATED_ISO, geoAlternates, type GeoPage } from '@/lib/geo-pages';
 import { appBaseUrl } from '@/lib/stripe';
 
@@ -45,7 +47,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: '2026-10-08',
       alternates: { languages: absoluteLanguages(origin, ascendantPath) },
     });
+    entries.push({
+      url: `${origin}${privacyPath(locale)}`,
+      alternates: { languages: absoluteLanguages(origin, privacyPath) },
+    });
   }
+
+  entries.push({
+    url: `${origin}${VIDEOS_PATH}`,
+    lastModified: '2026-10-10',
+  });
 
   for (const page of Object.keys(GEO_PATHS) as GeoPage[]) {
     const languages = Object.fromEntries(

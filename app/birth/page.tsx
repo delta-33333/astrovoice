@@ -4,6 +4,8 @@ import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import type { BirthData } from '@/lib/types';
 import BirthSummary from '@/components/BirthSummary';
+import HoneypotField from '@/components/HoneypotField';
+import { HONEYPOT_FIELD, birthIssue } from '@/lib/form-checks';
 import { funnel } from '@/lib/funnel-client';
 
 export default function BirthDataPage() {
@@ -16,6 +18,7 @@ export default function BirthDataPage() {
     place: '',
   });
   const [errors, setErrors] = useState<string[]>([]);
+  const [honeypot, setHoneypot] = useState('');
 
   // null = chargement, 'form' = pas de données (ou modification), 'saved' = déjà enregistrées.
   const [mode, setMode] = useState<'loading' | 'form' | 'saved'>('loading');
@@ -75,11 +78,14 @@ export default function BirthDataPage() {
     setIsSubmitting(true);
 
     // Validation
-    const newErrors: string[] = [];
-    if (!formData.name.trim()) newErrors.push('Le nom est requis');
-    if (!formData.date) newErrors.push('La date de naissance est requise');
-    if (!formData.timeUnknown && !formData.time) newErrors.push('L\'heure est requise');
-    if (!formData.place.trim()) newErrors.push('Le lieu de naissance est requis');
+    const issue = birthIssue({
+      name: formData.name,
+      date: formData.date,
+      time: formData.time || '',
+      timeUnknown: formData.timeUnknown,
+      place: formData.place,
+    });
+    const newErrors = issue ? [issue] : [];
 
     if (newErrors.length > 0) {
       setErrors(newErrors);
@@ -92,7 +98,7 @@ export default function BirthDataPage() {
       const saveResponse = await fetch('/api/birth-data', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({ ...formData, [HONEYPOT_FIELD]: honeypot }),
       });
 
       const payload = (await saveResponse.json().catch(() => null)) as {
@@ -175,7 +181,8 @@ export default function BirthDataPage() {
         </div>
 
         {/* Form */}
-        <form onSubmit={handleSubmit} onFocusCapture={markBirthStart} className="space-y-6 bg-white/5 backdrop-blur-sm p-8 rounded-3xl border border-white/10">
+        <form onSubmit={handleSubmit} onFocusCapture={markBirthStart} className="relative space-y-6 bg-white/5 backdrop-blur-sm p-8 rounded-3xl border border-white/10">
+          <HoneypotField value={honeypot} onChange={setHoneypot} />
           {/* Name */}
           <div>
             <label htmlFor="name" className="block text-sm font-medium mb-2">
@@ -199,6 +206,9 @@ export default function BirthDataPage() {
             <input
               type="date"
               id="date"
+              required
+              min="1800-01-01"
+              max="2200-12-31"
               value={formData.date}
               onChange={(e) => setFormData({ ...formData, date: e.target.value })}
               className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl focus:outline-none focus:border-celestial-purple focus:ring-2 focus:ring-celestial-purple/50 transition-all"
@@ -213,6 +223,7 @@ export default function BirthDataPage() {
             <input
               type="time"
               id="time"
+              required={!formData.timeUnknown}
               value={formData.time}
               onChange={(e) => setFormData({ ...formData, time: e.target.value })}
               disabled={formData.timeUnknown}
@@ -237,6 +248,9 @@ export default function BirthDataPage() {
             <input
               type="text"
               id="place"
+              required
+              minLength={2}
+              maxLength={160}
               value={formData.place}
               onChange={(e) => setFormData({ ...formData, place: e.target.value })}
               className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl focus:outline-none focus:border-celestial-purple focus:ring-2 focus:ring-celestial-purple/50 transition-all"

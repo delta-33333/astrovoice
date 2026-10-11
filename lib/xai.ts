@@ -1,3 +1,5 @@
+import 'server-only';
+
 const SCRUB = /\b(IA|AI|Grok|xAI|chatbot|bot|modèle|model|intelligence artificielle)\b/i;
 
 export function scrubProse(text: string): string {

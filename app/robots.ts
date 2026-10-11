@@ -13,14 +13,16 @@ const ALLOWED = [
   'Google-Extended',
 ];
 
+const PRIVATE = ['/admin', '/account', '/api', '/auth', '/payment', '/bookings', '/call', '/birth', '/book'];
+
 export default function robots(): MetadataRoute.Robots {
   const origin = appBaseUrl();
   return {
     rules: [
-      ...ALLOWED.map((userAgent) => ({ userAgent, allow: '/' })),
-      { userAgent: '*', allow: '/' },
+      ...ALLOWED.map((userAgent) => ({ userAgent, allow: '/', disallow: PRIVATE })),
+      { userAgent: '*', allow: '/', disallow: PRIVATE },
     ],
-    sitemap: `${origin}/sitemap.xml`,
+    sitemap: [`${origin}/sitemap.xml`, `${origin}/video-sitemap.xml`],
     host: origin,
   };
 }

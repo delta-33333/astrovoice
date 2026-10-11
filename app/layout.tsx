@@ -1,8 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { headers } from "next/headers";
 import { Inter, Cinzel } from "next/font/google";
-import { Analytics } from "@vercel/analytics/next";
-import { SpeedInsights } from "@vercel/speed-insights/next";
+import { ConsentRoot } from "@/components/Consent";
 import FunnelTracker from "@/components/FunnelTracker";
 import JsonLd from "@/components/JsonLd";
 import { isLocale, organizationGraph } from "@/lib/seo";
@@ -14,15 +13,20 @@ const cinzel = Cinzel({ subsets: ["latin"], variable: "--font-cinzel", weight: [
 
 export const metadata: Metadata = {
   metadataBase: new URL(appBaseUrl()),
-  title: "Callastral — Consultation Astrologique Personnalisée",
+  title: {
+    default: "Callastral — Consultation astrologique par téléphone",
+    template: "%s",
+  },
   description: "Consultation astrologique par téléphone, 24 h/24, à partir de votre thème natal. Le tarif de chaque conseiller est affiché avant le paiement.",
   manifest: "/manifest.json",
   icons: {
     icon: [
+      { url: "/favicon.ico", sizes: "48x48" },
+      { url: "/icon-48.png", type: "image/png", sizes: "48x48" },
+      { url: "/icon-192.png", type: "image/png", sizes: "192x192" },
       { url: "/icon.svg", type: "image/svg+xml" },
-      { url: "/icon.png", type: "image/png", sizes: "512x512" },
     ],
-    apple: [{ url: "/icon.png", type: "image/png" }],
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
   },
   appleWebApp: {
     capable: true,
@@ -54,11 +58,13 @@ export default async function RootLayout({
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <meta name="apple-mobile-web-app-title" content="Callastral" />
-        <link rel="icon" href="/icon.svg" type="image/svg+xml" />
-        <link rel="icon" href="/icon.png" type="image/png" sizes="512x512" />
-        <link rel="apple-touch-icon" href="/icon.png" />
+        <link rel="icon" href="/favicon.ico" sizes="48x48" />
+        <link rel="icon" href="/icon-48.png" type="image/png" sizes="48x48" />
+        <link rel="icon" href="/icon-192.png" type="image/png" sizes="192x192" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
       </head>
       <body className={inter.className}>
+        <ConsentRoot>
         <div className="relative min-h-screen">
           {/* Starfield background */}
           <div className="fixed inset-0 overflow-hidden pointer-events-none">
@@ -73,8 +79,7 @@ export default async function RootLayout({
           <JsonLd data={{ '@context': 'https://schema.org', '@graph': organizationGraph(origin) }} />
         </div>
         <FunnelTracker />
-        <Analytics />
-        <SpeedInsights />
+        </ConsentRoot>
       </body>
     </html>
   );

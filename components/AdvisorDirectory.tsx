@@ -301,7 +301,7 @@ export default function AdvisorDirectory({
   );
 
   if (embedded) {
-    return <section className="px-4 pt-6 pb-8">{body}</section>;
+    return <section id="annuaire" className="px-4 pt-6 pb-8">{body}</section>;
   }
 
   return <main className="min-h-screen px-4 pt-8 pb-28 sm:pb-12">{body}</main>;
