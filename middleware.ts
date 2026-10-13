@@ -7,12 +7,11 @@ import {
   VISITOR_MAX_AGE,
   cleanReferrer,
   encodeFirstTouch,
-  isBotUserAgent,
   isInternalReferrer,
+  shouldCaptureVisit,
   utmFrom,
   validVisitorId,
 } from '@/lib/attribution';
-import { CONSENT_COOKIE, analyticsAllowed } from '@/lib/consent';
 
 const LOCALES = new Set(['fr', 'en', 'es', 'de', 'it']);
 const INDEXNOW_KEY = (process.env.INDEXNOW_KEY || '').trim();
@@ -33,7 +32,6 @@ export function middleware(request: NextRequest) {
   const requestHeaders = new Headers(request.headers);
   if (LOCALES.has(segment)) requestHeaders.set('x-locale', segment);
 
-  const allowAnalytics = analyticsAllowed(request.cookies.get(CONSENT_COOKIE)?.value);
   const secure = request.nextUrl.protocol === 'https:';
   const documentRequest =
     request.method === 'GET' &&
@@ -41,24 +39,13 @@ export function middleware(request: NextRequest) {
     !request.headers.get('next-router-prefetch') &&
     !request.headers.get('purpose') &&
     (request.headers.get('accept') || '').includes('text/html');
-  const humanDocument = documentRequest && !isBotUserAgent(request.headers.get('user-agent'));
-  const existing = allowAnalytics ? validVisitorId(request.cookies.get(VISITOR_COOKIE)?.value) : null;
-  const visitorId = existing ?? (allowAnalytics && humanDocument ? crypto.randomUUID() : null);
+  const capture = documentRequest && shouldCaptureVisit(request.nextUrl.pathname, request.headers.get('user-agent'));
+  const existing = validVisitorId(request.cookies.get(VISITOR_COOKIE)?.value);
+  const visitorId = existing ?? (capture ? crypto.randomUUID() : null);
   if (visitorId) requestHeaders.set('x-cl-vid', visitorId);
 
   const response = NextResponse.next({ request: { headers: requestHeaders } });
-
-  if (!allowAnalytics) {
-    if (request.cookies.get(VISITOR_COOKIE)?.value) {
-      response.cookies.set(VISITOR_COOKIE, '', { httpOnly: true, sameSite: 'lax', secure, path: '/', maxAge: 0 });
-    }
-    if (request.cookies.get(FIRST_TOUCH_COOKIE)?.value) {
-      response.cookies.set(FIRST_TOUCH_COOKIE, '', { httpOnly: true, sameSite: 'lax', secure, path: '/', maxAge: 0 });
-    }
-    return response;
-  }
-
-  if (!humanDocument) return response;
+  if (!capture) return response;
 
   if (!existing && visitorId) {
     response.cookies.set(VISITOR_COOKIE, visitorId, {
@@ -69,6 +56,7 @@ export function middleware(request: NextRequest) {
       maxAge: VISITOR_MAX_AGE,
     });
   }
+  // Première visite seulement : la source, le référent et la page d’arrivée ne sont pas réécrits ensuite.
   if (!request.cookies.get(FIRST_TOUCH_COOKIE)?.value) {
     const referrer = cleanReferrer(request.headers.get('referer'));
     response.cookies.set(
