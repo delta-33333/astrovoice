@@ -8,8 +8,8 @@ import SiteHeader from "@/components/SiteHeader";
 import { VIRTUAL_ADVISOR_DISCLOSURE } from "@/lib/legal";
 import { resolveMarket } from "@/lib/market";
 import { formatMoney, MARKET_PRICING, marketCodeForContext, perMinuteRange } from "@/lib/money";
-import { WEEKLY_PLAN_IDS, WEEKLY_PLANS } from "@/lib/weekly";
-import { renewalTerms } from "@/lib/renewal-copy";
+import HomePlans from "@/components/HomePlans";
+import { weeklyCurrency } from "@/lib/weekly";
 import { hreflangAlternates, localeHomePath } from "@/lib/seo";
 import { listDirectoryAdvisors } from "@/lib/slots";
 
@@ -60,14 +60,6 @@ export default async function LandingPage({
     amountCents: grid.packs[id],
     popular: id === '30min',
   }));
-  const weekly = WEEKLY_PLAN_IDS.map((id) => ({
-    id,
-    name: WEEKLY_PLANS[id].names.fr,
-    minutes: WEEKLY_PLANS[id].minutes,
-    highlighted: id === 'essentiel',
-    price: show(WEEKLY_PLANS[id].amounts[grid.currency]),
-    trial: renewalTerms(id, grid.currency, 'fr').trialLabel,
-  }));
 
   return (
     <main className="min-h-screen pb-28 sm:pb-12">
@@ -80,6 +72,7 @@ export default async function LandingPage({
           Un conseiller virtuel, une voix générée par IA, à partir de votre thème natal. Le tarif est affiché avant le paiement.
         </p>
       </div>
+      <HomePlans locale={market.language} currency={weeklyCurrency(grid.currency)} />
       <AdvisorDirectory
         embedded
         advisors={advisors}
@@ -282,26 +275,8 @@ export default async function LandingPage({
               ))}
             </div>
 
-            <div className="grid gap-4 md:grid-cols-3">
-              {weekly.map((plan) => (
-                <div
-                  key={plan.id}
-                  className={`p-6 rounded-2xl space-y-2 ${
-                    plan.highlighted
-                      ? 'bg-celestial-gold/15 border border-celestial-gold'
-                      : 'bg-white/5 border border-white/10'
-                  }`}
-                >
-                  {plan.highlighted && <p className="text-xs uppercase tracking-[0.16em] text-celestial-gold">Recommandé</p>}
-                  <h3 className="text-xl font-semibold">{plan.name}</h3>
-                  <p className="text-2xl font-bold text-celestial-gold">{plan.trial}</p>
-                  <p className="text-sm text-white/70">la 1re semaine, puis {plan.price}/semaine</p>
-                  <p className="text-sm text-white/60">{plan.minutes} min / semaine · 60 min max par appel</p>
-                </div>
-              ))}
-            </div>
             <p className="text-center">
-              <Link href="/offres#formules" className="text-celestial-gold underline">Choisir une formule</Link>
+              <Link href="#formules" className="text-celestial-gold underline">Choisir une formule</Link>
             </p>
 
             <p className="text-center text-white/50 text-sm pt-4">

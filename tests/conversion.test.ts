@@ -17,7 +17,9 @@ import {
   reminderAt,
   signOptOut,
 } from '../lib/checkout-reminder-copy.ts';
+import { homePlansCopy } from '../lib/home-plans-copy.ts';
 import type { AdvisorLang } from '../lib/money.ts';
+import { renewalTerms } from '../lib/renewal-copy.ts';
 
 const LOCALES: AdvisorLang[] = ['fr', 'en', 'es', 'de', 'it'];
 const CHROME = 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 Version/17.0 Mobile/15E148 Safari/604.1';
@@ -128,4 +130,27 @@ test('un seul rappel une heure plus tard, avec désinscription, sans urgence inv
   assert.match(migration, /\/admin%/);
   assert.match(migration, /ne lance pas cette migration/);
   assert.equal(migration.toLowerCase().includes('apply_migration'), false);
+});
+
+test('les formules précèdent les conseillers, Essentiel reste mis en avant', () => {
+  const root = fs.readFileSync(new URL('../app/page.tsx', import.meta.url), 'utf8');
+  const localeHome = fs.readFileSync(new URL('../app/[locale]/page.tsx', import.meta.url), 'utf8');
+  const plans = fs.readFileSync(new URL('../components/HomePlans.tsx', import.meta.url), 'utf8');
+  assert.ok(root.indexOf('<HomePlans') < root.indexOf('<AdvisorDirectory'));
+  assert.ok(localeHome.indexOf('<HomePlans') < localeHome.indexOf('ordered.map'));
+  assert.match(plans, /grid-cols-1/);
+  assert.match(plans, /md:grid-cols-3/);
+  assert.match(plans, /id === 'essentiel'/);
+  assert.match(plans, /data-offer="decouverte"/);
+  assert.equal(discoveryHeadline('fr', 'eur'), '1,99 € la 1re semaine');
+  const renewal = renewalTerms('decouverte', 'eur', 'fr', new Date('2026-10-13T09:00:00Z'));
+  assert.match(renewal.sentence, /5,90/);
+  assert.match(renewal.sentence, /sans engagement/);
+  for (const locale of LOCALES) {
+    const copy = homePlansCopy(locale);
+    assert.ok(copy.title.length > 2);
+    assert.ok(copy.recommended.length > 2);
+    assert.match(copy.ai, /IA|AI|KI/);
+    assert.equal(/compte à rebours|plus que \d|dernières places|only \d left/i.test(`${copy.lead} ${copy.title}`), false);
+  }
 });
