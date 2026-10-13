@@ -7,6 +7,8 @@ import { isCurrency, type Currency } from './money';
 import { weeklyPriceId, welcomeCouponId } from './stripe-prices';
 import { everSubscribed } from './subscriptions';
 import { welcomeCouponEnvName, type WeeklyCurrency, type WeeklyPlanId } from './weekly';
+import { stampCheckoutAcquisition } from './acquisition-store';
+import { noteCheckoutOpened } from './checkout-reminder';
 import { appBaseUrl, getStripe, integrationIdentifier } from './stripe';
 
 export type CheckoutPurpose = 'call_meter' | 'prepaid' | 'booking' | 'summary' | 'report';
@@ -131,6 +133,22 @@ export async function createElementsCheckout(options: {
     throw new Error('CLIENT_SECRET_MISSING');
   }
 
+  await Promise.all([
+    stampCheckoutAcquisition({
+      userId: options.user.id,
+      bookingId: options.metadata.booking_id || null,
+      checkoutSessionId: session.id,
+      purpose: options.purpose,
+    }),
+    noteCheckoutOpened({
+      user: options.user,
+      checkoutSessionId: session.id,
+      purpose: options.purpose,
+    }),
+  ]).catch((error) => {
+    console.warn('Attribution paiement:', error instanceof Error ? error.message : error);
+  });
+
   return {
     clientSecret: session.client_secret,
     checkoutSessionId: session.id,
@@ -181,6 +199,23 @@ export async function createSubscriptionCheckout(options: {
     client_reference_id: options.user.id,
   });
   if (!session.client_secret) throw new Error('CLIENT_SECRET_MISSING');
+  await Promise.all([
+    stampCheckoutAcquisition({
+      userId: options.user.id,
+      checkoutSessionId: session.id,
+      purpose: 'subscription',
+    }),
+    noteCheckoutOpened({
+      user: options.user,
+      checkoutSessionId: session.id,
+      purpose: 'subscription',
+      plan: options.plan,
+      currency: options.currency,
+      language: options.language,
+    }),
+  ]).catch((error) => {
+    console.warn('Attribution formule:', error instanceof Error ? error.message : error);
+  });
   return {
     clientSecret: session.client_secret,
     checkoutSessionId: session.id,
