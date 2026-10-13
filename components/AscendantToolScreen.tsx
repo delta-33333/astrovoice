@@ -6,6 +6,7 @@ import JsonLd from '@/components/JsonLd';
 import PromoStrip from '@/components/PromoStrip';
 import SeoChrome from '@/components/SeoChrome';
 import { getCopy } from '@/lib/ascendant-copy';
+import { chartReadingCta } from '@/lib/book-funnel';
 import {
   ascendantJsonLd,
   ascendantPath,
@@ -14,7 +15,8 @@ import {
   type ConsultCandidate,
 } from '@/lib/ascendant-tool';
 import { aiActLine } from '@/lib/legal';
-import { readRates } from '@/lib/market';
+import { readRates, resolveMarket } from '@/lib/market';
+import { weeklyCurrency } from '@/lib/weekly';
 import { perMinuteRange } from '@/lib/money';
 import {
   advisorPath,
@@ -102,6 +104,9 @@ export default async function AscendantToolScreen(
 
   const choice = consultChoice(locale, candidates);
   const cta = choice.gender === 'femme' ? copy.ctaFemme : copy.ctaHomme;
+  const market = await resolveMarket();
+  const offerCurrency = weeklyCurrency(market.currency);
+  const readingCta = chartReadingCta(locale, offerCurrency);
   const range = perMinuteRange(localeCurrency(locale), readRates(), locale);
   const origin = appBaseUrl();
   const path = ascendantPath(locale);
@@ -121,7 +126,12 @@ export default async function AscendantToolScreen(
         <p className="mt-4 text-white/80 leading-relaxed">{copy.intro}</p>
 
         <div className="mt-8">
-          <AscendantCalculator labels={copy.form} signs={copy.signs} />
+          <AscendantCalculator
+            labels={copy.form}
+            signs={copy.signs}
+            readingCta={readingCta}
+            checkoutBase={choice.href}
+          />
         </div>
 
         <section className="mt-6 rounded-3xl border border-celestial-gold/30 bg-celestial-purple/10 p-5 sm:p-6">

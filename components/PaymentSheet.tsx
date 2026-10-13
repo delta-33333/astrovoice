@@ -13,10 +13,17 @@ import { funnel } from '@/lib/funnel-client';
 
 const publishableKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || '';
 
-const stripePromise =
-  publishableKey && !publishableKey.includes('placeholder')
-    ? loadStripe(publishableKey, { locale: 'fr' })
-    : null;
+const stripeCache = new Map<string, ReturnType<typeof loadStripe>>();
+
+function stripeFor(locale: string) {
+  if (!publishableKey || publishableKey.includes('placeholder')) return null;
+  const key = locale || 'fr';
+  const existing = stripeCache.get(key);
+  if (existing) return existing;
+  const created = loadStripe(publishableKey, { locale: key as 'fr' });
+  stripeCache.set(key, created);
+  return created;
+}
 
 const appearance = {
   theme: 'night' as const,
@@ -43,6 +50,8 @@ type PaymentSheetProps = {
   note?: string;
   /** Conditions de renouvellement, juste au-dessus du bouton de paiement. */
   renewal?: string;
+  /** Langue du Payment Element et d’Apple Pay / Google Pay. */
+  locale?: string;
   clientSecret: string | null;
   collectContact?: boolean;
   onClose: () => void;
@@ -116,16 +125,16 @@ export default function PaymentSheet(props: PaymentSheetProps) {
         <p className="text-3xl font-semibold text-celestial-gold mb-2">{props.amountLabel}</p>
         <p className="text-sm text-white/70 leading-relaxed mb-6">{props.detail}</p>
 
-        {!stripePromise && (
+        {!stripeFor(props.locale || 'fr') && (
           <p className="text-sm text-red-200">
             Le paiement n’est pas disponible pour le moment.
           </p>
         )}
 
-        {stripePromise && props.clientSecret && (
+        {stripeFor(props.locale || 'fr') && props.clientSecret && (
           <CheckoutElementsProvider
             key={props.clientSecret}
-            stripe={stripePromise}
+            stripe={stripeFor(props.locale || 'fr')}
             options={{
               clientSecret: props.clientSecret,
               elementsOptions: { appearance, loader: 'auto' },
@@ -141,7 +150,7 @@ export default function PaymentSheet(props: PaymentSheetProps) {
           </CheckoutElementsProvider>
         )}
 
-        {stripePromise && !props.clientSecret && (
+        {stripeFor(props.locale || 'fr') && !props.clientSecret && (
           <p className="text-sm text-white/60">Préparation du paiement…</p>
         )}
       </div>

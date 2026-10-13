@@ -1,7 +1,8 @@
 /**
  * Choix de cookies, lisible par le middleware et les routes.
- * `cl_ck` est strictement nécessaire (il mémorise le choix). Les cookies de mesure
- * `cl_vid` et `cl_ft` ne sont posés que si l’audience est acceptée.
+ * `cl_ck` est strictement nécessaire (il mémorise le choix). `cl_vid` et `cl_ft`
+ * sont posés à la première visite pour l’entonnoir interne. Vercel Analytics
+ * ne se charge que si l’audience est acceptée.
  */
 export const CONSENT_COOKIE = 'cl_ck';
 export const CONSENT_MAX_AGE = 60 * 60 * 24 * 180;

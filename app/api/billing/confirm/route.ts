@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { cancelCheckoutReminder } from '@/lib/checkout-reminder';
 import { getSession } from '@/lib/session';
 import { getStripe } from '@/lib/stripe';
 import { syncSubscription } from '@/lib/subscriptions';
@@ -21,6 +22,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Session introuvable' }, { status: 404 });
   }
   const subscription = session.subscription;
+  await cancelCheckoutReminder({ userId: user.id, checkoutSessionId });
   if (subscription && typeof subscription !== 'string') {
     await syncSubscription(subscription as Stripe.Subscription);
   } else if (typeof subscription === 'string') {
