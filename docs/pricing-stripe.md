@@ -55,6 +55,8 @@ Si le Price ou le coupon requis manque pour un premier client, le checkout répo
 
 ## Rappel et résiliation
 
-Cron Vercel `0 * * * *` sur `/api/cron/weekly-renewal`, en-tête `Authorization: Bearer CRON_SECRET`. L’e-mail part 24 h avant le premier prélèvement au plein tarif, une seule fois. `invoice.upcoming` peut avancer cette date, pas la créer ni la reculer.
+Cron Vercel sur `/api/cron/weekly-renewal`, en-tête `Authorization: Bearer CRON_SECRET`. L’e-mail part dans les 24 h qui précèdent le premier prélèvement au plein tarif, une seule fois. `invoice.upcoming` peut avancer cette date, pas la créer ni la reculer.
+
+Le projet est sur l’offre Hobby : un cron plus fréquent qu’une fois par jour fait échouer le déploiement. L’expression retenue est donc `0 8 * * *`. Sur une offre qui autorise l’heure, la remplacer par `0 * * * *`.
 
 La résiliation en 1 clic pose `cancel_at_period_end`. L’accès court jusqu’à la fin de la période payée.

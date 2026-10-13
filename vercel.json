@@ -10,7 +10,7 @@
     },
     {
       "path": "/api/cron/weekly-renewal",
-      "schedule": "0 * * * *"
+      "schedule": "0 8 * * *"
     }
   ]
 }
