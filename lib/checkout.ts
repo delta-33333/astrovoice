@@ -4,8 +4,9 @@ import type { UserProfile } from './supabase';
 import { getSupabaseAdmin, supabaseAvailable } from './supabase';
 import { updateUserCookie } from './session';
 import { isCurrency, type Currency } from './money';
-import type { SubscriptionCurrency } from './offers';
-import { ensureUnlimitedPrice } from './stripe-prices';
+import { weeklyPriceId, welcomeCouponId } from './stripe-prices';
+import { everSubscribed } from './subscriptions';
+import { welcomeCouponEnvName, type WeeklyCurrency, type WeeklyPlanId } from './weekly';
 import { appBaseUrl, getStripe, integrationIdentifier } from './stripe';
 
 export type CheckoutPurpose = 'call_meter' | 'prepaid' | 'booking' | 'summary' | 'report';
@@ -142,18 +143,28 @@ export async function createElementsCheckout(options: {
 export async function createSubscriptionCheckout(options: {
   request: NextRequest;
   user: UserProfile;
-  currency: SubscriptionCurrency;
-}): Promise<{ clientSecret: string; checkoutSessionId: string; collectContact: boolean }> {
+  currency: WeeklyCurrency;
+  plan: WeeklyPlanId;
+  language: string;
+}): Promise<{ clientSecret: string; checkoutSessionId: string; collectContact: boolean; introWeek: boolean }> {
   const stripe = getStripe();
   if (!stripe) throw new Error('STRIPE_NOT_CONFIGURED');
+  const priceId = weeklyPriceId(options.plan, options.currency);
+  if (!priceId) throw new Error('PRICE_NOT_CONFIGURED');
   const { customerId, email } = await ensureCustomer(stripe, options.user);
-  const priceId = await ensureUnlimitedPrice(options.currency);
+  const prior = await everSubscribed(options.user.id, customerId);
+  const couponEnv = prior ? null : welcomeCouponEnvName(options.plan, options.currency);
+  const coupon = prior ? null : welcomeCouponId(options.plan, options.currency);
+  if (!prior && !coupon) throw new Error('COUPON_NOT_CONFIGURED');
   const origin = appBaseUrl(options.request.nextUrl.origin);
   const metadata: Record<string, string> = {
     purpose: 'subscription',
     userId: options.user.id,
     app: 'callastral',
     currency: options.currency,
+    plan: options.plan,
+    language: options.language,
+    introWeek: prior ? 'false' : 'true',
   };
   const session = await stripe.checkout.sessions.create({
     mode: 'subscription',
@@ -164,7 +175,8 @@ export async function createSubscriptionCheckout(options: {
     integration_identifier: integrationIdentifier('subscription'),
     return_url: `${origin}/payment/return?session_id={CHECKOUT_SESSION_ID}&flow=subscription`,
     line_items: [{ price: priceId, quantity: 1 }],
-    metadata,
+    ...(coupon ? { discounts: [{ coupon }] } : {}),
+    metadata: { ...metadata, ...(couponEnv ? { couponEnv } : {}) },
     subscription_data: { metadata },
     client_reference_id: options.user.id,
   });
@@ -173,6 +185,7 @@ export async function createSubscriptionCheckout(options: {
     clientSecret: session.client_secret,
     checkoutSessionId: session.id,
     collectContact: !email,
+    introWeek: !prior,
   };
 }
 

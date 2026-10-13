@@ -115,7 +115,7 @@ export default async function AdminAdvisorsPage({
                 <input
                   name="price_per_min"
                   type="number"
-                  min={0.5}
+                  min={0.89}
                   max={1.99}
                   step={0.01}
                   defaultValue={(cents / 100).toFixed(2)}

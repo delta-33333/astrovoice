@@ -1,25 +1,34 @@
 /**
- * Crée les Price Stripe de Callastral Illimité (EUR, USD, GBP, JPY) s’ils n’existent pas.
- * Même fonction que l’application : ensureAllUnlimitedPrices (lookup_key).
+ * Liste les objets Stripe à créer à la main. Ce script n’appelle pas Stripe.
  *
- *   STRIPE_SECRET_KEY=sk_live_... npx tsx scripts/setup-stripe-prices.ts
+ *   npx tsx scripts/setup-stripe-prices.ts
  */
-import { ensureAllUnlimitedPrices, unlimitedMinor } from '../lib/stripe-prices';
-import { SUBSCRIPTION_CURRENCIES } from '../lib/offers';
+import { weeklyPriceEnvList } from '../lib/stripe-prices';
+import { WEEKLY_CURRENCIES, WEEKLY_PLAN_IDS, WEEKLY_PLANS, decouverteAmountOff, firstWeekMinor } from '../lib/weekly';
 
-async function main() {
-  if (!process.env.STRIPE_SECRET_KEY || process.env.STRIPE_SECRET_KEY.includes('placeholder')) {
-    console.error('STRIPE_SECRET_KEY manquante');
-    process.exit(1);
+function main() {
+  console.log('Aucun objet Stripe n’est créé ici. Créez-les dans le Dashboard, puis renseignez les variables.');
+  console.log('');
+  for (const plan of WEEKLY_PLAN_IDS) {
+    const item = WEEKLY_PLANS[plan];
+    console.log(`Produit : ${item.productName} — ${item.minutes} min / semaine`);
+    for (const currency of WEEKLY_CURRENCIES) {
+      const full = item.amounts[currency];
+      const first = firstWeekMinor(plan, currency);
+      console.log(`  ${currency}  plein ${full}  première semaine ${first}`);
+    }
   }
-  for (const currency of SUBSCRIPTION_CURRENCIES) {
-    console.log(currency, unlimitedMinor(currency));
+  console.log('');
+  console.log('Coupon STRIPE_COUPON_WEEK1_50 : percent_off 50, duration once. Essentiel et Premium seulement.');
+  for (const currency of WEEKLY_CURRENCIES) {
+    console.log(
+      `Coupon STRIPE_COUPON_DECOUVERTE_WEEK1_${currency.toUpperCase()} : amount_off ${decouverteAmountOff(currency)} ${currency}, duration once.`,
+    );
   }
-  const ids = await ensureAllUnlimitedPrices();
-  console.log(ids);
+  console.log('');
+  console.log('Variables Price :');
+  for (const name of weeklyPriceEnvList()) console.log(`  ${name}`);
+  console.log('Le coupon de bienvenue est une fois par client, toutes formules confondues.');
 }
 
-main().catch((error) => {
-  console.error(error instanceof Error ? error.message : error);
-  process.exit(1);
-});
+main();

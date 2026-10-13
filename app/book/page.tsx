@@ -244,7 +244,7 @@ export default function BookPage() {
         <p className="text-white/70 mb-2">{whenLabel} · heure de Paris</p>
         <p className="text-sm text-celestial-gold mb-4">
           {includedSeconds >= duration * 60
-            ? `Inclus dans Callastral Illimité · ${Math.floor(includedSeconds / 60)} min restantes ce mois-ci`
+            ? `Inclus dans votre formule · ${Math.floor(includedSeconds / 60)} min restantes cette semaine`
             : introLabel && perMinLabel
               ? `${introLabel} les 3 premières minutes, puis ${perMinLabel}`
               : 'Le tarif du conseiller est confirmé au paiement.'}
@@ -335,7 +335,7 @@ export default function BookPage() {
 
         <p className="text-xs text-white/45 mt-4">
           {includedSeconds >= duration * 60
-            ? 'Le créneau est confirmé sans paiement. La durée est décomptée de Callastral Illimité.'
+            ? 'Le créneau est confirmé sans paiement. La durée est décomptée de votre formule de la semaine.'
             : 'Le créneau est bloqué 10 minutes, le temps du paiement. Apple Pay et Google Pay s’affichent si votre appareil les propose.'}
         </p>
         {error && <p className="text-sm text-red-200 mt-4">{error}</p>}

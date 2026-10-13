@@ -23,15 +23,25 @@ const emptyBirth = (): BirthForm => ({
   place: '',
 });
 
+export interface PlanCard {
+  id: string;
+  name: string;
+  minutes: number;
+  highlighted: boolean;
+  priceLabel: string;
+  trialLabel: string;
+  renewal: string;
+}
+
 export interface OfferLabels {
-  subscription: string;
+  plans: PlanCard[];
   summary: string;
   natal: string;
   forecast: string;
   compatibility: string;
   floor: string;
   ceiling: string;
-  currencyNote: string;
+  intro: string;
 }
 
 function Field({
@@ -143,8 +153,16 @@ export default function OffersCatalog({ labels }: { labels: OfferLabels }) {
   const [sheetTitle, setSheetTitle] = useState('');
   const [sheetAmount, setSheetAmount] = useState('');
   const [sheetKind, setSheetKind] = useState<'subscription' | 'report'>('report');
+  const [sheetRenewal, setSheetRenewal] = useState('');
 
-  const openCheckout = async (path: string, body: unknown, title: string, amount: string, kind: 'subscription' | 'report') => {
+  const openCheckout = async (
+    path: string,
+    body: unknown,
+    title: string,
+    amount: string,
+    kind: 'subscription' | 'report',
+    renewal = '',
+  ) => {
     setBusy(true);
     setError('');
     const response = await fetch(path, {
@@ -165,8 +183,9 @@ export default function OffersCatalog({ labels }: { labels: OfferLabels }) {
     setClientSecret(payload.clientSecret);
     setCheckoutSessionId(payload.checkoutSessionId);
     setCollectContact(Boolean(payload.collectContact));
-    setSheetTitle(title);
+    setSheetTitle(payload.name || title);
     setSheetAmount(payload.amountLabel || amount);
+    setSheetRenewal(payload.renewal || renewal);
     setSheetKind(kind);
     setSheetOpen(true);
   };
@@ -178,30 +197,59 @@ export default function OffersCatalog({ labels }: { labels: OfferLabels }) {
     <div className="space-y-8">
       {error && <p className="text-sm text-red-200">{error}</p>}
 
-      <section className="rounded-3xl border border-celestial-gold/40 bg-celestial-gold/10 p-6 sm:p-8 space-y-4">
-        <p className="text-xs uppercase tracking-[0.18em] text-celestial-gold">Abonnement</p>
-        <h2 className="font-[family-name:var(--font-cinzel)] text-3xl">Callastral Illimité</h2>
-        <p className="text-4xl font-bold text-celestial-gold">{labels.subscription}<span className="text-lg font-normal text-white/70"> / mois</span></p>
-        <p className="text-white/80">
-          Parole sans facturation à la minute, dans la limite de 300 minutes par mois et de 60 minutes par appel.
-          Résiliable à tout moment depuis le compte.
-        </p>
-        <p className="text-sm text-white/50">{labels.currencyNote}</p>
-        <button
-          type="button"
-          className="btn-primary"
-          disabled={busy}
-          onClick={() => void openCheckout('/api/billing/subscribe', {}, 'Callastral Illimité', labels.subscription, 'subscription')}
-        >
-          S’abonner
-        </button>
+      <section id="formules" className="space-y-4">
+        <div>
+          <p className="text-xs uppercase tracking-[0.18em] text-celestial-gold">Chaque semaine</p>
+          <h2 className="font-[family-name:var(--font-cinzel)] text-3xl">Trois formules</h2>
+          <p className="mt-2 text-white/75">
+            60 minutes maximum par appel. La première semaine est à tarif réduit, puis le prix affiché. Sans engagement, résiliable en 1 clic.
+          </p>
+        </div>
+        <div className="grid gap-4 md:grid-cols-3">
+          {labels.plans.map((plan) => (
+            <article
+              key={plan.id}
+              className={`flex flex-col rounded-3xl border p-5 ${
+                plan.highlighted
+                  ? 'border-celestial-gold bg-celestial-gold/15 shadow-lg shadow-celestial-gold/10 md:scale-[1.03]'
+                  : 'border-white/10 bg-white/5'
+              }`}
+            >
+              {plan.highlighted ? (
+                <p className="text-xs uppercase tracking-[0.16em] text-celestial-gold">Recommandé</p>
+              ) : (
+                <p className="text-xs uppercase tracking-[0.16em] text-white/40">Formule</p>
+              )}
+              <h3 className="mt-2 font-[family-name:var(--font-cinzel)] text-2xl">{plan.name}</h3>
+              <p className="mt-3 text-3xl font-bold text-celestial-gold">{plan.trialLabel}</p>
+              <p className="text-sm text-white/60">la 1re semaine, puis {plan.priceLabel}/semaine</p>
+              <p className="mt-3 text-sm text-white/80">{plan.minutes} minutes par semaine</p>
+              <p className="mt-3 text-sm leading-relaxed text-white/80">{plan.renewal}</p>
+              <button
+                type="button"
+                className="btn-primary mt-4"
+                disabled={busy}
+                onClick={() => void openCheckout(
+                  '/api/billing/subscribe',
+                  { plan: plan.id },
+                  plan.name,
+                  plan.trialLabel,
+                  'subscription',
+                  plan.renewal,
+                )}
+              >
+                Choisir {plan.name}
+              </button>
+            </article>
+          ))}
+        </div>
       </section>
 
       <section className="rounded-3xl border border-white/10 bg-white/5 p-6 space-y-3">
         <h2 className="text-xl font-semibold">Consultation à la minute</h2>
         <p className="text-white/75">
           Chaque conseiller a son tarif, entre {labels.floor} et {labels.ceiling} la minute. Les trois premières minutes
-          sont à un tarif réduit, propre à ce tarif.
+          sont à {labels.intro} la minute, une fois par compte.
         </p>
         <Link href="/#annuaire" className="text-celestial-gold underline">Choisir un conseiller</Link>
       </section>
@@ -289,7 +337,8 @@ export default function OffersCatalog({ labels }: { labels: OfferLabels }) {
         open={sheetOpen}
         title={sheetTitle}
         amountLabel={sheetAmount}
-        detail="Paiement sécurisé. Le document arrive par e-mail et dans le compte."
+        detail={sheetKind === 'subscription' ? '60 minutes maximum par appel.' : 'Paiement sécurisé. Le document arrive par e-mail et dans le compte.'}
+        renewal={sheetKind === 'subscription' ? sheetRenewal : undefined}
         payLabel={sheetAmount ? `Payer ${sheetAmount}` : 'Payer'}
         clientSecret={clientSecret}
         collectContact={collectContact}

@@ -26,13 +26,12 @@ export default function CompletePage() {
   const [reviewMessage, setReviewMessage] = useState<string | null>(null);
   const [summaryLabel, setSummaryLabel] = useState('');
   const [offers, setOffers] = useState<{
-    subscriptionLabel?: string;
     natalLabel?: string;
     forecastLabel?: string;
     compatibilityLabel?: string;
     rebookPercent?: number;
-    fairUseMinutes?: number;
     maxCallMinutes?: number;
+    plans?: { name: string; minutes: number; trialLabel: string; priceLabel: string; highlighted?: boolean }[];
   }>({});
 
   useEffect(() => {
@@ -177,9 +176,11 @@ export default function CompletePage() {
         <div className="bg-white/5 border border-celestial-gold/30 rounded-3xl p-6 mb-8 text-left space-y-3">
           <h2 className="text-lg font-semibold">Pour la suite</h2>
           <p className="text-sm text-white/75">
-            Callastral Illimité {offers.subscriptionLabel ? `· ${offers.subscriptionLabel}/mois` : ''} : parole sans
-            facturation à la minute, {offers.fairUseMinutes || 300} minutes par mois, {offers.maxCallMinutes || 60} minutes
-            par appel.
+            Formules hebdomadaires
+            {offers.plans?.length
+              ? ` : ${offers.plans.map((plan) => `${plan.name} ${plan.trialLabel} la 1re semaine puis ${plan.priceLabel}/semaine (${plan.minutes} min)`).join(' · ')}`
+              : ''}
+            . {offers.maxCallMinutes || 60} minutes maximum par appel, sans facturation à la minute dans ce volume.
           </p>
           <p className="text-sm text-white/75">
             Thème natal {offers.natalLabel || ''} · Prévision 2026 et 2027 {offers.forecastLabel || ''} · Compatibilité{' '}
@@ -246,11 +247,13 @@ export default function CompletePage() {
             className="bg-white/5 hover:bg-white/10 backdrop-blur-sm border border-white/10 hover:border-celestial-gold/50 rounded-2xl p-6 transition-all"
           >
             <div className="text-3xl mb-2">🌟</div>
-            <h3 className="font-semibold mb-2">Callastral Illimité</h3>
+            <h3 className="font-semibold mb-2">Formule hebdomadaire</h3>
             <p className="text-sm text-white/60 mb-3">
-              Sans facturation à la minute, dans la limite mensuelle
+              Minutes chaque semaine, 60 minutes maximum par appel
             </p>
-            <p className="text-xs text-celestial-gold">{offers.subscriptionLabel || '49 €'}/mois</p>
+            <p className="text-xs text-celestial-gold">
+              {offers.plans?.find((plan) => plan.highlighted)?.trialLabel || '7,45 €'} la 1re semaine
+            </p>
           </Link>
         </div>
 

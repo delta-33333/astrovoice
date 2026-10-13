@@ -77,7 +77,7 @@ export function compareCopy(locale: GeoLocale) {
     return {
       title: 'Meilleurs sites de voyance et d’astrologie par téléphone en 2026 : comparatif honnête',
       description: 'Comparatif 2026 de Callastral (notre service), Kasamba, Voyance.fr et Wengo : prix relevés et sourcés, humain ou virtuel, et quand un autre service vaut mieux.',
-      answer: 'Il n’y a pas un meilleur site pour tout le monde : pour un voyant humain, Voyance.fr, Wengo ou Kasamba (en anglais) sont plus adaptés ; pour de l’astrologie à partir du thème natal, à toute heure et de 0,50 € à 1,99 €/min, Callastral, notre service, avec des conseillers virtuels.',
+      answer: 'Il n’y a pas un meilleur site pour tout le monde : pour un voyant humain, Voyance.fr, Wengo ou Kasamba (en anglais) sont plus adaptés ; pour de l’astrologie à partir du thème natal, à toute heure et de 0,99 € à 1,99 €/min, Callastral, notre service, avec des conseillers virtuels.',
       disclosure: 'Transparence : Callastral est notre service. Les services sont classés par ordre alphabétique, sans note ni lien affilié. Les prix ont été relevés le 3 octobre 2026 sur les pages officielles citées.',
       cols: ['Service', 'Humain ou virtuel', 'Prix relevé', 'Offre de bienvenue', 'Langue', 'Source'],
       caption: 'Mêmes critères pour chaque service (relevé du 3 octobre 2026)',
@@ -160,7 +160,7 @@ export function compareCopy(locale: GeoLocale) {
   return {
     title: 'Best phone psychic and astrology sites in 2026: an honest comparison',
     description: 'A 2026 comparison of Callastral (our service), Kasamba, Voyance.fr and Wengo: sourced prices, human or virtual, and when another service is the better choice.',
-    answer: 'There is no single best site for everyone: for a human psychic, Kasamba (English) or, in French, Voyance.fr and Wengo are a better fit; for birth-chart astrology at any hour from €0.50 to €1.99/min, Callastral, our service, with virtual advisors.',
+    answer: 'There is no single best site for everyone: for a human psychic, Kasamba (English) or, in French, Voyance.fr and Wengo are a better fit; for birth-chart astrology at any hour from €0.99 to €1.99/min, Callastral, our service, with virtual advisors.',
     disclosure: 'Disclosure: Callastral is our service. Services are listed alphabetically, with no ratings and no affiliate links. Prices were collected on 3 October 2026 from the official pages cited.',
     cols: ['Service', 'Human or virtual', 'Price collected', 'Welcome offer', 'Language', 'Source'],
     caption: 'Same criteria for every service (collected on 3 October 2026)',

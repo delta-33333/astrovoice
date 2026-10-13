@@ -4,7 +4,7 @@ import { confirmBookingPayment } from '@/lib/bookings';
 import { grantPrepaidCredits } from '@/lib/credits';
 import { fulfillCheckoutReport } from '@/lib/reports';
 import { getStripe } from '@/lib/stripe';
-import { subscriptionIdFromInvoice, syncSubscription, syncSubscriptionById } from '@/lib/subscriptions';
+import { noteUpcomingFullCharge, subscriptionIdFromInvoice, syncSubscription, syncSubscriptionById } from '@/lib/subscriptions';
 import { deliverPaidSummary, markSummaryPaid } from '@/lib/summaries';
 
 export const runtime = 'nodejs';
@@ -71,6 +71,12 @@ export async function POST(request: NextRequest) {
         const subscription = event.data.object as Stripe.Subscription;
         const saved = await syncSubscription(subscription);
         console.log('Abonnement', event.type, subscription.id, saved);
+        break;
+      }
+      case 'invoice.upcoming': {
+        const invoice = event.data.object as Stripe.Invoice;
+        await noteUpcomingFullCharge(invoice);
+        console.log('Facture à venir', invoice.id);
         break;
       }
       case 'invoice.paid':

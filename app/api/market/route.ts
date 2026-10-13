@@ -1,54 +1,82 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
+import { foundingOfferOpen } from '@/lib/founding';
 import { MARKET_COOKIE, marketCookieOptions, resolveMarket } from '@/lib/market';
-import { convertEurCents, formatMoney, isAdvisorLang, isCurrency, perMinuteRange } from '@/lib/money';
+import {
+  convertEurCents,
+  formatMoney,
+  isAdvisorLang,
+  isCurrency,
+  MARKET_PRICING,
+  marketCodeForContext,
+  perMinuteRange,
+} from '@/lib/money';
 import {
   COMPATIBILITY_REPORT_EUR_CENTS,
   FORECAST_REPORT_EUR_CENTS,
   NATAL_REPORT_EUR_CENTS,
-  SUBSCRIPTION_EUR_CENTS,
-  SUBSCRIPTION_FAIR_USE_MINUTES,
-  SUBSCRIPTION_MAX_CALL_MINUTES,
-  subscriptionCurrency,
 } from '@/lib/offers';
-import { MINUTE_PACKS, SUMMARY_CENTS } from '@/lib/pricing';
+import { MINUTE_PACKS, packForMarket, SUMMARY_CENTS } from '@/lib/pricing';
+import { renewalTerms } from '@/lib/renewal-copy';
+import { WEEKLY_MAX_CALL_MINUTES, WEEKLY_PLAN_IDS, WEEKLY_PLANS } from '@/lib/weekly';
 
 export const dynamic = 'force-dynamic';
 
 export async function GET() {
   const market = await resolveMarket();
+  const code = marketCodeForContext({
+    country: market.country,
+    locale: market.language,
+    currency: market.currency,
+  });
+  const grid = MARKET_PRICING[code];
+  const show = (minor: number) => formatMoney(minor, grid.currency, market.language);
   const money = (eurCents: number) =>
-    formatMoney(convertEurCents(eurCents, market.currency, market.rates), market.currency);
-
-  const range = perMinuteRange(market.currency, market.rates);
+    formatMoney(convertEurCents(eurCents, market.currency, market.rates), market.currency, market.language);
+  const range = perMinuteRange(market.currency, market.rates, market.language, market.country);
+  const plans = WEEKLY_PLAN_IDS.map((id) => {
+    const plan = WEEKLY_PLANS[id];
+    const terms = renewalTerms(id, grid.currency, market.language);
+    return {
+      id,
+      name: plan.names[market.language],
+      minutes: plan.minutes,
+      highlighted: id === 'essentiel',
+      priceLabel: show(plan.amounts[grid.currency]),
+      trialLabel: terms.trialLabel,
+      renewal: terms.sentence,
+    };
+  });
 
   return NextResponse.json({
     language: market.language,
-    currency: market.currency,
+    currency: grid.currency,
+    country: market.country,
     summaryLabel: money(SUMMARY_CENTS),
-    foundingLabel: money(490),
+    foundingLabel: show(grid.founding),
+    foundingOpen: foundingOfferOpen(new Date(), 0),
     floorLabel: range.floor,
     ceilingLabel: range.ceiling,
+    introLabel: range.intro,
     offers: {
-      subscriptionLabel: formatMoney(
-        convertEurCents(SUBSCRIPTION_EUR_CENTS, subscriptionCurrency(market.currency), market.rates),
-        subscriptionCurrency(market.currency)
-      ),
       summaryLabel: money(SUMMARY_CENTS),
       natalLabel: money(NATAL_REPORT_EUR_CENTS),
       forecastLabel: money(FORECAST_REPORT_EUR_CENTS),
       compatibilityLabel: money(COMPATIBILITY_REPORT_EUR_CENTS),
       rebookPercent: 15,
-      fairUseMinutes: SUBSCRIPTION_FAIR_USE_MINUTES,
-      maxCallMinutes: SUBSCRIPTION_MAX_CALL_MINUTES,
+      maxCallMinutes: WEEKLY_MAX_CALL_MINUTES,
+      plans,
     },
-    packs: MINUTE_PACKS.map((pack) => ({
-      id: pack.id,
-      amountLabel: money(pack.amountCents),
-      regularLabel: money(pack.regularCents),
-      perMinLabel: `${money(Math.round(pack.amountCents / pack.minutes))}/min`,
-      savingsLabel: money(Math.max(0, pack.regularCents - pack.amountCents)),
-    })),
+    packs: MINUTE_PACKS.map((pack) => {
+      const priced = packForMarket(pack, code);
+      return {
+        id: pack.id,
+        amountLabel: show(priced.amountCents),
+        regularLabel: show(priced.regularCents),
+        perMinLabel: `${show(Math.round(priced.amountCents / pack.minutes))}/min`,
+        savingsLabel: show(Math.max(0, priced.regularCents - priced.amountCents)),
+      };
+    }),
   });
 }
 

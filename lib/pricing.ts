@@ -1,12 +1,15 @@
 /**
- * Tarifs Callastral en euros (centimes), alignés sur la page de vente.
- * Intro : 0,99 €/min pendant les 3 premières minutes, puis 1,49 €/min, à la seconde.
+ * Tarifs de référence France, en centimes d’euro.
+ * L’accueil est un montant fixe par marché (0,49 € en France), 3 minutes, une fois par compte.
+ * Le tarif minute de référence reste 1,49 €.
  */
+
+import { MARKET_PRICING, type MarketCode } from './money.ts';
 
 export const CURRENCY = 'eur' as const;
 
 export const INTRO_SECONDS = 180;
-export const INTRO_CENTS = 99;
+export const INTRO_CENTS = 49;
 export const PER_MINUTE_CENTS = 149;
 
 /** Empreinte d'environ 10 minutes, encaissée au réel à la fin. */
@@ -56,13 +59,27 @@ export function getPack(id: string): MinutePack | undefined {
   return MINUTE_PACKS.find((pack) => pack.id === id);
 }
 
+/** Prix du pack dans le marché. Le prix barré reste au-dessus du prix encaissé. */
+export function packForMarket(pack: MinutePack, market: MarketCode): MinutePack {
+  const grid = MARKET_PRICING[market];
+  const amountCents = pack.id === 'founding' ? grid.founding : grid.packs[pack.id];
+  return { ...pack, amountCents, regularCents: strikeCents(pack, amountCents) };
+}
+
+function strikeCents(pack: MinutePack, amountCents: number): number {
+  if (pack.id === 'founding') return Math.max(pack.regularCents, amountCents + 100);
+  if (amountCents <= pack.amountCents) return pack.regularCents;
+  const scaled = Math.round((pack.regularCents * (amountCents / pack.amountCents)) / 10) * 10;
+  return Math.max(scaled, amountCents + 100);
+}
+
 export function packSeconds(pack: MinutePack): number {
   return pack.minutes * 60;
 }
 
 /**
  * Montant en centimes pour une durée facturable (hors minutes déjà prépayées).
- * 0 seconde = 0. Jusqu'à 3 minutes : 0,99 €/min. Au-delà : 1,49 €/min. À la seconde.
+ * 0 seconde = 0. Jusqu'à 3 minutes : 0,49 €/min (référence France). Au-delà : 1,49 €/min. À la seconde.
  */
 export function calculateCost(seconds: number): number {
   if (seconds <= 0) return 0;

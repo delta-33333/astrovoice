@@ -5,7 +5,8 @@ import { getSession } from '@/lib/session';
 import { formatMoney, normalizeCurrency } from '@/lib/money';
 import { getSupabaseAdmin, supabaseAvailable } from '@/lib/supabase';
 import { loadSubscription } from '@/lib/subscriptions';
-import { reportTitle, SUBSCRIPTION_FAIR_USE_MINUTES, SUBSCRIPTION_MAX_CALL_MINUTES } from '@/lib/offers';
+import { reportTitle } from '@/lib/offers';
+import { WEEKLY_MAX_CALL_MINUTES, WEEKLY_PLANS, isWeeklyPlan, planMinutes } from '@/lib/weekly';
 
 export const dynamic = 'force-dynamic';
 
@@ -67,9 +68,12 @@ export async function GET() {
           active: ENTITLED.has(subscription.status),
           cancelAtPeriodEnd: subscription.cancel_at_period_end,
           currentPeriodEnd: subscription.current_period_end,
+          plan: isWeeklyPlan(subscription.plan) ? subscription.plan : null,
+          planName: isWeeklyPlan(subscription.plan) ? WEEKLY_PLANS[subscription.plan].names.fr : 'Hebdomadaire',
+          minutesPerWeek: planMinutes(subscription.plan),
           fairUseMinutesUsed: Math.round((subscription.fair_use_seconds_used || 0) / 60),
-          fairUseMinutes: SUBSCRIPTION_FAIR_USE_MINUTES,
-          maxCallMinutes: SUBSCRIPTION_MAX_CALL_MINUTES,
+          fairUseMinutes: planMinutes(subscription.plan),
+          maxCallMinutes: WEEKLY_MAX_CALL_MINUTES,
           currency: subscription.currency,
           portal: Boolean(user.stripe_customer_id),
         }

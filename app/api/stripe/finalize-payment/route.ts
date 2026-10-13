@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSession } from '@/lib/session';
 import { consumePrepaidSeconds, restorePrepaidSeconds } from '@/lib/credits';
+import { markIntroClaimed } from '@/lib/intro';
 import { meterMinor } from '@/lib/money';
 import { quoteCall } from '@/lib/pricing';
 import { getStripe, stripeSecretConfigured } from '@/lib/stripe';
@@ -91,6 +92,9 @@ export async function POST(request: NextRequest) {
       const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
 
       if (paymentIntent.status === 'succeeded') {
+        if (checkout.metadata?.introApplied === 'true' && quote.billableSeconds > 0) {
+          await markIntroClaimed(user.id);
+        }
         return NextResponse.json({
           success: true,
           amountCharged: paymentIntent.amount_received,
@@ -128,6 +132,9 @@ export async function POST(request: NextRequest) {
       const captured = await stripe.paymentIntents.capture(paymentIntentId, {
         amount_to_capture: amountToCapture,
       });
+      if (checkout.metadata?.introApplied === 'true' && quote.billableSeconds > 0) {
+        await markIntroClaimed(user.id);
+      }
 
       return NextResponse.json({
         success: true,

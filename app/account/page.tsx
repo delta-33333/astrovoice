@@ -23,6 +23,8 @@ export default function AccountPage() {
       active: boolean;
       cancelAtPeriodEnd: boolean;
       currentPeriodEnd: string | null;
+      planName?: string;
+      minutesPerWeek?: number;
       fairUseMinutesUsed: number;
       fairUseMinutes: number;
       maxCallMinutes: number;
@@ -120,39 +122,59 @@ export default function AccountPage() {
         </div>
 
         <section className="rounded-2xl border border-white/10 bg-white/5 p-4 space-y-3">
-          <h2 className="font-semibold">Callastral Illimité</h2>
+          <h2 className="font-semibold">Formule hebdomadaire</h2>
           {billing?.subscription?.active ? (
             <>
               <p className="text-sm text-white/75">
-                Abonnement en cours
-                {billing.subscription.cancelAtPeriodEnd ? ', résiliation prévue en fin de période' : ''}.
-                {billing.subscription.fairUseMinutesUsed} min utilisées sur {billing.subscription.fairUseMinutes} ce mois-ci.
+                {billing.subscription.planName || 'Formule'} en cours
+                {billing.subscription.cancelAtPeriodEnd ? ', résiliation prévue en fin de semaine' : ''}.
+                {' '}{billing.subscription.fairUseMinutesUsed} min utilisées sur {billing.subscription.minutesPerWeek || billing.subscription.fairUseMinutes} cette semaine.
                 Maximum {billing.subscription.maxCallMinutes} min par appel.
+                {billing.subscription.currentPeriodEnd
+                  ? ` Semaine en cours jusqu’au ${new Date(billing.subscription.currentPeriodEnd).toLocaleDateString('fr-FR')}.`
+                  : ''}
               </p>
               <Link href="/?dispo=now" className="btn-primary inline-block w-full text-center">
                 Appeler maintenant
               </Link>
-              <button
-                type="button"
-                className="btn-secondary w-full"
-                onClick={() => {
-                  void fetch('/api/billing/portal', { method: 'POST' })
-                    .then((response) => response.json())
-                    .then((payload) => {
-                      if (payload.url) window.location.href = payload.url;
-                      else setError(payload.error || 'Le portail n’a pas pu s’ouvrir.');
-                    });
-                }}
-              >
-                Gérer ou résilier
-              </button>
+              {billing.subscription.cancelAtPeriodEnd ? (
+                <p className="text-sm text-white/60">La résiliation est enregistrée. L’accès continue jusqu’à la fin de la semaine payée.</p>
+              ) : (
+                <button
+                  type="button"
+                  className="btn-secondary w-full"
+                  onClick={() => {
+                    void fetch('/api/billing/cancel', { method: 'POST' })
+                      .then((response) => response.json())
+                      .then((payload) => {
+                        if (!payload.ok) {
+                          setError(payload.error || 'La résiliation n’a pas abouti.');
+                          return;
+                        }
+                        setNotice('Résiliation enregistrée. L’accès continue jusqu’à la fin de la semaine payée.');
+                        setBilling((current) => current && current.subscription
+                          ? {
+                              ...current,
+                              subscription: {
+                                ...current.subscription,
+                                cancelAtPeriodEnd: true,
+                                currentPeriodEnd: payload.currentPeriodEnd || current.subscription.currentPeriodEnd,
+                              },
+                            }
+                          : current);
+                      });
+                  }}
+                >
+                  Résilier en 1 clic
+                </button>
+              )}
             </>
           ) : (
             <>
               <p className="text-sm text-white/75">
-                49 € par mois, sans facturation à la minute, dans la limite de 300 minutes par mois et de 60 minutes par appel.
+                Découverte, Essentiel ou Premium : un volume de minutes par semaine, 60 minutes maximum par appel, sans engagement.
               </p>
-              <Link href="/offres" className="btn-primary inline-block w-full text-center">Voir l’offre</Link>
+              <Link href="/offres#formules" className="btn-primary inline-block w-full text-center">Voir les formules</Link>
             </>
           )}
           {billing?.rebook && (

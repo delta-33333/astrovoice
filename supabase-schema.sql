@@ -26,6 +26,7 @@ CREATE TABLE IF NOT EXISTS callastral.users (
   created_at timestamptz DEFAULT now(),
   email text,
   founding_claimed boolean DEFAULT false,
+  intro_claimed boolean NOT NULL DEFAULT false,
   credited_checkout_sessions jsonb DEFAULT '[]'::jsonb
 );
 CREATE INDEX IF NOT EXISTS idx_users_username ON callastral.users (username);

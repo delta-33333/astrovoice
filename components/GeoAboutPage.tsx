@@ -88,7 +88,7 @@ export default function GeoAboutPage({ locale }: { locale: GeoLocale }) {
             `De ${c.min} à ${c.max} par minute selon le conseiller, à la seconde ; les trois premières minutes sont à tarif réduit.`,
             ...(c.founding ? [`Offre fondateur : ${c.founding.minutes} minutes pour ${c.founding.price}, une fois par compte.`] : []),
             `Packs de minutes, sans date d’expiration : ${packs}.`,
-            `Callastral Illimité : ${c.subscription} par mois, dans la limite de ${c.fairUse} minutes par mois et de 60 minutes par appel ; résiliable à tout moment.`,
+            `Formules hebdomadaires, 60 minutes maximum par appel, résiliables en 1 clic : ${c.weekly.decouverte.name} ${c.weekly.decouverte.trial} la 1re semaine puis ${c.weekly.decouverte.full}/semaine (${c.weekly.decouverte.minutes} min) ; ${c.weekly.essentiel.name} ${c.weekly.essentiel.trial} puis ${c.weekly.essentiel.full} (${c.weekly.essentiel.minutes} min) ; ${c.weekly.premium.name} ${c.weekly.premium.trial} puis ${c.weekly.premium.full} (${c.weekly.premium.minutes} min).`,
           ],
         },
         {
@@ -144,7 +144,7 @@ export default function GeoAboutPage({ locale }: { locale: GeoLocale }) {
             `From ${c.min} to ${c.max} per minute depending on the advisor, billed by the second; the first three minutes are at a reduced rate.`,
             ...(c.founding ? [`Founder offer: ${c.founding.minutes} minutes for ${c.founding.price}, once per account.`] : []),
             `Minute packs, with no expiry: ${packsEn}.`,
-            `Callastral Unlimited: ${c.subscription} per month, up to ${c.fairUse} minutes a month and 60 minutes per call; cancel anytime.`,
+            `Weekly plans, 60 minutes maximum per call, cancel in one click: ${c.weekly.decouverte.name} ${c.weekly.decouverte.trial} the first week then ${c.weekly.decouverte.full}/week (${c.weekly.decouverte.minutes} min); ${c.weekly.essentiel.name} ${c.weekly.essentiel.trial} then ${c.weekly.essentiel.full} (${c.weekly.essentiel.minutes} min); ${c.weekly.premium.name} ${c.weekly.premium.trial} then ${c.weekly.premium.full} (${c.weekly.premium.minutes} min).`,
           ],
         },
         {
