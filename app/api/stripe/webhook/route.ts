@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { confirmBookingPayment } from '@/lib/bookings';
+import { cancelCheckoutReminder } from '@/lib/checkout-reminder';
 import { grantPrepaidCredits } from '@/lib/credits';
 import { fulfillCheckoutReport } from '@/lib/reports';
 import { getStripe } from '@/lib/stripe';
@@ -35,6 +36,12 @@ export async function POST(request: NextRequest) {
       case 'checkout.session.completed':
       case 'checkout.session.async_payment_succeeded': {
         const session = event.data.object as Stripe.Checkout.Session;
+        if (session.payment_status === 'paid' || session.payment_status === 'no_payment_required') {
+          await cancelCheckoutReminder({
+            userId: session.metadata?.userId,
+            checkoutSessionId: session.id,
+          });
+        }
         if (session.metadata?.purpose === 'prepaid') {
           const result = await grantPrepaidCredits(session, { allowCookie: false });
           console.log('Crédit minutes', session.id, result);
