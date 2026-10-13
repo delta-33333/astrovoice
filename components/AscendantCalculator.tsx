@@ -1,9 +1,11 @@
 'use client';
 
 import { useState, type FormEvent } from 'react';
+import Link from 'next/link';
 import HoneypotField from '@/components/HoneypotField';
 import type { AscendantResult } from '@/lib/ascendant-tool';
 import type { AscendantFormCopy, SignCopy } from '@/lib/ascendant-copy';
+import { resultCheckoutPath } from '@/lib/book-funnel';
 import { HONEYPOT_FIELD } from '@/lib/form-checks';
 
 const inputClass =
@@ -20,9 +22,13 @@ function isErrorCode(value: string): value is ErrorCode {
 export default function AscendantCalculator({
   labels,
   signs,
+  readingCta,
+  checkoutBase,
 }: {
   labels: AscendantFormCopy;
   signs: Record<string, SignCopy>;
+  readingCta: string;
+  checkoutBase: string;
 }) {
   const [date, setDate] = useState('');
   const [time, setTime] = useState('');
@@ -156,6 +162,13 @@ export default function AscendantCalculator({
               {result.placeLabel} · {result.localMeanTime ? labels.localMean : result.timeZone}
             </p>
             <p className="text-xs text-white/50 leading-relaxed">{labels.disclaimer}</p>
+            <Link
+              href={resultCheckoutPath({ consultHref: checkoutBase, date, time, place: place.trim() })}
+              data-funnel="book"
+              className="btn-primary mt-4 inline-block w-full text-center text-base"
+            >
+              {readingCta}
+            </Link>
           </div>
         ) : (
           <p className="text-sm text-white/45 leading-relaxed">
