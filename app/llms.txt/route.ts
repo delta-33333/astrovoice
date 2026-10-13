@@ -38,6 +38,7 @@ ${hubs}
 - À propos (qui exploite Callastral, conseillers virtuels, Swiss Ephemeris, prix, remboursements) : ${origin}/a-propos — EN : ${origin}/about
 - Tarifs de la voyance et de l’astrologie par téléphone en 2026, prix sourcés : ${origin}/fr/tarifs-voyance-telephone-2026 — EN : ${origin}/en/phone-psychic-prices-2026
 - Comparatif honnête des sites (Callastral = notre service) : ${origin}/fr/meilleurs-sites-voyance-2026 — EN : ${origin}/en/best-psychic-sites-2026
+- Alternatives sourcées, une fiche par service (relevé du 13 octobre 2026) : ${origin}/fr/alternatives — EN : ${origin}/en/alternatives
 - Calcul ascendant gratuit, sans compte, même éphéméride que les consultations : ${origin}/fr/calcul-ascendant-gratuit
 - Rising sign calculator (EN, free): ${origin}/en/rising-sign-calculator
 - Calcular ascendente (ES, gratis): ${origin}/es/calcular-ascendente

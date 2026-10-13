@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { AlternativeDirectory } from '@/components/AlternativePage';
 import AiDisclosure from '@/components/AiDisclosure';
 import JsonLd from '@/components/JsonLd';
 import { GeoHeader, SourceLinks, Updated } from '@/components/GeoShell';
@@ -161,6 +162,7 @@ export default function GeoPricesPage({ locale }: { locale: GeoLocale }) {
         </dl>
 
         <AiDisclosure locale={locale} className="mt-10" />
+        <AlternativeDirectory locale={locale} />
         <p className="mt-6 flex flex-col gap-3">
           <Link href={locale === 'fr' ? '/fr' : '/en'} className="btn-primary text-center">{copy.cta}</Link>
           <Link href={GEO_PATHS.compare[locale]} className="underline text-celestial-gold">{copy.compare}</Link>

@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { CookieSettingsButton } from '@/components/Consent';
 import { ascendantPath } from '@/lib/ascendant-tool';
 import { getCopy } from '@/lib/ascendant-copy';
+import { HUB_PATHS } from '@/lib/alternatives';
 import { GEO_PATHS } from '@/lib/geo-pages';
 import { privacyPath } from '@/lib/privacy-copy';
 import { localeHomePath, type Locale } from '@/lib/seo';
@@ -17,6 +18,7 @@ const LABEL: Record<Locale, {
   about: string;
   prices: string;
   compare: string;
+  alternatives: string;
 }> = {
   fr: {
     nav: 'Pied de page',
@@ -28,6 +30,7 @@ const LABEL: Record<Locale, {
     about: 'À propos',
     prices: 'Tarifs 2026',
     compare: 'Comparatif 2026',
+    alternatives: 'Alternatives',
   },
   en: {
     nav: 'Footer',
@@ -39,6 +42,7 @@ const LABEL: Record<Locale, {
     about: 'About',
     prices: 'Prices 2026',
     compare: 'Comparison 2026',
+    alternatives: 'Alternatives',
   },
   es: {
     nav: 'Pie de página',
@@ -50,6 +54,7 @@ const LABEL: Record<Locale, {
     about: 'Acerca de',
     prices: 'Tarifas',
     compare: 'Comparativa',
+    alternatives: 'Alternativas',
   },
   de: {
     nav: 'Fußzeile',
@@ -61,6 +66,7 @@ const LABEL: Record<Locale, {
     about: 'Über uns',
     prices: 'Preise',
     compare: 'Vergleich',
+    alternatives: 'Alternativen',
   },
   it: {
     nav: 'Piè di pagina',
@@ -72,6 +78,7 @@ const LABEL: Record<Locale, {
     about: 'Chi siamo',
     prices: 'Tariffe',
     compare: 'Confronto',
+    alternatives: 'Alternative',
   },
 };
 
@@ -93,6 +100,7 @@ export default function SiteFooter({ locale }: { locale: Locale }) {
             <Link href={GEO_PATHS.about[locale]} className="underline hover:text-white">{copy.about}</Link>
             <Link href={GEO_PATHS.prices[locale]} className="underline hover:text-white">{copy.prices}</Link>
             <Link href={GEO_PATHS.compare[locale]} className="underline hover:text-white">{copy.compare}</Link>
+            <Link href={HUB_PATHS[locale]} className="underline hover:text-white">{copy.alternatives}</Link>
           </>
         )}
         <CookieSettingsButton label={copy.cookies} />
