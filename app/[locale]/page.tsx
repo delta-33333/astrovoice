@@ -7,7 +7,9 @@ import { ascendantPath } from '@/lib/ascendant-tool';
 import { getCopy } from '@/lib/ascendant-copy';
 import { HUB_PATHS } from '@/lib/alternatives';
 import { GEO_PATHS } from '@/lib/geo-pages';
+import HomePlans from '@/components/HomePlans';
 import SeoChrome from '@/components/SeoChrome';
+import { weeklyCurrency } from '@/lib/weekly';
 import { readRates } from '@/lib/market';
 import { perMinuteRange, quoteAdvisor } from '@/lib/money';
 import { listDirectoryAdvisors } from '@/lib/slots';
@@ -86,7 +88,9 @@ export default async function LocaleHome(props: { params: Promise<{ locale: stri
       <div className="max-w-3xl mx-auto px-4 py-8">
         <h1 className="font-[family-name:var(--font-cinzel)] text-3xl sm:text-4xl text-glow">{TITLE[locale].replace(' | Callastral', '')}</h1>
         <p className="mt-4 text-white/80 leading-relaxed">{INTRO[locale]} {floor}–{ceiling}/min.</p>
-
+      </div>
+      <HomePlans locale={locale} currency={weeklyCurrency(currency)} />
+      <div className="max-w-3xl mx-auto px-4 pb-8">
         <nav className="mt-8" aria-label={homeLabel(locale)}>
           <ul className="flex flex-wrap gap-2">
             {SPECIALTY_IDS.map((specialty) => (
