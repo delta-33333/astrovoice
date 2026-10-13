@@ -14,6 +14,7 @@ import {
 import { ascendantPath } from '@/lib/ascendant-tool';
 import { privacyPath } from '@/lib/privacy-copy';
 import { VIDEOS_PATH } from '@/lib/videos';
+import { ALT_CHECKED_ISO, COMPETITORS, HUB_PATHS, hubAlternates } from '@/lib/alternatives';
 import { GEO_PATHS, GEO_UPDATED_ISO, geoAlternates, type GeoPage } from '@/lib/geo-pages';
 import { appBaseUrl } from '@/lib/stripe';
 
@@ -57,6 +58,23 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     url: `${origin}${VIDEOS_PATH}`,
     lastModified: '2026-10-10',
   });
+
+  const hubLanguages = Object.fromEntries(
+    Object.entries(hubAlternates()).map(([key, value]) => [key, `${origin}${value}`])
+  );
+  for (const locale of ['fr', 'en'] as const) {
+    entries.push({
+      url: `${origin}${HUB_PATHS[locale]}`,
+      lastModified: ALT_CHECKED_ISO,
+      alternates: { languages: hubLanguages },
+    });
+  }
+  for (const page of COMPETITORS) {
+    entries.push({
+      url: `${origin}${page.path}`,
+      lastModified: ALT_CHECKED_ISO,
+    });
+  }
 
   for (const page of Object.keys(GEO_PATHS) as GeoPage[]) {
     const languages = Object.fromEntries(

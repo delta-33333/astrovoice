@@ -50,6 +50,11 @@ const nextConfig: NextConfig = {
         destination: '/fr?utm_source=tiktok&utm_medium=bio&utm_campaign=elopartner_bio',
         permanent: false,
       },
+      {
+        source: '/insta',
+        destination: '/fr?utm_source=instagram&utm_medium=bio&utm_campaign=callastral_bio',
+        permanent: false,
+      },
     ];
   },
   async headers() {

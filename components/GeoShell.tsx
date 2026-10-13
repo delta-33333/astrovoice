@@ -2,6 +2,7 @@ import Link from 'next/link';
 import CallastralLockup from '@/components/CallastralLockup';
 import { ascendantPath } from '@/lib/ascendant-tool';
 import { getCopy } from '@/lib/ascendant-copy';
+import { HUB_PATHS } from '@/lib/alternatives';
 import { GEO_PATHS, updatedLabel, type GeoLocale, type GeoPage, type Source } from '@/lib/geo-pages';
 import { privacyPath } from '@/lib/privacy-copy';
 
@@ -63,6 +64,7 @@ export function GeoFooter({ locale }: { locale: GeoLocale }) {
     <footer className="max-w-3xl mx-auto px-4 py-8 text-xs text-white/50 border-t border-white/10 mt-12 space-x-4">
       <Link href={GEO_PATHS.prices[locale]} className="hover:text-white">{fr ? 'Tarifs 2026' : 'Prices 2026'}</Link>
       <Link href={GEO_PATHS.compare[locale]} className="hover:text-white">{fr ? 'Comparatif 2026' : 'Comparison 2026'}</Link>
+      <Link href={HUB_PATHS[locale]} className="hover:text-white">Alternatives</Link>
       <Link href={GEO_PATHS.about[locale]} className="hover:text-white">{fr ? 'À propos' : 'About'}</Link>
       <Link href={ascendantPath(locale)} className="hover:text-white">{getCopy(locale).h1}</Link>
       <Link href="/cgu" className="hover:text-white">{fr ? 'CGU' : 'CGU (terms of use, FR)'}</Link>

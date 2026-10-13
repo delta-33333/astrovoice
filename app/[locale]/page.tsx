@@ -5,6 +5,7 @@ import JsonLd from '@/components/JsonLd';
 import PromoStrip from '@/components/PromoStrip';
 import { ascendantPath } from '@/lib/ascendant-tool';
 import { getCopy } from '@/lib/ascendant-copy';
+import { HUB_PATHS } from '@/lib/alternatives';
 import { GEO_PATHS } from '@/lib/geo-pages';
 import SeoChrome from '@/components/SeoChrome';
 import { readRates } from '@/lib/market';
@@ -142,6 +143,8 @@ export default async function LocaleHome(props: { params: Promise<{ locale: stri
             <Link href={locale === 'fr' ? GEO_PATHS.compare.fr : GEO_PATHS.compare.en} className="underline">
               {locale === 'fr' ? 'Comparatif 2026' : 'Comparison 2026'}
             </Link>
+            {' · '}
+            <Link href={locale === 'fr' ? HUB_PATHS.fr : HUB_PATHS.en} className="underline">Alternatives</Link>
             {' · '}
             <Link href={ascendantPath(locale)} className="underline">{getCopy(locale).h1}</Link>
           </p>
