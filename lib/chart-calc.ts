@@ -182,6 +182,39 @@ function positions(jdUt: number): { bodies: BodyPosition[]; engine: EphemerisEng
   return { bodies, engine };
 }
 
+export interface SkyBody {
+  name: string;
+  longitude: number;
+  speed: number;
+  sign: string;
+  retrograde: boolean;
+}
+
+/** Positions géocentriques tropiques à un instant UTC. Pas de maisons : sert aux transits. */
+export function skyAtUtc(
+  year: number,
+  month: number,
+  day: number,
+  hour = 12,
+  minute = 0,
+): { bodies: SkyBody[]; engine: EphemerisEngine } {
+  const julian = utc_to_jd(year, month, day, hour, minute, 0, constants.SE_GREG_CAL);
+  if (julian.flag !== constants.OK || !julian.data) {
+    throw new ChartError('EPHEMERIS', 'Date julienne impossible');
+  }
+  const { bodies, engine } = positions(julian.data[1]);
+  return {
+    engine,
+    bodies: bodies.map((body) => ({
+      name: body.name,
+      longitude: body.longitude,
+      speed: body.speed,
+      sign: signOf(body.longitude).sign,
+      retrograde: body.speed < 0,
+    })),
+  };
+}
+
 function aspectsOf(bodies: BodyPosition[]): Aspect[] {
   const found: Aspect[] = [];
   for (let i = 0; i < bodies.length; i += 1) {

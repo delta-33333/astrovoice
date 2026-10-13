@@ -5,6 +5,8 @@ import JsonLd from '@/components/JsonLd';
 import PromoStrip from '@/components/PromoStrip';
 import { ascendantPath } from '@/lib/ascendant-tool';
 import { getCopy } from '@/lib/ascendant-copy';
+import { AVIS_PATH } from '@/lib/avis-callastral';
+import { SIGN_IDS, signName, signPath } from '@/lib/zodiac/signs';
 import { HUB_PATHS } from '@/lib/alternatives';
 import { GEO_PATHS } from '@/lib/geo-pages';
 import HomePlans from '@/components/HomePlans';
@@ -151,7 +153,22 @@ export default async function LocaleHome(props: { params: Promise<{ locale: stri
             <Link href={locale === 'fr' ? HUB_PATHS.fr : HUB_PATHS.en} className="underline">Alternatives</Link>
             {' · '}
             <Link href={ascendantPath(locale)} className="underline">{getCopy(locale).h1}</Link>
+            {locale === 'fr' && (
+              <>
+                {' · '}
+                <Link href={AVIS_PATH} className="underline">Avis Callastral</Link>
+              </>
+            )}
           </p>
+          <nav className="text-sm text-white/60" aria-label={locale === 'fr' ? 'Signes' : 'Signs'}>
+            <ul className="flex flex-wrap gap-x-3 gap-y-1">
+              {SIGN_IDS.map((id) => (
+                <li key={id}>
+                  <Link href={signPath(locale, id)} className="underline hover:text-white">{signName(locale, id)}</Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
           {locale === 'fr' && <PromoStrip ids={['10']} />}
         </section>
       </div>

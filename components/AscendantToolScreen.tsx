@@ -6,7 +6,9 @@ import JsonLd from '@/components/JsonLd';
 import PromoStrip from '@/components/PromoStrip';
 import SeoChrome from '@/components/SeoChrome';
 import { getCopy } from '@/lib/ascendant-copy';
+import { AVIS_PATH } from '@/lib/avis-callastral';
 import { chartReadingCta } from '@/lib/book-funnel';
+import { SIGN_IDS, SIGNS, risingPath, signName } from '@/lib/zodiac/signs';
 import {
   ascendantJsonLd,
   ascendantPath,
@@ -107,6 +109,16 @@ export default async function AscendantToolScreen(
   const market = await resolveMarket();
   const offerCurrency = weeklyCurrency(market.currency);
   const readingCta = chartReadingCta(locale, offerCurrency);
+  const risingLabel = (name: string) => ({
+    fr: `Lire l’ascendant ${name}`,
+    en: `Read the ${name} rising sign`,
+    es: `Leer el ascendente ${name}`,
+    de: `Aszendent ${name} lesen`,
+    it: `Leggere l’ascendente ${name}`,
+  }[locale]);
+  const risingLinks = Object.fromEntries(
+    SIGN_IDS.map((id) => [SIGNS[id].french, { href: risingPath(locale, id), label: risingLabel(signName(locale, id)) }]),
+  );
   const range = perMinuteRange(localeCurrency(locale), readRates(), locale);
   const origin = appBaseUrl();
   const path = ascendantPath(locale);
@@ -131,6 +143,7 @@ export default async function AscendantToolScreen(
             signs={copy.signs}
             readingCta={readingCta}
             checkoutBase={choice.href}
+            risingLinks={risingLinks}
           />
         </div>
 
@@ -157,7 +170,9 @@ export default async function AscendantToolScreen(
             {Object.entries(copy.signs).map(([key, profile]) => (
               <li key={key}>
                 <h3 className="text-lg text-celestial-gold">
-                  {copy.signTitle(profile.name)}
+                  <Link href={risingLinks[key]?.href ?? ascendantPath(locale)} className="hover:underline">
+                    {copy.signTitle(profile.name)}
+                  </Link>
                   <span className="text-sm font-normal text-white/50"> · {profile.element} · {profile.modality}</span>
                 </h3>
                 <p className="mt-1 text-sm text-white/75 leading-relaxed">{profile.reading}</p>
@@ -202,6 +217,9 @@ export default async function AscendantToolScreen(
               <Link href={copy.pricesHref} className="underline hover:text-white">{copy.linkPrices}</Link>
             )}
             <Link href="/offres" className="underline hover:text-white">{copy.linkOffers}</Link>
+            {locale === 'fr' && (
+              <Link href={AVIS_PATH} className="underline hover:text-white">Avis Callastral</Link>
+            )}
           </p>
         </section>
       </article>
