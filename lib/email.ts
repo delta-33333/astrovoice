@@ -8,13 +8,21 @@ interface MailInput {
   subject: string;
   html: string;
   attachments?: MailAttachment[];
+  /** Envoi différé Resend (ISO 8601). Compatible avec un hébergement sans cron horaire. */
+  scheduledAt?: string;
 }
 
 export async function sendMail(input: MailInput): Promise<boolean> {
+  const id = await dispatchMail(input);
+  return Boolean(id);
+}
+
+/** Identifiant Resend, ou null si l’envoi n’a pas été accepté. */
+export async function dispatchMail(input: MailInput): Promise<string | null> {
   const key = process.env.RESEND_API_KEY?.trim();
   if (!key) {
     console.warn('RESEND_API_KEY absente : e-mail non envoyé');
-    return false;
+    return null;
   }
 
   const response = await fetch('https://api.resend.com/emails', {
@@ -28,6 +36,7 @@ export async function sendMail(input: MailInput): Promise<boolean> {
       to: [input.to],
       subject: input.subject,
       html: input.html,
+      ...(input.scheduledAt ? { scheduled_at: input.scheduledAt } : {}),
       ...(input.attachments?.length ? { attachments: input.attachments } : {}),
     }),
   });
@@ -35,6 +44,22 @@ export async function sendMail(input: MailInput): Promise<boolean> {
   if (!response.ok) {
     const detail = await response.text();
     console.error('Envoi e-mail refusé:', response.status, detail.slice(0, 300));
+    return null;
+  }
+  const payload = (await response.json().catch(() => null)) as { id?: string } | null;
+  return payload?.id || null;
+}
+
+export async function cancelScheduledMail(emailId: string): Promise<boolean> {
+  const key = process.env.RESEND_API_KEY?.trim();
+  if (!key || !emailId) return false;
+  const response = await fetch(`https://api.resend.com/emails/${encodeURIComponent(emailId)}/cancel`, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${key}` },
+  });
+  if (!response.ok) {
+    const detail = await response.text();
+    console.warn('Annulation e-mail refusée:', response.status, detail.slice(0, 200));
     return false;
   }
   return true;

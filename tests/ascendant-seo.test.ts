@@ -117,7 +117,9 @@ test('douze lectures, un seul CTA, et redirection vers le slug de la langue', ()
   assert.equal(screen.includes('permanentRedirect(ascendantPath(locale))'), true);
   assert.equal(screen.includes('permanentRedirect(ASCENDANT_PATH)'), false);
   assert.equal(frPage.includes("locale !== 'fr'"), false);
-  assert.equal(calculator.includes('btn-primary'), false);
+  assert.equal(calculator.includes('btn-primary'), true);
+  assert.equal(calculator.includes('resultCheckoutPath'), true);
+  assert.equal(calculator.includes('data-funnel="book"'), true);
   assert.equal(calculator.includes('sessionStorage'), false);
   assert.equal(calculator.includes('localStorage'), false);
   assert.equal(/natal-store|loadOrComputeChart/.test(route), false);

@@ -6,11 +6,12 @@ import {
   VISITOR_MAX_AGE,
   cleanReferrer,
   encodeFirstTouch,
+  isAdminPath,
   isInternalReferrer,
   utmFrom,
   validVisitorId,
 } from '@/lib/attribution';
-import { CONSENT_COOKIE, CONSENT_MAX_AGE, analyticsAllowed, parseConsent } from '@/lib/consent';
+import { CONSENT_COOKIE, CONSENT_MAX_AGE, parseConsent } from '@/lib/consent';
 import { tooManyRequests } from '@/lib/guard';
 
 export const dynamic = 'force-dynamic';
@@ -33,11 +34,18 @@ export async function POST(request: NextRequest) {
     maxAge: CONSENT_MAX_AGE,
   });
 
-  if (!analyticsAllowed(choice)) {
-    response.cookies.set(VISITOR_COOKIE, '', { httpOnly: true, sameSite: 'lax', secure, path: '/', maxAge: 0 });
-    response.cookies.set(FIRST_TOUCH_COOKIE, '', { httpOnly: true, sameSite: 'lax', secure, path: '/', maxAge: 0 });
-    return response;
+  // cl_ft et cl_vid restent : ils décrivent la première visite. Vercel Analytics, lui, suit le choix.
+  // /admin ne devient jamais la page d’arrivée.
+  let landing = '/';
+  let utm = {};
+  try {
+    const page = new URL(request.headers.get('referer') || `${request.nextUrl.origin}/`);
+    landing = page.pathname.slice(0, 300);
+    utm = utmFrom(page.searchParams);
+  } catch {
+    utm = {};
   }
+  if (isAdminPath(landing)) return response;
 
   if (!validVisitorId(request.cookies.get(VISITOR_COOKIE)?.value)) {
     response.cookies.set(VISITOR_COOKIE, crypto.randomUUID(), {
@@ -50,15 +58,6 @@ export async function POST(request: NextRequest) {
   }
   if (!request.cookies.get(FIRST_TOUCH_COOKIE)?.value) {
     const referrer = cleanReferrer(request.headers.get('referer'));
-    let landing = '/';
-    let utm = {};
-    try {
-      const page = new URL(request.headers.get('referer') || `${request.nextUrl.origin}/`);
-      landing = page.pathname.slice(0, 300);
-      utm = utmFrom(page.searchParams);
-    } catch {
-      utm = {};
-    }
     response.cookies.set(
       FIRST_TOUCH_COOKIE,
       encodeFirstTouch({

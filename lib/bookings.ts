@@ -1,3 +1,4 @@
+import { cancelCheckoutReminder } from './checkout-reminder';
 import { trackEvent } from './events';
 import { AI_ACT_LINE } from './legal';
 import { ensureImmediateAvailability } from './slots';
@@ -366,6 +367,7 @@ export async function confirmBookingPayment(input: {
       await markIntroClaimed(booking.user_id);
     }
     if (booking) {
+      await cancelCheckoutReminder({ userId: booking.user_id });
       await consumeRebookOnBooking(booking.id);
       await sendBookingConfirmation(booking);
       await trackEvent({
