@@ -7,9 +7,9 @@ import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
 import { VIRTUAL_ADVISOR_DISCLOSURE } from "@/lib/legal";
 import { resolveMarket } from "@/lib/market";
-import { convertEurCents, formatMoney, perMinuteRange } from "@/lib/money";
-import { SUBSCRIPTION_EUR_CENTS, subscriptionCurrency } from "@/lib/offers";
-import { MINUTE_PACKS } from "@/lib/pricing";
+import { formatMoney, MARKET_PRICING, marketCodeForContext, perMinuteRange } from "@/lib/money";
+import { WEEKLY_PLAN_IDS, WEEKLY_PLANS } from "@/lib/weekly";
+import { renewalTerms } from "@/lib/renewal-copy";
 import { hreflangAlternates, localeHomePath } from "@/lib/seo";
 import { listDirectoryAdvisors } from "@/lib/slots";
 
@@ -45,16 +45,29 @@ export default async function LandingPage({
   } catch {
     unavailable = true;
   }
-  const money = (eurCents: number) =>
-    formatMoney(convertEurCents(eurCents, market.currency, market.rates), market.currency);
-  const founding = money(490);
-  const { floor, ceiling } = perMinuteRange(market.currency, market.rates);
-  const subscriptionCurrencyCode = subscriptionCurrency(market.currency);
-  const subscriptionLabel = formatMoney(
-    convertEurCents(SUBSCRIPTION_EUR_CENTS, subscriptionCurrencyCode, market.rates),
-    subscriptionCurrencyCode
-  );
-  const packs = MINUTE_PACKS.filter((pack) => !pack.founding);
+  const code = marketCodeForContext({
+    country: market.country,
+    locale: market.language,
+    currency: market.currency,
+  });
+  const grid = MARKET_PRICING[code];
+  const show = (minor: number) => formatMoney(minor, grid.currency, market.language);
+  const founding = show(grid.founding);
+  const { floor, ceiling, intro } = perMinuteRange(market.currency, market.rates, market.language, market.country);
+  const packs = (['10min', '30min', '60min'] as const).map((id) => ({
+    id,
+    minutes: id === '10min' ? 10 : id === '30min' ? 30 : 60,
+    amountCents: grid.packs[id],
+    popular: id === '30min',
+  }));
+  const weekly = WEEKLY_PLAN_IDS.map((id) => ({
+    id,
+    name: WEEKLY_PLANS[id].names.fr,
+    minutes: WEEKLY_PLANS[id].minutes,
+    highlighted: id === 'essentiel',
+    price: show(WEEKLY_PLANS[id].amounts[grid.currency]),
+    trial: renewalTerms(id, grid.currency, 'fr').trialLabel,
+  }));
 
   return (
     <main className="min-h-screen pb-28 sm:pb-12">
@@ -72,7 +85,8 @@ export default async function LandingPage({
         advisors={advisors}
         unavailable={unavailable}
         preferredLanguage={market.language}
-        currency={market.currency}
+        currency={grid.currency}
+        country={market.country}
         rates={market.rates}
         initialAvailability={params.dispo === 'now' ? 'now' : ''}
         highlightId={params.recall || ''}
@@ -245,7 +259,7 @@ export default async function LandingPage({
               </div>
               <div className="pt-2 border-t border-white/10">
                 <p className="text-white/60 text-sm">
-                  Les 3 premières minutes sont à un tarif réduit, environ deux tiers du tarif du conseiller.
+                  Les 3 premières minutes sont à {intro} la minute, une fois par compte.
                 </p>
               </div>
             </div>
@@ -261,21 +275,34 @@ export default async function LandingPage({
                       : 'bg-white/5 backdrop-blur-sm border border-white/10'
                   }`}
                 >
-                  <div className="text-2xl font-bold text-celestial-gold">{money(pack.amountCents)}</div>
+                  <div className="text-2xl font-bold text-celestial-gold">{show(pack.amountCents)}</div>
                   <div className="text-lg font-semibold">Pack {pack.minutes} min</div>
-                  <div className="text-xs text-white/50">{money(Math.round(pack.amountCents / pack.minutes))}/min</div>
+                  <div className="text-xs text-white/50">{show(Math.round(pack.amountCents / pack.minutes))}/min</div>
                 </div>
               ))}
             </div>
 
-            <div className="p-8 rounded-2xl bg-celestial-gold/10 border border-celestial-gold/40 space-y-3">
-              <h3 className="text-xl font-semibold">Callastral Illimité</h3>
-              <p className="text-3xl font-bold text-celestial-gold">{subscriptionLabel}<span className="text-base font-normal text-white/70"> / mois</span></p>
-              <p className="text-white/75 text-sm">
-                Parole sans facturation à la minute, dans la limite de 300 minutes par mois et de 60 minutes par appel. Résiliable à tout moment.
-              </p>
-              <Link href="/offres" className="text-celestial-gold underline">Voir toutes les offres</Link>
+            <div className="grid gap-4 md:grid-cols-3">
+              {weekly.map((plan) => (
+                <div
+                  key={plan.id}
+                  className={`p-6 rounded-2xl space-y-2 ${
+                    plan.highlighted
+                      ? 'bg-celestial-gold/15 border border-celestial-gold'
+                      : 'bg-white/5 border border-white/10'
+                  }`}
+                >
+                  {plan.highlighted && <p className="text-xs uppercase tracking-[0.16em] text-celestial-gold">Recommandé</p>}
+                  <h3 className="text-xl font-semibold">{plan.name}</h3>
+                  <p className="text-2xl font-bold text-celestial-gold">{plan.trial}</p>
+                  <p className="text-sm text-white/70">la 1re semaine, puis {plan.price}/semaine</p>
+                  <p className="text-sm text-white/60">{plan.minutes} min / semaine · 60 min max par appel</p>
+                </div>
+              ))}
             </div>
+            <p className="text-center">
+              <Link href="/offres#formules" className="text-celestial-gold underline">Choisir une formule</Link>
+            </p>
 
             <p className="text-center text-white/50 text-sm pt-4">
               Les packs minutes sont disponibles après votre inscription
@@ -336,7 +363,7 @@ export default async function LandingPage({
                 <span className="text-celestial-gold transition-transform group-open:rotate-180">↓</span>
               </summary>
               <p className="mt-4 text-white/70 text-sm leading-relaxed">
-                Chaque conseiller a un tarif entre {floor} et {ceiling} la minute. Les trois premières minutes sont à tarif réduit. L’offre fondateur est de 10 minutes pour {founding}, une fois par compte. Les packs de minutes sont indiqués dans votre devise.
+                Chaque conseiller a un tarif entre {floor} et {ceiling} la minute. Les trois premières minutes sont à {intro} la minute, une fois par compte. L’offre fondateur est de 10 minutes pour {founding}, une fois par compte, dans la limite de 100 places, jusqu’au 31 octobre 2026.
               </p>
             </details>
 
@@ -346,7 +373,7 @@ export default async function LandingPage({
                 <span className="text-celestial-gold transition-transform group-open:rotate-180">↓</span>
               </summary>
               <p className="mt-4 text-white/70 text-sm leading-relaxed">
-                Oui, vous pouvez raccrocher à tout moment. Un rendez-vous réservé est payé à l’avance pour la durée choisie. En l’annulant plus de 24 h avant, vous êtes remboursé ; ensuite, le montant devient un avoir valable 30 jours. L’abonnement Callastral Illimité est un choix séparé, résiliable depuis le compte.
+                Oui, vous pouvez raccrocher à tout moment. Un rendez-vous réservé est payé à l’avance pour la durée choisie. En l’annulant plus de 24 h avant, vous êtes remboursé ; ensuite, le montant devient un avoir valable 30 jours. Une formule hebdomadaire se résilie en un clic depuis le compte.
               </p>
             </details>
 
@@ -376,7 +403,7 @@ export default async function LandingPage({
                 <span className="text-celestial-gold transition-transform group-open:rotate-180">↓</span>
               </summary>
               <p className="mt-4 text-white/70 text-sm leading-relaxed">
-                Le compte regroupe votre abonnement Callastral Illimité s’il est actif, les rapports écrits achetés (thème natal, prévision, compatibilité) et les réglages de mot de passe et d’e-mail. Il n’y a pas d’horoscope quotidien.
+                Le compte regroupe votre formule hebdomadaire si elle est active, les rapports écrits achetés (thème natal, prévision, compatibilité) et les réglages de mot de passe et d’e-mail. Il n’y a pas d’horoscope quotidien.
               </p>
             </details>
           </div>

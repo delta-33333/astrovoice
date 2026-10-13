@@ -41,6 +41,8 @@ type PaymentSheetProps = {
   payLabel: string;
   /** Mention discrète affichée juste sous le bouton de paiement. */
   note?: string;
+  /** Conditions de renouvellement, juste au-dessus du bouton de paiement. */
+  renewal?: string;
   clientSecret: string | null;
   collectContact?: boolean;
   onClose: () => void;
@@ -132,6 +134,7 @@ export default function PaymentSheet(props: PaymentSheetProps) {
             <CheckoutFields
               payLabel={props.payLabel}
               note={props.note}
+              renewal={props.renewal}
               collectContact={props.collectContact}
               onSuccess={handleSuccess}
             />
@@ -149,11 +152,13 @@ export default function PaymentSheet(props: PaymentSheetProps) {
 function CheckoutFields({
   payLabel,
   note,
+  renewal,
   collectContact,
   onSuccess,
 }: {
   payLabel: string;
   note?: string;
+  renewal?: string;
   collectContact?: boolean;
   onSuccess: () => void;
 }) {
@@ -250,6 +255,11 @@ function CheckoutFields({
       {error && (
         <p className="text-sm text-red-200" role="alert">
           {error}
+        </p>
+      )}
+      {renewal && (
+        <p className="rounded-xl border border-celestial-gold/40 bg-celestial-gold/10 px-3 py-3 text-sm leading-relaxed text-white/90">
+          {renewal}
         </p>
       )}
       <button

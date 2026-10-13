@@ -1,13 +1,4 @@
-import type { Currency } from './money';
-
-/** Catalogue des offres, en centimes d’euro. L’affichage convertit via lib/money. */
-
-export const SUBSCRIPTION_NAME = 'Callastral Illimité';
-export const SUBSCRIPTION_EUR_CENTS = 4900;
-export const SUBSCRIPTION_FAIR_USE_MINUTES = 300;
-export const SUBSCRIPTION_MAX_CALL_MINUTES = 60;
-export const SUBSCRIPTION_FAIR_USE_SECONDS = SUBSCRIPTION_FAIR_USE_MINUTES * 60;
-export const SUBSCRIPTION_MAX_CALL_SECONDS = SUBSCRIPTION_MAX_CALL_MINUTES * 60;
+/** Catalogue des rapports, en centimes d’euro. L’affichage convertit via lib/money. Les formules hebdomadaires sont dans lib/weekly.ts. */
 
 export const NATAL_REPORT_EUR_CENTS = 990;
 export const FORECAST_REPORT_EUR_CENTS = 1490;
@@ -19,9 +10,6 @@ export const REBOOK_DAYS = 30;
 
 export const REPORT_KINDS = ['natal_pdf', 'forecast', 'compatibility'] as const;
 export type ReportKind = (typeof REPORT_KINDS)[number];
-
-export const SUBSCRIPTION_CURRENCIES = ['eur', 'usd', 'gbp', 'jpy'] as const;
-export type SubscriptionCurrency = (typeof SUBSCRIPTION_CURRENCIES)[number];
 
 export function isReportKind(value: string): value is ReportKind {
   return (REPORT_KINDS as readonly string[]).includes(value);
@@ -41,13 +29,3 @@ export function reportTitle(kind: string): string {
   return 'Rapport';
 }
 
-/** L’abonnement Stripe n’est proposé qu’en EUR, USD, GBP et JPY. */
-export function subscriptionCurrency(currency: Currency): SubscriptionCurrency {
-  if (currency === 'usd' || currency === 'gbp' || currency === 'jpy') return currency;
-  if (currency === 'cad') return 'usd';
-  return 'eur';
-}
-
-export function subscriptionLookupKey(currency: SubscriptionCurrency): string {
-  return `callastral_unlimited_${currency}`;
-}

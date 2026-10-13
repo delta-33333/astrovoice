@@ -43,11 +43,13 @@ export default function AdvisorProfile({
   advisor,
   slots,
   currency = 'eur',
+  country = null,
   rates = DEFAULT_RATES,
 }: {
   advisor: DirectoryAdvisor;
   slots: AdvisorSlot[];
   currency?: Currency;
+  country?: string | null;
   rates?: FxRates;
 }) {
   const router = useRouter();
@@ -83,7 +85,7 @@ export default function AdvisorProfile({
     go(slot);
   };
 
-  const quote = quoteAdvisor(advisor.pricePerMinCents, currency, rates);
+  const quote = quoteAdvisor(advisor.pricePerMinCents, currency, rates, undefined, 'fr', country);
 
   return (
     <main className="min-h-screen px-4 pt-8 pb-28">

@@ -1,10 +1,13 @@
 import { trackEvent } from './events';
 import { AI_ACT_LINE } from './legal';
 import { ensureImmediateAvailability } from './slots';
+import { introAlreadyClaimed, markIntroClaimed } from './intro';
+import { isMissingRelation } from './missing-relation';
 import { resolveMarket } from './market';
 import {
   formatMoney,
   localBookingMinor,
+  localRates,
   MAX_EUR_CENTS,
   MIN_EUR_CENTS,
   normalizeCurrency,
@@ -267,17 +270,19 @@ async function holdExactSlot(input: {
 
   const market = await resolveMarket();
   const eurPerMin = await eurPriceForSlot(input.slotId);
-  const chargeCurrency = market.currency;
+  const introEligible = !(await introAlreadyClaimed({ id: input.userId, intro_claimed: false } as UserProfile));
+  const priceContext = { country: market.country, locale: market.language, introEligible };
+  const chargeCurrency: Currency = localRates(eurPerMin, market.currency, market.rates, priceContext).currency;
   const offer = await pendingRebook(input.userId);
   const allowance = await subscriptionVoiceAllowance(input.userId);
   const included =
     Boolean(allowance?.entitled) && (allowance?.seconds ?? 0) >= input.durationMin * 60;
   const priceFor = (currency: Currency) => {
-    if (included) return { charge: 0, offerId: null as string | null };
-    const list = localBookingMinor(eurPerMin, input.durationMin, currency, market.rates);
-    if (!offer) return { charge: list, offerId: null as string | null };
+    if (included) return { charge: 0, offerId: null as string | null, introApplied: false };
+    const list = localBookingMinor(eurPerMin, input.durationMin, currency, market.rates, priceContext);
+    if (!offer) return { charge: list, offerId: null as string | null, introApplied: introEligible };
     const charge = discountedMinor(list, offer.percent);
-    return { charge, offerId: charge < list ? offer.id : null };
+    return { charge, offerId: charge < list ? offer.id : null, introApplied: introEligible };
   };
   let priced = priceFor(chargeCurrency);
   const admin = getSupabaseAdmin();
@@ -319,6 +324,10 @@ async function holdExactSlot(input: {
     currency?: string;
   };
   if (priced.offerId) await attachRebook(row.bookingId, priced.offerId);
+  if (priced.introApplied && row.bookingId) {
+    const marked = await getSupabaseAdmin().from('bookings').update({ intro_applied: true }).eq('id', row.bookingId);
+    if (marked.error && !isMissingRelation(marked.error)) console.warn('intro réservation:', marked.error.message);
+  }
   return { ...row, currency: normalizeCurrency(row.currency || currency), included };
 }
 
@@ -348,6 +357,14 @@ export async function confirmBookingPayment(input: {
   const status = String(data) as 'confirmed' | 'already' | 'missing' | 'invalid';
   if (status === 'confirmed') {
     const booking = await getBooking(input.bookingId);
+    const introFlag = await getSupabaseAdmin()
+      .from('bookings')
+      .select('intro_applied')
+      .eq('id', input.bookingId)
+      .maybeSingle();
+    if (!introFlag.error && (introFlag.data as { intro_applied?: boolean } | null)?.intro_applied && booking) {
+      await markIntroClaimed(booking.user_id);
+    }
     if (booking) {
       await consumeRebookOnBooking(booking.id);
       await sendBookingConfirmation(booking);

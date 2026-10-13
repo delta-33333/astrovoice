@@ -51,6 +51,7 @@ export default function AdvisorDirectory({
   initialAvailability = '',
   preferredLanguage = 'fr',
   currency = 'eur',
+  country = null,
   rates = DEFAULT_RATES,
   embedded = false,
   highlightId = '',
@@ -60,6 +61,7 @@ export default function AdvisorDirectory({
   initialAvailability?: string;
   preferredLanguage?: AdvisorLang;
   currency?: Currency;
+  country?: string | null;
   rates?: FxRates;
   embedded?: boolean;
   highlightId?: string;
@@ -109,7 +111,7 @@ export default function AdvisorDirectory({
 
   const visible = strict.length > 0 ? strict : fallback;
   const lead = visible.find((advisor) => advisor.availability.hasImmediate && advisor.availability.immediateSlotId);
-  const floor = perMinuteRange(currency, rates).floor;
+  const floor = perMinuteRange(currency, rates, preferredLanguage, country).floor;
 
   const reset = () => {
     setLanguage('');
@@ -202,7 +204,7 @@ export default function AdvisorDirectory({
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
         {visible.map((advisor, index) => {
-          const quote = quoteAdvisor(advisor.pricePerMinCents, currency, rates);
+          const quote = quoteAdvisor(advisor.pricePerMinCents, currency, rates, undefined, preferredLanguage, country);
           const callHref = advisor.availability.immediateSlotId && advisor.availability.immediateStartsAt
             ? bookPath(advisor.availability.immediateSlotId, advisor.availability.immediateStartsAt, advisor.id)
             : null;

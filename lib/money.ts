@@ -28,8 +28,72 @@ export const DEFAULT_RATES: FxRates = {
   cad: 1.47,
 };
 
-export const MIN_EUR_CENTS = 50;
+export const MIN_EUR_CENTS = 89;
 export const MAX_EUR_CENTS = 199;
+
+export const MARKET_CODES = ['FR', 'BE', 'DE', 'ES', 'IT', 'CH', 'GB', 'US'] as const;
+export type MarketCode = (typeof MARKET_CODES)[number];
+
+export type MarketCurrency = 'eur' | 'chf' | 'gbp' | 'usd';
+
+/**
+ * Grille par pays détecté. Les autres pays en euro suivent la France.
+ * Les autres pays suivent les États-Unis.
+ */
+export const MARKET_PRICING = {
+  FR: { currency: 'eur', minMinor: 99, maxMinor: 199, introMinor: 49, packs: { '10min': 1290, '30min': 3490, '60min': 5990 }, founding: 490 },
+  BE: { currency: 'eur', minMinor: 99, maxMinor: 199, introMinor: 49, packs: { '10min': 1290, '30min': 3490, '60min': 5990 }, founding: 490 },
+  DE: { currency: 'eur', minMinor: 99, maxMinor: 199, introMinor: 49, packs: { '10min': 1290, '30min': 3490, '60min': 5990 }, founding: 490 },
+  ES: { currency: 'eur', minMinor: 89, maxMinor: 149, introMinor: 45, packs: { '10min': 990, '30min': 2690, '60min': 4790 }, founding: 490 },
+  IT: { currency: 'eur', minMinor: 89, maxMinor: 129, introMinor: 45, packs: { '10min': 990, '30min': 2690, '60min': 4790 }, founding: 490 },
+  CH: { currency: 'chf', minMinor: 99, maxMinor: 199, introMinor: 49, packs: { '10min': 1290, '30min': 3490, '60min': 5990 }, founding: 490 },
+  GB: { currency: 'gbp', minMinor: 99, maxMinor: 179, introMinor: 49, packs: { '10min': 1190, '30min': 2990, '60min': 4990 }, founding: 490 },
+  US: { currency: 'usd', minMinor: 149, maxMinor: 299, introMinor: 69, packs: { '10min': 1990, '30min': 4990, '60min': 8990 }, founding: 590 },
+} as const;
+
+const EURO_COUNTRIES = new Set([
+  'AT', 'BE', 'CY', 'DE', 'EE', 'ES', 'FI', 'FR', 'GR', 'HR', 'IE', 'IT',
+  'LT', 'LU', 'LV', 'MT', 'NL', 'PT', 'SI', 'SK',
+  'BG', 'CZ', 'DK', 'HU', 'PL', 'RO', 'SE', 'MC', 'AD', 'SM', 'VA', 'ME', 'XK',
+]);
+
+export function marketCodeForCountry(country: string | null | undefined): MarketCode {
+  const code = (country || '').trim().toUpperCase();
+  if (
+    code === 'FR' || code === 'BE' || code === 'DE' || code === 'ES' ||
+    code === 'IT' || code === 'CH' || code === 'GB' || code === 'US'
+  ) {
+    return code;
+  }
+  if (!code || code === 'XX' || EURO_COUNTRIES.has(code)) return 'FR';
+  return 'US';
+}
+
+export function marketCodeForContext(input: {
+  country?: string | null;
+  locale?: string | null;
+  currency?: Currency | null;
+}): MarketCode {
+  const country = (input.country || '').trim().toUpperCase();
+  if (country && country !== 'XX') return marketCodeForCountry(country);
+  const locale = (input.locale || '').toLowerCase().slice(0, 2);
+  if (locale === 'es') return 'ES';
+  if (locale === 'it') return 'IT';
+  if (locale === 'de') return 'DE';
+  if (locale === 'fr') return 'FR';
+  if (input.currency === 'gbp') return 'GB';
+  if (input.currency === 'chf') return 'CH';
+  if (input.currency === 'usd') return 'US';
+  if (locale === 'en') return 'US';
+  return 'FR';
+}
+
+export interface PriceContext {
+  country?: string | null;
+  locale?: string | null;
+  /** Tarif d’accueil des 3 premières minutes. Faux s’il a déjà été utilisé sur le compte. */
+  introEligible?: boolean;
+}
 
 export function isCurrency(value: string): value is Currency {
   return (CURRENCIES as readonly string[]).includes(value);
@@ -59,8 +123,8 @@ export function yearsFromAge(age: number): number {
 }
 
 /**
- * Tarif minute de base, en centimes d’euro, entre 0,50 € et 1,99 €.
- * Même formule que la migration des tarifs conseiller, plafond resserré à 199.
+ * Tarif minute de base, en centimes d’euro, entre 0,89 € et 1,99 €.
+ * 89 + années × 2 + (spécialités − 1) × 10.
  */
 export function pricePerMinCents(input: {
   years?: number | null;
@@ -72,14 +136,23 @@ export function pricePerMinCents(input: {
       ? clamp(Math.round(input.years), 1, 45)
       : yearsFromAge(input.age);
   const extra = Math.max(0, input.specialties.length - 1);
-  return clamp(50 + years * 3 + extra * 12, MIN_EUR_CENTS, MAX_EUR_CENTS);
+  return clamp(89 + years * 2 + extra * 10, MIN_EUR_CENTS, MAX_EUR_CENTS);
 }
 
-/** Tarif d’intro : 99/149 du tarif du conseiller, strictement en dessous. */
-export function introCentsFromStandard(standardCents: number): number {
-  const standard = clamp(Math.round(standardCents), MIN_EUR_CENTS, MAX_EUR_CENTS);
-  const intro = Math.max(1, Math.round((standard * 99) / 149));
-  return intro < standard ? intro : standard - 1;
+/**
+ * Tarif local du conseiller :
+ * min + (prix EUR − 89) / (199 − 89) × (max − min).
+ * Arrondi au dixième pour EUR, CHF et GBP. Les bornes publiées restent exactes.
+ */
+export function advisorLocalMinor(eurCents: number, market: MarketCode): number {
+  const grid = MARKET_PRICING[market];
+  const eur = clamp(Math.round(eurCents), MIN_EUR_CENTS, MAX_EUR_CENTS);
+  const span = MAX_EUR_CENTS - MIN_EUR_CENTS;
+  const raw = grid.minMinor + ((eur - MIN_EUR_CENTS) / span) * (grid.maxMinor - grid.minMinor);
+  if (Math.abs(raw - grid.minMinor) < 0.001) return grid.minMinor;
+  if (Math.abs(raw - grid.maxMinor) < 0.001) return grid.maxMinor;
+  const rounded = grid.currency === 'usd' ? Math.round(raw) : Math.round(raw / 10) * 10;
+  return clamp(rounded, grid.minMinor, grid.maxMinor);
 }
 
 function niceRound(minor: number, currency: Currency): number {
@@ -110,58 +183,79 @@ export interface LocalRates {
   introEur: number;
   standardLocal: number;
   introLocal: number;
+  market: MarketCode;
+  currency: MarketCurrency;
 }
 
 /**
- * Tarif minute converti : même règle pour le plancher, le plafond et chaque conseiller.
- * EUR : arrondi à 0,10 € (plafond 1,99 € conservé). Autres devises : conversion au centime
- * (au yen pour JPY), pour que 0,50 € devienne bien 0,54 $, 0,42 £, 86 ¥, etc.
+ * Tarif minute du marché du visiteur. Le pays détecté prime sur la devise choisie.
+ * L’intro est le montant fixe du marché, pendant 3 minutes, une fois par compte.
  */
-export function convertPerMinute(eurCents: number, currency: Currency, rates: FxRates): number {
-  if (currency === 'eur') return convertEurCents(eurCents, currency, rates);
-  const cents = Math.max(0, Math.round(eurCents));
-  if (cents === 0) return 0;
-  const rate = rates[currency] > 0 ? rates[currency] : DEFAULT_RATES[currency];
-  const major = (cents / 100) * rate;
-  return Math.max(1, currency === 'jpy' ? Math.round(major) : Math.round(major * 100));
-}
-
-export function localRates(eurPerMinCents: number, currency: Currency, rates: FxRates): LocalRates {
-  const standardEur = clamp(Math.round(eurPerMinCents), MIN_EUR_CENTS, MAX_EUR_CENTS);
-  const introEur = introCentsFromStandard(standardEur);
-  const standardLocal = convertPerMinute(standardEur, currency, rates);
-  let introLocal = convertPerMinute(introEur, currency, rates);
-  const step = currency === 'eur' ? 10 : 1;
-  if (introLocal >= standardLocal) {
-    introLocal = Math.max(1, standardLocal - step);
-  }
-  return { standardEur, introEur, standardLocal, introLocal };
-}
-
-/** Plancher et plafond du tarif minute, convertis comme les tarifs des conseillers. */
-export function perMinuteRange(
+export function localRates(
+  eurPerMinCents: number,
   currency: Currency,
-  rates: FxRates,
-  locale?: string
-): { floorMinor: number; ceilingMinor: number; floor: string; ceiling: string } {
-  const floorMinor = convertPerMinute(MIN_EUR_CENTS, currency, rates);
-  const ceilingMinor = convertPerMinute(MAX_EUR_CENTS, currency, rates);
+  _rates: FxRates,
+  context?: PriceContext,
+): LocalRates {
+  const market = marketCodeForContext({
+    country: context?.country,
+    locale: context?.locale,
+    currency,
+  });
+  const grid = MARKET_PRICING[market];
+  const standardEur = clamp(Math.round(eurPerMinCents), MIN_EUR_CENTS, MAX_EUR_CENTS);
+  const standardLocal = advisorLocalMinor(standardEur, market);
+  const introEligible = context?.introEligible !== false;
+  const introLocal = introEligible ? grid.introMinor : standardLocal;
   return {
-    floorMinor,
-    ceilingMinor,
-    floor: formatMoney(floorMinor, currency, locale),
-    ceiling: formatMoney(ceilingMinor, currency, locale),
+    standardEur,
+    introEur: introEligible ? grid.introMinor : standardEur,
+    standardLocal,
+    introLocal,
+    market,
+    currency: grid.currency,
   };
 }
 
-/** Réservation = minutes d’intro × tarif intro local + reste × tarif du conseiller. */
+/** Plancher, plafond et tarif d’accueil du marché. */
+export function perMinuteRange(
+  currency: Currency,
+  rates: FxRates,
+  locale?: string | null,
+  country?: string | null,
+): {
+  market: MarketCode;
+  currency: MarketCurrency;
+  floorMinor: number;
+  ceilingMinor: number;
+  introMinor: number;
+  floor: string;
+  ceiling: string;
+  intro: string;
+} {
+  const priced = localRates(MIN_EUR_CENTS, currency, rates, { country, locale, introEligible: true });
+  const grid = MARKET_PRICING[priced.market];
+  return {
+    market: priced.market,
+    currency: grid.currency,
+    floorMinor: grid.minMinor,
+    ceilingMinor: grid.maxMinor,
+    introMinor: grid.introMinor,
+    floor: formatMoney(grid.minMinor, grid.currency, locale),
+    ceiling: formatMoney(grid.maxMinor, grid.currency, locale),
+    intro: formatMoney(grid.introMinor, grid.currency, locale),
+  };
+}
+
+/** Réservation = minutes d’accueil × tarif fixe + reste × tarif du conseiller. */
 export function localBookingMinor(
   eurPerMinCents: number,
   minutes: number,
   currency: Currency,
-  rates: FxRates
+  rates: FxRates,
+  context?: PriceContext,
 ): number {
-  const { standardLocal, introLocal } = localRates(eurPerMinCents, currency, rates);
+  const { standardLocal, introLocal } = localRates(eurPerMinCents, currency, rates, context);
   const introMinutes = Math.min(3, Math.max(0, minutes));
   const rest = Math.max(0, minutes - 3);
   return introMinutes * introLocal + rest * standardLocal;
@@ -230,18 +324,21 @@ export function quoteAdvisor(
   currency: Currency,
   rates: FxRates,
   durations: readonly number[] = [10, 20, 30],
-  locale?: string | null
+  locale?: string | null,
+  country?: string | null,
+  introEligible = true,
 ): AdvisorQuote {
-  const local = localRates(eurPerMinCents, currency, rates);
+  const context: PriceContext = { country, locale, introEligible };
+  const local = localRates(eurPerMinCents, currency, rates, context);
   return {
-    currency,
+    currency: local.currency,
     perMinMinor: local.standardLocal,
     introMinor: local.introLocal,
-    perMinLabel: `${formatMoney(local.standardLocal, currency, locale)}/min`,
-    introLabel: `${formatMoney(local.introLocal, currency, locale)}/min`,
+    perMinLabel: `${formatMoney(local.standardLocal, local.currency, locale)}/min`,
+    introLabel: `${formatMoney(local.introLocal, local.currency, locale)}/min`,
     durations: durations.map((minutes) => {
-      const minor = localBookingMinor(eurPerMinCents, minutes, currency, rates);
-      return { minutes, minor, label: formatMoney(minor, currency, locale) };
+      const minor = localBookingMinor(eurPerMinCents, minutes, currency, rates, context);
+      return { minutes, minor, label: formatMoney(minor, local.currency, locale) };
     }),
   };
 }

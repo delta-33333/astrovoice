@@ -14,15 +14,15 @@ const ENTRIES: { q: string; a: string }[] = [
   },
   {
     q: 'Comment est calculé le prix d’une consultation à la minute ?',
-    a: 'Chaque conseiller a son tarif, entre 0,50 € et 1,99 € par minute. Les trois premières minutes sont à un tarif réduit, propre à ce tarif. Des packs de minutes et une offre fondateur de 10 minutes à 4,90 € sont proposés après l’inscription. L’abonnement Callastral Illimité est à 49 € par mois, dans la limite de 300 minutes par mois et de 60 minutes par appel.',
+    a: 'Chaque conseiller a son tarif, entre 0,99 € et 1,99 € par minute en France, en Belgique et en Allemagne. Le plancher est 0,89 € en Espagne et en Italie, 0,99 CHF en Suisse, 0,99 £ au Royaume-Uni et 1,49 $ aux États-Unis. Les trois premières minutes sont à un tarif fixe du marché, une fois par compte. L’offre fondateur est de 10 minutes à 4,90 € (5,90 $), une fois par compte, 100 places, jusqu’au 31 octobre 2026. Les formules hebdomadaires sont Découverte (10 min), Essentiel (30 min) et Premium (60 min), avec 60 minutes maximum par appel.',
   },
   {
     q: 'La consultation s’appuie-t-elle sur mon thème natal ?',
     a: 'Oui. La date, l’heure et le lieu de naissance servent à établir le thème : positions, maisons et aspects. Si l’heure est inconnue, la lecture reste plus prudente sur l’ascendant et les maisons.',
   },
   {
-    q: 'Que comprend Callastral Illimité ?',
-    a: '49 € par mois, parole sans facturation à la minute, dans la limite de 300 minutes par mois et de 60 minutes par appel. Ces limites sont indiquées avant le paiement et dans les conditions générales. La résiliation se fait à tout moment depuis le compte.',
+    q: 'Que comprennent les formules hebdomadaires ?',
+    a: 'Découverte : 10 minutes par semaine, 5,90 € puis 1,99 € la première semaine. Essentiel : 30 minutes par semaine, 14,90 € puis 7,45 € la première semaine. Premium : 60 minutes par semaine, 27,90 € puis 13,95 € la première semaine. Le plafond est de 60 minutes par appel. La première semaine à tarif réduit ne s’applique qu’une fois par client, toutes formules confondues. Le renouvellement se fait au tarif plein. La résiliation se fait en un clic depuis le compte.',
   },
   {
     q: 'Quels documents écrits sont proposés ?',

@@ -54,6 +54,7 @@ export default async function AdvisorPage(props: { params: Promise<{ slug: strin
           advisor={profile.advisor}
           slots={profile.slots}
           currency={market.currency}
+          country={market.country}
           rates={market.rates}
         />
       </>

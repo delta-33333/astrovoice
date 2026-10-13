@@ -68,7 +68,7 @@ export const COMPETITORS: CompetitorPage[] = [
     h1: 'Alternative à Voyance.fr pour une astrologie par téléphone',
     title: 'Alternative à Voyance.fr : astrologie par téléphone',
     description:
-      'Alternative à Voyance.fr : Callastral affiche 0,50 € à 1,99 €/min avec des personas virtuels. Voyants humains, audiotel et offre 15 € chez Voyance.fr.',
+      'Alternative à Voyance.fr : Callastral affiche 0,99 € à 1,99 €/min avec des personas virtuels. Voyants humains, audiotel et offre 15 € chez Voyance.fr.',
     advisors: 'Voyants humains, salariés du cabinet (près de 300, selon la page d’accueil).',
     price:
       'Audiotel : 0,80 €/min + prix de l’appel (30 minutes maximum). Après l’offre carte : 3,50 € à 9,50 € TTC/min selon le voyant. SMS : 0,99 € par SMS + coût du SMS.',
@@ -90,7 +90,7 @@ export const COMPETITORS: CompetitorPage[] = [
       {
         question: 'Quelle est une alternative à Voyance.fr pour de l’astrologie ?',
         answer:
-          'Callastral est une alternative quand vous voulez une consultation par téléphone fondée sur le thème natal, à toute heure, entre 0,50 € et 1,99 €/min. Voyance.fr reste adapté si vous voulez un voyant humain, l’audiotel ou un tirage gratuit.',
+          'Callastral est une alternative quand vous voulez une consultation par téléphone fondée sur le thème natal, à toute heure, entre 0,99 € et 1,99 €/min. Voyance.fr reste adapté si vous voulez un voyant humain, l’audiotel ou un tirage gratuit.',
       },
       {
         question: 'Les conseillers Callastral sont-ils des personnes ?',
@@ -100,7 +100,7 @@ export const COMPETITORS: CompetitorPage[] = [
       {
         question: 'Combien coûte Voyance.fr par rapport à Callastral ?',
         answer:
-          'Le 13 octobre 2026, Voyance.fr affiche 15 € TTC les 10 premières minutes privées, puis 3,50 € à 9,50 € TTC/min, et un audiotel à 0,80 €/min + prix de l’appel. Callastral affiche un tarif par conseiller entre 0,50 € et 1,99 €/min, avec les 3 premières minutes à tarif réduit.',
+          'Le 13 octobre 2026, Voyance.fr affiche 15 € TTC les 10 premières minutes privées, puis 3,50 € à 9,50 € TTC/min, et un audiotel à 0,80 €/min + prix de l’appel. Callastral affiche un tarif par conseiller entre 0,99 € et 1,99 €/min, avec les 3 premières minutes à tarif réduit.',
       },
       {
         question: 'Voyance.fr est-il ouvert la nuit ?',
@@ -123,7 +123,7 @@ export const COMPETITORS: CompetitorPage[] = [
     h1: 'Alternative à Wengo pour consulter en astrologie',
     title: 'Alternative à Wengo : astrologie par téléphone',
     description:
-      'Alternative à Wengo : forfaits et experts humains d’un côté, personas virtuels Callastral de 0,50 € à 1,99 €/min de l’autre. Relevé du 13 octobre 2026.',
+      'Alternative à Wengo : forfaits et experts humains d’un côté, personas virtuels Callastral de 0,99 € à 1,99 €/min de l’autre. Relevé du 13 octobre 2026.',
     advisors: 'Experts humains, présentés sur des fiches, qui rappellent au téléphone.',
     price:
       'Selon l’expert. La page forfaits affiche 10 min à 30 € ou 20 min à 59 €. Sur la page des petits prix consultée le 13 octobre 2026, des fiches affichent un prix à la minute (exemples relevés : 2,25 € à 3,58 €/min). Ce n’est pas une fourchette officielle exhaustive.',
@@ -150,7 +150,7 @@ export const COMPETITORS: CompetitorPage[] = [
       {
         question: 'Wengo est-il moins cher que Callastral ?',
         answer:
-          'Pas de façon générale. Le 13 octobre 2026, Wengo publie des forfaits à 30 € les 10 min et 59 € les 20 min, et des fiches autour de 2,25 € à 3,58 €/min sur la page consultée. Callastral reste dans une fourchette affichée de 0,50 € à 1,99 €/min. Le bon choix dépend du mode (humain ou virtuel) autant que du prix.',
+          'Pas de façon générale. Le 13 octobre 2026, Wengo publie des forfaits à 30 € les 10 min et 59 € les 20 min, et des fiches autour de 2,25 € à 3,58 €/min sur la page consultée. Callastral reste dans une fourchette affichée de 0,99 € à 1,99 €/min. Le bon choix dépend du mode (humain ou virtuel) autant que du prix.',
       },
       {
         question: 'Les conseillers Callastral ont-ils une voix humaine ?',
@@ -178,7 +178,7 @@ export const COMPETITORS: CompetitorPage[] = [
     h1: 'Alternative à Spiriteo : consultation d’astrologie par téléphone',
     title: 'Alternative à Spiriteo : prix et format comparés',
     description:
-      'Alternative à Spiriteo : téléphone dès 1,65 €/min avec un voyant humain, ou Callastral de 0,50 € à 1,99 €/min avec une voix générée par IA.',
+      'Alternative à Spiriteo : téléphone dès 1,65 €/min avec un voyant humain, ou Callastral de 0,99 € à 1,99 €/min avec une voix générée par IA.',
     advisors: 'Voyants humains : la page tarifs indique que l’expert décroche.',
     price:
       'Téléphone à partir de 1,65 €/min selon le voyant, sur compte prépayé. Chat facturé à la seconde. E-mail : 900 crédits, soit 30,90 €.',
@@ -207,7 +207,7 @@ export const COMPETITORS: CompetitorPage[] = [
       {
         question: 'Quel est le prix d’une alternative à Spiriteo ?',
         answer:
-          'Spiriteo affiche le téléphone à partir de 1,65 €/min et l’e-mail à 30,90 €, relevé le 13 octobre 2026. Callastral affiche 0,50 € à 1,99 €/min selon le conseiller virtuel, avant l’appel.',
+          'Spiriteo affiche le téléphone à partir de 1,65 €/min et l’e-mail à 30,90 €, relevé le 13 octobre 2026. Callastral affiche 0,99 € à 1,99 €/min selon le conseiller virtuel, avant l’appel.',
       },
       {
         question: 'Spiriteo a-t-il un outil gratuit comme un calcul d’ascendant ?',
@@ -235,7 +235,7 @@ export const COMPETITORS: CompetitorPage[] = [
     h1: 'Alternative à Cosmospace pour une lecture par téléphone',
     title: 'Alternative à Cosmospace : tarifs de voyance comparés',
     description:
-      'Alternative à Cosmospace : 10 minutes offertes puis 3,50 € à 9,50 €/min avec un voyant humain, ou Callastral, personas virtuels, 0,50 € à 1,99 €/min.',
+      'Alternative à Cosmospace : 10 minutes offertes puis 3,50 € à 9,50 €/min avec un voyant humain, ou Callastral, personas virtuels, 0,99 € à 1,99 €/min.',
     advisors: 'Voyants humains (fiches de médiums, tarologues et astrologues).',
     price: 'Après l’offre : 3,50 € à 9,50 € TTC la minute supplémentaire, selon le voyant.',
     welcome:
@@ -255,7 +255,7 @@ export const COMPETITORS: CompetitorPage[] = [
       {
         question: 'Cosmospace est-il moins cher qu’une alternative comme Callastral ?',
         answer:
-          'Les 10 premières minutes privées sont offertes, ce que Callastral ne fait pas. Ensuite, Cosmospace affiche 3,50 € à 9,50 € TTC/min. Callastral reste entre 0,50 € et 1,99 €/min, y compris après les 3 minutes à tarif réduit. Le coût réel dépend donc de la durée.',
+          'Les 10 premières minutes privées sont offertes, ce que Callastral ne fait pas. Ensuite, Cosmospace affiche 3,50 € à 9,50 € TTC/min. Callastral reste entre 0,99 € et 1,99 €/min, y compris après les 3 minutes à tarif réduit. Le coût réel dépend donc de la durée.',
       },
       {
         question: 'L’offre de 10 minutes Cosmospace est-elle sans carte ?',
@@ -318,7 +318,7 @@ export const COMPETITORS: CompetitorPage[] = [
       {
         question: 'Quel est le tarif minute de Temporel ?',
         answer:
-          'Les CGV, lues le 13 octobre 2026, indiquent 2 € à 7 € TTC/min en consultation privée selon le médium, et 0,60 € ou 0,80 €/min + prix de l’appel sans carte. Callastral affiche 0,50 € à 1,99 €/min pour un persona virtuel.',
+          'Les CGV, lues le 13 octobre 2026, indiquent 2 € à 7 € TTC/min en consultation privée selon le médium, et 0,60 € ou 0,80 €/min + prix de l’appel sans carte. Callastral affiche 0,99 € à 1,99 €/min pour un persona virtuel.',
       },
       {
         question: 'Une alternative à Temporel peut-elle être un voyant humain ?',
@@ -346,7 +346,7 @@ export const COMPETITORS: CompetitorPage[] = [
     h1: 'Alternative à Kang pour une voyance ou une astrologie',
     title: 'Alternative à Kang : 5 minutes et tarif minute',
     description:
-      'Alternative à Kang : 5 minutes offertes et masters humains 24 h/24, ou Callastral, voix générée par IA, de 0,50 € à 1,99 €/min.',
+      'Alternative à Kang : 5 minutes offertes et masters humains 24 h/24, ou Callastral, voix générée par IA, de 0,99 € à 1,99 €/min.',
     advisors: 'Professionnels humains, appelés Masters sur la page d’aide.',
     price:
       'Tarif promotionnel annoncé : 1,90 €/min après la première consultation gratuite. Le tarif de chaque master est le sien. Le paiement à la minute est décrit avec une préautorisation de 99 €, présentée comme plafond.',
@@ -371,7 +371,7 @@ export const COMPETITORS: CompetitorPage[] = [
       {
         question: 'Quelle alternative à Kang coûte moins de 1,90 €/min ?',
         answer:
-          'Callastral affiche une fourchette de 0,50 € à 1,99 €/min selon le conseiller virtuel. Une partie des tarifs est donc sous 1,90 €, une partie au-dessus. Kang annonce 1,90 €/min en promotionnel après les 5 minutes, puis le tarif du master.',
+          'Callastral affiche une fourchette de 0,99 € à 1,99 €/min selon le conseiller virtuel. Une partie des tarifs est donc sous 1,90 €, une partie au-dessus. Kang annonce 1,90 €/min en promotionnel après les 5 minutes, puis le tarif du master.',
       },
       {
         question: 'Kang ne fait-il que de la voyance ?',
@@ -471,7 +471,7 @@ export const COMPETITORS: CompetitorPage[] = [
       {
         question: 'What is a Kasamba alternative if I want astrology from a birth chart?',
         answer:
-          'Callastral is built for a phone reading from the natal chart, with a virtual advisor and an AI-generated voice, at a published €0.50 to €1.99 per minute. Kasamba is a better fit when you want a human psychic and the new-client minutes.',
+          'Callastral is built for a phone reading from the natal chart, with a virtual advisor and an AI-generated voice, at a published €0.99 to €1.99 per minute. Kasamba is a better fit when you want a human psychic and the new-client minutes.',
       },
       {
         question: 'How much is a minute on Kasamba?',
@@ -529,7 +529,7 @@ export const COMPETITORS: CompetitorPage[] = [
       {
         question: 'Is there a California Psychics alternative that publishes a per-minute price?',
         answer:
-          'Both do. California Psychics publishes $5 to $23 per minute for human psychics. Callastral publishes €0.50 to €1.99 per minute for a virtual advisor with an AI-generated voice. They are different products at different prices.',
+          'Both do. California Psychics publishes $5 to $23 per minute for human psychics. Callastral publishes €0.99 to €1.99 per minute for a virtual advisor with an AI-generated voice. They are different products at different prices.',
       },
       {
         question: 'Does California Psychics guarantee a prediction?',
@@ -587,7 +587,7 @@ export const COMPETITORS: CompetitorPage[] = [
       {
         question: 'What is a Keen alternative that shows the price before the call?',
         answer:
-          'Callastral shows each advisor’s per-minute price before payment, between €0.50 and €1.99, with the first 3 minutes at a reduced rate. Keen bills the advisor’s own rate after the promotional minutes; that rate is not published as one range on the help page we checked.',
+          'Callastral shows each advisor’s per-minute price before payment, between €0.99 and €1.99, with the first 3 minutes at a reduced rate. Keen bills the advisor’s own rate after the promotional minutes; that rate is not published as one range on the help page we checked.',
       },
       {
         question: 'Is Keen’s $1 offer the full reading?',
@@ -690,7 +690,7 @@ export function hubCopy(locale: AltLocale): {
         {
           question: 'Quelle alternative à la voyance par téléphone correspond à de l’astrologie ?',
           answer:
-            'Callastral, notre service, si vous voulez une lecture du thème natal par téléphone, à toute heure, entre 0,50 € et 1,99 €/min, avec un persona virtuel. Les autres fiches décrivent des voyants ou des experts humains.',
+            'Callastral, notre service, si vous voulez une lecture du thème natal par téléphone, à toute heure, entre 0,99 € et 1,99 €/min, avec un persona virtuel. Les autres fiches décrivent des voyants ou des experts humains.',
         },
         {
           question: 'Ces pages copient-elles les sites concurrents ?',
@@ -725,7 +725,7 @@ export function hubCopy(locale: AltLocale): {
       {
         question: 'Which phone psychic alternative is an astrology reading?',
         answer:
-          'Callastral, our service, if you want a natal-chart phone reading at any hour, from €0.50 to €1.99 per minute, with a virtual advisor and an AI-generated voice. The other pages describe human psychics or French phone services.',
+          'Callastral, our service, if you want a natal-chart phone reading at any hour, from €0.99 to €1.99 per minute, with a virtual advisor and an AI-generated voice. The other pages describe human psychics or French phone services.',
       },
       {
         question: 'Do these pages copy competitor websites?',

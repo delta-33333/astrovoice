@@ -1,6 +1,6 @@
-import { MAX_EUR_CENTS, MIN_EUR_CENTS, formatMoney } from '@/lib/money';
-import { SUBSCRIPTION_EUR_CENTS, SUBSCRIPTION_FAIR_USE_MINUTES } from '@/lib/offers';
-import { MINUTE_PACKS } from '@/lib/pricing';
+import { MARKET_PRICING, formatMoney } from './money.ts';
+import { MINUTE_PACKS } from './pricing.ts';
+import { WEEKLY_PLAN_IDS, WEEKLY_PLANS, firstWeekMinor } from './weekly.ts';
 
 /** Pages « réponse d’abord » (FR + EN). Prix concurrents : relevé du 3/10/2026, plan GEO. */
 export type GeoLocale = 'fr' | 'en';
@@ -50,13 +50,27 @@ function eur(cents: number, locale: GeoLocale): string {
 export function callastralFacts(locale: GeoLocale) {
   const founding = MINUTE_PACKS.find((pack) => pack.founding);
   const packs = MINUTE_PACKS.filter((pack) => !pack.founding);
+  const grid = MARKET_PRICING.FR;
+  const weekly = Object.fromEntries(
+    WEEKLY_PLAN_IDS.map((id) => [
+      id,
+      {
+        minutes: WEEKLY_PLANS[id].minutes,
+        name: WEEKLY_PLANS[id].names[locale],
+        trial: eur(firstWeekMinor(id, 'eur'), locale),
+        full: eur(WEEKLY_PLANS[id].amounts.eur, locale),
+      },
+    ]),
+  ) as Record<(typeof WEEKLY_PLAN_IDS)[number], { minutes: number; name: string; trial: string; full: string }>;
   return {
-    min: eur(MIN_EUR_CENTS, locale),
-    max: eur(MAX_EUR_CENTS, locale),
-    founding: founding ? { minutes: founding.minutes, price: eur(founding.amountCents, locale) } : null,
-    packs: packs.map((pack) => ({ minutes: pack.minutes, price: eur(pack.amountCents, locale) })),
-    subscription: eur(SUBSCRIPTION_EUR_CENTS, locale),
-    fairUse: SUBSCRIPTION_FAIR_USE_MINUTES,
+    min: eur(grid.minMinor, locale),
+    max: eur(grid.maxMinor, locale),
+    founding: founding ? { minutes: founding.minutes, price: eur(grid.founding, locale) } : null,
+    packs: packs.map((pack) => ({
+      minutes: pack.minutes,
+      price: eur(pack.id === '10min' || pack.id === '30min' || pack.id === '60min' ? grid.packs[pack.id] : pack.amountCents, locale),
+    })),
+    weekly,
   };
 }
 
@@ -106,7 +120,7 @@ export function priceRows(locale: GeoLocale, ourModel: string): PriceRow[] {
         service: 'Callastral (notre service)',
         url: null,
         model: ourModel,
-        price: `${c.min} à ${c.max}/min selon le conseiller${c.founding ? ` ; ${c.founding.minutes} min à ${c.founding.price} (offre fondateur, une fois par compte)` : ''} ; packs ${packs} (10, 30, 60 min) ; Callastral Illimité ${c.subscription}/mois (${c.fairUse} min)`,
+        price: `${c.min} à ${c.max}/min selon le conseiller${c.founding ? ` ; ${c.founding.minutes} min à ${c.founding.price} (offre fondateur, une fois par compte)` : ''} ; packs ${packs} (10, 30, 60 min) ; formules hebdomadaires : ${c.weekly.decouverte.name} ${c.weekly.decouverte.trial} la 1re semaine puis ${c.weekly.decouverte.full}/semaine (${c.weekly.decouverte.minutes} min), ${c.weekly.essentiel.name} ${c.weekly.essentiel.trial} puis ${c.weekly.essentiel.full} (${c.weekly.essentiel.minutes} min), ${c.weekly.premium.name} ${c.weekly.premium.trial} puis ${c.weekly.premium.full} (${c.weekly.premium.minutes} min)`,
         sources: [],
         ours: true,
       },
@@ -145,7 +159,7 @@ export function priceRows(locale: GeoLocale, ourModel: string): PriceRow[] {
       service: 'Callastral (our service)',
       url: null,
       model: ourModel,
-      price: `${c.min} to ${c.max}/min depending on the advisor${c.founding ? `; ${c.founding.minutes} min for ${c.founding.price} (founder offer, once per account)` : ''}; packs ${packs} (10, 30, 60 min); Callastral Unlimited ${c.subscription}/month (${c.fairUse} min)`,
+      price: `${c.min} to ${c.max}/min depending on the advisor${c.founding ? `; ${c.founding.minutes} min for ${c.founding.price} (founder offer, once per account)` : ''}; packs ${packs} (10, 30, 60 min); weekly plans: ${c.weekly.decouverte.name} ${c.weekly.decouverte.trial} the first week then ${c.weekly.decouverte.full}/week (${c.weekly.decouverte.minutes} min), ${c.weekly.essentiel.name} ${c.weekly.essentiel.trial} then ${c.weekly.essentiel.full} (${c.weekly.essentiel.minutes} min), ${c.weekly.premium.name} ${c.weekly.premium.trial} then ${c.weekly.premium.full} (${c.weekly.premium.minutes} min)`,
       sources: [],
       ours: true,
     },

@@ -23,7 +23,14 @@ export async function GET(
     const market = await resolveMarket();
     return NextResponse.json({
       advisor,
-      quote: quoteAdvisor(advisor.pricePerMinCents, market.currency, market.rates),
+      quote: quoteAdvisor(
+        advisor.pricePerMinCents,
+        market.currency,
+        market.rates,
+        undefined,
+        market.language,
+        market.country,
+      ),
     });
   } catch {
     return NextResponse.json({ error: 'Annuaire indisponible' }, { status: 503 });

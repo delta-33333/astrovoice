@@ -1,5 +1,5 @@
 import { advisorBadges } from './advisor-badges';
-import { MAX_EUR_CENTS, pricePerMinCents, yearsFromAge } from './money';
+import { MAX_EUR_CENTS, MIN_EUR_CENTS, pricePerMinCents, yearsFromAge } from './money';
 import { getSupabaseAdmin, supabaseAvailable } from './supabase';
 import type { PublicAdvisor, VoiceId } from './types';
 
@@ -104,7 +104,7 @@ function toPublic(row: AdvisorRow, signal?: AdvisorSignal): PublicAdvisor {
         ? row.years_experience
         : yearsFromAge(row.age),
     pricePerMinCents:
-      row.price_per_min_cents != null && row.price_per_min_cents >= 50
+      row.price_per_min_cents != null && row.price_per_min_cents >= MIN_EUR_CENTS
         ? Math.min(row.price_per_min_cents, MAX_EUR_CENTS)
         : pricePerMinCents({
             years: row.years_experience,

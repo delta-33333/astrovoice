@@ -88,6 +88,7 @@ export interface UserProfile {
   stripe_customer_id?: string;
   email?: string;
   founding_claimed?: boolean;
+  intro_claimed?: boolean;
   credited_checkout_sessions?: string[];
   created_at: string;
 }

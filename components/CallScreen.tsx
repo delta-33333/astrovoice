@@ -1017,7 +1017,7 @@ export default function CallScreen({
             <p className="mt-4 font-mono text-5xl tabular-nums">{mmss(elapsed)}</p>
             {booking ? (
               <p className="mt-2 text-sm text-white/55">
-                {included ? 'Inclus dans Callastral Illimité · ' : ''}
+                {included ? 'Inclus dans votre formule · ' : ''}
                 {remaining != null && remaining > 0 ? `${mmss(remaining)} restantes` : 'Durée réservée'}
               </p>
             ) : (
@@ -1044,7 +1044,7 @@ export default function CallScreen({
               <p className="text-sm text-white/70">
                 Moins de 3 minutes d’avance.{' '}
                 <Link href="/offres" className="text-celestial-gold underline">
-                  Voir Callastral Illimité
+                  Voir les formules
                 </Link>
               </p>
             )}

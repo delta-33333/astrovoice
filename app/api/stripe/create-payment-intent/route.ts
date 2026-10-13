@@ -3,8 +3,9 @@ import { getSession } from '@/lib/session';
 import { createElementsCheckout } from '@/lib/checkout';
 import { trackEvent } from '@/lib/events';
 import { getPublicAdvisorById } from '@/lib/astrologers';
+import { introAlreadyClaimed } from '@/lib/intro';
 import { resolveMarket } from '@/lib/market';
-import { formatMoney, localBookingMinor, localRates, quoteAdvisor } from '@/lib/money';
+import { formatMoney, localBookingMinor, localRates, marketCodeForContext, quoteAdvisor } from '@/lib/money';
 import { PER_MINUTE_CENTS } from '@/lib/pricing';
 import { stripeSecretConfigured } from '@/lib/stripe';
 
@@ -32,17 +33,26 @@ export async function POST(request: NextRequest) {
     const market = await resolveMarket();
     const advisor = await getPublicAdvisorById(String(astrologerId)).catch(() => null);
     const eurPerMin = advisor?.pricePerMinCents ?? PER_MINUTE_CENTS;
-    const rates = localRates(eurPerMin, market.currency, market.rates);
-    const quote = quoteAdvisor(eurPerMin, market.currency, market.rates);
-    const holdMinor = localBookingMinor(eurPerMin, 10, market.currency, market.rates);
+    const introEligible = !(await introAlreadyClaimed(user));
+    const context = {
+      country: market.country,
+      locale: market.language,
+      introEligible,
+    };
+    const priced = marketCodeForContext(context);
+    const rates = localRates(eurPerMin, market.currency, market.rates, context);
+    const quote = quoteAdvisor(eurPerMin, market.currency, market.rates, undefined, market.language, market.country, introEligible);
+    const holdMinor = localBookingMinor(eurPerMin, 10, market.currency, market.rates, context);
     const meter = {
-      currency: market.currency,
+      currency: rates.currency,
+      market: priced,
       introMinor: rates.introLocal,
       standardMinor: rates.standardLocal,
       holdMinor,
-      amountLabel: formatMoney(holdMinor, market.currency),
+      amountLabel: formatMoney(holdMinor, rates.currency, market.language),
       introLabel: quote.introLabel,
       perMinLabel: quote.perMinLabel,
+      introApplied: introEligible,
     };
 
     if (!stripeSecretConfigured()) {
@@ -60,7 +70,7 @@ export async function POST(request: NextRequest) {
       request,
       user,
       amountCents: holdMinor,
-      currency: market.currency,
+      currency: rates.currency,
       productName: 'Consultation Callastral',
       productDescription: 'Empreinte de consultation — seul le temps réel est encaissé',
       purpose: 'call_meter',
@@ -71,6 +81,7 @@ export async function POST(request: NextRequest) {
         sessionId,
         introMinor: String(rates.introLocal),
         standardMinor: String(rates.standardLocal),
+        introApplied: introEligible ? 'true' : 'false',
         astrologerId: String(astrologerId).slice(0, 80),
         birthName: String(birthData.name).slice(0, 80),
         birthDate: String(birthData.date).slice(0, 40),
