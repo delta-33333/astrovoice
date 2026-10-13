@@ -109,6 +109,17 @@ export function cleanPath(value: string | null | undefined): string | undefined 
   return value.split(/[?#]/)[0].slice(0, 300);
 }
 
+/** Bureau d’administration : hors entonnoir, même pour un humain connecté. */
+export function isAdminPath(path: string | null | undefined): boolean {
+  const clean = (path || '').split(/[?#]/)[0];
+  return clean === '/admin' || clean.startsWith('/admin/');
+}
+
+/** Première visite à mémoriser : document humain, hors robots et hors /admin. */
+export function shouldCaptureVisit(path: string, userAgent: string | null | undefined): boolean {
+  return !isAdminPath(path) && !isBotUserAgent(userAgent);
+}
+
 export type FirstTouch = Utm & {
   referrer?: string;
   landing?: string;
