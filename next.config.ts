@@ -30,6 +30,11 @@ const nextConfig: NextConfig = {
     '/api/reports/checkout': ['./ephemeris/**/*', './node_modules/geo-tz/data/**/*'],
     '/api/reports/confirm': ['./ephemeris/**/*', './node_modules/geo-tz/data/**/*'],
     '/api/stripe/webhook': ['./ephemeris/**/*', './node_modules/geo-tz/data/**/*'],
+    '/[locale]/horoscope': ['./ephemeris/**/*'],
+    '/[locale]/weekly-horoscope': ['./ephemeris/**/*'],
+    '/[locale]/horoscopo-semanal': ['./ephemeris/**/*'],
+    '/[locale]/wochenhoroskop': ['./ephemeris/**/*'],
+    '/[locale]/oroscopo-settimanale': ['./ephemeris/**/*'],
   },
   typescript: {
     ignoreBuildErrors: false,
