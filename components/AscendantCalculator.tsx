@@ -24,11 +24,13 @@ export default function AscendantCalculator({
   signs,
   readingCta,
   checkoutBase,
+  risingLinks,
 }: {
   labels: AscendantFormCopy;
   signs: Record<string, SignCopy>;
   readingCta: string;
   checkoutBase: string;
+  risingLinks?: Record<string, { href: string; label: string }>;
 }) {
   const [date, setDate] = useState('');
   const [time, setTime] = useState('');
@@ -162,6 +164,11 @@ export default function AscendantCalculator({
               {result.placeLabel} · {result.localMeanTime ? labels.localMean : result.timeZone}
             </p>
             <p className="text-xs text-white/50 leading-relaxed">{labels.disclaimer}</p>
+            {risingLinks?.[result.sign] && (
+              <Link href={risingLinks[result.sign].href} className="inline-block text-sm text-celestial-gold underline">
+                {risingLinks[result.sign].label}
+              </Link>
+            )}
             <Link
               href={resultCheckoutPath({ consultHref: checkoutBase, date, time, place: place.trim() })}
               data-funnel="book"

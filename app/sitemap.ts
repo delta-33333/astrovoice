@@ -16,6 +16,8 @@ import { privacyPath } from '@/lib/privacy-copy';
 import { VIDEOS_PATH } from '@/lib/videos';
 import { ALT_CHECKED_ISO, COMPETITORS, HUB_PATHS, hubAlternates } from '@/lib/alternatives';
 import { GEO_PATHS, GEO_UPDATED_ISO, geoAlternates, type GeoPage } from '@/lib/geo-pages';
+import { AVIS_PATH } from '@/lib/avis-callastral';
+import { clusterSitemap } from '@/lib/zodiac/articles';
 import { appBaseUrl } from '@/lib/stripe';
 
 export const dynamic = 'force-dynamic';
@@ -74,6 +76,24 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: `${origin}${page.path}`,
       lastModified: ALT_CHECKED_ISO,
     });
+  }
+
+  entries.push({
+    url: `${origin}${AVIS_PATH}`,
+    lastModified: '2026-10-13',
+  });
+
+  for (const cluster of clusterSitemap()) {
+    const languages = Object.fromEntries(
+      Object.entries(cluster.languages).map(([key, value]) => [key, `${origin}${value}`]),
+    );
+    for (const path of Object.values(cluster.paths)) {
+      entries.push({
+        url: `${origin}${path}`,
+        lastModified: '2026-10-13',
+        alternates: { languages },
+      });
+    }
   }
 
   for (const page of Object.keys(GEO_PATHS) as GeoPage[]) {
