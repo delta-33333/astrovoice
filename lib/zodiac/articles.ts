@@ -1,5 +1,6 @@
 import type { Locale } from '../seo.ts';
 import { ascendantPath } from '../ascendant-tool.ts';
+import { clusterChips, contextualParagraphs, type InlinePart } from '../internal-links.ts';
 import { dossier } from './dossiers.ts';
 import { pairLead } from './leads.ts';
 import {
@@ -40,6 +41,8 @@ export interface Section {
   paragraphs: string[];
   facts?: Fact[];
   links?: TextLink[];
+  /** Liens dans le corps du texte, pas dans le pied de page. */
+  inline?: InlinePart[][];
 }
 
 export interface ArticleModel {
@@ -194,22 +197,18 @@ export function signArticleModel(locale: Locale, id: SignId): ArticleModel {
     de: `Sternzeichen ${name}, ${modality} ${element}, regiert von ${ruler}. Charakter, Liebe, Arbeit und Bezüge zu den anderen Zeichen.`,
     it: `Segno zodiacale ${name}, ${element} ${modality} retto da ${ruler}. Carattere, amore, lavoro e legami con gli altri segni.`,
   }[locale]);
-  const others = SIGN_IDS.filter((item) => item !== id);
   const sections: Section[] = [
-    { h2: H2.signFacts[locale], paragraphs: [...copy.sign], facts: factsOf(locale, id) },
+    {
+      h2: H2.signFacts[locale],
+      paragraphs: [...copy.sign],
+      facts: factsOf(locale, id),
+      inline: contextualParagraphs({ kind: 'sign', locale, id }),
+    },
     { h2: H2.signLife[locale], paragraphs: [copy.love, copy.work] },
     {
       h2: H2.signLinks[locale],
       paragraphs: [],
-      links: [
-        { href: risingPath(locale, id), label: KEYWORD.rising[locale](name) },
-        { href: `${weekPath(locale)}#${signSlugOf(locale, id)}`, label: weekLink(locale) },
-        ...others.map((other) => ({
-          href: compatPath(locale, id, other),
-          label: compatLink(locale, name, signName(locale, other)),
-        })),
-        { href: compatPath(locale, id, id), label: compatLink(locale, name, name) },
-      ],
+      links: clusterChips({ kind: 'sign', locale, id }),
     },
   ];
   return {
@@ -224,30 +223,6 @@ export function signArticleModel(locale: Locale, id: SignId): ArticleModel {
     sections,
     prose: proseOf(sections),
   };
-}
-
-function signSlugOf(locale: Locale, id: SignId): string {
-  return SIGNS[id].slugs[locale];
-}
-
-function weekLink(locale: Locale): string {
-  return {
-    fr: 'Horoscope de la semaine',
-    en: 'Weekly horoscope',
-    es: 'Horóscopo semanal',
-    de: 'Wochenhoroskop',
-    it: 'Oroscopo settimanale',
-  }[locale];
-}
-
-function compatLink(locale: Locale, a: string, b: string): string {
-  return {
-    fr: `Compatibilité ${a} et ${b}`,
-    en: `${a} and ${b}`,
-    es: `${a} y ${b}`,
-    de: `${a} und ${b}`,
-    it: `${a} e ${b}`,
-  }[locale];
 }
 
 export function risingArticleModel(locale: Locale, id: SignId): ArticleModel {
@@ -279,16 +254,16 @@ export function risingArticleModel(locale: Locale, id: SignId): ArticleModel {
     it: `Per ${name}, l’ascendente mette un ${element} ${modality} retto da ${ruler} sulla casa I: non è una previsione, solo la porta del tema, leggibile con l’ora esatta.`,
   }[locale];
   const sections: Section[] = [
-    { h2: H2.risingDoor[locale], paragraphs: [...copy.rising, door] },
+    {
+      h2: H2.risingDoor[locale],
+      paragraphs: [...copy.rising, door],
+      inline: contextualParagraphs({ kind: 'rising', locale, id }),
+    },
     { h2: H2.risingFacts[locale], paragraphs: [], facts: factsOf(locale, id) },
     {
       h2: H2.risingLinks[locale],
       paragraphs: [],
-      links: [
-        { href: signPath(locale, id), label: KEYWORD.sign[locale](name) },
-        { href: compatPath(locale, id, id), label: compatLink(locale, name, name) },
-        { href: `${weekPath(locale)}#${signSlugOf(locale, id)}`, label: weekLink(locale) },
-      ],
+      links: clusterChips({ kind: 'rising', locale, id }),
     },
   ];
   return {
@@ -385,7 +360,11 @@ export function compatArticleModel(locale: Locale, a: SignId, b: SignId): Articl
     it: `Compatibilità ${nameA} e ${nameB}: ${elementLabel(locale, elementOf(left))} ${modalityLabel(locale, modalityOf(left))} (${planetLabel(locale, rulerOf(left))}) e ${elementLabel(locale, elementOf(right))} ${modalityLabel(locale, modalityOf(right))} (${planetLabel(locale, rulerOf(right))}).`,
   }[locale]);
   const sections: Section[] = [
-    { h2: H2.pairTemper[locale], paragraphs: [lead] },
+    {
+      h2: H2.pairTemper[locale],
+      paragraphs: [lead],
+      inline: contextualParagraphs({ kind: 'compat', locale, a: left, b: right }),
+    },
     {
       h2: H2.pairFacts[locale],
       paragraphs: factualLines(locale, left, right),
@@ -397,16 +376,7 @@ export function compatArticleModel(locale: Locale, a: SignId, b: SignId): Articl
     {
       h2: H2.pairLinks[locale],
       paragraphs: [],
-      links: [
-        { href: signPath(locale, left), label: KEYWORD.sign[locale](nameA) },
-        { href: risingPath(locale, left), label: KEYWORD.rising[locale](nameA) },
-        ...(left === right
-          ? []
-          : [
-              { href: signPath(locale, right), label: KEYWORD.sign[locale](nameB) },
-              { href: risingPath(locale, right), label: KEYWORD.rising[locale](nameB) },
-            ]),
-      ],
+      links: clusterChips({ kind: 'compat', locale, a: left, b: right }),
     },
   ];
   return {

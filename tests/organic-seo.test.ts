@@ -122,7 +122,7 @@ test('les duos citent les deux noms et les lectures ne se répètent pas', () =>
 });
 
 test('sitemap, accueil, calculateur et page avis', () => {
-  const sitemap = fs.readFileSync(new URL('../app/sitemap.ts', import.meta.url), 'utf8');
+  const sitemap = fs.readFileSync(new URL('../lib/sitemap-public.ts', import.meta.url), 'utf8');
   assert.equal(sitemap.includes('clusterSitemap'), true);
   assert.equal(sitemap.includes('AVIS_PATH'), true);
   assert.equal(clusterSitemap().length, 12 + 12 + 78 + 1);

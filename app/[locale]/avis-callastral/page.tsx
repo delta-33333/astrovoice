@@ -28,7 +28,7 @@ export const metadata: Metadata = {
   title: AVIS_TITLE,
   description: AVIS_DESCRIPTION,
   keywords: [...AVIS_KEYWORDS],
-  alternates: { canonical: AVIS_PATH },
+  alternates: { canonical: AVIS_PATH, languages: { fr: AVIS_PATH, 'x-default': AVIS_PATH } },
   openGraph: { title: AVIS_TITLE, description: AVIS_DESCRIPTION, url: AVIS_PATH, type: 'website' },
 };
 

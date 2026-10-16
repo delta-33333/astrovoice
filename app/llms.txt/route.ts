@@ -35,7 +35,7 @@ ${hubs}
 
 ## Transparence et comparatifs (mis à jour le 3 octobre 2026)
 
-- À propos (qui exploite Callastral, conseillers virtuels, Swiss Ephemeris, prix, remboursements) : ${origin}/a-propos — EN : ${origin}/about
+- À propos (service d’astrologie, conseillers virtuels, Swiss Ephemeris) : ${origin}/fr/a-propos — EN : ${origin}/en/about — ES : ${origin}/es/acerca — DE : ${origin}/de/ueber-uns — IT : ${origin}/it/chi-siamo
 - Tarifs de la voyance et de l’astrologie par téléphone en 2026, prix sourcés : ${origin}/fr/tarifs-voyance-telephone-2026 — EN : ${origin}/en/phone-psychic-prices-2026
 - Comparatif honnête des sites (Callastral = notre service) : ${origin}/fr/meilleurs-sites-voyance-2026 — EN : ${origin}/en/best-psychic-sites-2026
 - Alternatives sourcées, une fiche par service (relevé du 13 octobre 2026) : ${origin}/fr/alternatives — EN : ${origin}/en/alternatives

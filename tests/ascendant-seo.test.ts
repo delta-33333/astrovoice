@@ -108,7 +108,7 @@ test('douze lectures, un seul CTA, et redirection vers le slug de la langue', ()
   const calculator = fs.readFileSync(new URL('../components/AscendantCalculator.tsx', import.meta.url), 'utf8');
   const route = fs.readFileSync(new URL('../app/api/ascendant/route.ts', import.meta.url), 'utf8');
   const frPage = fs.readFileSync(new URL('../app/[locale]/calcul-ascendant-gratuit/page.tsx', import.meta.url), 'utf8');
-  const sitemap = fs.readFileSync(new URL('../app/sitemap.ts', import.meta.url), 'utf8');
+  const sitemap = fs.readFileSync(new URL('../lib/sitemap-public.ts', import.meta.url), 'utf8');
 
   assert.equal((screen.match(/<h1[\s>]/g) ?? []).length, 1);
   assert.equal((screen.match(/btn-primary/g) ?? []).length, 1);

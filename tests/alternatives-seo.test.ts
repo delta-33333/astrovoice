@@ -79,11 +79,13 @@ test('un CTA, redirect Instagram 307, sitemap, sans pénurie inventée', () => {
   assert.match(config, /utm_source=instagram&utm_medium=bio&utm_campaign=callastral_bio/);
   const insta = config.slice(config.indexOf("source: '/insta'"));
   assert.match(insta, /permanent: false/);
-  const sitemap = fs.readFileSync(new URL('../app/sitemap.ts', import.meta.url), 'utf8');
+  const sitemap = fs.readFileSync(new URL('../lib/sitemap-public.ts', import.meta.url), 'utf8');
   assert.equal(sitemap.includes('HUB_PATHS'), true);
   assert.equal(sitemap.includes('COMPETITORS'), true);
   const footer = fs.readFileSync(new URL('../components/SiteFooter.tsx', import.meta.url), 'utf8');
-  assert.equal(footer.includes('HUB_PATHS'), true);
+  const links = fs.readFileSync(new URL('../lib/internal-links.ts', import.meta.url), 'utf8');
+  assert.equal(footer.includes('footerLinks'), true);
+  assert.equal(links.includes('HUB_PATHS'), true);
   const blob = `${screen}\n${data}`;
   for (const token of ['Astrology-API', 'astrology-api', 'dernière place', 'offre limitée', 'dépêchez']) {
     assert.equal(blob.includes(token), false, token);

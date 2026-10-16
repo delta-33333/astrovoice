@@ -8,7 +8,7 @@ import SeoChrome from '@/components/SeoChrome';
 import { getCopy } from '@/lib/ascendant-copy';
 import { AVIS_PATH } from '@/lib/avis-callastral';
 import { chartReadingCta } from '@/lib/book-funnel';
-import { SIGN_IDS, SIGNS, risingPath, signName } from '@/lib/zodiac/signs';
+import { calculatorHubLinks, risingResultLinks } from '@/lib/internal-links';
 import {
   ascendantJsonLd,
   ascendantPath,
@@ -23,7 +23,6 @@ import { perMinuteRange } from '@/lib/money';
 import {
   advisorPath,
   hreflangAlternates,
-  hubPath,
   isLocale,
   localeCurrency,
   localeHomePath,
@@ -109,16 +108,8 @@ export default async function AscendantToolScreen(
   const market = await resolveMarket();
   const offerCurrency = weeklyCurrency(market.currency);
   const readingCta = chartReadingCta(locale, offerCurrency);
-  const risingLabel = (name: string) => ({
-    fr: `Lire l’ascendant ${name}`,
-    en: `Read the ${name} rising sign`,
-    es: `Leer el ascendente ${name}`,
-    de: `Aszendent ${name} lesen`,
-    it: `Leggere l’ascendente ${name}`,
-  }[locale]);
-  const risingLinks = Object.fromEntries(
-    SIGN_IDS.map((id) => [SIGNS[id].french, { href: risingPath(locale, id), label: risingLabel(signName(locale, id)) }]),
-  );
+  const risingLinks = risingResultLinks(locale);
+  const hubLinks = calculatorHubLinks(locale);
   const range = perMinuteRange(localeCurrency(locale), readRates(), locale);
   const origin = appBaseUrl();
   const path = ascendantPath(locale);
@@ -209,10 +200,10 @@ export default async function AscendantToolScreen(
               </li>
             ))}
           </ul>
-          <p className="mt-4 text-sm text-white/60 space-x-3">
-            <Link href={hubPath(locale, 'amour')} className="underline hover:text-white">{copy.linkLove}</Link>
-            <Link href={hubPath(locale, 'spiritualité')} className="underline hover:text-white">{copy.linkSpirit}</Link>
-            <Link href={hubPath(locale, 'compatibilité')} className="underline hover:text-white">{copy.linkCompat}</Link>
+          <p className="mt-4 text-sm text-white/60 flex flex-wrap gap-x-3 gap-y-1">
+            {hubLinks.map((link) => (
+              <Link key={link.href} href={link.href} className="underline hover:text-white">{link.label}</Link>
+            ))}
             {copy.pricesHref && copy.linkPrices && (
               <Link href={copy.pricesHref} className="underline hover:text-white">{copy.linkPrices}</Link>
             )}

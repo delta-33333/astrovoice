@@ -22,6 +22,7 @@ export const metadata: Metadata = {
   title: 'Offres — Callastral',
   description:
     'Consultation à la minute, packs, résumé écrit, thème natal, prévision et formules hebdomadaires.',
+  alternates: { canonical: '/offres', languages: { fr: '/offres', 'x-default': '/offres' } },
 };
 
 export default async function OffersPage() {

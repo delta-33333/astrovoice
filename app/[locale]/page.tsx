@@ -8,6 +8,7 @@ import { getCopy } from '@/lib/ascendant-copy';
 import { AVIS_PATH } from '@/lib/avis-callastral';
 import { SIGN_IDS, signName, signPath } from '@/lib/zodiac/signs';
 import { HUB_PATHS } from '@/lib/alternatives';
+import { aboutPath } from '@/lib/about';
 import { GEO_PATHS } from '@/lib/geo-pages';
 import HomePlans from '@/components/HomePlans';
 import SeoChrome from '@/components/SeoChrome';
@@ -138,7 +139,7 @@ export default async function LocaleHome(props: { params: Promise<{ locale: stri
           <p className="text-sm text-white/50">
             <Link href="/faq" className="underline">FAQ</Link>
             {' · '}
-            <Link href={locale === 'fr' ? GEO_PATHS.about.fr : GEO_PATHS.about.en} className="underline">
+            <Link href={aboutPath(locale)} className="underline">
               {locale === 'fr' ? 'À propos' : 'About'}
             </Link>
             {' · '}
