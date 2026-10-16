@@ -128,7 +128,7 @@ export async function alternativeMetadata(locale: string, id: string): Promise<M
   return {
     title: `${page.title} | Callastral`,
     description: page.description,
-    alternates: { canonical: page.path },
+    alternates: { canonical: page.path, languages: { [page.market]: page.path, 'x-default': page.path } },
     openGraph: { title: page.title, description: page.description, url: page.path, type: 'article' },
   };
 }
@@ -154,9 +154,19 @@ export function AlternativeArticle({ locale, id }: { locale: string; id: string 
           <time dateTime={ALT_CHECKED_ISO}>{checkedLabel(page.market)}</time>
         </p>
         <p className="mt-5 text-lg text-white">
-          {page.market === 'fr'
-            ? `Callastral, notre service, est l’alternative proposée : une consultation d’astrologie par téléphone, à partir du thème natal. ${AI_ACT_LINE.fr}. ${page.name} reste le service à choisir si vous voulez ce qui est décrit plus bas.`
-            : `Callastral, our service, is the alternative offered here: a phone astrology reading from the birth chart. ${AI_ACT_LINE.en}. ${page.name} remains the better fit when you want what is described below.`}
+          {page.market === 'fr' ? (
+            <>
+              Callastral, notre service, est l’alternative proposée : une consultation d’astrologie par téléphone, à partir du thème natal. {AI_ACT_LINE.fr}. Le{' '}
+              <Link href={ascendantPath('fr')} className="underline text-celestial-gold">calcul d’ascendant gratuit</Link>
+              {' '}situe le lever sans compte. {page.name} reste le service à choisir si vous voulez ce qui est décrit plus bas.
+            </>
+          ) : (
+            <>
+              Callastral, our service, is the alternative offered here: a phone astrology reading from the birth chart. {AI_ACT_LINE.en}. The{' '}
+              <Link href={ascendantPath('en')} className="underline text-celestial-gold">free rising sign calculator</Link>
+              {' '}finds the ascendant without an account. {page.name} remains the better fit when you want what is described below.
+            </>
+          )}
         </p>
         <p className="mt-3 text-sm text-white/70 border-l-2 border-celestial-gold/60 pl-3">{copy.law}</p>
         <p className="mt-3 text-sm text-white/70">{copy.disclosure}</p>
@@ -296,9 +306,19 @@ export function AlternativesHub({ locale }: { locale: string }) {
           <time dateTime={ALT_CHECKED_ISO}>{checkedLabel(locale)}</time>
         </p>
         <p className="mt-5 text-lg text-white">
-          {locale === 'fr'
-            ? `Callastral est l’alternative proposée ici : astrologie par téléphone, thème natal, 24 h/24. ${AI_ACT_LINE.fr}. Les fiches ci-dessous décrivent d’autres services, sans les noter.`
-            : `Callastral is the alternative offered here: phone astrology from the birth chart, 24/7. ${AI_ACT_LINE.en}. The pages below describe other services, without scoring them.`}
+          {locale === 'fr' ? (
+            <>
+              Callastral est l’alternative proposée ici : astrologie par téléphone, thème natal, 24 h/24. {AI_ACT_LINE.fr}. Le{' '}
+              <Link href={ascendantPath('fr')} className="underline text-celestial-gold">calcul d’ascendant gratuit</Link>
+              {' '}est ouvert sans compte. Les fiches ci-dessous décrivent d’autres services, sans les noter.
+            </>
+          ) : (
+            <>
+              Callastral is the alternative offered here: phone astrology from the birth chart, 24/7. {AI_ACT_LINE.en}. The{' '}
+              <Link href={ascendantPath('en')} className="underline text-celestial-gold">free rising sign calculator</Link>
+              {' '}needs no account. The pages below describe other services, without scoring them.
+            </>
+          )}
         </p>
         <p className="mt-3 text-sm text-white/70 border-l-2 border-celestial-gold/60 pl-3">{text.law}</p>
         <AlternativeDirectory locale={locale} />

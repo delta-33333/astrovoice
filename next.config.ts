@@ -60,6 +60,8 @@ const nextConfig: NextConfig = {
         destination: '/fr?utm_source=instagram&utm_medium=bio&utm_campaign=callastral_bio',
         permanent: false,
       },
+      { source: '/a-propos', destination: '/fr/a-propos', permanent: true },
+      { source: '/about', destination: '/en/about', permanent: true },
     ];
   },
   async headers() {

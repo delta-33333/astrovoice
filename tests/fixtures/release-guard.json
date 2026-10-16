@@ -1,0 +1,104 @@
+{
+  "at": "2026-01-07T12:00:00.000Z",
+  "samples": [
+    {
+      "id": "sign-fr-belier",
+      "words": 293,
+      "jsonLdTypes": [
+        "BreadcrumbList",
+        "ListItem",
+        "WebPage"
+      ],
+      "tables": 0
+    },
+    {
+      "id": "rising-fr-belier",
+      "words": 288,
+      "jsonLdTypes": [
+        "BreadcrumbList",
+        "ListItem",
+        "WebPage"
+      ],
+      "tables": 0
+    },
+    {
+      "id": "compat-fr-belier-taureau",
+      "words": 114,
+      "jsonLdTypes": [
+        "BreadcrumbList",
+        "ListItem",
+        "WebPage"
+      ],
+      "tables": 0
+    },
+    {
+      "id": "horoscope-fr",
+      "words": 1028,
+      "jsonLdTypes": [
+        "BreadcrumbList",
+        "ListItem",
+        "WebPage"
+      ],
+      "tables": 0
+    },
+    {
+      "id": "avis",
+      "words": 155,
+      "jsonLdTypes": [
+        "Answer",
+        "BreadcrumbList",
+        "FAQPage",
+        "ListItem",
+        "Organization",
+        "Question",
+        "WebPage"
+      ],
+      "tables": 1
+    },
+    {
+      "id": "about-fr",
+      "words": 131,
+      "jsonLdTypes": [
+        "AboutPage",
+        "BreadcrumbList",
+        "ListItem"
+      ],
+      "tables": 0
+    },
+    {
+      "id": "calculator-fr",
+      "words": 892,
+      "jsonLdTypes": [
+        "Answer",
+        "BreadcrumbList",
+        "FAQPage",
+        "ListItem",
+        "Offer",
+        "Question",
+        "WebApplication"
+      ],
+      "tables": 0
+    },
+    {
+      "id": "alternative-voyance-fr",
+      "words": 439,
+      "jsonLdTypes": [
+        "Answer",
+        "BreadcrumbList",
+        "FAQPage",
+        "ListItem",
+        "Question"
+      ],
+      "tables": 1
+    },
+    {
+      "id": "organization",
+      "words": 11,
+      "jsonLdTypes": [
+        "Organization",
+        "WebSite"
+      ],
+      "tables": 0
+    }
+  ]
+}

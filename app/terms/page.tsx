@@ -6,6 +6,7 @@ import { VIRTUAL_ADVISOR_DISCLOSURE } from '@/lib/legal';
 export const metadata: Metadata = {
   title: 'Conditions générales de vente — Callastral',
   description: 'Tarifs et conditions des consultations astrologiques Callastral.',
+  alternates: { canonical: '/terms', languages: { fr: '/terms', 'x-default': '/terms' } },
 };
 
 export default function TermsPage() {

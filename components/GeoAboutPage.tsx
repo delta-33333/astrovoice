@@ -8,8 +8,6 @@ import { GEO_PATHS, GEO_UPDATED_ISO, callastralFacts, type GeoLocale } from '@/l
 import { AI_ACT_SPOKEN, AI_VOICE_SHORT } from '@/lib/legal';
 import { appBaseUrl } from '@/lib/stripe';
 
-const OPERATOR = 'Julien Descostes';
-
 function envList(name: string): string[] {
   return (process.env[name] || '')
     .split(',')
@@ -61,8 +59,10 @@ export default function GeoAboutPage({ locale }: { locale: GeoLocale }) {
         {
           title: 'Qui exploite Callastral',
           body: [
-            `Callastral est un service indépendant créé et exploité par ${OPERATOR}.`,
-            ...(info.entity ? [`Entité légale : ${info.entity}${info.id ? ` — ${info.id}` : ''}${info.address ? ` — ${info.address}` : ''}.`] : []),
+            info.entity
+              ? `Callastral est un service indépendant. Entité légale : ${info.entity}${info.id ? ` — ${info.id}` : ''}${info.address ? ` — ${info.address}` : ''}.`
+              : 'Callastral est un service indépendant. L’identité légale de l’exploitant est publiée ici lorsqu’elle est renseignée.',
+            'Aucun nom de personne n’est affiché sur cette page.',
           ],
         },
         {
@@ -117,8 +117,10 @@ export default function GeoAboutPage({ locale }: { locale: GeoLocale }) {
         {
           title: 'Who runs Callastral',
           body: [
-            `Callastral is an independent service created and run by ${OPERATOR}.`,
-            ...(info.entity ? [`Legal entity: ${info.entity}${info.id ? ` — ${info.id}` : ''}${info.address ? ` — ${info.address}` : ''}.`] : []),
+            info.entity
+              ? `Callastral is an independent service. Legal entity: ${info.entity}${info.id ? ` — ${info.id}` : ''}${info.address ? ` — ${info.address}` : ''}.`
+              : 'Callastral is an independent service. The legal identity of the operator is published here when it is set.',
+            'No personal name is shown on this page.',
           ],
         },
         {
@@ -209,7 +211,6 @@ export default function GeoAboutPage({ locale }: { locale: GeoLocale }) {
             name: 'Callastral',
             url: origin,
             logo: `${origin}/logo.png`,
-            founder: { '@type': 'Person', name: OPERATOR },
             ...(info.entity ? { legalName: info.entity } : {}),
             ...(sameAs.length ? { sameAs } : {}),
             ...(info.email ? { contactPoint: { '@type': 'ContactPoint', email: info.email, contactType: 'customer support' } } : {}),

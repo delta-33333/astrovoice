@@ -1,3 +1,4 @@
+import { aboutPath } from './about.ts';
 import type { FrenchSign, ToolLocale } from './ascendant-tool';
 
 export interface SignCopy {
@@ -189,7 +190,7 @@ const COPY: Record<ToolLocale, AscendantCopy> = {
     pricesHref: '/fr/tarifs-voyance-telephone-2026',
     linkOffers: 'Offres',
     footerAbout: 'À propos',
-    aboutHref: '/a-propos',
+    aboutHref: aboutPath('fr'),
     footerFaq: 'FAQ',
     footerTerms: 'CGU',
     footerPrivacy: 'Confidentialité',
@@ -261,7 +262,7 @@ const COPY: Record<ToolLocale, AscendantCopy> = {
     pricesHref: '/en/phone-psychic-prices-2026',
     linkOffers: 'Offers',
     footerAbout: 'About',
-    aboutHref: '/about',
+    aboutHref: aboutPath('en'),
     footerFaq: 'FAQ',
     footerTerms: 'Terms of use',
     footerPrivacy: 'Privacy',
@@ -333,7 +334,7 @@ const COPY: Record<ToolLocale, AscendantCopy> = {
     pricesHref: null,
     linkOffers: 'Ofertas',
     footerAbout: 'Acerca de',
-    aboutHref: '/about',
+    aboutHref: aboutPath('es'),
     footerFaq: 'FAQ',
     footerTerms: 'Condiciones de uso',
     footerPrivacy: 'Privacidad',
@@ -405,7 +406,7 @@ const COPY: Record<ToolLocale, AscendantCopy> = {
     pricesHref: null,
     linkOffers: 'Angebote',
     footerAbout: 'Über uns',
-    aboutHref: '/about',
+    aboutHref: aboutPath('de'),
     footerFaq: 'FAQ',
     footerTerms: 'Nutzungsbedingungen',
     footerPrivacy: 'Datenschutz',
@@ -477,7 +478,7 @@ const COPY: Record<ToolLocale, AscendantCopy> = {
     pricesHref: null,
     linkOffers: 'Offerte',
     footerAbout: 'Chi siamo',
-    aboutHref: '/about',
+    aboutHref: aboutPath('it'),
     footerFaq: 'FAQ',
     footerTerms: 'Condizioni d’uso',
     footerPrivacy: 'Privacy',

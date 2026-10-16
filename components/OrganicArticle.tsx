@@ -12,7 +12,9 @@ import {
   type ArticleModel,
 } from '@/lib/zodiac/articles';
 import { horoscopeModel, type HoroscopeModel } from '@/lib/weekly-sky';
+import { horoscopeLeadParts, horoscopeSectionParts, type InlinePart } from '@/lib/internal-links';
 import { isLocale, type Locale } from '@/lib/seo';
+import { isThinPath, publishedAlternates } from '@/lib/thin-content';
 import { appBaseUrl } from '@/lib/stripe';
 import {
   SIGN_IDS,
@@ -56,11 +58,13 @@ export async function organicMetadata(
   if (!isLocale(locale) || !locales.includes(locale)) return {};
   const model = modelFor(kind, locale, slug);
   if (!model) return {};
+  const languages = publishedAlternates(locale, model.path, model.alternates);
   return {
     title: model.title,
     description: model.description,
     keywords: model.keywords,
-    alternates: { canonical: model.path, languages: model.alternates },
+    alternates: { canonical: model.path, languages },
+    robots: isThinPath(model.path) ? { index: false, follow: true } : { index: true, follow: true },
     openGraph: { title: model.title, description: model.description, url: model.path, type: 'website' },
   };
 }
@@ -75,6 +79,18 @@ export async function OrganicPage(
   const model = modelFor(kind, locale, slug);
   if (!model) notFound();
   return <ArticleView model={model} />;
+}
+
+function InlineParagraph({ parts }: { parts: InlinePart[] }) {
+  return (
+    <p className="mt-4 text-white/80 leading-relaxed">
+      {parts.map((part, index) => part.href ? (
+        <Link key={`${part.href}-${index}`} href={part.href} className="text-celestial-gold underline">{part.text}</Link>
+      ) : (
+        <span key={`${part.text}-${index}`}>{part.text}</span>
+      ))}
+    </p>
+  );
 }
 
 function ArticleView({ model }: { model: ArticleModel }) {
@@ -101,6 +117,9 @@ function ArticleView({ model }: { model: ArticleModel }) {
             )}
             {section.paragraphs.map((paragraph) => (
               <p key={paragraph} className="mt-4 text-white/80 leading-relaxed">{paragraph}</p>
+            ))}
+            {section.inline?.map((parts, index) => (
+              <InlineParagraph key={`${section.h2}-${index}`} parts={parts} />
             ))}
             {section.links && section.links.length > 0 && (
               <ul className="mt-4 flex flex-wrap gap-2">
@@ -132,11 +151,13 @@ export async function horoscopeMetadata(
   const { locale } = await props.params;
   if (locale !== localeAllowed || !isLocale(locale)) return {};
   const model = horoscopeModel(locale, new Date());
+  const languages = publishedAlternates(locale, model.path, model.alternates);
   return {
     title: model.title,
     description: model.description,
     keywords: model.keywords,
-    alternates: { canonical: model.path, languages: model.alternates },
+    alternates: { canonical: model.path, languages },
+    robots: isThinPath(model.path) ? { index: false, follow: true } : { index: true, follow: true },
     openGraph: { title: model.title, description: model.description, url: model.path, type: 'website' },
   };
 }
@@ -158,6 +179,7 @@ export function HoroscopePage({ model }: { model: HoroscopeModel }) {
           {model.skyParagraphs.map((paragraph) => (
             <p key={paragraph} className="mt-4 text-white/80 leading-relaxed">{paragraph}</p>
           ))}
+          <InlineParagraph parts={horoscopeLeadParts(model.locale)} />
         </section>
         {model.sections.map((section) => (
           <section key={section.id} id={section.slug} className="mt-10">
@@ -165,6 +187,7 @@ export function HoroscopePage({ model }: { model: HoroscopeModel }) {
             {section.paragraphs.map((paragraph) => (
               <p key={paragraph} className="mt-3 text-white/80 leading-relaxed">{paragraph}</p>
             ))}
+            <InlineParagraph parts={horoscopeSectionParts(model.locale, section.id)} />
           </section>
         ))}
         <section className="mt-10">

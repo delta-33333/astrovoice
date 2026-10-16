@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   title: 'Conditions générales d’utilisation — Callastral',
   description:
     'Conditions d’utilisation de Callastral : conseillers virtuels, voix générée par IA, thème natal et limites des consultations.',
-  alternates: { canonical: '/cgu' },
+  alternates: { canonical: '/cgu', languages: { fr: '/cgu', 'x-default': '/cgu' } },
 };
 
 export default function CguPage() {

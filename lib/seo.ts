@@ -1,3 +1,4 @@
+import { AI_ACT_LINE } from './legal.ts';
 import type { Currency } from './money';
 
 export const LOCALES = ['fr', 'en', 'es', 'de', 'it'] as const;
@@ -496,6 +497,7 @@ export function organizationGraph(origin: string): Record<string, unknown>[] {
       name: 'Callastral',
       url: origin,
       logo: `${origin}/logo.png`,
+      description: `Service d’astrologie. ${AI_ACT_LINE.fr}`,
       ...(sameAs.length > 0 ? { sameAs } : {}),
     },
     {

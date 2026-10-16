@@ -1,10 +1,13 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import JsonLd from '@/components/JsonLd';
 import { VIRTUAL_ADVISOR_DISCLOSURE } from '@/lib/legal';
+import { appBaseUrl } from '@/lib/stripe';
 
 export const metadata: Metadata = {
   title: 'Questions fréquentes — Callastral',
   description: 'Tarifs, thème natal et déroulement d’une consultation Callastral.',
+  alternates: { canonical: '/faq', languages: { fr: '/faq', 'x-default': '/faq' } },
 };
 
 const ENTRIES: { q: string; a: string }[] = [
@@ -35,6 +38,7 @@ const ENTRIES: { q: string; a: string }[] = [
 ];
 
 export default function FaqPage() {
+  const origin = appBaseUrl();
   return (
     <main className="min-h-screen px-4 py-10">
       <div className="max-w-2xl mx-auto space-y-8">
@@ -66,6 +70,26 @@ export default function FaqPage() {
           </Link>
         </p>
       </div>
+      <JsonLd data={{
+        '@context': 'https://schema.org',
+        '@graph': [
+          {
+            '@type': 'BreadcrumbList',
+            itemListElement: [
+              { '@type': 'ListItem', position: 1, name: 'Accueil', item: `${origin}/fr` },
+              { '@type': 'ListItem', position: 2, name: 'Questions fréquentes', item: `${origin}/faq` },
+            ],
+          },
+          {
+            '@type': 'FAQPage',
+            mainEntity: ENTRIES.map((entry) => ({
+              '@type': 'Question',
+              name: entry.q,
+              acceptedAnswer: { '@type': 'Answer', text: entry.a },
+            })),
+          },
+        ],
+      }} />
     </main>
   );
 }

@@ -1,4 +1,4 @@
-import sitemap from '@/app/sitemap';
+import { indexablePaths } from '@/lib/sitemap-server';
 import { appBaseUrl } from '@/lib/stripe';
 import { getSupabaseAdmin } from '@/lib/supabase';
 
@@ -15,13 +15,9 @@ export function indexNowKey(): string | null {
 }
 
 export async function sitemapUrls(): Promise<string[]> {
-  const entries = await sitemap();
   const origin = appBaseUrl();
-  const urls = new Set<string>();
-  for (const entry of entries) {
-    if (entry.url.startsWith(origin)) urls.add(entry.url);
-  }
-  return [...urls].slice(0, MAX_URLS);
+  const paths = await indexablePaths();
+  return paths.slice(0, MAX_URLS).map((path) => `${origin}${path}`);
 }
 
 export interface IndexNowResult {

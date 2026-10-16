@@ -11,7 +11,7 @@ export const GEO_PUBLISHED_ISO = '2026-10-03';
 export const GEO_PATHS = {
   prices: { fr: '/fr/tarifs-voyance-telephone-2026', en: '/en/phone-psychic-prices-2026' },
   compare: { fr: '/fr/meilleurs-sites-voyance-2026', en: '/en/best-psychic-sites-2026' },
-  about: { fr: '/a-propos', en: '/about' },
+  about: { fr: '/fr/a-propos', en: '/en/about' },
 } as const;
 
 export type GeoPage = keyof typeof GEO_PATHS;
