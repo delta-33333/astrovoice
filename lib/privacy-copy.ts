@@ -13,6 +13,37 @@ function block(heading: string, paragraphs: string[]): PrivacySection {
   return { heading, paragraphs };
 }
 
+function featureNotice(locale: Locale): PrivacySection {
+  const copy: Record<Locale, PrivacySection> = {
+    fr: block('Mémoire du conseiller et horoscope du matin', [
+      'Après un appel, si la mémoire du conseiller est active, Callastral enregistre un court résumé : sujets, questions, conseils et humeur. Ce résumé est visible dans l’historique du compte. Les trois derniers résumés sont relus par le conseiller virtuel à l’appel suivant, pour reprendre le fil. Un e-mail de rappel part avec ce résumé, les transits de la semaine et une proposition de première semaine Découverte. La mémoire est active par défaut. Depuis le compte, le bouton Mémoire du conseiller la coupe, et le bouton d’effacement supprime cet historique.',
+      'L’horoscope du matin est un e-mail distinct. Il demande une case de consentement et un second clic de confirmation. Sont enregistrés : l’e-mail, la langue, le signe, une date de naissance facultative, la source UTM et l’horodatage de confirmation. Le texte du jour est préparé une fois par signe et par langue, pas une fois par personne. Chaque message contient un lien de désinscription en un clic.',
+      'L’outil de compatibilité de couple calcule un score sans créer de compte. Le lien partagé ne conserve que le score, les phrases et les initiales : pas la date, l’heure ni le lieu de naissance.',
+    ]),
+    en: block('Advisor memory and morning horoscope', [
+      'After a call, if advisor memory is on, Callastral stores a short summary: topics, questions, advice and mood. The summary is visible in the account history. The last three summaries are read by the virtual advisor on the next call, to pick up the thread. A recap email includes that summary, the week’s transits and an offer for the Découverte first week. Memory is on by default. In the account, the Advisor memory control turns it off, and the delete button removes this history.',
+      'The morning horoscope is a separate email. It asks for a consent checkbox and a second confirmation click. Stored data: email, language, sign, an optional birth date, the UTM source and the confirmation timestamp. The day’s text is prepared once per sign and language, not once per person. Each message has a one-click unsubscribe link.',
+      'The couple compatibility tool computes a score without an account. The shared link keeps only the score, the sentences and the initials: not the birth date, time or place.',
+    ]),
+    es: block('Memoria del consejero y horóscopo de la mañana', [
+      'Después de una llamada, si la memoria del consejero está activa, Callastral guarda un resumen breve: temas, preguntas, consejos y estado de ánimo. El resumen se ve en el historial de la cuenta. Los tres últimos se leen en la llamada siguiente para retomar el hilo. Un correo de resumen incluye ese texto, los tránsitos de la semana y la primera semana Découverte. La memoria está activa por defecto. En la cuenta se puede desactivar y borrar ese historial.',
+      'El horóscopo de la mañana es un correo aparte. Pide una casilla de consentimiento y un segundo clic de confirmación. Se guardan el correo, el idioma, el signo, una fecha de nacimiento opcional, la fuente UTM y la fecha de confirmación. El texto del día se prepara una vez por signo e idioma, no una vez por persona. Cada mensaje tiene una baja en un clic.',
+      'La compatibilidad de pareja calcula una puntuación sin cuenta. El enlace compartido solo guarda la puntuación, las frases y las iniciales: no la fecha, la hora ni el lugar de nacimiento.',
+    ]),
+    de: block('Beratergedächtnis und Morgenhoroskop', [
+      'Nach einem Anruf speichert Callastral, wenn das Beratergedächtnis aktiv ist, eine kurze Zusammenfassung: Themen, Fragen, Rat und Stimmung. Sie ist im Kontoverlauf sichtbar. Die letzten drei Zusammenfassungen liest der virtuelle Berater beim nächsten Anruf, um anzuknüpfen. Eine Erinnerungs-E-Mail enthält diese Zusammenfassung, die Transite der Woche und das Angebot der ersten Découverte-Woche. Das Gedächtnis ist standardmäßig an. Im Konto lässt es sich abschalten, und der Löschknopf entfernt diesen Verlauf.',
+      'Das Morgenhoroskop ist eine eigene E-Mail. Es verlangt ein Einwilligungsfeld und einen zweiten Bestätigungsklick. Gespeichert werden E-Mail, Sprache, Zeichen, ein optionales Geburtsdatum, die UTM-Quelle und der Bestätigungszeitpunkt. Der Tagestext wird einmal je Zeichen und Sprache erzeugt, nicht je Person. Jede Nachricht hat einen Abmeldelink mit einem Klick.',
+      'Das Partner-Werkzeug berechnet einen Score ohne Konto. Der geteilte Link behält nur Score, Sätze und Initialen: nicht Datum, Uhrzeit oder Geburtsort.',
+    ]),
+    it: block('Memoria del consulente e oroscopo del mattino', [
+      'Dopo una chiamata, se la memoria del consulente è attiva, Callastral registra un riassunto breve: temi, domande, consigli e umore. Il riassunto è visibile nello storico dell’account. Gli ultimi tre vengono riletti dal consulente virtuale alla chiamata successiva, per riprendere il filo. Un’e-mail di promemoria include quel riassunto, i transiti della settimana e la prima settimana Découverte. La memoria è attiva per impostazione predefinita. Dall’account si può disattivare e cancellare questo storico.',
+      'L’oroscopo del mattino è un’e-mail a parte. Chiede una casella di consenso e un secondo clic di conferma. Sono registrati e-mail, lingua, segno, una data di nascita facoltativa, la fonte UTM e l’orario di conferma. Il testo del giorno è preparato una volta per segno e lingua, non una volta per persona. Ogni messaggio ha un link di disiscrizione con un clic.',
+      'Lo strumento di compatibilità di coppia calcola un punteggio senza account. Il link condiviso conserva solo punteggio, frasi e iniziali: non data, ora né luogo di nascita.',
+    ]),
+  };
+  return copy[locale];
+}
+
 function french(legal: LegalIdentity): PrivacyDocument {
   return {
     title: 'Politique de confidentialité et RGPD',
@@ -60,6 +91,7 @@ function french(legal: LegalIdentity): PrivacyDocument {
         'Vous pouvez demander l’accès, la rectification, l’effacement, la limitation, la portabilité et l’opposition, et retirer un consentement, en écrivant à l’adresse de contact.',
         'Vous pouvez aussi introduire une réclamation auprès de l’autorité de protection des données de votre pays. En France, il s’agit de la CNIL (cnil.fr).',
       ]),
+      featureNotice('fr'),
       block('Contact', [
         `Écrivez à ${legal.email}. Si l’adresse est encore un marqueur entre crochets, elle n’a pas été configurée : la demande peut aussi être faite depuis le compte lorsque vous êtes connecté, et elle sera traitée dès que l’adresse de contact est renseignée.`,
       ]),
@@ -114,6 +146,7 @@ function english(legal: LegalIdentity): PrivacyDocument {
         'You may request access, rectification, erasure, restriction, portability and objection, and you may withdraw consent, by writing to the contact address.',
         'You may also lodge a complaint with your local data protection authority. In France, that authority is the CNIL (cnil.fr).',
       ]),
+      featureNotice('en'),
       block('Contact', [
         `Write to ${legal.email}. If the address is still a bracketed marker, it has not been configured yet.`,
       ]),
@@ -168,6 +201,7 @@ function spanish(legal: LegalIdentity): PrivacyDocument {
         'Puede solicitar acceso, rectificación, supresión, limitación, portabilidad y oposición, y retirar un consentimiento, escribiendo a la dirección de contacto.',
         'También puede reclamar ante la autoridad de protección de datos de su país. En Francia es la CNIL (cnil.fr).',
       ]),
+      featureNotice('es'),
       block('Contacto', [
         `Escriba a ${legal.email}. Si la dirección sigue siendo un marcador entre corchetes, aún no está configurada.`,
       ]),
@@ -222,6 +256,7 @@ function german(legal: LegalIdentity): PrivacyDocument {
         'Sie können Auskunft, Berichtigung, Löschung, Einschränkung, Übertragbarkeit und Widerspruch verlangen und eine Einwilligung widerrufen, indem Sie an die Kontaktadresse schreiben.',
         'Sie können sich auch bei der Datenschutzbehörde Ihres Landes beschweren. In Frankreich ist das die CNIL (cnil.fr).',
       ]),
+      featureNotice('de'),
       block('Kontakt', [
         `Schreiben Sie an ${legal.email}. Steht die Adresse noch als Marker in Klammern, ist sie nicht konfiguriert.`,
       ]),
@@ -276,6 +311,7 @@ function italian(legal: LegalIdentity): PrivacyDocument {
         'Puoi chiedere accesso, rettifica, cancellazione, limitazione, portabilità e opposizione, e revocare un consenso, scrivendo all’indirizzo di contatto.',
         'Puoi anche proporre reclamo all’autorità di protezione dei dati del tuo paese. In Francia è la CNIL (cnil.fr).',
       ]),
+      featureNotice('it'),
       block('Contatto', [
         `Scrivi a ${legal.email}. Se l’indirizzo è ancora un segnaposto tra parentesi, non è stato configurato.`,
       ]),

@@ -3,9 +3,11 @@
 import { useState, type FormEvent } from 'react';
 import Link from 'next/link';
 import HoneypotField from '@/components/HoneypotField';
+import HoroscopeSignup from '@/components/HoroscopeSignup';
 import type { AscendantResult } from '@/lib/ascendant-tool';
 import type { AscendantFormCopy, SignCopy } from '@/lib/ascendant-copy';
 import { resultCheckoutPath } from '@/lib/book-funnel';
+import { signByFrench } from '@/lib/zodiac/signs';
 import { HONEYPOT_FIELD } from '@/lib/form-checks';
 
 const inputClass =
@@ -25,12 +27,14 @@ export default function AscendantCalculator({
   readingCta,
   checkoutBase,
   risingLinks,
+  locale,
 }: {
   labels: AscendantFormCopy;
   signs: Record<string, SignCopy>;
   readingCta: string;
   checkoutBase: string;
   risingLinks?: Record<string, { href: string; label: string }>;
+  locale?: 'fr' | 'en' | 'es' | 'de' | 'it';
 }) {
   const [date, setDate] = useState('');
   const [time, setTime] = useState('');
@@ -168,6 +172,13 @@ export default function AscendantCalculator({
               <Link href={risingLinks[result.sign].href} className="inline-block text-sm text-celestial-gold underline">
                 {risingLinks[result.sign].label}
               </Link>
+            )}
+            {locale && (
+              <HoroscopeSignup
+                locale={locale}
+                sign={signByFrench(result.sunSign)}
+                placement="calculator"
+              />
             )}
             <Link
               href={resultCheckoutPath({ consultHref: checkoutBase, date, time, place: place.trim() })}

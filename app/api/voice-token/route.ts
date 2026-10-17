@@ -7,6 +7,8 @@ import { getAdvisorById } from '@/lib/astrologers';
 import { canJoinCall, getBooking } from '@/lib/bookings';
 import { ensureCallSession } from '@/lib/call-records';
 import { trackEvent } from '@/lib/events';
+import { listCallMemories } from '@/lib/call-memory';
+import { memoryEnabled, memoryPromptBlock } from '@/lib/call-memory-text';
 import { getVoiceSystemPrompt } from '@/lib/voice-prompts';
 import type { BirthData, NatalChart } from '@/lib/types';
 
@@ -204,13 +206,19 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    let priorMemory = '';
+    if (memoryEnabled(user.advisor_memory_enabled)) {
+      const notes = await listCallMemories(user.id, 3);
+      priorMemory = memoryPromptBlock(astrologer.languages[0] || 'fr', notes);
+    }
+
     return NextResponse.json({
       token: secret.value,
       model: MODEL,
       voice: astrologer.voiceId,
-      instructions: getVoiceSystemPrompt(astrologer, birthData, chartForVoice),
+      instructions: getVoiceSystemPrompt(astrologer, birthData, chartForVoice, { priorMemory }),
       /* Base des relances après silence : même prompt, sans la phrase d’ouverture. */
-      followupInstructions: getVoiceSystemPrompt(astrologer, birthData, chartForVoice, { opening: false }),
+      followupInstructions: getVoiceSystemPrompt(astrologer, birthData, chartForVoice, { opening: false, priorMemory }),
       language: astrologer.languages[0] || 'fr',
       prepaidSeconds: access.prepaidSeconds,
       metered: access.metered,

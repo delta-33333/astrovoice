@@ -60,7 +60,7 @@ export function getVoiceSystemPrompt(
   },
   birthData: BirthData,
   natalChart: NatalChart,
-  options: { opening?: boolean } = {}
+  options: { opening?: boolean; priorMemory?: string } = {}
 ): string {
   const lang = advisor.languages[0] || 'fr';
   const block = CLIENT_BLOCK[lang] ?? CLIENT_BLOCK.fr;
@@ -95,8 +95,9 @@ export function getVoiceSystemPrompt(
   const head = options.opening === false ? underway[lang] ?? underway.fr : opening[lang] ?? opening.fr;
 
   const chartText = natalChart.voiceSummary?.trim() || trimNatalChart(natalChart);
+  const memory = options.priorMemory?.trim() ? `\n\n${options.priorMemory.trim()}` : '';
 
-  return `${head}
+  return `${head}${memory}
 
 ${advisor.personaPrompt}
 

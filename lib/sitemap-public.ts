@@ -2,6 +2,7 @@ import { aboutAlternates, aboutPath } from './about.ts';
 import { ALT_CHECKED_ISO, COMPETITORS, HUB_PATHS, hubAlternates } from './alternatives.ts';
 import { AVIS_PATH } from './avis-callastral.ts';
 import { ascendantPath } from './ascendant-tool.ts';
+import { coupleAlternates, couplePath } from './couple-compat.ts';
 import { GEO_PATHS, GEO_UPDATED_ISO, geoAlternates, type GeoPage } from './geo-pages.ts';
 import { privacyPath } from './privacy-copy.ts';
 import {
@@ -47,6 +48,11 @@ export function pageEntries(): SitemapEntry[] {
       path: ascendantPath(locale),
       lastModified: '2026-10-08',
       languages: hreflangAlternates(ascendantPath),
+    });
+    entries.push({
+      path: couplePath(locale),
+      lastModified: '2026-10-17',
+      languages: coupleAlternates(),
     });
     entries.push({
       path: privacyPath(locale),

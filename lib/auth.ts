@@ -73,6 +73,8 @@ export async function createUser(
       return { success: false, error: 'Erreur lors de la création du compte' };
     }
 
+    const { attachHoroscopeSubscriber } = await import('./horoscope-subscribers');
+    await attachHoroscopeSubscriber(data.id, email);
     return { success: true, userId: data.id };
   } catch (error) {
     console.error('Create user exception:', error);

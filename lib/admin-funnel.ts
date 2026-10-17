@@ -43,6 +43,9 @@ export type SourceRow = {
   visitors: number;
   signups: number;
   paying_users: number;
+  subscribers?: number;
+  subscriber_signups?: number;
+  subscriber_paying?: number;
 };
 
 export type LandingRow = { landing_page: string; visitors: number; signups: number; paying_users: number };
