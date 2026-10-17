@@ -4,12 +4,14 @@ import AdvisorLabel from '@/components/AdvisorLabel';
 import JsonLd from '@/components/JsonLd';
 import PromoStrip from '@/components/PromoStrip';
 import { ascendantPath } from '@/lib/ascendant-tool';
+import { couplePath } from '@/lib/couple-compat';
 import { getCopy } from '@/lib/ascendant-copy';
 import { AVIS_PATH } from '@/lib/avis-callastral';
 import { SIGN_IDS, signName, signPath } from '@/lib/zodiac/signs';
 import { HUB_PATHS } from '@/lib/alternatives';
 import { aboutPath } from '@/lib/about';
 import { GEO_PATHS } from '@/lib/geo-pages';
+import HoroscopeSignup from '@/components/HoroscopeSignup';
 import HomePlans from '@/components/HomePlans';
 import SeoChrome from '@/components/SeoChrome';
 import { weeklyCurrency } from '@/lib/weekly';
@@ -91,6 +93,18 @@ export default async function LocaleHome(props: { params: Promise<{ locale: stri
       <div className="max-w-3xl mx-auto px-4 py-8">
         <h1 className="font-[family-name:var(--font-cinzel)] text-3xl sm:text-4xl text-glow">{TITLE[locale].replace(' | Callastral', '')}</h1>
         <p className="mt-4 text-white/80 leading-relaxed">{INTRO[locale]} {floor}–{ceiling}/min.</p>
+        <p className="mt-4">
+          <Link href={couplePath(locale)} className="text-celestial-gold underline">
+            {{
+              fr: 'Compatibilité de couple',
+              en: 'Couple compatibility',
+              es: 'Compatibilidad de pareja',
+              de: 'Partner-Kompatibilität',
+              it: 'Compatibilità di coppia',
+            }[locale]}
+          </Link>
+        </p>
+        <HoroscopeSignup locale={locale} placement="home" />
       </div>
       <HomePlans locale={locale} currency={weeklyCurrency(currency)} />
       <div className="max-w-3xl mx-auto px-4 pb-8">

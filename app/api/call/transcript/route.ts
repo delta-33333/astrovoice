@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { rememberEndedCall } from '@/lib/call-memory';
+import { memoryEnabled } from '@/lib/call-memory-text';
 import { normalizeLines, saveTranscript } from '@/lib/call-records';
+import { recipientEmail } from '@/lib/email';
 import { getSession } from '@/lib/session';
 import { deliverPaidSummary, emailSummaryPaymentLink } from '@/lib/summaries';
 
@@ -26,6 +29,22 @@ export async function POST(request: NextRequest) {
     });
 
     if (body?.ended === true) {
+      const header = request.headers.get('accept-language') || '';
+      const locale = ['fr', 'en', 'es', 'de', 'it'].find((item) => header.toLowerCase().startsWith(item)) || 'fr';
+      try {
+        await rememberEndedCall({
+          userId: user.id,
+          bookingId,
+          advisorId: null,
+          lines: normalizeLines(body?.lines),
+          locale,
+          enabled: memoryEnabled(user.advisor_memory_enabled),
+          email: recipientEmail(user),
+          name: user.display_name || '',
+        });
+      } catch (error) {
+        console.error('Mémoire:', error instanceof Error ? error.message : error);
+      }
       if (row.summary_paid_at) {
         try {
           await deliverPaidSummary(bookingId);

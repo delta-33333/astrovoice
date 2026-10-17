@@ -135,6 +135,7 @@ export default async function AscendantToolScreen(
             readingCta={readingCta}
             checkoutBase={choice.href}
             risingLinks={risingLinks}
+            locale={locale}
           />
         </div>
 

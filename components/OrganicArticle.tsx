@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import HoroscopeSignup from '@/components/HoroscopeSignup';
 import JsonLd from '@/components/JsonLd';
 import SeoChrome from '@/components/SeoChrome';
 import {
@@ -134,6 +135,9 @@ function ArticleView({ model }: { model: ArticleModel }) {
             )}
           </section>
         ))}
+        {model.kind === 'sign' && model.signId && (
+          <HoroscopeSignup locale={model.locale} sign={model.signId} placement="sign" />
+        )}
         <div className="mt-10 flex flex-col sm:flex-row gap-3">
           <Link href={ctas.calc.href} className="btn-primary text-center">{ctas.calc.label}</Link>
           <Link href={ctas.book.href} data-funnel="book" className="btn-secondary text-center">{ctas.book.label}</Link>

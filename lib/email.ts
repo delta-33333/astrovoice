@@ -8,6 +8,7 @@ interface MailInput {
   subject: string;
   html: string;
   attachments?: MailAttachment[];
+  headers?: Record<string, string>;
   /** Envoi différé Resend (ISO 8601). Compatible avec un hébergement sans cron horaire. */
   scheduledAt?: string;
 }
@@ -37,6 +38,7 @@ export async function dispatchMail(input: MailInput): Promise<string | null> {
       subject: input.subject,
       html: input.html,
       ...(input.scheduledAt ? { scheduled_at: input.scheduledAt } : {}),
+      ...(input.headers ? { headers: input.headers } : {}),
       ...(input.attachments?.length ? { attachments: input.attachments } : {}),
     }),
   });
@@ -48,6 +50,39 @@ export async function dispatchMail(input: MailInput): Promise<string | null> {
   }
   const payload = (await response.json().catch(() => null)) as { id?: string } | null;
   return payload?.id || null;
+}
+
+/** Envoie par paquets de 100. S’arrête au premier refus et renvoie le nombre accepté. */
+export async function dispatchBatch(inputs: MailInput[]): Promise<number> {
+  const key = process.env.RESEND_API_KEY?.trim();
+  if (!key || !inputs.length) return 0;
+  let sent = 0;
+  for (let index = 0; index < inputs.length; index += 100) {
+    const chunk = inputs.slice(index, index + 100);
+    const response = await fetch('https://api.resend.com/emails/batch', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${key}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(
+        chunk.map((input) => ({
+          from: 'Callastral <noreply@callastral.com>',
+          to: [input.to],
+          subject: input.subject,
+          html: input.html,
+          ...(input.headers ? { headers: input.headers } : {}),
+        }))
+      ),
+    });
+    if (!response.ok) {
+      const detail = await response.text();
+      console.error('Envoi groupé refusé:', response.status, detail.slice(0, 300));
+      return sent;
+    }
+    sent += chunk.length;
+  }
+  return sent;
 }
 
 export async function cancelScheduledMail(emailId: string): Promise<boolean> {

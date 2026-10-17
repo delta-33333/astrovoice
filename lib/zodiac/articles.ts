@@ -47,6 +47,7 @@ export interface Section {
 
 export interface ArticleModel {
   kind: 'sign' | 'rising' | 'compat';
+  signId?: SignId;
   locale: Locale;
   path: string;
   title: string;
@@ -213,6 +214,7 @@ export function signArticleModel(locale: Locale, id: SignId): ArticleModel {
   ];
   return {
     kind: 'sign',
+    signId: id,
     locale,
     path: signPath(locale, id),
     title,

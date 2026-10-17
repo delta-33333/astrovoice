@@ -87,6 +87,7 @@ export interface UserProfile {
   prepaid_seconds: number;
   stripe_customer_id?: string;
   email?: string;
+  advisor_memory_enabled?: boolean;
   founding_claimed?: boolean;
   intro_claimed?: boolean;
   credited_checkout_sessions?: string[];

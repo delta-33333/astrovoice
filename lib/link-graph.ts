@@ -2,6 +2,7 @@ import { aboutHubLinks, aboutLegalLinks, aboutPath } from './about.ts';
 import { COMPETITORS, HUB_PATHS } from './alternatives.ts';
 import { AVIS_PATH } from './avis-callastral.ts';
 import { ascendantPath } from './ascendant-tool.ts';
+import { couplePath, coupleSignLinks } from './couple-compat.ts';
 import { GEO_PATHS } from './geo-pages.ts';
 import {
   calculatorHubLinks,
@@ -50,6 +51,7 @@ export function buildLinkGraph(): LinkGraph {
   for (const locale of LOCALES) {
     track(localeHomePath(locale));
     track(ascendantPath(locale));
+    track(couplePath(locale));
     track(privacyPath(locale));
     track(aboutPath(locale));
     track(weekPath(locale));
@@ -74,6 +76,8 @@ export function buildLinkGraph(): LinkGraph {
     for (const id of SPECIALTY_IDS) edge(edges, home, hubPath(locale, id), id, 'text');
     for (const id of SIGN_IDS) edge(edges, home, signPath(locale, id), id, 'text');
     edge(edges, home, ascendantPath(locale), 'calculator', 'text');
+    edge(edges, home, couplePath(locale), 'couple', 'text');
+    addLinks(edges, couplePath(locale), coupleSignLinks(locale), 'text');
     edge(edges, home, aboutPath(locale), 'about', 'text');
     if (locale === 'fr') edge(edges, home, AVIS_PATH, 'avis Callastral', 'text');
     const geo = locale === 'fr' ? 'fr' : 'en';

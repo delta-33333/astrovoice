@@ -37,6 +37,8 @@ export default function AccountPage() {
     summaries?: Array<{ bookingId: string | null; paidAt: string; emailed: boolean }>;
   } | null>(null);
   const [birth, setBirth] = useState<BirthData | null | undefined>(undefined);
+  const [memoryOn, setMemoryOn] = useState(true);
+  const [memories, setMemories] = useState<Array<{ id: string; createdAt: string; summary: string; mood: string; topics: string[] }>>([]);
 
   useEffect(() => {
     fetch('/api/auth/me')
@@ -58,6 +60,14 @@ export default function AccountPage() {
           .then((response) => (response.ok ? response.json() : null))
           .then((payload) => {
             if (payload) setBilling(payload);
+          })
+          .catch(() => undefined);
+        fetch('/api/account/memory', { cache: 'no-store' })
+          .then((response) => (response.ok ? response.json() : null))
+          .then((payload) => {
+            if (!payload) return;
+            setMemoryOn(payload.enabled !== false);
+            setMemories(Array.isArray(payload.notes) ? payload.notes : []);
           })
           .catch(() => undefined);
       })
@@ -235,6 +245,58 @@ export default function AccountPage() {
             </ul>
           </section>
         ) : null}
+
+        <section className="rounded-2xl border border-white/10 bg-white/5 p-4 space-y-3">
+          <h2 className="font-semibold">Mémoire du conseiller</h2>
+          <label className="flex items-center gap-2 text-sm">
+            <input
+              type="checkbox"
+              checked={memoryOn}
+              onChange={async (event) => {
+                const enabled = event.target.checked;
+                setMemoryOn(enabled);
+                const response = await fetch('/api/account/memory', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ enabled }),
+                });
+                if (!response.ok) setError('La mémoire n’a pas été mise à jour.');
+              }}
+            />
+            Mémoire du conseiller
+          </label>
+          <p className="text-sm text-white/60">
+            Active par défaut. Les trois derniers résumés sont repris à l’appel suivant.
+          </p>
+          {memories.length ? (
+            <ul className="space-y-3 text-sm">
+              {memories.map((note) => (
+                <li key={note.id} className="border-t border-white/10 pt-3">
+                  <p className="text-white/45">{new Date(note.createdAt).toLocaleDateString('fr-FR')} · {note.mood}</p>
+                  <p className="text-white/85 mt-1">{note.summary}</p>
+                  {note.topics?.length ? <p className="text-white/55 mt-1">{note.topics.join(' · ')}</p> : null}
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="text-sm text-white/60">Aucun résumé d’appel pour le moment.</p>
+          )}
+          <button
+            type="button"
+            className="text-sm underline text-white/70"
+            onClick={async () => {
+              const response = await fetch('/api/account/memory', { method: 'DELETE' });
+              if (!response.ok) {
+                setError('L’historique n’a pas été effacé.');
+                return;
+              }
+              setMemories([]);
+              setNotice('Historique de la mémoire effacé.');
+            }}
+          >
+            Effacer l’historique
+          </button>
+        </section>
 
         <section className="rounded-2xl border border-white/10 bg-white/5 p-4 space-y-3">
           <h2 className="font-semibold">Rapports</h2>

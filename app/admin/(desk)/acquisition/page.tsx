@@ -169,11 +169,14 @@ export default async function AcquisitionPage() {
                   <th className={th}>Visiteurs</th>
                   <th className={th}>Comptes</th>
                   <th className={th}>Payants</th>
+                  <th className={th}>Horoscope</th>
+                  <th className={th}>Comptes liés</th>
+                  <th className={th}>Payants liés</th>
                 </tr>
               </thead>
               <tbody>
                 {data.sources.length === 0 && (
-                  <tr><td className={td} colSpan={5}>Pas encore de données.</td></tr>
+                  <tr><td className={td} colSpan={8}>Pas encore de données.</td></tr>
                 )}
                 {data.sources.map((row) => (
                   <tr key={`${row.source}|${row.medium}|${row.campaign}`} className="border-t border-white/5">
@@ -182,6 +185,9 @@ export default async function AcquisitionPage() {
                     <td className={td}>{row.visitors}</td>
                     <td className={td}>{row.signups}</td>
                     <td className={td}>{row.paying_users}</td>
+                    <td className={td}>{row.subscribers ?? 0}</td>
+                    <td className={td}>{row.subscriber_signups ?? 0}</td>
+                    <td className={td}>{row.subscriber_paying ?? 0}</td>
                   </tr>
                 ))}
               </tbody>
