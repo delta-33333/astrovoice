@@ -4,6 +4,7 @@ import { useState, type FormEvent } from 'react';
 import Link from 'next/link';
 import HoneypotField from '@/components/HoneypotField';
 import HoroscopeSignup from '@/components/HoroscopeSignup';
+import VoiceSample from '@/components/VoiceSample';
 import type { AscendantResult } from '@/lib/ascendant-tool';
 import type { AscendantFormCopy, SignCopy } from '@/lib/ascendant-copy';
 import { resultCheckoutPath } from '@/lib/book-funnel';
@@ -172,6 +173,9 @@ export default function AscendantCalculator({
               <Link href={risingLinks[result.sign].href} className="inline-block text-sm text-celestial-gold underline">
                 {risingLinks[result.sign].label}
               </Link>
+            )}
+            {locale && (
+              <VoiceSample locale={locale} src={locale === 'en' ? '/samples/sample-en.mp3' : '/samples/sample-fr.mp3'} />
             )}
             {locale && (
               <HoroscopeSignup

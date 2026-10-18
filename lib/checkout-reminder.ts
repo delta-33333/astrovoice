@@ -4,6 +4,8 @@ import { renewalTerms } from './renewal-copy';
 import { isWeeklyPlan, weeklyCurrency, type WeeklyCurrency, type WeeklyPlanId } from './weekly';
 import { discoveryHeadline } from './book-funnel';
 import { checkoutReminderMail, reminderAt, signOptOut } from './checkout-reminder-copy';
+import { freeCallEnabled, trialEmailNorm, trialPath } from './free-call';
+import { isLocale } from './seo';
 import { cancelScheduledMail, dispatchMail, recipientEmail } from './email';
 import { isMissingRelation } from './missing-relation';
 import { resolveMarket } from './market';
@@ -66,6 +68,7 @@ export async function noteCheckoutOpened(input: {
       : weeklyCurrency(market?.currency || 'eur');
     const terms = renewalTerms(plan, currency, locale);
     const origin = appBaseUrl();
+    const trialUrl = await unusedTrialUrl(input.user, locale, origin);
     const mail = checkoutReminderMail({
       locale,
       name: input.user.display_name || '',
@@ -73,6 +76,7 @@ export async function noteCheckoutOpened(input: {
       renewal: terms.sentence,
       resumeUrl: `${origin}/book?offer=decouverte`,
       unsubscribeUrl: `${origin}/api/email/unsubscribe?token=${encodeURIComponent(signOptOut(input.user.id, secret))}&lang=${locale}`,
+      ...(trialUrl ? { trialUrl } : {}),
     });
     const emailId = await dispatchMail({
       to,
@@ -92,6 +96,23 @@ export async function noteCheckoutOpened(input: {
     if (saved.error && !isMissingRelation(saved.error)) console.warn('Rappel paiement:', saved.error.message);
   } catch (error) {
     console.warn('Rappel paiement:', error instanceof Error ? error.message : error);
+  }
+}
+
+async function unusedTrialUrl(user: UserProfile, locale: AdvisorLang, origin: string): Promise<string | undefined> {
+  if (!freeCallEnabled() || !isLocale(locale) || !supabaseAvailable) return undefined;
+  const email = recipientEmail(user);
+  if (!email) return undefined;
+  try {
+    const { data, error } = await getSupabaseAdmin()
+      .from('free_trials')
+      .select('id')
+      .eq('email_norm', trialEmailNorm(email))
+      .limit(1);
+    if (error || (data ?? []).length > 0) return undefined;
+    return `${origin}${trialPath(locale)}?utm_source=checkout_abandon`;
+  } catch {
+    return undefined;
   }
 }
 

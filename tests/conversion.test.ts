@@ -119,7 +119,19 @@ test('un seul rappel une heure plus tard, avec désinscription, sans urgence inv
     assert.match(mail.html, /unsubscribe|baja|abbestellen|désinscrire|Disiscriviti/i);
     assert.equal(/compte à rebours|plus que \d|expire dans|dernières places|only \d left/i.test(mail.html), false);
     assert.match(mail.html, /IA|AI|KI/);
+    assert.equal(mail.html.includes('/fr/essai'), false);
   }
+  const withTrial = checkoutReminderMail({
+    locale: 'fr',
+    name: 'Ada',
+    offer: discoveryHeadline('fr', 'eur'),
+    renewal: 'renewal',
+    resumeUrl: 'https://callastral.com/book?offer=decouverte',
+    unsubscribeUrl: 'https://callastral.com/api/email/unsubscribe?token=abc',
+    trialUrl: 'https://callastral.com/fr/essai?utm_source=checkout_abandon',
+  });
+  assert.match(withTrial.html, /\/fr\/essai/);
+  assert.match(withTrial.html, /désinscrire/i);
   const migration = fs.readFileSync(
     new URL('../supabase/migrations/20261013143000_acquisition_checkout.sql', import.meta.url),
     'utf8',
@@ -139,6 +151,9 @@ test('les formules précèdent les conseillers, Essentiel reste mis en avant', (
   assert.ok(root.indexOf('<HomePlans') < root.indexOf('<AdvisorDirectory'));
   const hero = root.slice(root.indexOf('return ('));
   assert.ok(hero.indexOf('data-primary-cta="trial"') < hero.indexOf('{HOME_DISCLOSURE}'));
+  assert.equal((root.match(/data-primary-cta="trial"/g) ?? []).length, 1);
+  assert.match(root, /href="\/book\?offer=decouverte"/);
+  assert.ok(root.indexOf('Comment ça fonctionne') < root.indexOf('<AdvisorDirectory'));
   assert.ok(localeHome.indexOf('<HomePlans') < localeHome.indexOf('ordered.map'));
   assert.match(plans, /grid-cols-1/);
   assert.match(plans, /md:grid-cols-3/);

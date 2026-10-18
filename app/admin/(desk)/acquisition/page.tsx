@@ -279,9 +279,18 @@ export default async function AcquisitionPage() {
           <p className="text-sm text-white/60">Les essais gratuits apparaîtront ici après la migration.</p>
         ) : (
           <>
-            <p className="text-sm text-white/70">{trials.trials} essai{trials.trials > 1 ? 's' : ''} enregistré{trials.trials > 1 ? 's' : ''}.</p>
+            <p className="text-sm text-white/70">{trials.trials} essai{trials.trials > 1 ? 's' : ''} enregistré{trials.trials > 1 ? 's' : ''}. {trials.paid} payant{trials.paid > 1 ? 's' : ''}.</p>
+            <h3 className="text-sm font-semibold">Comment nous avez-vous connus</h3>
             <ul className="text-sm text-white/80">
+              {trials.heard.length === 0 && <li className="text-white/50">Aucune réponse pour l’instant.</li>}
               {trials.heard.map((row) => (
+                <li key={row.source} className="flex justify-between gap-3"><span>{row.source}</span><span>{row.count}</span></li>
+              ))}
+            </ul>
+            <h3 className="text-sm font-semibold">Robots d’assistants</h3>
+            <ul className="text-sm text-white/80">
+              {trials.bots.length === 0 && <li className="text-white/50">Aucun passage enregistré.</li>}
+              {trials.bots.map((row) => (
                 <li key={row.source} className="flex justify-between gap-3"><span>{row.source}</span><span>{row.count}</span></li>
               ))}
             </ul>

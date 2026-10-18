@@ -90,7 +90,7 @@ export default async function LandingPage({
           <Link href={trialPath('fr')} data-primary-cta="trial" className="btn-primary text-center">
             {homePrimaryCta('fr')}
           </Link>
-          <Link href="#formules" className="btn-secondary text-center">
+          <Link href="/book?offer=decouverte" className="btn-secondary text-center">
             {homeSecondaryCta('fr', currency)}
           </Link>
         </div>
@@ -99,6 +99,24 @@ export default async function LandingPage({
         <VoiceSample locale="fr" src="/samples/sample-fr.mp3" />
       </div>
       <HomePlans locale="fr" currency={currency} />
+      <div className="max-w-4xl mx-auto px-4">
+        <section className="py-16 space-y-8">
+          <h2 className="font-[family-name:var(--font-cinzel)] text-3xl font-bold text-center text-glow">
+            Comment ça fonctionne
+          </h2>
+          <div className="grid sm:grid-cols-3 gap-6">
+            <Step n="1" title="Écoutez un extrait">
+              Vingt-cinq secondes, générées par IA, pour entendre le ton avant d’appeler.
+            </Step>
+            <Step n="2" title="Essayez 3 minutes">
+              Un code à six chiffres arrive par e-mail. L’appel s’arrête à trois minutes.
+            </Step>
+            <Step n="3" title="Choisissez votre formule">
+              Découverte, Essentiel ou Premium. La première semaine Découverte est à tarif réduit. Résiliation en un clic.
+            </Step>
+          </div>
+        </section>
+      </div>
       <AdvisorDirectory
         embedded
         advisors={featured}
@@ -117,26 +135,6 @@ export default async function LandingPage({
         </p>
       )}
       <div className="max-w-4xl mx-auto px-4">
-        <section className="py-16 space-y-8">
-          <h2 className="font-[family-name:var(--font-cinzel)] text-3xl font-bold text-center text-glow">
-            Comment ça fonctionne
-          </h2>
-          <div className="grid sm:grid-cols-2 gap-6">
-            <Step n="1" title="Écoutez un extrait">
-              Vingt-cinq secondes, générées par IA, pour entendre le ton avant d’appeler.
-            </Step>
-            <Step n="2" title="Trois minutes offertes">
-              Un code à six chiffres arrive par e-mail. L’appel s’arrête à trois minutes.
-            </Step>
-            <Step n="3" title="Choisissez une formule">
-              Découverte, Essentiel ou Premium. La première semaine Découverte est à tarif réduit. Résiliation en un clic.
-            </Step>
-            <Step n="4" title="Le même conseiller ensuite">
-              Un court résumé est enregistré dans le compte et relu au début de l’appel suivant. Vous pouvez l’effacer.
-            </Step>
-          </div>
-        </section>
-
         <section className="py-12 space-y-6">
           <h2 className="font-[family-name:var(--font-cinzel)] text-3xl font-bold text-center text-glow">
             Questions fréquentes
@@ -157,13 +155,6 @@ export default async function LandingPage({
           </details>
         </section>
 
-        <section className="py-12 text-center space-y-4">
-          <h2 className="font-[family-name:var(--font-cinzel)] text-3xl font-bold text-glow">
-            Trois minutes pour poser votre question
-          </h2>
-          <Link href={trialPath('fr')} className="btn-primary inline-block">{homePrimaryCta('fr')}</Link>
-          <p className="text-sm text-white/60">{HOME_DISCLOSURE}</p>
-        </section>
         <PromoStrip ids={['10']} />
         <SiteFooter locale="fr" />
       </div>

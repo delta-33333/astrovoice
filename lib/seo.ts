@@ -1,3 +1,4 @@
+import { MEMORY_FAQ } from './home-offer.ts';
 import { AI_ACT_LINE, VIRTUAL_ADVISOR_DISCLOSURE } from './legal.ts';
 import { formatMoney, type Currency } from './money.ts';
 import { firstWeekMinor, WEEKLY_PLANS } from './weekly.ts';
@@ -468,16 +469,19 @@ export function homeFaqs(locale: Locale): FaqItem[] {
       { question: '¿Quiénes son los consejeros de Callastral?', answer: disclosure.es },
       { question: '¿Cómo es una consulta por teléfono?', answer: 'Elige un consejero y un horario, luego paga. La cuenta se crea en ese paso. El enlace de la llamada se abre cinco minutos antes.' },
       { question: '¿Cuáles son los precios?', answer: 'Las fórmulas son semanales: Descubrimiento, Esencial y Premium. La primera semana tiene un precio reducido. Se cancela en un clic. Una llamada de 3 minutos es gratis una vez.' },
+      MEMORY_FAQ.es,
     ],
     de: [
       { question: 'Wer sind die Berater von Callastral?', answer: disclosure.de },
       { question: 'Wie läuft eine telefonische Beratung ab?', answer: 'Sie wählen einen Berater und einen Termin und zahlen dann. Das Konto entsteht bei diesem Schritt. Der Anruflink öffnet fünf Minuten vor Beginn.' },
       { question: 'Welche Preise gelten?', answer: 'Die Tarife sind wöchentlich: Entdeckung, Essenziell und Premium. Die erste Woche ist reduziert. Kündigung mit einem Klick. Ein Anruf von 3 Minuten ist einmal gratis.' },
+      MEMORY_FAQ.de,
     ],
     it: [
       { question: 'Chi sono i consulenti Callastral?', answer: disclosure.it },
       { question: 'Come funziona un consulto telefonico?', answer: 'Scegli un consulente e un orario, poi paghi. L’account si crea in quel passaggio. Il link della chiamata si apre cinque minuti prima.' },
       { question: 'Quali sono i prezzi?', answer: 'Le formule sono settimanali: Scoperta, Essenziale e Premium. La prima settimana è ridotta. Disdetta in un clic. Una chiamata di 3 minuti è gratis una volta.' },
+      MEMORY_FAQ.it,
     ],
   };
   return rest[locale];

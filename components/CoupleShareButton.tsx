@@ -1,6 +1,16 @@
 'use client';
 
-export default function CoupleShareButton({ url, label }: { url: string; label: string }) {
+export default function CoupleShareButton({
+  url,
+  label,
+  title,
+  text,
+}: {
+  url: string;
+  label: string;
+  title: string;
+  text: string;
+}) {
   return (
     <button
       type="button"
@@ -9,7 +19,7 @@ export default function CoupleShareButton({ url, label }: { url: string; label: 
         const absolute = url.startsWith('http') ? url : `${window.location.origin}${url}`;
         const shareUrl = absolute.includes('utm_source=') ? absolute : `${absolute}${absolute.includes('?') ? '&' : '?'}utm_source=couple_share`;
         if (typeof navigator.share === 'function') {
-          void navigator.share({ url: shareUrl }).catch(() => undefined);
+          void navigator.share({ url: shareUrl, title, text }).catch(() => undefined);
           return;
         }
         void navigator.clipboard?.writeText(shareUrl);

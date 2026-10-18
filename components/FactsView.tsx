@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import JsonLd from '@/components/JsonLd';
 import SeoChrome from '@/components/SeoChrome';
 import { aboutPath } from '@/lib/about';
 import { factRows, factsAlternates, factsPath, FACTS_UPDATED } from '@/lib/facts';
@@ -50,6 +51,15 @@ export default async function FactsView({ locale }: { locale: Locale }) {
           <Link href={aboutPath(locale)} className="text-celestial-gold underline">{aboutPath(locale)}</Link>
         </p>
       </article>
+      <JsonLd data={{
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: rows.map((row) => ({
+          '@type': 'Question',
+          name: row.label,
+          acceptedAnswer: { '@type': 'Answer', text: row.value },
+        })),
+      }} />
     </main>
   );
 }

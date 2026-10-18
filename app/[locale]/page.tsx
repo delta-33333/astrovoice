@@ -95,7 +95,7 @@ export default async function LocaleHome(props: {
         <p className="mt-4 text-white/80 leading-relaxed">{HOME_SUB[locale]}</p>
         <div className="mt-5 flex flex-col sm:flex-row gap-3">
           <Link href={trialPath(locale)} data-primary-cta="trial" className="btn-primary text-center">{homePrimaryCta(locale)}</Link>
-          <Link href="#formules" className="btn-secondary text-center">{homeSecondaryCta(locale, weekly)}</Link>
+          <Link href="/book?offer=decouverte" className="btn-secondary text-center">{homeSecondaryCta(locale, weekly)}</Link>
         </div>
         <p className="mt-3 text-sm text-white/70">{HOME_DISCLOSURE}</p>
         <VoiceSample locale={locale} src={locale === 'en' ? '/samples/sample-en.mp3' : '/samples/sample-fr.mp3'} />
@@ -114,6 +114,14 @@ export default async function LocaleHome(props: {
       </div>
       <HomePlans locale={locale} currency={weeklyCurrency(currency)} />
       <div className="max-w-3xl mx-auto px-4 pb-8">
+        <section className="mt-10 grid gap-4 sm:grid-cols-3">
+          <h2 className="sm:col-span-3 font-[family-name:var(--font-cinzel)] text-2xl">
+            {{ fr: 'Comment ça marche', en: 'How it works', es: 'Cómo funciona', de: 'So funktioniert es', it: 'Come funziona' }[locale]}
+          </h2>
+          <p className="text-sm text-white/75">1. {{ fr: 'Écoutez un extrait de 25 secondes, généré par IA.', en: 'Listen to a 25-second AI-generated excerpt.', es: 'Escucha un extracto de 25 segundos generado por IA.', de: 'Hören Sie einen 25-Sekunden-Auszug, erzeugt von KI.', it: 'Ascolta un estratto di 25 secondi generato dall’IA.' }[locale]}</p>
+          <p className="text-sm text-white/75">2. {{ fr: 'Essayez 3 minutes avec un code reçu par e-mail.', en: 'Try 3 minutes with a code sent by email.', es: 'Prueba 3 minutos con un código enviado por correo.', de: 'Testen Sie 3 Minuten mit einem Code per E-Mail.', it: 'Prova 3 minuti con un codice inviato per e-mail.' }[locale]}</p>
+          <p className="text-sm text-white/75">3. {{ fr: 'Choisissez votre formule hebdomadaire.', en: 'Choose your weekly plan.', es: 'Elige tu fórmula semanal.', de: 'Wählen Sie Ihren Wochentarif.', it: 'Scegli la formula settimanale.' }[locale]}</p>
+        </section>
         <nav className="mt-8" aria-label={homeLabel(locale)}>
           <ul className="flex flex-wrap gap-2">
             {SPECIALTY_IDS.map((specialty) => (

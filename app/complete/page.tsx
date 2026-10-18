@@ -130,9 +130,19 @@ export default function CompletePage() {
 
           {data.trial && (
             <div className="mt-6 rounded-2xl border border-celestial-gold/40 bg-celestial-gold/10 p-4 text-left">
-              <p className="font-semibold">Continuez avec la formule Découverte</p>
-              <p className="mt-1 text-sm text-white/75">{discoveryHeadline('fr', 'eur')}, puis le tarif de la formule. Résiliable en un clic.</p>
-              <Link href="/book?offer=decouverte&utm_source=trial" className="btn-primary mt-3 inline-block">Choisir Découverte</Link>
+              <p className="font-semibold">
+                Continuer avec {data.astrologerName || 'ce conseiller'} : 1re semaine Découverte à {discoveryHeadline('fr', 'eur')}
+              </p>
+              <p className="mt-1 text-sm text-white/75">Résiliable en un clic. Le résumé de l’appel part par e-mail si vous avez accepté les messages.</p>
+              <div className="mt-3 flex flex-col gap-2 sm:flex-row">
+                <Link
+                  href={`/book?offer=decouverte${data.astrologerId ? `&advisor=${encodeURIComponent(data.astrologerId)}` : ''}&utm_source=trial`}
+                  className="btn-primary inline-block text-center"
+                >
+                  Continuer avec {data.astrologerName || 'ce conseiller'}
+                </Link>
+                <Link href="/offres" className="btn-secondary inline-block text-center">Voir les autres formules</Link>
+              </div>
             </div>
           )}
 

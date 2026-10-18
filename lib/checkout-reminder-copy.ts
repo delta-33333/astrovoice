@@ -38,6 +38,8 @@ export function checkoutReminderMail(input: {
   renewal: string;
   resumeUrl: string;
   unsubscribeUrl: string;
+  /** Présent seulement si la personne n’a pas encore utilisé l’appel offert. */
+  trialUrl?: string;
 }): ReminderMail {
   const name = input.name.trim();
   const hello = input.locale === 'en'
@@ -60,6 +62,7 @@ export function checkoutReminderMail(input: {
 <p>${escapeHtml(input.renewal)}</p>
 <p><a href="${escapeHtml(input.resumeUrl)}">${escapeHtml(cta)}</a></p>
 <p>${escapeHtml(ai)}</p>
+${input.trialUrl ? `<p><a href="${escapeHtml(input.trialUrl)}">${escapeHtml(trialLine(input.locale))}</a></p>` : ''}
 <p><a href="${escapeHtml(input.unsubscribeUrl)}">${escapeHtml(stop)}</a></p>`;
   return { subject, html };
 }
@@ -121,6 +124,21 @@ function stopFor(locale: AdvisorLang): string {
       return 'Disiscriviti da questi promemoria';
     default:
       return 'Se désinscrire de ces rappels';
+  }
+}
+
+function trialLine(locale: AdvisorLang): string {
+  switch (locale) {
+    case 'en':
+      return '3 free minutes, if you have not used them yet';
+    case 'es':
+      return '3 minutos gratis, si todavía no los has usado';
+    case 'de':
+      return '3 Minuten gratis, wenn Sie sie noch nicht genutzt haben';
+    case 'it':
+      return '3 minuti gratis, se non li hai ancora usati';
+    default:
+      return '3 minutes offertes, si vous ne les avez pas encore utilisées';
   }
 }
 

@@ -58,6 +58,8 @@ type PaymentSheetProps = {
   onSuccess: () => void;
   /** Type d'achat pour la mesure du parcours (checkout_start / payment_success). */
   funnelKind?: string;
+  /** Affiche le paiement dans la page, au-dessus des champs de compte. */
+  embedded?: boolean;
 };
 
 export default function PaymentSheet(props: PaymentSheetProps) {
@@ -91,6 +93,73 @@ export default function PaymentSheet(props: PaymentSheetProps) {
 
   if (!open) return null;
 
+  const body = (
+    <>
+      {!props.embedded && <div className="mx-auto mb-4 h-1.5 w-12 rounded-full bg-white/20 sm:hidden" />}
+      <div className="flex items-start justify-between gap-4 mb-5">
+        <div>
+          <p className="text-xs uppercase tracking-[0.2em] text-celestial-gold/80">Callastral</p>
+          <h2 id="payment-sheet-title" className="font-[family-name:var(--font-cinzel)] text-2xl mt-1">
+            {props.title}
+          </h2>
+        </div>
+        <button
+          type="button"
+          onClick={onClose}
+          className="text-white/50 hover:text-white text-sm px-2 py-1"
+        >
+          Fermer
+        </button>
+      </div>
+
+      <p className="text-3xl font-semibold text-celestial-gold mb-2">{props.amountLabel}</p>
+      <p className="text-sm text-white/70 leading-relaxed mb-6">{props.detail}</p>
+
+      {!stripeFor(props.locale || 'fr') && (
+        <p className="text-sm text-red-200">
+          Le paiement n’est pas disponible pour le moment.
+        </p>
+      )}
+
+      {stripeFor(props.locale || 'fr') && props.clientSecret && (
+        <CheckoutElementsProvider
+          key={props.clientSecret}
+          stripe={stripeFor(props.locale || 'fr')}
+          options={{
+            clientSecret: props.clientSecret,
+            elementsOptions: { appearance, loader: 'auto' },
+          }}
+        >
+          <CheckoutFields
+            payLabel={props.payLabel}
+            note={props.note}
+            renewal={props.renewal}
+            collectContact={props.collectContact}
+            onSuccess={handleSuccess}
+          />
+        </CheckoutElementsProvider>
+      )}
+
+      {stripeFor(props.locale || 'fr') && !props.clientSecret && (
+        <p className="text-sm text-white/60">Préparation du paiement…</p>
+      )}
+    </>
+  );
+
+  if (props.embedded) {
+    return (
+      <div
+        data-wallets-first
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="payment-sheet-title"
+        className="mt-4 rounded-3xl border border-white/10 bg-[#0c1018] px-5 pt-5 pb-8"
+      >
+        {body}
+      </div>
+    );
+  }
+
   return (
     <div className="fixed inset-0 z-[80] flex items-end sm:items-center justify-center">
       <button
@@ -105,54 +174,7 @@ export default function PaymentSheet(props: PaymentSheetProps) {
         aria-labelledby="payment-sheet-title"
         className="relative w-full sm:max-w-md max-h-[92vh] overflow-y-auto rounded-t-3xl sm:rounded-3xl border border-white/10 bg-[#0c1018] px-5 pt-5 pb-8 shadow-2xl"
       >
-        <div className="mx-auto mb-4 h-1.5 w-12 rounded-full bg-white/20 sm:hidden" />
-        <div className="flex items-start justify-between gap-4 mb-5">
-          <div>
-            <p className="text-xs uppercase tracking-[0.2em] text-celestial-gold/80">Callastral</p>
-            <h2 id="payment-sheet-title" className="font-[family-name:var(--font-cinzel)] text-2xl mt-1">
-              {props.title}
-            </h2>
-          </div>
-          <button
-            type="button"
-            onClick={onClose}
-            className="text-white/50 hover:text-white text-sm px-2 py-1"
-          >
-            Fermer
-          </button>
-        </div>
-
-        <p className="text-3xl font-semibold text-celestial-gold mb-2">{props.amountLabel}</p>
-        <p className="text-sm text-white/70 leading-relaxed mb-6">{props.detail}</p>
-
-        {!stripeFor(props.locale || 'fr') && (
-          <p className="text-sm text-red-200">
-            Le paiement n’est pas disponible pour le moment.
-          </p>
-        )}
-
-        {stripeFor(props.locale || 'fr') && props.clientSecret && (
-          <CheckoutElementsProvider
-            key={props.clientSecret}
-            stripe={stripeFor(props.locale || 'fr')}
-            options={{
-              clientSecret: props.clientSecret,
-              elementsOptions: { appearance, loader: 'auto' },
-            }}
-          >
-            <CheckoutFields
-              payLabel={props.payLabel}
-              note={props.note}
-              renewal={props.renewal}
-              collectContact={props.collectContact}
-              onSuccess={handleSuccess}
-            />
-          </CheckoutElementsProvider>
-        )}
-
-        {stripeFor(props.locale || 'fr') && !props.clientSecret && (
-          <p className="text-sm text-white/60">Préparation du paiement…</p>
-        )}
+        {body}
       </div>
     </div>
   );
