@@ -6,6 +6,7 @@ import ExitOffer from "@/components/ExitOffer";
 import FunnelTracker from "@/components/FunnelTracker";
 import JsonLd from "@/components/JsonLd";
 import { trackAiBot } from "@/lib/events";
+import { freeCallEnabled } from "@/lib/free-call";
 import { isLocale, organizationGraph } from "@/lib/seo";
 import { appBaseUrl } from "@/lib/stripe";
 import "./globals.css";
@@ -86,7 +87,7 @@ export default async function RootLayout({
           </div>
           <JsonLd data={{ '@context': 'https://schema.org', '@graph': organizationGraph(origin) }} />
         </div>
-        <ExitOffer />
+        <ExitOffer trialEnabled={freeCallEnabled()} />
         <FunnelTracker />
         </ConsentRoot>
       </body>

@@ -68,7 +68,7 @@ const SECTIONS: Record<'fr' | 'en', AboutSection[]> = {
       h2: 'Qu’est-ce que Callastral ?',
       paragraphs: [
         'Callastral est un service d’astrologie par téléphone où l’on parle à des conseillers virtuels, des voix générées par IA, qui lisent votre thème natal.',
-        'Callastral calcule le thème à partir de la date, de l’heure et du lieu de naissance, en zodiaque tropical. Le même calcul sert à l’ascendant gratuit et à la compatibilité de couple.',
+        'Callastral calcule le thème à partir de la date, de l’heure et du lieu de naissance, en zodiaque tropical. Le même calcul sert à l’ascendant gratuit et à la compatibilité de couple. Callastral indique la date de mise à jour de cette page. Les prix viennent des formules hebdomadaires. Callastral ne publie pas de note agrégée ni de témoignage inventé.',
       ],
     },
     {
@@ -169,13 +169,14 @@ const PARAGRAPHS: Record<Locale, string[]> = {
   it: SECTIONS.en.flatMap((section) => section.paragraphs),
 };
 
-const GLUE: Record<Locale, { label: string; spoken: string; legal: string; topics: string; home: string }> = {
+const GLUE: Record<Locale, { label: string; spoken: string; legal: string; topics: string; home: string; updated: string }> = {
   fr: {
     label: 'Sur le site, le libellé affiché est :',
     spoken: 'Au début de l’appel, le conseiller le dit :',
     legal: 'Les pages juridiques du service :',
     topics: 'Les sujets proposés aux conseillers virtuels :',
     home: 'Accueil',
+    updated: 'Mis à jour le',
   },
   en: {
     label: 'On the site, the label shown is:',
@@ -183,6 +184,7 @@ const GLUE: Record<Locale, { label: string; spoken: string; legal: string; topic
     legal: 'The legal pages of the service:',
     topics: 'Topics offered to the virtual advisors:',
     home: 'Home',
+    updated: 'Updated',
   },
   es: {
     label: 'En el sitio, la etiqueta visible es:',
@@ -190,6 +192,7 @@ const GLUE: Record<Locale, { label: string; spoken: string; legal: string; topic
     legal: 'Las páginas jurídicas del servicio:',
     topics: 'Temas propuestos a los consejeros virtuales:',
     home: 'Inicio',
+    updated: 'Actualizado el',
   },
   de: {
     label: 'Auf der Website steht dieses Kennzeichen:',
@@ -197,6 +200,7 @@ const GLUE: Record<Locale, { label: string; spoken: string; legal: string; topic
     legal: 'Die rechtlichen Seiten des Dienstes:',
     topics: 'Themen der virtuellen Berater:',
     home: 'Start',
+    updated: 'Aktualisiert am',
   },
   it: {
     label: 'Sul sito, l’etichetta visibile è:',
@@ -204,6 +208,7 @@ const GLUE: Record<Locale, { label: string; spoken: string; legal: string; topic
     legal: 'Le pagine legali del servizio:',
     topics: 'Temi proposti ai consulenti virtuali:',
     home: 'Home',
+    updated: 'Aggiornato il',
   },
 };
 
@@ -222,7 +227,7 @@ export function aboutCopy(locale: Locale) {
     h1: TITLE[locale],
     sections: localizedSections(locale),
     paragraphs: PARAGRAPHS[locale],
-    updated: '2026-10-18',
+    updatedDate: '2026-10-18',
     labelLine: AI_ACT_LINE[locale],
     spokenLine: AI_ACT_SPOKEN[locale],
     ...GLUE[locale],

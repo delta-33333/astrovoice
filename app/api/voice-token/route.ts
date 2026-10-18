@@ -120,7 +120,7 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ error: 'L’essai gratuit n’est pas encore ouvert.' }, { status: 503 });
       }
       if (typeof issued !== 'number' || issued < 5) {
-        return NextResponse.json({ error: 'L’essai de 3 minutes est terminé.' }, { status: 409 });
+        return NextResponse.json({ error: 'L’essai de 3 minutes est terminé.' }, { status: 403 });
       }
       access = { allowed: true, prepaidSeconds: issued, metered: false };
       tokenTtl = Math.min(300, Math.max(30, issued));

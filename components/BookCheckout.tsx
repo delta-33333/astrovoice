@@ -219,10 +219,27 @@ export default function BookCheckout({
           <p className="mt-3 text-sm text-white/80">{copy.minutes}</p>
           <p className="mt-3 text-sm leading-relaxed text-white/85">{renewal}</p>
           <p className="mt-3 text-xs text-white/55">{copy.aiNote}</p>
-          <button type="button" onClick={() => void pay()} disabled={loading} className="btn-primary mt-4 w-full text-base disabled:opacity-50">
+          <button type="button" data-wallets-first onClick={() => void pay()} disabled={loading} className="btn-primary mt-4 w-full text-base disabled:opacity-50">
             {buttonLabel}
           </button>
+          <p className="mt-2 text-xs text-white/45">{copy.wallet}</p>
         </section>
+
+        <PaymentSheet
+          embedded
+          open={sheetOpen}
+          locale={language}
+          title={copy.plan}
+          amountLabel={trialLabel}
+          detail={copy.minutes}
+          payLabel={copy.pay(trialLabel)}
+          renewal={renewal}
+          note={copy.aiNote}
+          clientSecret={clientSecret}
+          funnelKind="subscription"
+          onClose={() => setSheetOpen(false)}
+          onSuccess={() => void afterPayment()}
+        />
 
         <ul className="mt-4 flex flex-col gap-1 text-sm text-white/70">
           {copy.trust.map((line) => (
@@ -273,7 +290,7 @@ export default function BookCheckout({
           </div>
         )}
 
-        <p className="mt-4 text-xs text-white/45">{slotId ? copy.hold : copy.wallet}</p>
+        {slotId && <p className="mt-4 text-xs text-white/45">{copy.hold}</p>}
         {error && <p className="mt-3 text-sm text-red-200" role="alert">{error}</p>}
       </div>
 
@@ -288,20 +305,6 @@ export default function BookCheckout({
         <p className="mt-1.5 text-center text-[11px] text-white/45">{copy.aiNote}</p>
       </div>
 
-      <PaymentSheet
-        open={sheetOpen}
-        locale={language}
-        title={copy.plan}
-        amountLabel={trialLabel}
-        detail={copy.minutes}
-        payLabel={copy.pay(trialLabel)}
-        renewal={renewal}
-        note={copy.aiNote}
-        clientSecret={clientSecret}
-        funnelKind="subscription"
-        onClose={() => setSheetOpen(false)}
-        onSuccess={() => void afterPayment()}
-      />
     </main>
   );
 }

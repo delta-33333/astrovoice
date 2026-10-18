@@ -31,6 +31,7 @@ export default function AboutService({ locale }: { locale: Locale }) {
           <span>{copy.h1}</span>
         </nav>
         <h1 className="font-[family-name:var(--font-cinzel)] text-3xl sm:text-4xl text-white">{copy.h1}</h1>
+        <p className="mt-2 text-sm text-white/50">{copy.updated} {copy.updatedDate}</p>
         {copy.sections.map((section) => (
           <section key={section.h2} className="mt-8">
             <h2 className="font-[family-name:var(--font-cinzel)] text-2xl text-white">{section.h2}</h2>

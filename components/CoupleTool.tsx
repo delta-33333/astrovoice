@@ -2,13 +2,24 @@
 
 import { FormEvent, useState } from 'react';
 import Link from 'next/link';
+import CoupleShareButton from '@/components/CoupleShareButton';
 import HoneypotField from '@/components/HoneypotField';
+import VoiceSample from '@/components/VoiceSample';
 import {
   COUPLE_CTA,
+  couplePath,
   coupleShareBookPath,
   coupleToolBookPath,
   type PublicCoupleResult,
 } from '@/lib/couple-compat';
+
+const TRIAL_PATH: Record<Locale, string> = {
+  fr: '/fr/essai',
+  en: '/en/free-trial',
+  es: '/es/prueba',
+  de: '/de/probe',
+  it: '/it/prova',
+};
 import { HONEYPOT_FIELD } from '@/lib/form-checks';
 import type { Locale } from '@/lib/seo';
 
@@ -296,6 +307,23 @@ export default function CoupleTool({ locale }: { locale: Locale }) {
             </p>
           )}
           <p className="text-xs text-white/45">{labels.note}</p>
+          <VoiceSample locale={locale} src={locale === 'en' ? '/samples/sample-en.mp3' : '/samples/sample-fr.mp3'} />
+          {result.sharePath && (
+            <CoupleShareButton
+              url={result.sharePath}
+              title="Callastral"
+              text={`Notre compatibilité astro : ${result.score}/100 (calcul Callastral)`}
+              label={locale === 'en' ? 'Share' : 'Partager'}
+            />
+          )}
+          <p className="flex flex-col gap-2 text-sm">
+            <Link href={couplePath(locale)} className="text-celestial-gold underline">
+              {locale === 'en' ? 'Calculate yours' : 'Calculer la vôtre'}
+            </Link>
+            <Link href={`${TRIAL_PATH[locale]}?topic=couple`} className="text-celestial-gold underline">
+              {locale === 'en' ? 'Talk 3 minutes free about your couple' : 'Parler 3 min gratuitement de votre couple'}
+            </Link>
+          </p>
           <Link href={result.sharePath ? coupleShareBookPath() : coupleToolBookPath()} data-funnel="book" className="btn-secondary inline-block text-center">
             {COUPLE_CTA[locale]}
           </Link>

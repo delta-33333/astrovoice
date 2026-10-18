@@ -47,18 +47,20 @@ export default async function CoupleShareScreen(props: { params: Promise<{ local
       <Link href={coupleShareBookPath()} data-funnel="book" className="btn-primary mt-6 inline-block text-center">
         {COUPLE_CTA[locale]}
       </Link>
-      <p className="mt-4">
+      <p className="mt-4 flex flex-col gap-2">
+        <Link href={couplePath(locale)} className="text-sm text-celestial-gold underline">
+          {locale === 'en' ? 'Calculate yours' : 'Calculer la vôtre'}
+        </Link>
         <Link href={`${trialPath(locale)}?topic=couple`} className="text-sm text-celestial-gold underline">
-          {locale === 'en' ? '3 minutes free' : '3 minutes offertes'}
+          {locale === 'en' ? 'Talk 3 minutes free about your couple' : 'Parler 3 min gratuitement de votre couple'}
         </Link>
       </p>
       <CoupleShareButton
         url={coupleSharePath(locale, id)}
+        title={`${result.initialA} · ${result.initialB}`}
+        text={`Notre compatibilité astro : ${result.score}/100 (calcul Callastral)`}
         label={locale === 'en' ? 'Share' : 'Partager'}
       />
-      <p className="mt-6">
-        <Link href={couplePath(locale)} className="text-sm text-celestial-gold underline">{couplePath(locale)}</Link>
-      </p>
     </main>
   );
 }
