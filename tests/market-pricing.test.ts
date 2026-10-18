@@ -175,16 +175,17 @@ test('le texte de renouvellement Découverte annonce 1,99 puis 5,90', () => {
   }
 });
 
-test('les pages géo affichent 0,99–1,99 € et plus l’ancienne fourchette', () => {
+test('les pages géo affichent les formules hebdomadaires, plus l’ancienne fourchette', () => {
   const fr = priceRows('fr', 'conseillers virtuels').find((row) => row.ours);
   const en = priceRows('en', 'virtual advisors').find((row) => row.ours);
   assert.ok(fr);
   assert.ok(en);
-  assert.match(fr.price, /0,99/);
   assert.match(fr.price, /1,99/);
+  assert.match(fr.price, /5,90/);
+  assert.doesNotMatch(fr.price, /0,99/);
   assert.doesNotMatch(fr.price, /0,50/);
-  assert.match(en.price, /€0\.99/);
-  assert.match(en.price, /€1\.99/);
+  assert.match(en.price, /€1\.99|1,99/);
+  assert.doesNotMatch(en.price, /€0\.99/);
   assert.doesNotMatch(en.price, /0\.50/);
   const blob = `${fr.price}\n${en.price}`.toLowerCase();
   for (const word of BANNED) assert.equal(blob.includes(word), false);

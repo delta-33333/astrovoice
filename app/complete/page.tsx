@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { discoveryHeadline } from '@/lib/book-funnel';
 import { formatMoney, normalizeCurrency } from '@/lib/money';
 import { formatDuration } from '@/lib/utils';
 
@@ -14,6 +15,7 @@ interface CallCompleteData {
   astrologerId?: string;
   bookingId?: string;
   subscription?: boolean;
+  trial?: boolean;
   error?: string;
 }
 
@@ -119,10 +121,20 @@ export default function CompletePage() {
                   ? 'Réglé à la réservation'
                   : data.subscription
                     ? 'Inclus dans l’abonnement'
-                    : formatMoney(data.amountCharged, normalizeCurrency(data.currency))}
+                    : data.trial
+                      ? 'Essai offert'
+                      : formatMoney(data.amountCharged, normalizeCurrency(data.currency))}
               </span>
             </div>
           </div>
+
+          {data.trial && (
+            <div className="mt-6 rounded-2xl border border-celestial-gold/40 bg-celestial-gold/10 p-4 text-left">
+              <p className="font-semibold">Continuez avec la formule Découverte</p>
+              <p className="mt-1 text-sm text-white/75">{discoveryHeadline('fr', 'eur')}, puis le tarif de la formule. Résiliable en un clic.</p>
+              <Link href="/book?offer=decouverte&utm_source=trial" className="btn-primary mt-3 inline-block">Choisir Découverte</Link>
+            </div>
+          )}
 
           {data.error && (
             <div className="bg-yellow-500/10 border border-yellow-500/50 rounded-xl p-4 mt-4">

@@ -31,14 +31,16 @@ import { LOCALES, type Locale } from '../lib/seo.ts';
 import type { LegalIdentity } from '../lib/legal-entity.ts';
 
 const EMPTY: LegalIdentity = {
-  entity: '[à compléter : LEGAL_ENTITY_NAME]',
-  id: '[à compléter : LEGAL_ENTITY_ID]',
-  address: '[à compléter : LEGAL_ADDRESS]',
-  email: '[à compléter : CONTACT_EMAIL]',
+  entity: '',
+  id: '',
+  address: '',
+  email: '',
+  director: '',
   entityMissing: true,
   idMissing: true,
   addressMissing: true,
   emailMissing: true,
+  directorMissing: true,
 };
 
 const FIRE: SynastrySigns = { sun: 'belier', moon: 'belier', venus: 'belier', mars: 'belier', rising: 'lion' };

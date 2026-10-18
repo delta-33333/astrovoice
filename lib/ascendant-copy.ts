@@ -160,7 +160,7 @@ const COPY: Record<ToolLocale, AscendantCopy> = {
     ctaFemme: 'Parler à une conseillère IA Callastral',
     ctaHomme: 'Parler à un conseiller IA Callastral',
     intro: 'Le calcul ascendant gratuit utilise la date, l’heure et le lieu de naissance pour trouver le signe qui se levait à l’horizon est. Le résultat est immédiat, sans inscription. C’est une lecture de tradition astrologique, pas une prédiction.',
-    bridge: (floor, ceiling) => `L’ascendant ouvre le thème. Une conseillère IA Callastral peut le relier à votre Soleil et à votre Lune, par téléphone. Le tarif de chaque conseiller est affiché avant le paiement, entre ${floor} et ${ceiling} la minute.`,
+    bridge: (price) => `L’ascendant ouvre le thème. Une conseillère IA Callastral peut le relier à votre Soleil et à votre Lune, au téléphone. Essayez 3 minutes gratuitement, ou la 1re semaine Découverte à ${price}.`,
     methodTitle: 'Comment l’ascendant est calculé',
     method: [
       'L’heure civile est convertie en temps universel avec le fuseau historique du lieu, heure d’été comprise. Le calcul astronomique, le même Swiss Ephemeris que pour les consultations Callastral, situe ensuite le degré de l’écliptique qui coupait l’horizon est.',
@@ -232,7 +232,7 @@ const COPY: Record<ToolLocale, AscendantCopy> = {
     ctaFemme: 'Talk to a Callastral AI advisor',
     ctaHomme: 'Talk to a Callastral AI advisor',
     intro: 'This rising sign calculator uses your birth date, exact time and place to find the sign that was rising on the eastern horizon. The result is instant, with no account. It is an astrology tradition, not a prediction.',
-    bridge: (floor, ceiling) => `The rising sign opens the chart. A Callastral AI advisor can relate it to your Sun and Moon by phone. Each advisor’s rate is shown before payment, between ${floor} and ${ceiling} per minute.`,
+    bridge: (price) => `The rising sign opens the chart. A Callastral AI advisor can relate it to your Sun and Moon by phone. Try 3 minutes free, or the Discovery first week at ${price}.`,
     methodTitle: 'How the rising sign is calculated',
     method: [
       'Civil time is converted to universal time with the historical time zone of the place, including daylight saving when it applied. The same Swiss Ephemeris used for Callastral consultations then finds the ecliptic degree that crossed the eastern horizon.',
@@ -304,7 +304,7 @@ const COPY: Record<ToolLocale, AscendantCopy> = {
     ctaFemme: 'Hablar con una consejera IA de Callastral',
     ctaHomme: 'Hablar con un consejero IA de Callastral',
     intro: 'Calcular el ascendente pide la fecha, la hora y el lugar de nacimiento para hallar el signo que salía por el horizonte este. El resultado es inmediato, sin cuenta. Es una lectura de la tradición astrológica, no una predicción.',
-    bridge: (floor, ceiling) => `El ascendente abre el tema. Una consejera IA de Callastral puede relacionarlo con tu Sol y tu Luna, por teléfono. La tarifa de cada consejero se muestra antes del pago, entre ${floor} y ${ceiling} por minuto.`,
+    bridge: (price) => `El ascendente abre el tema. Una consejera IA de Callastral puede relacionarlo con tu Sol y tu Luna, por teléfono. Prueba 3 minutos gratis, o la 1.ª semana Descubrimiento a ${price}.`,
     methodTitle: 'Cómo se calcula el ascendente',
     method: [
       'La hora civil se convierte a tiempo universal con el huso histórico del lugar, horario de verano incluido. El mismo Swiss Ephemeris de las consultas Callastral sitúa después el grado de la eclíptica que cruzaba el horizonte este.',
@@ -376,7 +376,7 @@ const COPY: Record<ToolLocale, AscendantCopy> = {
     ctaFemme: 'Mit einer KI-Beraterin von Callastral sprechen',
     ctaHomme: 'Mit einem KI-Berater von Callastral sprechen',
     intro: 'Aszendent berechnen heißt: Geburtsdatum, genaue Uhrzeit und Ort ergeben das Tierkreiszeichen, das am Osthorizont aufging. Das Ergebnis kommt sofort, ohne Konto. Es ist eine Lesart der astrologischen Tradition, keine Vorhersage.',
-    bridge: (floor, ceiling) => `Der Aszendent eröffnet das Horoskop. Eine KI-Beraterin von Callastral kann ihn mit Sonne und Mond am Telefon verbinden. Der Tarif jedes Beraters steht vor der Zahlung, zwischen ${floor} und ${ceiling} pro Minute.`,
+    bridge: (price) => `Der Aszendent eröffnet das Horoskop. Eine KI-Beraterin von Callastral kann ihn mit Sonne und Mond am Telefon verbinden. Testen Sie 3 Minuten kostenlos, oder die 1. Woche Entdeckung zu ${price}.`,
     methodTitle: 'Wie der Aszendent berechnet wird',
     method: [
       'Die bürgerliche Uhrzeit wird mit der historischen Zeitzone des Orts in Weltzeit umgerechnet, Sommerzeit eingeschlossen. Dieselbe Swiss Ephemeris wie bei den Callastral-Beratungen bestimmt dann den Ekliptikgrad, der den Osthorizont schnitt.',
@@ -448,7 +448,7 @@ const COPY: Record<ToolLocale, AscendantCopy> = {
     ctaFemme: 'Parla con una consulente IA Callastral',
     ctaHomme: 'Parla con un consulente IA Callastral',
     intro: 'Il calcolo dell’ascendente usa data, ora e luogo di nascita per trovare il segno che sorgeva all’orizzonte est. Il risultato è immediato, senza account. È una lettura della tradizione astrologica, non una previsione.',
-    bridge: (floor, ceiling) => `L’ascendente apre il tema. Una consulente IA Callastral può collegarlo al Sole e alla Luna, al telefono. La tariffa di ogni consulente è indicata prima del pagamento, tra ${floor} e ${ceiling} al minuto.`,
+    bridge: (price) => `L’ascendente apre il tema. Una consulente IA Callastral può collegarlo al Sole e alla Luna, al telefono. Prova 3 minuti gratis, oppure la 1ª settimana Scoperta a ${price}.`,
     methodTitle: 'Come si calcola l’ascendente',
     method: [
       'L’ora civile è convertita in tempo universale con il fuso storico del luogo, ora legale compresa. Lo stesso Swiss Ephemeris delle consultazioni Callastral trova poi il grado dell’eclittica che tagliava l’orizzonte est.',

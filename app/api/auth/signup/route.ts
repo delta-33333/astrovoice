@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createUser, normalizeEmail, normalizeFirstName, passwordError } from '@/lib/auth';
+import { createPasswordlessUser, createUser, normalizeEmail, normalizeFirstName, passwordError } from '@/lib/auth';
+import { parseHeardFrom } from '@/lib/heard-from';
+import { isMissingRelation } from '@/lib/missing-relation';
+import { getSupabaseAdmin } from '@/lib/supabase';
 import { honeypotTripped } from '@/lib/form-checks';
 import { tooManyRequests } from '@/lib/guard';
 import { recordFirstTouch, trackEvent } from '@/lib/events';
@@ -24,7 +27,8 @@ export async function POST(request: NextRequest) {
     }
     const email = normalizeEmail(body?.email);
     const firstName = normalizeFirstName(body?.displayName ?? body?.firstName);
-    const passwordIssue = passwordError(body?.password);
+    const passwordless = body?.passwordless === true;
+    const passwordIssue = passwordless ? null : passwordError(body?.password);
 
     if (!email) {
       return NextResponse.json({ error: 'Indiquez un e-mail valide.' }, { status: 400 });
@@ -51,7 +55,9 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'La création de compte est indisponible.' }, { status: 503 });
     }
 
-    const result = await createUser(email, body.password, firstName);
+    const result = passwordless
+      ? await createPasswordlessUser(email, firstName)
+      : await createUser(email, body.password, firstName);
     if (!result.success || !result.userId) {
       return NextResponse.json({ error: result.error || 'Erreur lors de la création du compte' }, { status: 400 });
     }
@@ -61,8 +67,13 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'La connexion sécurisée n’est pas configurée.' }, { status: 503 });
     }
 
+    const heard = parseHeardFrom(body?.heardFrom);
+    if (heard) {
+      const saved = await getSupabaseAdmin().from('users').update({ heard_from: heard }).eq('id', result.userId);
+      if (saved.error && !isMissingRelation(saved.error)) console.warn('heard_from:', saved.error.message);
+    }
     await recordFirstTouch(result.userId);
-    await trackEvent({ name: 'signup', userId: result.userId });
+    await trackEvent({ name: 'signup', userId: result.userId, metadata: heard ? { heardFrom: heard } : undefined });
     return NextResponse.json({ success: true, needsBirthData: true });
   } catch (error) {
     console.error('Signup error:', error);

@@ -10,6 +10,7 @@ import { trackEvent } from '@/lib/events';
 import { listCallMemories } from '@/lib/call-memory';
 import { memoryEnabled, memoryPromptBlock } from '@/lib/call-memory-text';
 import { getVoiceSystemPrompt } from '@/lib/voice-prompts';
+import { issueTrialSeconds } from '@/lib/free-call-store';
 import type { BirthData, NatalChart } from '@/lib/types';
 
 export const runtime = 'nodejs';
@@ -73,6 +74,7 @@ export async function POST(request: NextRequest) {
     const natalChart = asNatalChart(body?.natalChart);
     const checkoutSessionId = asString(body?.checkoutSessionId, 200);
     const bookingId = asString(body?.bookingId, 64);
+    const trialId = asString(body?.trialId, 80);
 
     if (!birthData || !astrologerId) {
       return NextResponse.json({ error: 'Données manquantes' }, { status: 400 });
@@ -110,7 +112,20 @@ export async function POST(request: NextRequest) {
     }
 
     let access: { allowed: boolean; prepaidSeconds: number; metered: boolean };
-    if (bookingAccess) {
+    let tokenTtl = 300;
+    let trialNote = '';
+    if (trialId) {
+      const issued = await issueTrialSeconds(trialId, user.id);
+      if (issued === 'unavailable') {
+        return NextResponse.json({ error: 'L’essai gratuit n’est pas encore ouvert.' }, { status: 503 });
+      }
+      if (typeof issued !== 'number' || issued < 5) {
+        return NextResponse.json({ error: 'L’essai de 3 minutes est terminé.' }, { status: 409 });
+      }
+      access = { allowed: true, prepaidSeconds: issued, metered: false };
+      tokenTtl = Math.min(300, Math.max(30, issued));
+      trialNote = 'Appel d\'essai de 3 minutes. Vers 2 min 30, conclus avec bienveillance et propose de continuer. La phrase d’ouverture obligatoire ne change pas.';
+    } else if (bookingAccess) {
       access = {
         allowed: bookingAccess.prepaidSeconds > 0,
         prepaidSeconds: bookingAccess.prepaidSeconds,
@@ -164,7 +179,7 @@ export async function POST(request: NextRequest) {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${apiKey}`,
       },
-      body: JSON.stringify({ expires_after: { seconds: 300 } }),
+      body: JSON.stringify({ expires_after: { seconds: tokenTtl } }),
       cache: 'no-store',
     });
 
@@ -216,9 +231,9 @@ export async function POST(request: NextRequest) {
       token: secret.value,
       model: MODEL,
       voice: astrologer.voiceId,
-      instructions: getVoiceSystemPrompt(astrologer, birthData, chartForVoice, { priorMemory }),
+      instructions: getVoiceSystemPrompt(astrologer, birthData, chartForVoice, { priorMemory, trialNote }),
       /* Base des relances après silence : même prompt, sans la phrase d’ouverture. */
-      followupInstructions: getVoiceSystemPrompt(astrologer, birthData, chartForVoice, { opening: false, priorMemory }),
+      followupInstructions: getVoiceSystemPrompt(astrologer, birthData, chartForVoice, { opening: false, priorMemory, trialNote }),
       language: astrologer.languages[0] || 'fr',
       prepaidSeconds: access.prepaidSeconds,
       metered: access.metered,

@@ -79,9 +79,8 @@ export default function CguPage() {
         <section className="space-y-3">
           <h2 className="text-white text-lg font-semibold">Données et contact</h2>
           <p>
-            Le traitement des données est décrit dans la politique de confidentialité. L’éditeur est celui indiqué
-            sur la page À propos lorsque l’entité légale est renseignée. À défaut, les champs restent des marqueurs
-            à compléter, sans valeur inventée.
+            Le traitement des données est décrit dans la politique de confidentialité. L’éditeur, lorsqu’il est
+            renseigné, figure sur les mentions légales. Une ligne sans donnée n’est pas affichée.
           </p>
         </section>
 

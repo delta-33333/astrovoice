@@ -15,9 +15,19 @@ import HoroscopeSignup from '@/components/HoroscopeSignup';
 import HomePlans from '@/components/HomePlans';
 import SeoChrome from '@/components/SeoChrome';
 import { weeklyCurrency } from '@/lib/weekly';
-import { readRates } from '@/lib/market';
-import { perMinuteRange, quoteAdvisor } from '@/lib/money';
 import { listDirectoryAdvisors } from '@/lib/slots';
+import VoiceSample from '@/components/VoiceSample';
+import {
+  FEATURED_ADVISOR_LIMIT,
+  HOME_DISCLOSURE,
+  HOME_H1,
+  HOME_SUB,
+  HOME_TITLE,
+  homeDescription,
+  homePrimaryCta,
+  homeSecondaryCta,
+} from '@/lib/home-offer';
+import { trialPath } from '@/lib/free-call';
 import {
   SPECIALTY_IDS,
   advisorPath,
@@ -36,63 +46,59 @@ import { notFound } from 'next/navigation';
 
 export const dynamic = 'force-dynamic';
 
-const TITLE: Record<string, string> = {
-  fr: 'Consultation par téléphone avec un astrologue | Callastral',
-  en: 'Phone consultation with an astrologer | Callastral',
-  es: 'Consulta por teléfono con un astrólogo | Callastral',
-  de: 'Beratung am Telefon mit einem Astrologen | Callastral',
-  it: 'Consulto telefonico con un astrologo | Callastral',
-};
-
-const INTRO: Record<string, string> = {
-  fr: 'Callastral met en relation avec un astrologue pour une consultation par téléphone, à partir de votre thème natal. Le tarif de chaque conseiller est affiché avant le paiement, entre un plancher et un plafond clairs. Les trois premières minutes sont à tarif réduit.',
-  en: 'Callastral connects you with an astrologer for a phone consultation based on your birth chart. Each advisor’s rate is shown before payment, between a clear floor and ceiling. The first three minutes use a reduced rate.',
-  es: 'Callastral le pone en contacto con un astrólogo para una consulta por teléfono a partir de su carta natal. La tarifa de cada consejero se muestra antes del pago. Los tres primeros minutos tienen una tarifa reducida.',
-  de: 'Callastral verbindet Sie mit einem Astrologen für eine telefonische Beratung anhand Ihres Geburtshoroskops. Der Tarif jedes Beraters steht vor der Zahlung. Die ersten drei Minuten sind ermäßigt.',
-  it: 'Callastral ti mette in contatto con un astrologo per un consulto telefonico a partire dal tema natale. La tariffa di ogni consulente è indicata prima del pagamento. I primi tre minuti hanno una tariffa ridotta.',
-};
-
 export async function generateMetadata(
   props: { params: Promise<{ locale: string }> }
 ): Promise<Metadata> {
   const { locale } = await props.params;
   if (!isLocale(locale)) return {};
   const path = localeHomePath(locale);
+  const currency = weeklyCurrency(localeCurrency(locale));
+  const description = homeDescription(locale, currency);
   return {
-    title: TITLE[locale],
-    description: INTRO[locale].slice(0, 160),
+    title: HOME_TITLE[locale],
+    description,
     alternates: {
       canonical: path,
       languages: hreflangAlternates(localeHomePath),
     },
-    openGraph: { title: TITLE[locale], description: INTRO[locale].slice(0, 160), url: path },
+    openGraph: { title: HOME_TITLE[locale], description, url: path },
   };
 }
 
-export default async function LocaleHome(props: { params: Promise<{ locale: string }> }) {
+export default async function LocaleHome(props: {
+  params: Promise<{ locale: string }>;
+  searchParams: Promise<{ all?: string }>;
+}) {
   const { locale } = await props.params;
+  const query = await props.searchParams;
   if (!isLocale(locale)) notFound();
 
   const currency = localeCurrency(locale);
-  const rates = readRates();
-  const { floor, ceiling } = perMinuteRange(currency, rates, locale);
   let advisors: Awaited<ReturnType<typeof listDirectoryAdvisors>>['advisors'] = [];
   try {
     advisors = (await listDirectoryAdvisors()).advisors;
   } catch {
     advisors = [];
   }
-  const ordered = advisors
+  const orderedAll = advisors
     .filter((advisor) => advisorSpeaks(advisor.languages, locale))
     .sort((a, b) => Number(b.availability.hasImmediate) - Number(a.availability.hasImmediate));
-  const faqs = homeFaqs(locale, floor, ceiling);
+  const ordered = query.all === '1' ? orderedAll : orderedAll.slice(0, FEATURED_ADVISOR_LIMIT);
+  const faqs = homeFaqs(locale);
+  const weekly = weeklyCurrency(currency);
 
   return (
     <main>
       <SeoChrome locale={locale} alternatePath={localeHomePath} />
       <div className="max-w-3xl mx-auto px-4 py-8">
-        <h1 className="font-[family-name:var(--font-cinzel)] text-3xl sm:text-4xl text-glow">{TITLE[locale].replace(' | Callastral', '')}</h1>
-        <p className="mt-4 text-white/80 leading-relaxed">{INTRO[locale]} {floor}–{ceiling}/min.</p>
+        <h1 className="font-[family-name:var(--font-cinzel)] text-3xl sm:text-4xl text-glow">{HOME_H1[locale]}</h1>
+        <p className="mt-4 text-white/80 leading-relaxed">{HOME_SUB[locale]}</p>
+        <div className="mt-5 flex flex-col sm:flex-row gap-3">
+          <Link href={trialPath(locale)} data-primary-cta="trial" className="btn-primary text-center">{homePrimaryCta(locale)}</Link>
+          <Link href="#formules" className="btn-secondary text-center">{homeSecondaryCta(locale, weekly)}</Link>
+        </div>
+        <p className="mt-3 text-sm text-white/70">{HOME_DISCLOSURE}</p>
+        <VoiceSample locale={locale} src={locale === 'en' ? '/samples/sample-en.mp3' : '/samples/sample-fr.mp3'} />
         <p className="mt-4">
           <Link href={couplePath(locale)} className="text-celestial-gold underline">
             {{
@@ -121,9 +127,7 @@ export default async function LocaleHome(props: { params: Promise<{ locale: stri
         </nav>
 
         <ul className="mt-8 space-y-4">
-          {ordered.map((advisor) => {
-            const quote = quoteAdvisor(advisor.pricePerMinCents, currency, rates, undefined, locale);
-            return (
+          {ordered.map((advisor) => (
               <li key={advisor.id} className="rounded-2xl border border-white/10 p-4">
                 <h2 className="text-xl font-[family-name:var(--font-cinzel)]">
                   <Link href={advisorPath(locale, advisor.slug)} className="hover:text-celestial-gold">{advisor.name}</Link>
@@ -132,14 +136,23 @@ export default async function LocaleHome(props: { params: Promise<{ locale: stri
                 <p className="text-sm text-white/70 mt-1">
                   {advisor.specialties.map((item) => specialtyLabel(locale, item)).join(' · ')}
                   {' · '}
-                  {quote.introLabel}
+                  {locale === 'en' ? 'Included in the weekly plans' : 'Inclus dans les formules hebdomadaires'}
                 </p>
                 <p className="text-sm text-white/55 mt-1">
                   {availabilitySentence(locale, advisor.availability)}
                 </p>
+                <Link href={`/book?offer=decouverte&advisor=${encodeURIComponent(advisor.id)}`} className="mt-3 inline-block text-sm text-celestial-gold underline">
+                  {homeSecondaryCta(locale, weekly)}
+                </Link>
               </li>
-            );
-          })}
+          ))}
+          {query.all !== '1' && orderedAll.length > ordered.length && (
+            <li>
+              <Link href="?all=1" className="text-celestial-gold underline">
+                {locale === 'en' ? 'See all advisors' : locale === 'es' ? 'Ver todos' : locale === 'de' ? 'Alle ansehen' : locale === 'it' ? 'Vedi tutti' : 'Voir tous'}
+              </Link>
+            </li>
+          )}
         </ul>
 
         <section className="mt-12 space-y-4">

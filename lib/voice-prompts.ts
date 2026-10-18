@@ -60,7 +60,7 @@ export function getVoiceSystemPrompt(
   },
   birthData: BirthData,
   natalChart: NatalChart,
-  options: { opening?: boolean; priorMemory?: string } = {}
+  options: { opening?: boolean; priorMemory?: string; trialNote?: string } = {}
 ): string {
   const lang = advisor.languages[0] || 'fr';
   const block = CLIENT_BLOCK[lang] ?? CLIENT_BLOCK.fr;
@@ -93,11 +93,12 @@ export function getVoiceSystemPrompt(
     it: 'La consulenza è già in corso. Ti sei già presentata/o e hai già detto la frase di apertura: non ripeterla, non salutare di nuovo e non rispiegare come leggi un tema.',
   };
   const head = options.opening === false ? underway[lang] ?? underway.fr : opening[lang] ?? opening.fr;
+  const trial = options.trialNote?.trim() ? `\n${options.trialNote.trim()}` : '';
 
   const chartText = natalChart.voiceSummary?.trim() || trimNatalChart(natalChart);
   const memory = options.priorMemory?.trim() ? `\n\n${options.priorMemory.trim()}` : '';
 
-  return `${head}${memory}
+  return `${head}${trial}${memory}
 
 ${advisor.personaPrompt}
 

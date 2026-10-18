@@ -16,8 +16,8 @@ const ENTRIES: { q: string; a: string }[] = [
     a: VIRTUAL_ADVISOR_DISCLOSURE,
   },
   {
-    q: 'Comment est calculé le prix d’une consultation à la minute ?',
-    a: 'Chaque conseiller a son tarif, entre 0,99 € et 1,99 € par minute en France, en Belgique et en Allemagne. Le plancher est 0,89 € en Espagne et en Italie, 0,99 CHF en Suisse, 0,99 £ au Royaume-Uni et 1,49 $ aux États-Unis. Les trois premières minutes sont à un tarif fixe du marché, une fois par compte. L’offre fondateur est de 10 minutes à 4,90 € (5,90 $), une fois par compte, 100 places, jusqu’au 31 octobre 2026. Les formules hebdomadaires sont Découverte (10 min), Essentiel (30 min) et Premium (60 min), avec 60 minutes maximum par appel.',
+    q: 'Quels sont les tarifs ?',
+    a: 'Un appel de 3 minutes est offert une fois, après un code envoyé par e-mail. Ensuite les formules sont hebdomadaires : Découverte (10 min, 5,90 €/semaine, 1,99 € la première semaine), Essentiel (30 min, 14,90 €/semaine) et Premium (60 min, 27,90 €/semaine). Le plafond est de 60 minutes par appel. La résiliation se fait en un clic depuis le compte.',
   },
   {
     q: 'La consultation s’appuie-t-elle sur mon thème natal ?',
@@ -32,8 +32,8 @@ const ENTRIES: { q: string; a: string }[] = [
     a: 'Le résumé d’une consultation coûte 2,90 €. Le thème natal écrit coûte 9,90 €, la prévision 2026 et 2027 coûte 14,90 €, la lecture de compatibilité coûte 7,90 €. Chaque document payé est envoyé par e-mail et reste dans le compte.',
   },
   {
-    q: 'Puis-je interrompre une consultation ?',
-    a: 'Oui. Vous pouvez y mettre fin à tout moment. Pour une consultation à la minute, vous réglez la durée réellement écoulée, dans la limite de l’empreinte autorisée.',
+    q: 'Le conseiller se souvient-il des appels précédents ?',
+    a: 'Oui. Après chaque appel, un court résumé est enregistré dans le compte et transmis au même conseiller au début de l’appel suivant. Vous pouvez le consulter et l’effacer depuis le compte.',
   },
 ];
 

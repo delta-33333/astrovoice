@@ -1,38 +1,60 @@
-import type { Metadata } from "next";
-import Link from "next/link";
-import AdvisorDirectory from "@/components/AdvisorDirectory";
-import InstallPrompt from "@/components/InstallPrompt";
-import PromoStrip from "@/components/PromoStrip";
-import SiteFooter from "@/components/SiteFooter";
-import SiteHeader from "@/components/SiteHeader";
-import { VIRTUAL_ADVISOR_DISCLOSURE } from "@/lib/legal";
-import { resolveMarket } from "@/lib/market";
-import { formatMoney, MARKET_PRICING, marketCodeForContext, perMinuteRange } from "@/lib/money";
-import HomePlans from "@/components/HomePlans";
-import { weeklyCurrency } from "@/lib/weekly";
-import { hreflangAlternates, localeHomePath } from "@/lib/seo";
-import { listDirectoryAdvisors } from "@/lib/slots";
+import type { Metadata } from 'next';
+import Link from 'next/link';
+import AdvisorDirectory from '@/components/AdvisorDirectory';
+import HomePlans from '@/components/HomePlans';
+import InstallPrompt from '@/components/InstallPrompt';
+import PromoStrip from '@/components/PromoStrip';
+import SiteFooter from '@/components/SiteFooter';
+import SiteHeader from '@/components/SiteHeader';
+import VoiceSample from '@/components/VoiceSample';
+import {
+  FEATURED_ADVISOR_LIMIT,
+  HOME_DISCLOSURE,
+  HOME_H1,
+  HOME_SUB,
+  HOME_TITLE,
+  MEMORY_FAQ,
+  homeDescription,
+  homePrimaryCta,
+  homeReassure,
+  homeSecondaryCta,
+  publicPerMinute,
+} from '@/lib/home-offer';
+import { resolveMarket } from '@/lib/market';
+import { MARKET_PRICING, marketCodeForContext } from '@/lib/money';
+import { hreflangAlternates, localeHomePath } from '@/lib/seo';
+import { listDirectoryAdvisors } from '@/lib/slots';
+import { trialPath } from '@/lib/free-call';
+import { weeklyCurrency } from '@/lib/weekly';
 
-export const metadata: Metadata = {
-  title: "Consultation par téléphone avec un astrologue | Callastral",
-  description:
-    "Callastral met en relation avec un astrologue pour une consultation par téléphone, à partir de votre thème natal. Tarif affiché avant le paiement.",
-  alternates: {
-    canonical: "/fr",
-    languages: hreflangAlternates(localeHomePath),
-  },
-  openGraph: {
-    title: "Consultation par téléphone avec un astrologue | Callastral",
-    description:
-      "Consultation par téléphone à partir du thème natal. Le tarif de chaque conseiller est affiché avant le paiement.",
-    url: "/fr",
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const market = await resolveMarket();
+  const code = marketCodeForContext({
+    country: market.country,
+    locale: market.language,
+    currency: market.currency,
+  });
+  const currency = weeklyCurrency(MARKET_PRICING[code].currency);
+  const description = homeDescription('fr', currency);
+  return {
+    title: HOME_TITLE.fr,
+    description,
+    alternates: {
+      canonical: '/fr',
+      languages: hreflangAlternates(localeHomePath),
+    },
+    openGraph: {
+      title: HOME_TITLE.fr,
+      description,
+      url: '/fr',
+    },
+  };
+}
 
 export default async function LandingPage({
   searchParams,
 }: {
-  searchParams: Promise<{ dispo?: string; recall?: string }>;
+  searchParams: Promise<{ dispo?: string; recall?: string; all?: string }>;
 }) {
   const params = await searchParams;
   const market = await resolveMarket();
@@ -51,364 +73,113 @@ export default async function LandingPage({
     currency: market.currency,
   });
   const grid = MARKET_PRICING[code];
-  const show = (minor: number) => formatMoney(minor, grid.currency, market.language);
-  const founding = show(grid.founding);
-  const { floor, ceiling, intro } = perMinuteRange(market.currency, market.rates, market.language, market.country);
-  const packs = (['10min', '30min', '60min'] as const).map((id) => ({
-    id,
-    minutes: id === '10min' ? 10 : id === '30min' ? 30 : 60,
-    amountCents: grid.packs[id],
-    popular: id === '30min',
-  }));
+  const currency = weeklyCurrency(grid.currency);
+  const showAll = params.all === '1';
+  const featured = showAll ? advisors : advisors.slice(0, FEATURED_ADVISOR_LIMIT);
+  const memory = MEMORY_FAQ.fr;
 
   return (
     <main className="min-h-screen pb-28 sm:pb-12">
       <SiteHeader />
       <div className="max-w-4xl mx-auto px-4 pt-8">
         <h1 className="font-[family-name:var(--font-cinzel)] text-3xl sm:text-4xl text-glow">
-          Consultation astrologique par téléphone
+          {HOME_H1.fr}
         </h1>
-        <p className="mt-3 text-white/80 leading-relaxed">
-          Un conseiller virtuel, une voix générée par IA, à partir de votre thème natal. Le tarif est affiché avant le paiement.
-        </p>
+        <p className="mt-3 text-white/80 leading-relaxed">{HOME_SUB.fr}</p>
+        <div className="mt-6 flex flex-col sm:flex-row sm:items-center gap-3">
+          <Link href={trialPath('fr')} data-primary-cta="trial" className="btn-primary text-center">
+            {homePrimaryCta('fr')}
+          </Link>
+          <Link href="#formules" className="btn-secondary text-center">
+            {homeSecondaryCta('fr', currency)}
+          </Link>
+        </div>
+        <p className="mt-3 text-sm text-white/70">{HOME_DISCLOSURE}</p>
+        <p className="mt-2 text-xs text-white/50">{homeReassure('fr')}</p>
+        <VoiceSample locale="fr" src="/samples/sample-fr.mp3" />
       </div>
-      <HomePlans locale={market.language} currency={weeklyCurrency(grid.currency)} />
+      <HomePlans locale="fr" currency={currency} />
       <AdvisorDirectory
         embedded
-        advisors={advisors}
+        advisors={featured}
         unavailable={unavailable}
-        preferredLanguage={market.language}
+        preferredLanguage="fr"
         currency={grid.currency}
         country={market.country}
         rates={market.rates}
+        showPerMinute={publicPerMinute()}
         initialAvailability={params.dispo === 'now' ? 'now' : ''}
         highlightId={params.recall || ''}
       />
+      {!showAll && advisors.length > featured.length && (
+        <p className="max-w-6xl mx-auto px-4 -mt-4 mb-8">
+          <Link href="/?all=1" className="text-celestial-gold underline">Voir tous les conseillers</Link>
+        </p>
+      )}
       <div className="max-w-4xl mx-auto px-4">
-
-        {/* Cercle Fondateur - Founding Offer */}
-        <section className="py-16 sm:py-20">
-          <div className="relative max-w-3xl mx-auto">
-            {/* Premium card with glow */}
-            <div className="relative bg-gradient-to-br from-celestial-purple/20 via-celestial-blue/10 to-celestial-purple/20 backdrop-blur-sm rounded-3xl border-2 border-celestial-gold/50 p-8 sm:p-10 shadow-2xl shadow-celestial-gold/20">
-              
-              {/* Badge */}
-              <div className="flex flex-wrap items-center justify-center gap-3 mb-6">
-                <div className="bg-celestial-gold text-celestial-darker px-4 py-2 rounded-full text-sm font-bold">
-                  Cercle Fondateur
-                </div>
-              </div>
-
-              {/* Title */}
-              <h2 className="font-[family-name:var(--font-cinzel)] text-3xl sm:text-4xl font-bold text-center mb-4 text-glow">
-                Offre de Lancement
-              </h2>
-              
-              <p className="text-center text-white/80 text-lg mb-8 max-w-xl mx-auto">
-                Dix minutes de consultation pour {founding}, une fois par compte.
-              </p>
-
-              {/* Main offer */}
-              <div className="bg-celestial-darker/60 backdrop-blur-sm rounded-2xl p-8 mb-6 border border-celestial-gold/30">
-                <div className="text-center space-y-4">
-                  <div className="space-y-2">
-                    <p className="text-white/70 text-sm uppercase tracking-wide">Votre première consultation</p>
-                    <div className="flex items-center justify-center gap-4">
-                      <span className="text-5xl font-bold text-celestial-gold">{founding}</span>
-                      <div className="text-left">
-                        <div className="text-sm text-white/60">pour</div>
-                        <div className="text-2xl font-semibold">10 minutes</div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Included perks */}
-              <div className="grid sm:grid-cols-2 gap-4 mb-8">
-                <div className="flex items-start gap-3 bg-white/5 backdrop-blur-sm rounded-xl p-4 border border-white/10">
-                  <span className="text-celestial-gold text-xl">✓</span>
-                  <div>
-                    <p className="font-semibold text-sm">10 minutes</p>
-                    <p className="text-xs text-white/60">Pour {founding}, une fois par compte</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3 bg-white/5 backdrop-blur-sm rounded-xl p-4 border border-white/10">
-                  <span className="text-celestial-gold text-xl">✓</span>
-                  <div>
-                    <p className="font-semibold text-sm">Même conseiller</p>
-                    <p className="text-xs text-white/60">Vous pouvez le rappeler ensuite</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3 bg-white/5 backdrop-blur-sm rounded-xl p-4 border border-white/10">
-                  <span className="text-celestial-gold text-xl">✓</span>
-                  <div>
-                    <p className="font-semibold text-sm">Thème natal</p>
-                    <p className="text-xs text-white/60">Date, heure et lieu de naissance</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3 bg-white/5 backdrop-blur-sm rounded-xl p-4 border border-white/10">
-                  <span className="text-celestial-gold text-xl">✓</span>
-                  <div>
-                    <p className="font-semibold text-sm">Ensuite, le tarif du conseiller</p>
-                    <p className="text-xs text-white/60">Affiché sur la fiche, entre {floor} et {ceiling} / min</p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Urgency */}
-              <div className="text-center mb-6">
-                <p className="text-white/50 text-xs">
-                  Une fois par compte, après inscription.
-                </p>
-              </div>
-
-              {/* CTA */}
-              <div className="text-center">
-                <Link 
-                  href="/auth"
-                  className="btn-secondary text-lg inline-block"
-                >
-                  Rejoindre le Cercle Fondateur
-                </Link>
-                <p className="text-white/40 text-xs mt-4">
-                  Après votre première consultation : le tarif indiqué sur la fiche, ou des packs de minutes
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* How It Works */}
-        <section className="py-16 sm:py-24 space-y-12">
-          <h2 className="font-[family-name:var(--font-cinzel)] text-3xl sm:text-4xl font-bold text-center text-glow">
+        <section className="py-16 space-y-8">
+          <h2 className="font-[family-name:var(--font-cinzel)] text-3xl font-bold text-center text-glow">
             Comment ça fonctionne
           </h2>
-          
-          <div className="grid sm:grid-cols-2 gap-8 max-w-3xl mx-auto">
-            <div className="space-y-3 p-6 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10">
-              <div className="flex items-center gap-3">
-                <span className="text-celestial-gold font-bold text-2xl">1</span>
-                <h3 className="text-lg font-semibold">Choisissez un conseiller</h3>
-              </div>
-              <p className="text-white/70 text-sm leading-relaxed">
-                Ouvrez l’annuaire et prenez quelqu’un de disponible maintenant, dans votre langue.
-              </p>
-            </div>
-
-            <div className="space-y-3 p-6 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10">
-              <div className="flex items-center gap-3">
-                <span className="text-celestial-gold font-bold text-2xl">2</span>
-                <h3 className="text-lg font-semibold">Prenez un créneau</h3>
-              </div>
-              <p className="text-white/70 text-sm leading-relaxed">
-                Le prix du conseiller est affiché avant le paiement : tarif réduit les trois premières minutes, puis son tarif habituel.
-              </p>
-            </div>
-
-            <div className="space-y-3 p-6 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10">
-              <div className="flex items-center gap-3">
-                <span className="text-celestial-gold font-bold text-2xl">3</span>
-                <h3 className="text-lg font-semibold">Créez le compte au paiement</h3>
-              </div>
-              <p className="text-white/70 text-sm leading-relaxed">
-                Prénom, e-mail et mot de passe suffisent. Apple Pay et Google Pay sont proposés quand votre téléphone les a.
-              </p>
-            </div>
-
-            <div className="space-y-3 p-6 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10">
-              <div className="flex items-center gap-3">
-                <span className="text-celestial-gold font-bold text-2xl">4</span>
-                <h3 className="text-lg font-semibold">Rejoignez l’appel</h3>
-              </div>
-              <p className="text-white/70 text-sm leading-relaxed">
-                Après le paiement, ouvrez l’appel ou ajoutez le rendez-vous à votre calendrier. Vous pouvez annuler jusqu’à 24 h avant.
-              </p>
-            </div>
+          <div className="grid sm:grid-cols-2 gap-6">
+            <Step n="1" title="Écoutez un extrait">
+              Vingt-cinq secondes, générées par IA, pour entendre le ton avant d’appeler.
+            </Step>
+            <Step n="2" title="Trois minutes offertes">
+              Un code à six chiffres arrive par e-mail. L’appel s’arrête à trois minutes.
+            </Step>
+            <Step n="3" title="Choisissez une formule">
+              Découverte, Essentiel ou Premium. La première semaine Découverte est à tarif réduit. Résiliation en un clic.
+            </Step>
+            <Step n="4" title="Le même conseiller ensuite">
+              Un court résumé est enregistré dans le compte et relu au début de l’appel suivant. Vous pouvez l’effacer.
+            </Step>
           </div>
         </section>
 
-        {/* Pricing */}
-        <section className="py-16 sm:py-24 space-y-12">
-          <div className="text-center space-y-3">
-            <h2 className="font-[family-name:var(--font-cinzel)] text-3xl sm:text-4xl font-bold text-glow">
-              Tarifs transparents
-            </h2>
-            <p className="text-white/70">Chaque conseiller affiche son tarif, entre {floor} et {ceiling} la minute.</p>
-          </div>
-          
-          <div className="max-w-3xl mx-auto space-y-6">
-            {/* Pay as you go */}
-            <div className="p-8 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 space-y-4">
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                <div className="space-y-1">
-                  <h3 className="text-xl font-semibold">Consultation à la minute</h3>
-                  <p className="text-white/60 text-sm">Sans engagement</p>
-                </div>
-                <div className="text-left sm:text-right">
-                  <p className="text-3xl font-bold text-celestial-gold">{floor}–{ceiling}</p>
-                  <p className="text-sm text-white/60">par minute, selon le conseiller</p>
-                </div>
-              </div>
-              <div className="pt-2 border-t border-white/10">
-                <p className="text-white/60 text-sm">
-                  Les 3 premières minutes sont à {intro} la minute, une fois par compte.
-                </p>
-              </div>
-            </div>
-
-            {/* Packs */}
-            <div className="grid sm:grid-cols-3 gap-4">
-              {packs.map((pack) => (
-                <div
-                  key={pack.id}
-                  className={`p-6 rounded-xl space-y-3 text-center ${
-                    pack.popular
-                      ? 'bg-celestial-purple/20 backdrop-blur-sm border border-celestial-purple/40'
-                      : 'bg-white/5 backdrop-blur-sm border border-white/10'
-                  }`}
-                >
-                  <div className="text-2xl font-bold text-celestial-gold">{show(pack.amountCents)}</div>
-                  <div className="text-lg font-semibold">Pack {pack.minutes} min</div>
-                  <div className="text-xs text-white/50">{show(Math.round(pack.amountCents / pack.minutes))}/min</div>
-                </div>
-              ))}
-            </div>
-
-            <p className="text-center">
-              <Link href="#formules" className="text-celestial-gold underline">Choisir une formule</Link>
-            </p>
-
-            <p className="text-center text-white/50 text-sm pt-4">
-              Les packs minutes sont disponibles après votre inscription
-            </p>
-          </div>
-        </section>
-
-        {/* FAQ */}
-        <section className="py-16 sm:py-24 space-y-12">
-          <h2 className="font-[family-name:var(--font-cinzel)] text-3xl sm:text-4xl font-bold text-center text-glow">
+        <section className="py-12 space-y-6">
+          <h2 className="font-[family-name:var(--font-cinzel)] text-3xl font-bold text-center text-glow">
             Questions fréquentes
           </h2>
-          
-          <div className="max-w-3xl mx-auto space-y-6">
-            <details className="group p-6 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10" open>
-              <summary className="cursor-pointer text-lg font-semibold list-none flex items-center justify-between">
-                <span>Qui sont les conseillers Callastral ?</span>
-                <span className="text-celestial-gold transition-transform group-open:rotate-180">↓</span>
-              </summary>
-              <p className="mt-4 text-white/70 text-sm leading-relaxed">
-                {VIRTUAL_ADVISOR_DISCLOSURE}
-              </p>
-            </details>
-
-            <details className="group p-6 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10">
-              <summary className="cursor-pointer text-lg font-semibold list-none flex items-center justify-between">
-                <span>Est-ce vraiment mon thème natal qui guide la consultation ?</span>
-                <span className="text-celestial-gold transition-transform group-open:rotate-180">↓</span>
-              </summary>
-              <p className="mt-4 text-white/70 text-sm leading-relaxed">
-                Oui. Quand vous enregistrez votre date, votre heure et votre lieu de naissance, nous calculons votre thème natal : positions des planètes, aspects, et maisons et Ascendant si l’heure est connue. Ce résumé du thème est transmis au conseiller au début de chaque appel, pour que la lecture parte de votre carte du ciel.
-              </p>
-            </details>
-
-            <details className="group p-6 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10">
-              <summary className="cursor-pointer text-lg font-semibold list-none flex items-center justify-between">
-                <span>Puis-je rappeler le même conseiller ?</span>
-                <span className="text-celestial-gold transition-transform group-open:rotate-180">↓</span>
-              </summary>
-              <p className="mt-4 text-white/70 text-sm leading-relaxed">
-                Oui. Vous pouvez reprendre rendez-vous avec le conseiller de votre choix : même nom, même voix, même style de lecture. Votre thème natal est repris à chaque appel.
-              </p>
-            </details>
-
-            <details className="group p-6 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10">
-              <summary className="cursor-pointer text-lg font-semibold list-none flex items-center justify-between">
-                <span>Le conseiller se souvient-il de nos appels précédents ?</span>
-                <span className="text-celestial-gold transition-transform group-open:rotate-180">↓</span>
-              </summary>
-              <p className="mt-4 text-white/70 text-sm leading-relaxed">
-                Non. Chaque appel repart de votre thème natal et de ce que vous dites pendant l’appel ; les échanges précédents ne sont pas repris. Si un point compte pour vous, rappelez-le en début d’appel. Après la consultation, vous pouvez commander un résumé écrit envoyé par e-mail.
-              </p>
-            </details>
-
-            <details className="group p-6 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10">
-              <summary className="cursor-pointer text-lg font-semibold list-none flex items-center justify-between">
-                <span>Pourquoi ces tarifs sont-ils plus accessibles qu'ailleurs ?</span>
-                <span className="text-celestial-gold transition-transform group-open:rotate-180">↓</span>
-              </summary>
-              <p className="mt-4 text-white/70 text-sm leading-relaxed">
-                Chaque conseiller a un tarif entre {floor} et {ceiling} la minute. Les trois premières minutes sont à {intro} la minute, une fois par compte. L’offre fondateur est de 10 minutes pour {founding}, une fois par compte, dans la limite de 100 places, jusqu’au 31 octobre 2026.
-              </p>
-            </details>
-
-            <details className="group p-6 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10">
-              <summary className="cursor-pointer text-lg font-semibold list-none flex items-center justify-between">
-                <span>Puis-je arrêter la consultation quand je veux ?</span>
-                <span className="text-celestial-gold transition-transform group-open:rotate-180">↓</span>
-              </summary>
-              <p className="mt-4 text-white/70 text-sm leading-relaxed">
-                Oui, vous pouvez raccrocher à tout moment. Un rendez-vous réservé est payé à l’avance pour la durée choisie. En l’annulant plus de 24 h avant, vous êtes remboursé ; ensuite, le montant devient un avoir valable 30 jours. Une formule hebdomadaire se résilie en un clic depuis le compte.
-              </p>
-            </details>
-
-            <details className="group p-6 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10">
-              <summary className="cursor-pointer text-lg font-semibold list-none flex items-center justify-between">
-                <span>Mes données de naissance sont-elles protégées ?</span>
-                <span className="text-celestial-gold transition-transform group-open:rotate-180">↓</span>
-              </summary>
-              <p className="mt-4 text-white/70 text-sm leading-relaxed">
-                Vos données de naissance et votre thème sont stockés sur nos serveurs et ne sont pas vendus. Ils ne sont transmis qu’aux prestataires nécessaires au service (hébergement, paiement, voix de l’appel). Le détail figure dans la page Confidentialité.
-              </p>
-            </details>
-
-            <details className="group p-6 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10">
-              <summary className="cursor-pointer text-lg font-semibold list-none flex items-center justify-between">
-                <span>Comment fonctionne le paiement à la minute et les packs ?</span>
-                <span className="text-celestial-gold transition-transform group-open:rotate-180">↓</span>
-              </summary>
-              <p className="mt-4 text-white/70 text-sm leading-relaxed">
-                Une réservation se paie à l’avance : minutes × tarif du conseiller, avec un tarif réduit sur les trois premières minutes. Vous pouvez aussi acheter des packs de minutes, déduits ensuite de la durée de consultation. Le montant est encaissé dans la devise affichée.
-              </p>
-            </details>
-
-            <details className="group p-6 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10">
-              <summary className="cursor-pointer text-lg font-semibold list-none flex items-center justify-between">
-                <span>Qu’y a-t-il dans l’espace personnel ?</span>
-                <span className="text-celestial-gold transition-transform group-open:rotate-180">↓</span>
-              </summary>
-              <p className="mt-4 text-white/70 text-sm leading-relaxed">
-                Le compte regroupe votre formule hebdomadaire si elle est active, les rapports écrits achetés (thème natal, prévision, compatibilité) et les réglages de mot de passe et d’e-mail. Il n’y a pas d’horoscope quotidien.
-              </p>
-            </details>
-          </div>
-        </section>
-
-        {/* Final CTA */}
-        <section className="py-16 text-center space-y-8">
-          <div className="space-y-4 max-w-2xl mx-auto">
-            <h2 className="font-[family-name:var(--font-cinzel)] text-3xl sm:text-4xl font-bold text-glow">
-              Prêt à explorer votre carte du ciel ?
-            </h2>
-            <p className="text-white/70 text-lg">
-              Un conseiller est disponible maintenant. Le compte se crée juste avant le paiement.
+          <details className="p-6 rounded-xl bg-white/5 border border-white/10" open>
+            <summary className="cursor-pointer text-lg font-semibold">Qui sont les conseillers Callastral ?</summary>
+            <p className="mt-4 text-white/70 text-sm leading-relaxed">{HOME_DISCLOSURE}</p>
+          </details>
+          <details className="p-6 rounded-xl bg-white/5 border border-white/10">
+            <summary className="cursor-pointer text-lg font-semibold">{memory.question}</summary>
+            <p className="mt-4 text-white/70 text-sm leading-relaxed">{memory.answer}</p>
+          </details>
+          <details className="p-6 rounded-xl bg-white/5 border border-white/10">
+            <summary className="cursor-pointer text-lg font-semibold">Puis-je arrêter quand je veux ?</summary>
+            <p className="mt-4 text-white/70 text-sm leading-relaxed">
+              Oui. L’essai s’arrête à trois minutes. Une formule hebdomadaire se résilie en un clic depuis le compte.
             </p>
-          </div>
-          
-          <Link 
-            href="#annuaire"
-            className="btn-secondary text-lg inline-block"
-          >
-            Voir les conseillers
-          </Link>
+          </details>
         </section>
 
+        <section className="py-12 text-center space-y-4">
+          <h2 className="font-[family-name:var(--font-cinzel)] text-3xl font-bold text-glow">
+            Trois minutes pour poser votre question
+          </h2>
+          <Link href={trialPath('fr')} className="btn-primary inline-block">{homePrimaryCta('fr')}</Link>
+          <p className="text-sm text-white/60">{HOME_DISCLOSURE}</p>
+        </section>
         <PromoStrip ids={['10']} />
         <SiteFooter locale="fr" />
-
       </div>
-
       <InstallPrompt lifted />
     </main>
+  );
+}
+
+function Step({ n, title, children }: { n: string; title: string; children: string }) {
+  return (
+    <div className="space-y-2 p-6 rounded-2xl bg-white/5 border border-white/10">
+      <div className="flex items-center gap-3">
+        <span className="text-celestial-gold font-bold text-2xl">{n}</span>
+        <h3 className="text-lg font-semibold">{title}</h3>
+      </div>
+      <p className="text-white/70 text-sm leading-relaxed">{children}</p>
+    </div>
   );
 }

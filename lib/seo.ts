@@ -1,5 +1,6 @@
-import { AI_ACT_LINE } from './legal.ts';
-import type { Currency } from './money';
+import { AI_ACT_LINE, VIRTUAL_ADVISOR_DISCLOSURE } from './legal.ts';
+import { formatMoney, type Currency } from './money.ts';
+import { firstWeekMinor, WEEKLY_PLANS } from './weekly.ts';
 
 export const LOCALES = ['fr', 'en', 'es', 'de', 'it'] as const;
 export type Locale = (typeof LOCALES)[number];
@@ -442,7 +443,7 @@ export function advisorFaqs(input: {
   return copy[locale];
 }
 
-export function homeFaqs(locale: Locale, floor: string, ceiling: string): FaqItem[] {
+export function homeFaqs(locale: Locale): FaqItem[] {
   const disclosure: Record<Locale, string> = {
     fr: 'Les conseillers Callastral sont des voix et des personas virtuels créés par Callastral.',
     en: 'Callastral advisors are virtual voices and personas created by Callastral.',
@@ -454,42 +455,61 @@ export function homeFaqs(locale: Locale, floor: string, ceiling: string): FaqIte
     fr: [
       { question: 'Qui sont les conseillers Callastral ?', answer: disclosure.fr },
       { question: 'Comment se passe une consultation par téléphone ?', answer: 'Vous choisissez un conseiller, un créneau, puis vous payez. Le compte se crée à ce moment-là. Le lien d’appel s’ouvre cinq minutes avant le début.' },
-      { question: 'Quels sont les tarifs ?', answer: `Chaque conseiller affiche son tarif, entre ${floor} et ${ceiling} la minute. Les trois premières minutes sont à un tarif réduit.` },
+      { question: 'Quels sont les tarifs ?', answer: 'Les formules sont hebdomadaires : Découverte, Essentiel et Premium. La 1re semaine Découverte est à tarif réduit, puis le tarif plein. Une formule se résilie en un clic. Un appel de 3 minutes est offert une fois.' },
+      { question: 'Le conseiller se souvient-il des appels précédents ?', answer: 'Oui. Après chaque appel, un court résumé est enregistré dans le compte et transmis au même conseiller au début de l’appel suivant. Vous pouvez le consulter et l’effacer depuis le compte.' },
     ],
     en: [
       { question: 'Who are the Callastral advisors?', answer: disclosure.en },
       { question: 'How does a phone consultation work?', answer: 'You choose an advisor and a time, then pay. The account is created at that step. The call link opens fifteen minutes before the start.' },
-      { question: 'What are the prices?', answer: `Each advisor shows a rate between ${floor} and ${ceiling} per minute. The first three minutes use a reduced rate.` },
+      { question: 'What are the prices?', answer: 'Plans are weekly: Discovery, Essential and Premium. The first Discovery week is reduced, then the full price. Cancel in one click. A 3-minute call is free once.' },
+      { question: 'Does the advisor remember previous calls?', answer: 'Yes. After each call a short summary is saved in the account and given to the same advisor at the start of the next call. You can read it and delete it from the account.' },
     ],
     es: [
       { question: '¿Quiénes son los consejeros de Callastral?', answer: disclosure.es },
       { question: '¿Cómo es una consulta por teléfono?', answer: 'Elige un consejero y un horario, luego paga. La cuenta se crea en ese paso. El enlace de la llamada se abre cinco minutos antes.' },
-      { question: '¿Cuáles son los precios?', answer: `Cada consejero muestra una tarifa entre ${floor} y ${ceiling} por minuto. Los tres primeros minutos tienen una tarifa reducida.` },
+      { question: '¿Cuáles son los precios?', answer: 'Las fórmulas son semanales: Descubrimiento, Esencial y Premium. La primera semana tiene un precio reducido. Se cancela en un clic. Una llamada de 3 minutos es gratis una vez.' },
     ],
     de: [
       { question: 'Wer sind die Berater von Callastral?', answer: disclosure.de },
       { question: 'Wie läuft eine telefonische Beratung ab?', answer: 'Sie wählen einen Berater und einen Termin und zahlen dann. Das Konto entsteht bei diesem Schritt. Der Anruflink öffnet fünf Minuten vor Beginn.' },
-      { question: 'Welche Preise gelten?', answer: `Jeder Berater zeigt einen Tarif zwischen ${floor} und ${ceiling} pro Minute. Die ersten drei Minuten sind ermäßigt.` },
+      { question: 'Welche Preise gelten?', answer: 'Die Tarife sind wöchentlich: Entdeckung, Essenziell und Premium. Die erste Woche ist reduziert. Kündigung mit einem Klick. Ein Anruf von 3 Minuten ist einmal gratis.' },
     ],
     it: [
       { question: 'Chi sono i consulenti Callastral?', answer: disclosure.it },
       { question: 'Come funziona un consulto telefonico?', answer: 'Scegli un consulente e un orario, poi paghi. L’account si crea in quel passaggio. Il link della chiamata si apre cinque minuti prima.' },
-      { question: 'Quali sono i prezzi?', answer: `Ogni consulente mostra una tariffa tra ${floor} e ${ceiling} al minuto. I primi tre minuti hanno una tariffa ridotta.` },
+      { question: 'Quali sono i prezzi?', answer: 'Le formule sono settimanali: Scoperta, Essenziale e Premium. La prima settimana è ridotta. Disdetta in un clic. Una chiamata di 3 minuti è gratis una volta.' },
     ],
   };
   return rest[locale];
 }
 
-/** URLs officielles pour schema.org sameAs. Vide tant que SITE_SAME_AS n’est pas défini. */
-export function siteSameAs(): string[] {
-  return (process.env.SITE_SAME_AS || '')
+/** URLs officielles pour schema.org sameAs. SITE_SAME_AS ou SAME_AS_URLS, séparés par des virgules. */
+export function siteSameAs(env: NodeJS.ProcessEnv = process.env): string[] {
+  const raw = `${env.SAME_AS_URLS || ''},${env.SITE_SAME_AS || ''}`;
+  return raw
     .split(',')
     .map((item) => item.trim())
     .filter((item) => /^https:\/\/[^\s]+$/.test(item));
 }
 
-export function organizationGraph(origin: string): Record<string, unknown>[] {
-  const sameAs = siteSameAs();
+function offerNode(plan: 'decouverte' | 'essentiel' | 'premium'): Record<string, unknown> {
+  const row = WEEKLY_PLANS[plan];
+  const full = (row.amounts.eur / 100).toFixed(2);
+  const first = (firstWeekMinor(plan, 'eur') / 100).toFixed(2);
+  return {
+    '@type': 'Offer',
+    price: full,
+    priceCurrency: 'EUR',
+    description: `${row.names.fr} : ${row.minutes} minutes par semaine, ${formatMoney(row.amounts.eur, 'eur', 'fr')} puis 1re semaine ${formatMoney(firstWeekMinor(plan, 'eur'), 'eur', 'fr')} (${first} €).`,
+  };
+}
+
+export function organizationGraph(origin: string, env: NodeJS.ProcessEnv = process.env): Record<string, unknown>[] {
+  const sameAs = siteSameAs(env);
+  const entity = (env.LEGAL_ENTITY_NAME || '').trim();
+  const email = (env.CONTACT_EMAIL || '').trim();
+  const emailOk = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email);
+  const address = (env.LEGAL_ADDRESS || '').trim();
   return [
     {
       '@type': 'Organization',
@@ -498,6 +518,12 @@ export function organizationGraph(origin: string): Record<string, unknown>[] {
       url: origin,
       logo: `${origin}/logo.png`,
       description: `Service d’astrologie. ${AI_ACT_LINE.fr}`,
+      disambiguatingDescription: 'Service d’astrologie par téléphone avec des conseillers virtuels (IA). Sans lien avec Call Astro.',
+      areaServed: ['FR', 'BE', 'CH', 'CA', 'ES', 'DE', 'IT', 'GB', 'US'],
+      knowsLanguage: [...LOCALES],
+      ...(entity ? { legalName: entity } : {}),
+      ...(emailOk ? { email, contactPoint: { '@type': 'ContactPoint', email, contactType: 'customer support' } } : {}),
+      ...(address ? { address: { '@type': 'PostalAddress', streetAddress: address } } : {}),
       ...(sameAs.length > 0 ? { sameAs } : {}),
     },
     {
@@ -507,6 +533,15 @@ export function organizationGraph(origin: string): Record<string, unknown>[] {
       url: origin,
       publisher: { '@id': `${origin}/#organization` },
       inLanguage: [...LOCALES],
+    },
+    {
+      '@type': 'Service',
+      '@id': `${origin}/#service`,
+      name: 'Callastral',
+      serviceType: 'Consultation d’astrologie par téléphone avec IA',
+      provider: { '@id': `${origin}/#organization` },
+      description: VIRTUAL_ADVISOR_DISCLOSURE,
+      offers: [offerNode('decouverte'), offerNode('essentiel'), offerNode('premium')],
     },
   ];
 }

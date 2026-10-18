@@ -3,6 +3,13 @@ interface MailAttachment {
   content: string;
 }
 
+function resendFrom(): string {
+  const raw = (process.env.RESEND_FROM || '').trim();
+  if (!raw) return 'Callastral <noreply@callastral.com>';
+  if (raw.includes('<')) return raw;
+  return `Callastral <${raw}>`;
+}
+
 interface MailInput {
   to: string;
   subject: string;
@@ -33,7 +40,7 @@ export async function dispatchMail(input: MailInput): Promise<string | null> {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      from: 'Callastral <noreply@callastral.com>',
+      from: resendFrom(),
       to: [input.to],
       subject: input.subject,
       html: input.html,
@@ -67,7 +74,7 @@ export async function dispatchBatch(inputs: MailInput[]): Promise<number> {
       },
       body: JSON.stringify(
         chunk.map((input) => ({
-          from: 'Callastral <noreply@callastral.com>',
+          from: resendFrom(),
           to: [input.to],
           subject: input.subject,
           html: input.html,

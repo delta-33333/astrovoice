@@ -11,14 +11,16 @@ import type { Locale } from '../lib/seo.ts';
 const LOCALES: Locale[] = ['fr', 'en', 'es', 'de', 'it'];
 
 const EMPTY: LegalIdentity = {
-  entity: '[à compléter : LEGAL_ENTITY_NAME]',
-  id: '[à compléter : LEGAL_ENTITY_ID]',
-  address: '[à compléter : LEGAL_ADDRESS]',
-  email: '[à compléter : CONTACT_EMAIL]',
+  entity: '',
+  id: '',
+  address: '',
+  email: '',
+  director: '',
   entityMissing: true,
   idMissing: true,
   addressMissing: true,
   emailMissing: true,
+  directorMissing: true,
 };
 
 test('le consentement n’ouvre la mesure que pour all et custom-on', () => {
@@ -51,9 +53,12 @@ test('politique de confidentialité localisée, sans entité inventée', () => {
     assert.equal(privacyPath(locale), `/${locale}/confidentialite`);
     assert.ok(doc.description.length <= 160, `${locale} ${doc.description.length}`);
     assert.ok(doc.description.length >= 70, locale);
-    for (const token of ['Stripe', 'Supabase', 'Vercel', 'Resend', 'xAI', 'cl_vid', 'cl_ft', 'LEGAL_ENTITY_NAME', 'CONTACT_EMAIL']) {
+    for (const token of ['Stripe', 'Supabase', 'Vercel', 'Resend', 'xAI', 'cl_vid', 'cl_ft']) {
       assert.ok(text.includes(token), `${locale} ${token}`);
     }
+    assert.equal(text.includes('à compléter'), false, locale);
+    assert.equal(text.includes('LEGAL_ENTITY_NAME'), false, locale);
+    assert.equal(text.includes('to be completed'), false, locale);
   }
 });
 

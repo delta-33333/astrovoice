@@ -1,7 +1,9 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import CoupleShareButton from '@/components/CoupleShareButton';
 import { COUPLE_CTA, couplePath, coupleShareBookPath, coupleSharePath } from '@/lib/couple-compat';
+import { trialPath } from '@/lib/free-call';
 import { loadCoupleResult } from '@/lib/couple-store';
 import { aiActLine } from '@/lib/legal';
 import { isLocale } from '@/lib/seo';
@@ -45,6 +47,15 @@ export default async function CoupleShareScreen(props: { params: Promise<{ local
       <Link href={coupleShareBookPath()} data-funnel="book" className="btn-primary mt-6 inline-block text-center">
         {COUPLE_CTA[locale]}
       </Link>
+      <p className="mt-4">
+        <Link href={`${trialPath(locale)}?topic=couple`} className="text-sm text-celestial-gold underline">
+          {locale === 'en' ? '3 minutes free' : '3 minutes offertes'}
+        </Link>
+      </p>
+      <CoupleShareButton
+        url={coupleSharePath(locale, id)}
+        label={locale === 'en' ? 'Share' : 'Partager'}
+      />
       <p className="mt-6">
         <Link href={couplePath(locale)} className="text-sm text-celestial-gold underline">{couplePath(locale)}</Link>
       </p>

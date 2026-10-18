@@ -55,6 +55,7 @@ export default function AdvisorDirectory({
   rates = DEFAULT_RATES,
   embedded = false,
   highlightId = '',
+  showPerMinute = false,
 }: {
   advisors: DirectoryAdvisor[];
   unavailable: boolean;
@@ -65,6 +66,7 @@ export default function AdvisorDirectory({
   rates?: FxRates;
   embedded?: boolean;
   highlightId?: string;
+  showPerMinute?: boolean;
 }) {
   const [language, setLanguage] = useState('');
   const [specialty, setSpecialty] = useState('');
@@ -132,9 +134,13 @@ export default function AdvisorDirectory({
             ? `${visible.length} conseiller${visible.length > 1 ? 's' : ''} affiché${visible.length > 1 ? 's' : ''}.`
             : 'Les fiches des conseillers apparaîtront ici.'}
         </p>
-        <p className="text-sm text-celestial-gold mt-1">
-          À partir de {floor}/min · tarif réduit les 3 premières minutes
-        </p>
+        {showPerMinute ? (
+          <p className="text-sm text-celestial-gold mt-1">
+            À partir de {floor}/min · tarif réduit les 3 premières minutes
+          </p>
+        ) : (
+          <p className="text-sm text-celestial-gold mt-1">Inclus dans les formules hebdomadaires</p>
+        )}
       </div>
 
       <div className="grid grid-cols-3 gap-2 mb-4">
@@ -205,9 +211,10 @@ export default function AdvisorDirectory({
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
         {visible.map((advisor, index) => {
           const quote = quoteAdvisor(advisor.pricePerMinCents, currency, rates, undefined, preferredLanguage, country);
-          const callHref = advisor.availability.immediateSlotId && advisor.availability.immediateStartsAt
+          const slotHref = advisor.availability.immediateSlotId && advisor.availability.immediateStartsAt
             ? bookPath(advisor.availability.immediateSlotId, advisor.availability.immediateStartsAt, advisor.id)
             : null;
+          const callHref = showPerMinute ? slotHref : `/book?offer=decouverte&advisor=${encodeURIComponent(advisor.id)}`;
           return (
             <motion.article
               key={advisor.id}
@@ -267,9 +274,15 @@ export default function AdvisorDirectory({
               </div>
 
               <p className="text-sm text-white/80 mt-4">
-                <span className="text-celestial-gold font-semibold">{quote.perMinLabel}</span>
-                {' · '}
-                {quote.introLabel} les 3 premières minutes
+                {showPerMinute ? (
+                  <>
+                    <span className="text-celestial-gold font-semibold">{quote.perMinLabel}</span>
+                    {' · '}
+                    {quote.introLabel} les 3 premières minutes
+                  </>
+                ) : (
+                  <span className="text-celestial-gold font-semibold">Inclus dans les formules hebdomadaires</span>
+                )}
               </p>
 
               <div className="mt-4">

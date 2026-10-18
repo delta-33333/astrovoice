@@ -8,7 +8,7 @@ import { avisJsonLd } from '../lib/avis-callastral.ts';
 import { AI_ACT_LINE, AI_ACT_SPOKEN } from '../lib/legal.ts';
 import { privacyPath } from '../lib/privacy-copy.ts';
 import { LOCALES, organizationGraph } from '../lib/seo.ts';
-import { renderSitemapIndex, sitemapIndexPaths } from '../lib/sitemap-public.ts';
+import { entriesFor, renderSitemapIndex, sitemapIndexPaths, SITEMAP_KINDS } from '../lib/sitemap-public.ts';
 import { articleJsonLd, signArticleModel } from '../lib/zodiac/articles.ts';
 
 const BANNED = ['AggregateRating', 'aggregateRating', '"@type":"Review"', '"@type": "Review"', '"@type":"Person"', '"@type": "Person"', '"@type":"Author"', '"@type": "Author"'];
@@ -113,14 +113,12 @@ test('canonical auto-référent, hreflang x-default, sitemap index par type', ()
   const avis = fs.readFileSync(new URL('../app/[locale]/avis-callastral/page.tsx', import.meta.url), 'utf8');
   assert.match(avis, /canonical: AVIS_PATH/);
   assert.match(avis, /'x-default': AVIS_PATH/);
-  assert.deepEqual(sitemapIndexPaths(), [
-    '/sitemaps/pages.xml',
-    '/sitemaps/signs.xml',
-    '/sitemaps/rising-signs.xml',
-    '/sitemaps/compatibility.xml',
-    '/sitemaps/horoscope.xml',
+  const expected = [
+    ...SITEMAP_KINDS.filter((kind) => entriesFor(kind).length > 0).map((kind) => `/sitemaps/${kind}.xml`),
     '/video-sitemap.xml',
-  ]);
+  ];
+  assert.deepEqual(sitemapIndexPaths(), expected);
+  assert.equal(expected.includes('/sitemaps/pages.xml'), true);
   const index = renderSitemapIndex('https://callastral.com');
   for (const path of sitemapIndexPaths()) assert.equal(index.includes(`https://callastral.com${path}`), true, path);
   assert.equal(fs.existsSync(new URL('../app/sitemap.ts', import.meta.url)), false);

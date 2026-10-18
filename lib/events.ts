@@ -33,6 +33,10 @@ export const EVENT_NAMES = [
   'signup_view',
   'birth_start',
   'rebook',
+  'sample_play',
+  'trial_code',
+  'trial_verified',
+  'ai_bot_hit',
 ] as const;
 
 /** Anciens noms en double, conservés lisibles : la vue SQL events_canonical applique la même table. */
@@ -200,6 +204,19 @@ export async function trackEvent(input: {
     ...context,
   });
   if (error) console.warn('Événement non enregistré:', input.name, error.message);
+}
+
+/** Compteur de robots d’assistants, sans donnée personnelle. */
+export async function trackAiBot(name: string, path: string): Promise<void> {
+  if (!supabaseAvailable || !name) return;
+  const { error } = await getSupabaseAdmin().from('events').insert({
+    name: 'ai_bot_hit',
+    metadata: { bot: name.slice(0, 40) },
+    path: path.slice(0, 300),
+    is_bot: true,
+    user_agent: name.slice(0, 80),
+  });
+  if (error) console.warn('Robot IA non enregistré:', error.message);
 }
 
 /**

@@ -19,6 +19,8 @@ import {
   type DailyIssue,
 } from './morning-horoscope';
 import { privacyPath } from './privacy-copy';
+import { freeCallEnabled, trialPath } from './free-call';
+import { horoscopeWelcomeMail, morningPromo } from './sequences';
 import { isLocale, type Locale } from './seo';
 import { authSecret } from './session';
 import { appBaseUrl } from './stripe';
@@ -34,6 +36,7 @@ export interface SubscribeInput {
   utmMedium: string | null;
   utmCampaign: string | null;
   placement: string;
+  heardFrom?: string | null;
 }
 
 export async function subscribeHoroscope(input: SubscribeInput): Promise<'ok' | 'consent' | 'invalid' | 'unavailable'> {
@@ -73,6 +76,10 @@ export async function subscribeHoroscope(input: SubscribeInput): Promise<'ok' | 
       })
       .eq('id', id);
     if (updated.error) return 'unavailable';
+    if (input.heardFrom) {
+      const extra = await admin.from('horoscope_subscribers').update({ heard_from: input.heardFrom }).eq('id', id);
+      if (extra.error && !isMissingRelation(extra.error)) console.warn('Horoscope source:', extra.error.message);
+    }
     if (existing.data?.status === 'confirmed') return 'ok';
   } else {
     const inserted = await admin
@@ -95,6 +102,10 @@ export async function subscribeHoroscope(input: SubscribeInput): Promise<'ok' | 
       return 'unavailable';
     }
     id = inserted.data.id as string;
+    if (input.heardFrom) {
+      const extra = await admin.from('horoscope_subscribers').update({ heard_from: input.heardFrom }).eq('id', id);
+      if (extra.error && !isMissingRelation(extra.error)) console.warn('Horoscope source:', extra.error.message);
+    }
   }
   const origin = appBaseUrl();
   const token = signHoroscopeToken(id, 'confirm', secret);
@@ -109,12 +120,26 @@ export async function confirmHoroscope(token: string): Promise<boolean> {
   if (!secret || !supabaseAvailable) return false;
   const id = readHoroscopeToken(token, 'confirm', secret);
   if (!id) return false;
-  const { error } = await getSupabaseAdmin()
+  const admin = getSupabaseAdmin();
+  const before = await admin.from('horoscope_subscribers').select('id, email, locale, status').eq('id', id).maybeSingle();
+  if (before.error || !before.data || before.data.status === 'unsubscribed') return false;
+  const { error } = await admin
     .from('horoscope_subscribers')
     .update({ status: 'confirmed', confirmed_at: new Date().toISOString() })
     .eq('id', id)
     .neq('status', 'unsubscribed');
-  return !error;
+  if (error) return false;
+  if (before.data.status !== 'confirmed' && typeof before.data.email === 'string' && isLocale(before.data.locale)) {
+    const locale = before.data.locale;
+    const unsub = signHoroscopeToken(id, 'unsubscribe', secret);
+    const mail = horoscopeWelcomeMail({
+      locale,
+      trialUrl: `${appBaseUrl()}${trialPath(locale)}`,
+      unsubscribeUrl: `${appBaseUrl()}/api/horoscope/unsubscribe?token=${encodeURIComponent(unsub)}&lang=${locale}`,
+    });
+    await dispatchMail({ to: before.data.email, subject: mail.subject, html: mail.html });
+  }
+  return true;
 }
 
 export async function unsubscribeHoroscope(token: string): Promise<boolean> {
@@ -145,6 +170,7 @@ interface SubscriberRow {
   locale: string;
   sign: string;
   birth_date: string | null;
+  confirmed_at?: string | null;
 }
 
 export async function sendMorningHoroscopes(now = new Date()): Promise<{ issues: number; sent: number }> {
@@ -173,7 +199,7 @@ export async function sendMorningHoroscopes(now = new Date()): Promise<{ issues:
   if (!secret) return { issues, sent: 0 };
   const rows = await admin
     .from('horoscope_subscribers')
-    .select('id, email, locale, sign, birth_date')
+    .select('id, email, locale, sign, birth_date, confirmed_at')
     .eq('status', 'confirmed')
     .or(`last_sent_on.is.null,last_sent_on.lt.${day}`);
   if (rows.error) {
@@ -186,6 +212,14 @@ export async function sendMorningHoroscopes(now = new Date()): Promise<{ issues:
     if (!isLocale(row.locale) || !isMorningSign(row.sign)) continue;
     const issue = cache.get(issueKey(day, row.locale, row.sign)) ?? dailyIssue(row.locale, row.sign, now);
     const token = signHoroscopeToken(row.id, 'unsubscribe', secret);
+    const confirmedAt = row.confirmed_at ? Date.parse(row.confirmed_at) : NaN;
+    const days = Number.isFinite(confirmedAt) ? Math.floor((now.getTime() - confirmedAt) / 86_400_000) : null;
+    const promo = morningPromo({
+      locale: row.locale,
+      daysSinceConfirm: days,
+      freeCall: freeCallEnabled(),
+      origin,
+    });
     const mail = morningMail({
       locale: row.locale,
       subject: issue.subject,
@@ -194,6 +228,8 @@ export async function sendMorningHoroscopes(now = new Date()): Promise<{ issues:
       bookUrl: `${origin}${morningBookPath()}`,
       unsubscribeUrl: `${origin}/api/horoscope/unsubscribe?token=${encodeURIComponent(token)}&lang=${row.locale}`,
       privacyUrl: `${origin}${privacyPath(row.locale)}`,
+      ctaLabel: promo?.label,
+      ctaUrl: promo?.url,
     });
     pending.push({ id: row.id, mail: { to: row.email, ...mail } });
   }

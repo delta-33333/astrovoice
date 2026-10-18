@@ -18,6 +18,7 @@ export default function CallPage() {
   const stoppedRef = useRef(false);
   const checkoutRef = useRef<string | null>(null);
   const sessionRef = useRef<string | null>(null);
+  const trialRef = useRef<string | null>(null);
 
   useEffect(() => {
     const astrId = sessionStorage.getItem('astrologerId');
@@ -28,6 +29,7 @@ export default function CallPage() {
     setAstrologerId(astrId);
     sessionRef.current = sessionStorage.getItem('sessionId');
     checkoutRef.current = sessionStorage.getItem('checkoutSessionId');
+    trialRef.current = sessionStorage.getItem('trialId');
 
     const bookingId = sessionStorage.getItem('bookingId');
     const load = async () => {
@@ -66,6 +68,27 @@ export default function CallPage() {
     if (stoppedRef.current) return;
     stoppedRef.current = true;
     const activeBookingId = booking?.id ?? null;
+
+    const trialId = trialRef.current;
+    if (trialId) {
+      void fetch('/api/trial/complete', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ trialId, seconds, locale: 'fr' }),
+        keepalive: true,
+      });
+      sessionStorage.removeItem('trialId');
+      sessionStorage.setItem('callComplete', JSON.stringify({
+        durationSeconds: seconds,
+        amountCharged: 0,
+        trial: true,
+        astrologerName: advisor?.name,
+        astrologerId: advisor?.id ?? astrologerId,
+        error: note,
+      }));
+      router.push('/complete');
+      return;
+    }
 
     void fetch('/api/billing/usage', {
       method: 'POST',
@@ -161,6 +184,7 @@ export default function CallPage() {
       booking={booking}
       prepaidSeconds={prepaidSeconds}
       checkoutSessionId={checkoutRef.current}
+      trialId={trialRef.current}
       onUnauthorized={() => router.push('/auth')}
       onFinished={(seconds, prepaid, note) => {
         void finish(seconds, prepaid, note);
