@@ -10,7 +10,9 @@ import HoneypotField from '@/components/HoneypotField';
 import { bookCopy, type BookCopy } from '@/lib/book-copy';
 import { readBirthParams } from '@/lib/book-funnel';
 import { funnel } from '@/lib/funnel-client';
-import { HONEYPOT_FIELD, normalizeEmail, passwordError } from '@/lib/form-checks';
+import HeardFromField from '@/components/HeardFromField';
+import { HONEYPOT_FIELD, normalizeEmail } from '@/lib/form-checks';
+import type { HeardFromId } from '@/lib/heard-from';
 import type { AdvisorLang, Currency } from '@/lib/money';
 
 export default function BookCheckout({
@@ -40,6 +42,7 @@ export default function BookCheckout({
   const [firstName, setFirstName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [heardFrom, setHeardFrom] = useState<HeardFromId | ''>('');
   const [honeypot, setHoneypot] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -73,7 +76,6 @@ export default function BookCheckout({
     if (!normalizeEmail(email)) throw new Error(copy.emailInvalid);
     if (accountMode === 'signup') {
       if (!firstName.trim()) throw new Error(copy.nameRequired);
-      if (passwordError(password)) throw new Error(copy.passwordHint);
     } else if (!password) {
       throw new Error(copy.passwordRequired);
     }
@@ -83,7 +85,7 @@ export default function BookCheckout({
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(
         accountMode === 'signup'
-          ? { email, password, displayName: firstName, [HONEYPOT_FIELD]: honeypot }
+          ? { email, displayName: firstName, passwordless: true, heardFrom: heardFrom || null, [HONEYPOT_FIELD]: honeypot }
           : { email, password, [HONEYPOT_FIELD]: honeypot }
       ),
     });
@@ -253,14 +255,18 @@ export default function BookCheckout({
               <Field label={copy.firstName} value={firstName} autoComplete="given-name" onChange={setFirstName} />
             )}
             <Field label={copy.email} type="email" value={email} autoComplete="email" onChange={setEmail} />
-            <Field
-              label={copy.password}
-              type="password"
-              value={password}
-              autoComplete={accountMode === 'login' ? 'current-password' : 'new-password'}
-              onChange={setPassword}
-            />
-            {accountMode === 'signup' && <p className="text-xs text-white/45">{copy.passwordHint}</p>}
+            {accountMode === 'login' && (
+              <Field
+                label={copy.password}
+                type="password"
+                value={password}
+                autoComplete="current-password"
+                onChange={setPassword}
+              />
+            )}
+            {accountMode === 'signup' && (
+              <HeardFromField locale={language} value={heardFrom} onChange={setHeardFrom} />
+            )}
             {accountMode === 'login' && (
               <Link href="/auth/forgot" className="text-sm text-celestial-gold underline">{copy.forgot}</Link>
             )}

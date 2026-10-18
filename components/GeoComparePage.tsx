@@ -123,7 +123,7 @@ export function compareCopy(locale: GeoLocale) {
       price: `${c.min} to ${c.max}/min depending on the advisor`,
       welcome: c.founding ? `${c.founding.minutes} min for ${c.founding.price} (founder offer)` : '—',
       language: 'French, English, Spanish, German, Italian',
-      bestFor: 'Birth-chart astrology at any hour at a low price, knowing the advisor is virtual and does not remember previous calls.',
+      bestFor: 'Birth-chart astrology at any hour, with a virtual advisor who keeps a short memory of previous calls.',
       sources: [],
     },
     {

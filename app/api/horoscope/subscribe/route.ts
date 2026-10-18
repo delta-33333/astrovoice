@@ -4,6 +4,7 @@ import { honeypotTripped, normalizeEmail } from '@/lib/form-checks';
 import { subscribeHoroscope } from '@/lib/horoscope-subscribers';
 import { cleanUtm } from '@/lib/morning-horoscope';
 import { clientIp } from '@/lib/rate-limit';
+import { parseHeardFrom } from '@/lib/heard-from';
 import { isLocale } from '@/lib/seo';
 
 export const dynamic = 'force-dynamic';
@@ -41,6 +42,7 @@ export async function POST(request: NextRequest) {
     utmMedium: cleanUtm(body?.utmMedium) || touch.utm_medium,
     utmCampaign: cleanUtm(body?.utmCampaign) || touch.utm_campaign,
     placement: typeof body?.placement === 'string' ? body.placement.slice(0, 40) : 'widget',
+    heardFrom: parseHeardFrom(body?.heardFrom),
   });
   if (result === 'consent') return NextResponse.json({ error: 'CONSENT' }, { status: 400 });
   if (result === 'invalid') return NextResponse.json({ error: 'INVALID' }, { status: 400 });

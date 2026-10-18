@@ -6,7 +6,7 @@ import type { PublicAdvisor, VoiceId } from './types';
 const VOICES: readonly VoiceId[] = ['ara', 'eve', 'leo', 'rex', 'sal'];
 
 const PUBLIC_COLUMNS =
-  'id, slug, first_name, last_name, age, gender, languages, specialties, reading_style, bio, photo_url, voice_id, featured, daily_capacity';
+  'id, slug, first_name, last_name, age, gender, languages, specialties, reading_style, bio, photo_url, voice_id, featured, daily_capacity, created_at';
 const PRICE_COLUMNS = 'years_experience, price_per_min_cents';
 
 export interface AdvisorRecord extends PublicAdvisor {
@@ -29,6 +29,7 @@ interface AdvisorRow {
   persona_prompt?: string | null;
   featured: boolean;
   daily_capacity: number;
+  created_at?: string | null;
   years_experience?: number | null;
   price_per_min_cents?: number | null;
 }
@@ -93,11 +94,13 @@ function toPublic(row: AdvisorRow, signal?: AdvisorSignal): PublicAdvisor {
     reviewCount,
     averageRating,
     bookingCount,
+    createdAt: row.created_at ?? null,
     badges: advisorBadges({
       reviewCount,
       specialties,
       age: row.age,
       bookingCount,
+      createdAt: row.created_at ?? null,
     }),
     yearsExperience:
       row.years_experience != null && row.years_experience > 0

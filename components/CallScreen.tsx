@@ -176,6 +176,7 @@ export default function CallScreen({
   booking,
   prepaidSeconds,
   checkoutSessionId,
+  trialId = null,
   onFinished,
   onUnauthorized,
 }: {
@@ -184,6 +185,7 @@ export default function CallScreen({
   booking: { id: string; durationSec: number } | null;
   prepaidSeconds: number;
   checkoutSessionId: string | null;
+  trialId?: string | null;
   onFinished: (seconds: number, prepaid: number, note?: string) => void;
   onUnauthorized: () => void;
 }) {
@@ -679,6 +681,7 @@ export default function CallScreen({
           natalChart,
           checkoutSessionId,
           bookingId: booking?.id ?? null,
+          trialId,
         }),
       });
       const tokenPayload = (await tokenResponse.json().catch(() => null)) as
@@ -710,7 +713,11 @@ export default function CallScreen({
         sessionStorage.removeItem('callSubscription');
         setIncluded(false);
       }
-      live.cap = booking ? Math.min(booking.durationSec, live.prepaid || booking.durationSec) : null;
+      live.cap = trialId
+        ? live.prepaid
+        : booking
+          ? Math.min(booking.durationSec, live.prepaid || booking.durationSec)
+          : null;
       setPrepaid(live.prepaid);
       if (ctx.state === 'suspended') await ctx.resume();
       openSocket(tokenPayload);

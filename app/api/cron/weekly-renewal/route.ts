@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { sendMorningHoroscopes } from '@/lib/horoscope-subscribers';
+import { sendDueMails } from '@/lib/mail-schedule';
 import { sendDueRenewalReminders } from '@/lib/subscriptions';
 
 export const dynamic = 'force-dynamic';
@@ -15,13 +16,19 @@ export async function GET(request: Request) {
 
   try {
     const result = await sendDueRenewalReminders();
+    let sequences = 0;
+    try {
+      sequences = await sendDueMails();
+    } catch (error) {
+      console.error('cron séquences:', error instanceof Error ? error.message : error);
+    }
     let horoscope: { issues: number; sent: number } = { issues: 0, sent: 0 };
     try {
       horoscope = await sendMorningHoroscopes();
     } catch (error) {
       console.error('cron horoscope:', error instanceof Error ? error.message : error);
     }
-    return NextResponse.json({ ok: true, ...result, horoscope });
+    return NextResponse.json({ ok: true, ...result, horoscope, sequences });
   } catch (error) {
     console.error('cron weekly-renewal:', error instanceof Error ? error.message : error);
     return NextResponse.json({ error: 'Rappels impossibles' }, { status: 500 });

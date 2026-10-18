@@ -20,7 +20,7 @@ export const AVIS_FAQS = [
   {
     question: 'Le calcul d’ascendant est-il gratuit ?',
     answer:
-      'Le calcul est gratuit. Les consultations se paient à la minute ou par formule hebdomadaire. Le tarif est affiché avant le paiement.',
+      'Le calcul est gratuit. Les consultations se paient par formule hebdomadaire. Un appel de 3 minutes est offert une fois. Le tarif est affiché avant le paiement.',
   },
   {
     question: 'Les conseillers sont-ils des personnes réelles ?',

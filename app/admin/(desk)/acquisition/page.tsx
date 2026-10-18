@@ -4,6 +4,7 @@ import {
   loadVercelStats,
   type WeeklyRow,
 } from '@/lib/admin-funnel';
+import { loadTrialAttribution } from '@/lib/acquisition-trials';
 
 export const dynamic = 'force-dynamic';
 
@@ -30,7 +31,7 @@ function sumWeeks(rows: WeeklyRow[], key: keyof WeeklyRow): number {
 }
 
 export default async function AcquisitionPage() {
-  const [data, vercel] = await Promise.all([loadAcquisition(), loadVercelStats(7)]);
+  const [data, vercel, trials] = await Promise.all([loadAcquisition(), loadVercelStats(7), loadTrialAttribution()]);
   const current = data.weekly[0];
   const last4 = data.weekly.slice(0, 4);
   const ratio = (num: number, den: number) => (den > 0 ? num / den : null);
@@ -271,6 +272,21 @@ export default async function AcquisitionPage() {
         >
           Ouvrir Vercel Analytics ↗
         </a>
+      </section>
+      <section className="space-y-3">
+        <h2 className="text-lg font-semibold">Essai et provenance</h2>
+        {trials.unavailable ? (
+          <p className="text-sm text-white/60">Les essais gratuits apparaîtront ici après la migration.</p>
+        ) : (
+          <>
+            <p className="text-sm text-white/70">{trials.trials} essai{trials.trials > 1 ? 's' : ''} enregistré{trials.trials > 1 ? 's' : ''}.</p>
+            <ul className="text-sm text-white/80">
+              {trials.heard.map((row) => (
+                <li key={row.source} className="flex justify-between gap-3"><span>{row.source}</span><span>{row.count}</span></li>
+              ))}
+            </ul>
+          </>
+        )}
       </section>
     </main>
   );

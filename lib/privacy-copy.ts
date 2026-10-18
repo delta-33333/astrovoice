@@ -1,4 +1,47 @@
 import type { LegalIdentity } from './legal-entity';
+
+/** Phrases du responsable : rien n’est affiché pour un champ vide. */
+export function controllerParagraphs(locale: 'fr' | 'en' | 'es' | 'de' | 'it', legal: LegalIdentity): string[] {
+  const bits = [legal.entityMissing ? '' : legal.entity, legal.idMissing ? '' : legal.id, legal.addressMissing ? '' : legal.address].filter(Boolean);
+  const who = bits.join(', ');
+  const lines: string[] = [];
+  if (who) {
+    const lead = {
+      fr: `Le responsable du traitement est ${who}.`,
+      en: `The controller is ${who}.`,
+      es: `El responsable del tratamiento es ${who}.`,
+      de: `Verantwortlicher ist ${who}.`,
+      it: `Il titolare del trattamento è ${who}.`,
+    }[locale];
+    lines.push(lead);
+  } else {
+    lines.push({
+      fr: 'L’identité de l’éditeur est publiée sur les mentions légales lorsqu’elle est renseignée.',
+      en: 'The publisher’s identity is published on the legal notice when it is set.',
+      es: 'La identidad del editor se publica en el aviso legal cuando está indicada.',
+      de: 'Die Identität des Anbieters steht im Impressum, sobald sie hinterlegt ist.',
+      it: 'L’identità dell’editore è pubblicata nelle note legali quando è indicata.',
+    }[locale]);
+  }
+  if (!legal.emailMissing) {
+    lines.push({
+      fr: `Pour exercer vos droits : ${legal.email}.`,
+      en: `To exercise your rights: ${legal.email}.`,
+      es: `Para ejercer sus derechos: ${legal.email}.`,
+      de: `Für Ihre Rechte: ${legal.email}.`,
+      it: `Per esercitare i diritti: ${legal.email}.`,
+    }[locale]);
+  } else {
+    lines.push({
+      fr: 'Vous pouvez aussi exercer vos droits depuis votre compte lorsque vous êtes connecté.',
+      en: 'You can also exercise your rights from your account while signed in.',
+      es: 'También puede ejercer sus derechos desde la cuenta cuando haya iniciado sesión.',
+      de: 'Ihre Rechte können Sie auch aus dem Konto ausüben, wenn Sie angemeldet sind.',
+      it: 'Puoi anche esercitare i diritti dall’account quando sei connesso.',
+    }[locale]);
+  }
+  return lines;
+}
 import type { Locale } from './seo';
 
 export type PrivacySection = { heading: string; paragraphs: string[] };
@@ -50,14 +93,10 @@ function french(legal: LegalIdentity): PrivacyDocument {
     description:
       'Données de compte, de naissance, d’appels, paiements Stripe, cookies cl_vid et cl_ft, finalités, durées, droits et contact.',
     sections: [
-      block('Responsable du traitement', [
-        `Le responsable du traitement est ${legal.entity}${legal.idMissing ? '' : ` (${legal.id})`}, ${legal.address}.`,
-        'Tant que ces éléments ne sont pas renseignés dans la configuration du site, ils apparaissent entre crochets. Ce ne sont pas des informations juridiques inventées.',
-        `Pour exercer vos droits : ${legal.email}.`,
-      ]),
+      block('Responsable du traitement', controllerParagraphs('fr', legal)),
       block('Données collectées', [
         'Compte : adresse e-mail, prénom, mot de passe sous forme d’empreinte, et l’identifiant de session du cookie httpOnly lunara_session.',
-        'Données de naissance : date, heure (ou le fait qu’elle est inconnue) et lieu, utilisés pour calculer le thème natal avec Swiss Ephemeris. L’outil d’ascendant gratuit ne crée pas de compte et n’enregistre pas l’instant de naissance.',
+        'Données de naissance : date, heure (ou le fait qu’elle est inconnue) et lieu, utilisés pour calculer le thème natal. L’outil d’ascendant gratuit ne crée pas de compte et n’enregistre pas l’instant de naissance.',
         'Appels et voix : la voix est traitée en temps réel pour la conversation. Une transcription texte peut être conservée pour le résumé écrit demandé et pour la sécurité du service. L’audio brut de l’appel n’est pas archivé comme un fichier sonore.',
         'Paiements : ils passent par Stripe. Callastral ne stocke pas le numéro complet de carte. Stripe transmet le statut du paiement, un identifiant de transaction et, si vous l’avez saisi, un moyen de contact de facturation.',
         'Cookies de première visite : cl_ft (90 jours) mémorise utm_source, utm_medium, utm_campaign, le référent et la page d’arrivée. cl_vid (12 mois) est un identifiant aléatoire pour compter les visiteurs uniques. Ils sont posés à la première visite, hors pages /admin et hors robots, et ne servent pas à de la publicité. Le cookie cl_ck mémorise votre choix et est strictement nécessaire.',
@@ -93,7 +132,9 @@ function french(legal: LegalIdentity): PrivacyDocument {
       ]),
       featureNotice('fr'),
       block('Contact', [
-        `Écrivez à ${legal.email}. Si l’adresse est encore un marqueur entre crochets, elle n’a pas été configurée : la demande peut aussi être faite depuis le compte lorsque vous êtes connecté, et elle sera traitée dès que l’adresse de contact est renseignée.`,
+        legal.emailMissing
+          ? 'La demande peut aussi être faite depuis le compte lorsque vous êtes connecté.'
+          : `Écrivez à ${legal.email}. La demande peut aussi être faite depuis le compte lorsque vous êtes connecté.`,
       ]),
     ],
   };
@@ -105,14 +146,10 @@ function english(legal: LegalIdentity): PrivacyDocument {
     description:
       'Account, birth data, calls, Stripe payments, cl_vid and cl_ft cookies, purposes, retention, rights and contact.',
     sections: [
-      block('Controller', [
-        `The controller is ${legal.entity}${legal.idMissing ? '' : ` (${legal.id})`}, ${legal.address}.`,
-        'Until these values are set in the site configuration, they stay in brackets. They are not invented legal details.',
-        `To exercise your rights: ${legal.email}.`,
-      ]),
+      block('Controller', controllerParagraphs('en', legal)),
       block('Data we collect', [
         'Account: email address, first name, password stored as a hash, and the httpOnly session cookie lunara_session.',
-        'Birth data: date, time (or the fact that it is unknown) and place, used to compute the birth chart with Swiss Ephemeris. The free rising-sign tool does not create an account and does not store the moment of birth.',
+        'Birth data: date, time (or the fact that it is unknown) and place, used to compute the birth chart. The free rising-sign tool does not create an account and does not store the moment of birth.',
         'Calls and voice: voice is processed in real time for the conversation. A text transcript may be kept for a written summary you request and for service safety. The raw call audio is not archived as a sound file.',
         'Payments go through Stripe. Callastral does not store the full card number. Stripe returns the payment status, a transaction id and, if you entered one, billing contact details.',
         'First-visit cookies: cl_ft (90 days) stores utm_source, utm_medium, utm_campaign, the referrer and the landing page. cl_vid (12 months) is a random id used to count unique visitors. They are set on the first visit, excluding /admin and known bots, and they are not used for advertising. The cl_ck cookie stores your choice and is strictly necessary.',
@@ -148,7 +185,7 @@ function english(legal: LegalIdentity): PrivacyDocument {
       ]),
       featureNotice('en'),
       block('Contact', [
-        `Write to ${legal.email}. If the address is still a bracketed marker, it has not been configured yet.`,
+        legal.emailMissing ? 'You can also write from your account while signed in.' : `Write to ${legal.email}.`,
       ]),
     ],
   };
@@ -160,14 +197,10 @@ function spanish(legal: LegalIdentity): PrivacyDocument {
     description:
       'Cuenta, datos de nacimiento, llamadas, pagos con Stripe, cookies cl_vid y cl_ft, finalidades, plazos, derechos y contacto.',
     sections: [
-      block('Responsable', [
-        `El responsable del tratamiento es ${legal.entity}${legal.idMissing ? '' : ` (${legal.id})`}, ${legal.address}.`,
-        'Mientras estos datos no estén en la configuración del sitio, aparecen entre corchetes. No son datos jurídicos inventados.',
-        `Para ejercer sus derechos: ${legal.email}.`,
-      ]),
+      block('Responsable', controllerParagraphs('es', legal)),
       block('Datos recogidos', [
         'Cuenta: correo, nombre, contraseña guardada como huella, y la cookie httpOnly de sesión lunara_session.',
-        'Datos de nacimiento: fecha, hora (o el hecho de que se desconoce) y lugar, para calcular la carta natal con Swiss Ephemeris. La herramienta gratuita de ascendente no crea cuenta ni guarda el instante de nacimiento.',
+        'Datos de nacimiento: fecha, hora (o el hecho de que se desconoce) y lugar, para calcular la carta natal. La herramienta gratuita de ascendente no crea cuenta ni guarda el instante de nacimiento.',
         'Llamadas y voz: la voz se trata en tiempo real. Puede conservarse una transcripción de texto para el resumen escrito solicitado y para la seguridad del servicio. El audio bruto no se archiva como archivo de sonido.',
         'Pagos a través de Stripe. Callastral no guarda el número completo de la tarjeta. Stripe devuelve el estado del pago, un identificador y, si lo indicó, un contacto de facturación.',
         'Cookies de la primera visita: cl_ft (90 días) guarda utm_source, utm_medium, utm_campaign, el referente y la página de llegada. cl_vid (12 meses) es un identificador aleatorio para contar visitantes únicos. Se colocan en la primera visita, salvo /admin y los robots conocidos, y no sirven para publicidad. La cookie cl_ck guarda su elección y es estrictamente necesaria.',
@@ -203,7 +236,7 @@ function spanish(legal: LegalIdentity): PrivacyDocument {
       ]),
       featureNotice('es'),
       block('Contacto', [
-        `Escriba a ${legal.email}. Si la dirección sigue siendo un marcador entre corchetes, aún no está configurada.`,
+        legal.emailMissing ? 'También puede escribir desde la cuenta cuando haya iniciado sesión.' : `Escriba a ${legal.email}.`,
       ]),
     ],
   };
@@ -215,14 +248,10 @@ function german(legal: LegalIdentity): PrivacyDocument {
     description:
       'Konto, Geburtsdaten, Anrufe, Stripe-Zahlungen, Cookies cl_vid und cl_ft, Zwecke, Fristen, Rechte und Kontakt.',
     sections: [
-      block('Verantwortlicher', [
-        `Verantwortlicher ist ${legal.entity}${legal.idMissing ? '' : ` (${legal.id})`}, ${legal.address}.`,
-        'Solange diese Angaben nicht in der Konfiguration stehen, bleiben sie in Klammern. Es sind keine erfundenen Rechtsangaben.',
-        `Für Ihre Rechte: ${legal.email}.`,
-      ]),
+      block('Verantwortlicher', controllerParagraphs('de', legal)),
       block('Erhobene Daten', [
         'Konto: E-Mail, Vorname, Passwort als Hash, und das httpOnly-Sitzungscookie lunara_session.',
-        'Geburtsdaten: Datum, Uhrzeit (oder der Hinweis, dass sie unbekannt ist) und Ort, für die Berechnung des Geburtshoroskops mit Swiss Ephemeris. Das kostenlose Aszendent-Werkzeug legt kein Konto an und speichert den Geburtszeitpunkt nicht.',
+        'Geburtsdaten: Datum, Uhrzeit (oder der Hinweis, dass sie unbekannt ist) und Ort, für die Berechnung des Geburtshoroskops. Das kostenlose Aszendent-Werkzeug legt kein Konto an und speichert den Geburtszeitpunkt nicht.',
         'Anrufe und Stimme: Die Stimme wird in Echtzeit verarbeitet. Eine Textabschrift kann für die gewünschte schriftliche Zusammenfassung und für die Sicherheit des Dienstes aufbewahrt werden. Das Rohaudio wird nicht als Tondatei archiviert.',
         'Zahlungen laufen über Stripe. Callastral speichert nicht die vollständige Kartennummer. Stripe übermittelt den Zahlungsstatus, eine Transaktionskennung und, falls angegeben, eine Rechnungskontaktangabe.',
         'Cookies des ersten Besuchs: cl_ft (90 Tage) speichert utm_source, utm_medium, utm_campaign, den Referrer und die Einstiegsseite. cl_vid (12 Monate) ist eine zufällige Kennung, um eindeutige Besucher zu zählen. Sie werden beim ersten Besuch gesetzt, außer auf /admin und bei bekannten Bots, und nicht für Werbung verwendet. Das Cookie cl_ck speichert Ihre Wahl und ist unbedingt erforderlich.',
@@ -258,7 +287,7 @@ function german(legal: LegalIdentity): PrivacyDocument {
       ]),
       featureNotice('de'),
       block('Kontakt', [
-        `Schreiben Sie an ${legal.email}. Steht die Adresse noch als Marker in Klammern, ist sie nicht konfiguriert.`,
+        legal.emailMissing ? 'Sie können auch aus dem Konto schreiben, wenn Sie angemeldet sind.' : `Schreiben Sie an ${legal.email}.`,
       ]),
     ],
   };
@@ -270,14 +299,10 @@ function italian(legal: LegalIdentity): PrivacyDocument {
     description:
       'Account, dati di nascita, chiamate, pagamenti Stripe, cookie cl_vid e cl_ft, finalità, conservazione, diritti e contatto.',
     sections: [
-      block('Titolare', [
-        `Il titolare del trattamento è ${legal.entity}${legal.idMissing ? '' : ` (${legal.id})`}, ${legal.address}.`,
-        'Finché questi dati non sono nella configurazione del sito, restano tra parentesi. Non sono dati legali inventati.',
-        `Per esercitare i diritti: ${legal.email}.`,
-      ]),
+      block('Titolare', controllerParagraphs('it', legal)),
       block('Dati raccolti', [
         'Account: e-mail, nome, password conservata come impronta, e il cookie di sessione httpOnly lunara_session.',
-        'Dati di nascita: data, ora (o il fatto che è sconosciuta) e luogo, per calcolare il tema natale con Swiss Ephemeris. Lo strumento gratuito dell’ascendente non crea un account e non registra l’istante di nascita.',
+        'Dati di nascita: data, ora (o il fatto che è sconosciuta) e luogo, per calcolare il tema natale. Lo strumento gratuito dell’ascendente non crea un account e non registra l’istante di nascita.',
         'Chiamate e voce: la voce è trattata in tempo reale. Una trascrizione testuale può essere conservata per il riassunto scritto richiesto e per la sicurezza del servizio. L’audio grezzo non è archiviato come file sonoro.',
         'I pagamenti passano da Stripe. Callastral non conserva il numero completo della carta. Stripe restituisce lo stato del pagamento, un identificativo e, se indicato, un contatto di fatturazione.',
         'Cookie della prima visita: cl_ft (90 giorni) memorizza utm_source, utm_medium, utm_campaign, il referrer e la pagina di arrivo. cl_vid (12 mesi) è un identificativo casuale per contare i visitatori unici. Vengono impostati alla prima visita, escluse /admin e i bot noti, e non servono alla pubblicità. Il cookie cl_ck memorizza la scelta ed è strettamente necessario.',
@@ -313,7 +338,7 @@ function italian(legal: LegalIdentity): PrivacyDocument {
       ]),
       featureNotice('it'),
       block('Contatto', [
-        `Scrivi a ${legal.email}. Se l’indirizzo è ancora un segnaposto tra parentesi, non è stato configurato.`,
+        legal.emailMissing ? 'Puoi anche scrivere dall’account quando sei connesso.' : `Scrivi a ${legal.email}.`,
       ]),
     ],
   };

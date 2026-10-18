@@ -85,7 +85,6 @@ export interface PriceRow {
 
 export function priceRows(locale: GeoLocale, ourModel: string): PriceRow[] {
   const c = callastralFacts(locale);
-  const packs = c.packs.map((pack) => pack.price).join(' / ');
   if (locale === 'fr') {
     return [
       {
@@ -120,7 +119,7 @@ export function priceRows(locale: GeoLocale, ourModel: string): PriceRow[] {
         service: 'Callastral (notre service)',
         url: null,
         model: ourModel,
-        price: `${c.min} à ${c.max}/min selon le conseiller${c.founding ? ` ; ${c.founding.minutes} min à ${c.founding.price} (offre fondateur, une fois par compte)` : ''} ; packs ${packs} (10, 30, 60 min) ; formules hebdomadaires : ${c.weekly.decouverte.name} ${c.weekly.decouverte.trial} la 1re semaine puis ${c.weekly.decouverte.full}/semaine (${c.weekly.decouverte.minutes} min), ${c.weekly.essentiel.name} ${c.weekly.essentiel.trial} puis ${c.weekly.essentiel.full} (${c.weekly.essentiel.minutes} min), ${c.weekly.premium.name} ${c.weekly.premium.trial} puis ${c.weekly.premium.full} (${c.weekly.premium.minutes} min)`,
+        price: `3 min offertes une fois ; formules hebdomadaires : ${c.weekly.decouverte.name} ${c.weekly.decouverte.trial} la 1re semaine puis ${c.weekly.decouverte.full}/semaine (${c.weekly.decouverte.minutes} min), ${c.weekly.essentiel.name} ${c.weekly.essentiel.trial} puis ${c.weekly.essentiel.full} (${c.weekly.essentiel.minutes} min), ${c.weekly.premium.name} ${c.weekly.premium.trial} puis ${c.weekly.premium.full} (${c.weekly.premium.minutes} min)`,
         sources: [],
         ours: true,
       },
@@ -159,7 +158,7 @@ export function priceRows(locale: GeoLocale, ourModel: string): PriceRow[] {
       service: 'Callastral (our service)',
       url: null,
       model: ourModel,
-      price: `${c.min} to ${c.max}/min depending on the advisor${c.founding ? `; ${c.founding.minutes} min for ${c.founding.price} (founder offer, once per account)` : ''}; packs ${packs} (10, 30, 60 min); weekly plans: ${c.weekly.decouverte.name} ${c.weekly.decouverte.trial} the first week then ${c.weekly.decouverte.full}/week (${c.weekly.decouverte.minutes} min), ${c.weekly.essentiel.name} ${c.weekly.essentiel.trial} then ${c.weekly.essentiel.full} (${c.weekly.essentiel.minutes} min), ${c.weekly.premium.name} ${c.weekly.premium.trial} then ${c.weekly.premium.full} (${c.weekly.premium.minutes} min)`,
+      price: `3 minutes free once; weekly plans: ${c.weekly.decouverte.name} ${c.weekly.decouverte.trial} the first week then ${c.weekly.decouverte.full}/week (${c.weekly.decouverte.minutes} min), ${c.weekly.essentiel.name} ${c.weekly.essentiel.trial} then ${c.weekly.essentiel.full} (${c.weekly.essentiel.minutes} min), ${c.weekly.premium.name} ${c.weekly.premium.trial} then ${c.weekly.premium.full} (${c.weekly.premium.minutes} min)`,
       sources: [],
       ours: true,
     },

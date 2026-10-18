@@ -2,8 +2,10 @@ import type { Metadata, Viewport } from "next";
 import { headers } from "next/headers";
 import { Inter, Cinzel } from "next/font/google";
 import { ConsentRoot } from "@/components/Consent";
+import ExitOffer from "@/components/ExitOffer";
 import FunnelTracker from "@/components/FunnelTracker";
 import JsonLd from "@/components/JsonLd";
+import { trackAiBot } from "@/lib/events";
 import { isLocale, organizationGraph } from "@/lib/seo";
 import { appBaseUrl } from "@/lib/stripe";
 import "./globals.css";
@@ -17,7 +19,7 @@ export const metadata: Metadata = {
     default: "Callastral — Consultation astrologique par téléphone",
     template: "%s",
   },
-  description: "Consultation astrologique par téléphone, 24 h/24, à partir de votre thème natal. Le tarif de chaque conseiller est affiché avant le paiement.",
+  description: "Astrologue IA par téléphone, à partir de votre thème natal. Appel de 3 minutes offert, puis formules hebdomadaires.",
   manifest: "/manifest.json",
   icons: {
     icon: [
@@ -49,8 +51,14 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const localeHeader = (await headers()).get("x-locale");
+  const requestHeaders = await headers();
+  const localeHeader = requestHeaders.get("x-locale");
   const lang = localeHeader && isLocale(localeHeader) ? localeHeader : "fr";
+  const aiBot = requestHeaders.get("x-ai-bot");
+  if (aiBot) {
+    const path = requestHeaders.get("x-pathname") || "/";
+    void trackAiBot(aiBot, path);
+  }
   const origin = appBaseUrl();
   return (
     <html lang={lang} className={`${inter.variable} ${cinzel.variable}`}>
@@ -78,6 +86,7 @@ export default async function RootLayout({
           </div>
           <JsonLd data={{ '@context': 'https://schema.org', '@graph': organizationGraph(origin) }} />
         </div>
+        <ExitOffer />
         <FunnelTracker />
         </ConsentRoot>
       </body>

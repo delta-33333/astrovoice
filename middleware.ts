@@ -5,6 +5,7 @@ import {
   FIRST_TOUCH_MAX_AGE,
   VISITOR_COOKIE,
   VISITOR_MAX_AGE,
+  aiBotName,
   cleanReferrer,
   encodeFirstTouch,
   isInternalReferrer,
@@ -43,6 +44,11 @@ export function middleware(request: NextRequest) {
   const existing = validVisitorId(request.cookies.get(VISITOR_COOKIE)?.value);
   const visitorId = existing ?? (capture ? crypto.randomUUID() : null);
   if (visitorId) requestHeaders.set('x-cl-vid', visitorId);
+  const aiBot = aiBotName(request.headers.get('user-agent'));
+  if (aiBot) {
+    requestHeaders.set('x-ai-bot', aiBot);
+    requestHeaders.set('x-pathname', request.nextUrl.pathname);
+  }
 
   const response = NextResponse.next({ request: { headers: requestHeaders } });
   if (!capture) return response;

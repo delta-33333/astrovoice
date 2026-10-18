@@ -39,6 +39,38 @@ export async function findUserByEmail(email: string): Promise<UserProfile | null
   return (byUsername.data as UserProfile | null) ?? null;
 }
 
+/** Compte sans mot de passe : le lien de choix est envoyé après le paiement. */
+export async function createPasswordlessUser(
+  email: string,
+  firstName: string,
+): Promise<{ success: boolean; userId?: string; error?: string }> {
+  if (!supabaseAvailable) return { success: false, error: 'La création de compte est indisponible' };
+  try {
+    const { data, error } = await getSupabaseAdmin()
+      .from('users')
+      .insert({
+        username: email,
+        email,
+        password_hash: null,
+        display_name: firstName,
+        prepaid_seconds: 0,
+      })
+      .select('id')
+      .single();
+    if (error) {
+      if (error.code === '23505') return { success: false, error: 'Un compte existe déjà avec cet e-mail' };
+      console.error('Create user error:', error.message);
+      return { success: false, error: 'Erreur lors de la création du compte' };
+    }
+    const { attachHoroscopeSubscriber } = await import('./horoscope-subscribers');
+    await attachHoroscopeSubscriber(data.id, email);
+    return { success: true, userId: data.id };
+  } catch (error) {
+    console.error('Create user exception:', error instanceof Error ? error.message : 'erreur');
+    return { success: false, error: 'Erreur serveur' };
+  }
+}
+
 export async function createUser(
   email: string,
   password: string,

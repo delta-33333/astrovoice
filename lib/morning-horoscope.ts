@@ -168,6 +168,8 @@ export function morningMail(input: {
   bookUrl: string;
   unsubscribeUrl: string;
   privacyUrl: string;
+  ctaLabel?: string;
+  ctaUrl?: string;
 }): { subject: string; html: string; headers: Record<string, string> } {
   const price = discoveryHeadline(input.locale, 'eur');
   const cta = {
@@ -177,6 +179,8 @@ export function morningMail(input: {
     de: `Erste Découverte-Woche zu ${price}`,
     it: `Prima settimana Découverte a ${price}`,
   }[input.locale];
+  const ctaText = input.ctaLabel || cta;
+  const ctaHref = input.ctaUrl || input.bookUrl;
   const bye = {
     fr: 'Se désinscrire',
     en: 'Unsubscribe',
@@ -187,7 +191,7 @@ export function morningMail(input: {
   const body = input.paragraphs.map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join('');
   const personal = input.personal ? `<p>${escapeHtml(input.personal)}</p>` : '';
   const html = `${body}${personal}
-<p><a href="${escapeHtml(input.bookUrl)}">${escapeHtml(cta)}</a></p>
+<p><a href="${escapeHtml(ctaHref)}">${escapeHtml(ctaText)}</a></p>
 <p><a href="${escapeHtml(input.unsubscribeUrl)}">${bye}</a></p>
 <p><a href="${escapeHtml(input.privacyUrl)}">${escapeHtml(input.privacyUrl)}</a></p>`;
   return {

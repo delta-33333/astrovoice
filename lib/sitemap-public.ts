@@ -4,6 +4,8 @@ import { AVIS_PATH } from './avis-callastral.ts';
 import { ascendantPath } from './ascendant-tool.ts';
 import { coupleAlternates, couplePath } from './couple-compat.ts';
 import { GEO_PATHS, GEO_UPDATED_ISO, geoAlternates, type GeoPage } from './geo-pages.ts';
+import { factsAlternates, factsPath } from './facts.ts';
+import { legalNoticeAlternates, legalNoticePath } from './legal-notice.ts';
 import { privacyPath } from './privacy-copy.ts';
 import {
   LOCALES,
@@ -57,6 +59,16 @@ export function pageEntries(): SitemapEntry[] {
     entries.push({
       path: privacyPath(locale),
       languages: hreflangAlternates(privacyPath),
+    });
+    entries.push({
+      path: legalNoticePath(locale),
+      lastModified: '2026-10-18',
+      languages: legalNoticeAlternates(),
+    });
+    entries.push({
+      path: factsPath(locale),
+      lastModified: '2026-10-18',
+      languages: factsAlternates(),
     });
     entries.push({
       path: aboutPath(locale),
@@ -152,8 +164,9 @@ export function renderUrlset(origin: string, entries: SitemapEntry[]): string {
 }
 
 export function sitemapIndexPaths(): string[] {
+  const kinds = SITEMAP_KINDS.filter((kind) => entriesFor(kind).length > 0);
   return [
-    ...SITEMAP_KINDS.map((kind) => `/sitemaps/${kind}.xml`),
+    ...kinds.map((kind) => `/sitemaps/${kind}.xml`),
     '/video-sitemap.xml',
   ];
 }

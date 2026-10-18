@@ -1,4 +1,4 @@
-import { advisorBadges } from './advisor-badges';
+import { advisorBadges, suppressCommonNouveau } from './advisor-badges';
 import { listPublicAdvisors, getAdvisorById, toPublicAdvisor } from './astrologers';
 import { availabilityLabel, hasImmediateSlot } from './scarcity';
 import { getSupabaseAdmin, supabaseAvailable } from './supabase';
@@ -69,6 +69,7 @@ function decorate(
       age: advisor.age,
       bookingCount: advisor.bookingCount,
       hasImmediateSlot: extra?.hasImmediate ?? immediate,
+      createdAt: advisor.createdAt,
     }),
     availability: {
       slotsToday: extra?.slotsToday ?? slotsToday,
@@ -154,7 +155,7 @@ export async function listDirectoryAdvisors(): Promise<{
       const byId = new Map(summary.map((row) => [row.advisor_id, row]));
       return {
         unavailable: false,
-        advisors: base.advisors.map((advisor) => {
+        advisors: suppressCommonNouveau(base.advisors.map((advisor) => {
           const row = byId.get(advisor.id);
           const upcoming = Array.isArray(row?.upcoming) ? row.upcoming : [];
           const starts = upcoming.map((value) => new Date(value));
@@ -166,7 +167,7 @@ export async function listDirectoryAdvisors(): Promise<{
             immediateSlotId: row.immediate_slot_id,
             immediateStartsAt: row.immediate_starts_at,
           } : undefined);
-        }),
+        })),
       };
     }
 
@@ -180,7 +181,7 @@ export async function listDirectoryAdvisors(): Promise<{
 
     return {
       unavailable: false,
-      advisors: base.advisors.map((advisor) => {
+      advisors: suppressCommonNouveau(base.advisors.map((advisor) => {
         const advisorRows = byAdvisor.get(advisor.id) ?? [];
         const soon = immediateFrom(advisorRows, now);
         return decorate(
@@ -189,15 +190,15 @@ export async function listDirectoryAdvisors(): Promise<{
           now,
           soon ? { immediateSlotId: soon.id, immediateStartsAt: soon.startsAt } : undefined
         );
-      }),
+      })),
     };
   } catch (error) {
     console.warn('Créneaux indisponibles:', error instanceof Error ? error.message : error);
     return {
-      advisors: base.advisors.map((advisor) => ({
+      advisors: suppressCommonNouveau(base.advisors.map((advisor) => ({
         ...advisor,
         availability: EMPTY_AVAILABILITY,
-      })),
+      }))),
       unavailable: false,
     };
   }

@@ -50,6 +50,41 @@ function clean(value: string | null | undefined, max = 120): string | undefined 
   return trimmed.replace(/[\u0000-\u001f<>"]/g, '').slice(0, max) || undefined;
 }
 
+const AI_REFERRER = /(chatgpt|openai|perplexity|gemini\.google|copilot\.microsoft|claude\.ai|deepseek|grok|x\.ai)/i;
+
+/** Référent ou utm_source classé comme trafic d’assistant. `null` sinon. */
+export function classifyAiSource(input: { referrer?: string | null; utmSource?: string | null }): string | null {
+  const utm = (input.utmSource || '').trim().toLowerCase();
+  if (utm === 'chatgpt.com' || utm === 'chatgpt' || utm.startsWith('ai:chatgpt')) return 'ai:chatgpt';
+  if (utm.startsWith('ai:')) return utm.slice(0, 40);
+  const referrer = input.referrer || '';
+  const match = referrer.match(AI_REFERRER);
+  if (!match) return null;
+  const token = match[1].toLowerCase();
+  if (token === 'openai' || token === 'chatgpt') return 'ai:chatgpt';
+  if (token === 'gemini.google') return 'ai:gemini';
+  if (token === 'copilot.microsoft') return 'ai:copilot';
+  if (token === 'claude.ai') return 'ai:claude';
+  if (token === 'x.ai') return 'ai:grok';
+  return `ai:${token}`;
+}
+
+const AI_BOTS: Array<{ re: RegExp; name: string }> = [
+  { re: /chatgpt-user/i, name: 'ChatGPT-User' },
+  { re: /oai-searchbot/i, name: 'OAI-SearchBot' },
+  { re: /perplexitybot/i, name: 'PerplexityBot' },
+  { re: /claude-user/i, name: 'Claude-User' },
+];
+
+/** Robot d’assistant nommé, sans autre donnée. */
+export function aiBotName(userAgent: string | null | undefined): string | null {
+  const value = userAgent || '';
+  for (const bot of AI_BOTS) {
+    if (bot.re.test(value)) return bot.name;
+  }
+  return null;
+}
+
 export function utmFrom(params: URLSearchParams): Utm {
   const out: Utm = {};
   const source = clean(params.get('utm_source'));

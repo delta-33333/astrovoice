@@ -29,11 +29,11 @@ export function aboutCopy(locale: GeoLocale) {
   return locale === 'fr'
     ? {
         title: 'À propos de Callastral : transparence sur nos conseillers virtuels',
-        description: 'Qui exploite Callastral, comment fonctionnent les conseillers virtuels, le calcul du thème natal avec Swiss Ephemeris, les prix, les remboursements et le contact.',
+        description: 'Qui exploite Callastral, comment fonctionnent les conseillers virtuels, le calcul du thème natal, les prix, les remboursements et le contact.',
       }
     : {
         title: 'About Callastral: transparency about our virtual advisors',
-        description: 'Who runs Callastral, how the virtual advisors work, birth charts computed with Swiss Ephemeris, prices, refunds and contact.',
+        description: 'Who runs Callastral, how the virtual advisors work, how the birth chart is computed, prices, refunds and contact.',
       };
 }
 
@@ -45,15 +45,12 @@ export default function GeoAboutPage({ locale }: { locale: GeoLocale }) {
   const url = `${origin}${GEO_PATHS.about[locale]}`;
   const info = legal();
   const sameAs = envList('SITE_SAME_AS');
-  const packs = c.packs.map((pack) => `${pack.minutes} min : ${pack.price}`).join(' · ');
-  const packsEn = c.packs.map((pack) => `${pack.minutes} min: ${pack.price}`).join(' · ');
-
   const sections = fr
     ? [
         {
           title: 'En bref',
           body: [
-            `Callastral propose des consultations d’astrologie par téléphone, à partir de votre thème natal, avec des conseillers virtuels. Chaque conseiller a un tarif entre ${c.min} et ${c.max} par minute, disponible 24 h/24 en 5 langues.`,
+            'Callastral propose des consultations d’astrologie par téléphone, à partir de votre thème natal, avec des conseillers virtuels et une voix générée par IA, en 5 langues.',
           ],
         },
         {
@@ -70,14 +67,14 @@ export default function GeoAboutPage({ locale }: { locale: GeoLocale }) {
           body: [
             'Les conseillers sont des personas virtuelles créées par Callastral : un prénom, un style de lecture et des domaines de prédilection. Ils n’ont ni âge réel, ni années de pratique, ni parcours humain.',
             `Avant le paiement, la page de réservation indique « ${AI_VOICE_SHORT.fr} ». Au début de l’appel, le conseiller le dit : « ${AI_ACT_SPOKEN.fr} » Les conditions générales d’utilisation détaillent ce fonctionnement.`,
-            'Votre thème natal est calculé à partir de la date, de l’heure et du lieu de naissance avec Swiss Ephemeris (positions des planètes et des maisons). Le conseiller s’appuie sur ce calcul et sur les transits du moment pour répondre à votre question.',
+            'Votre thème natal est calculé à partir de la date, de l’heure et du lieu de naissance (positions des planètes et des maisons). Le conseiller s’appuie sur ce calcul et sur les transits du moment pour répondre à votre question.',
           ],
         },
         {
           title: 'Ce que les conseillers ne font pas',
           body: [
             'Ils ne garantissent aucune prédiction : l’astrologie est une lecture symbolique, pas une certitude.',
-            'Ils ne gardent pas la mémoire de vos appels précédents : chaque appel repart de votre thème.',
+            'Après chaque appel, un court résumé est enregistré dans le compte et relu au même conseiller. Vous pouvez le consulter et l’effacer.',
             'Ils ne donnent ni avis médical, ni conseil juridique, ni recommandation financière.',
             'Ce n’est pas de la voyance, et aucune personne humaine ne parle à leur place.',
           ],
@@ -85,9 +82,7 @@ export default function GeoAboutPage({ locale }: { locale: GeoLocale }) {
         {
           title: 'Prix',
           body: [
-            `De ${c.min} à ${c.max} par minute selon le conseiller, à la seconde ; les trois premières minutes sont à tarif réduit.`,
-            ...(c.founding ? [`Offre fondateur : ${c.founding.minutes} minutes pour ${c.founding.price}, une fois par compte.`] : []),
-            `Packs de minutes, sans date d’expiration : ${packs}.`,
+            'Un appel de 3 minutes est offert une fois, après un code envoyé par e-mail. Le serveur coupe l’appel à 180 secondes.',
             `Formules hebdomadaires, 60 minutes maximum par appel, résiliables en 1 clic : ${c.weekly.decouverte.name} ${c.weekly.decouverte.trial} la 1re semaine puis ${c.weekly.decouverte.full}/semaine (${c.weekly.decouverte.minutes} min) ; ${c.weekly.essentiel.name} ${c.weekly.essentiel.trial} puis ${c.weekly.essentiel.full} (${c.weekly.essentiel.minutes} min) ; ${c.weekly.premium.name} ${c.weekly.premium.trial} puis ${c.weekly.premium.full} (${c.weekly.premium.minutes} min).`,
           ],
         },
@@ -95,7 +90,7 @@ export default function GeoAboutPage({ locale }: { locale: GeoLocale }) {
           title: 'Annulation et remboursement',
           body: [
             'Jusqu’à 24 heures avant le début d’une réservation, le montant payé est intégralement remboursé. Passé ce délai, il est converti en avoir valable 30 jours.',
-            'Pour une consultation à la minute, seule la durée réelle est encaissée. L’abonnement se résilie depuis le compte ; l’accès court jusqu’à la fin de la période payée.',
+            'L’abonnement se résilie depuis le compte ; l’accès court jusqu’à la fin de la période payée.',
           ],
         },
         {
@@ -111,7 +106,7 @@ export default function GeoAboutPage({ locale }: { locale: GeoLocale }) {
         {
           title: 'In short',
           body: [
-            `Callastral offers astrology consultations by phone, based on your birth chart, with virtual advisors. Each advisor has a rate between ${c.min} and ${c.max} per minute, available 24/7 in 5 languages.`,
+            'Callastral offers astrology consultations by phone, based on your birth chart, with virtual advisors and an AI-generated voice, available in 5 languages.',
           ],
         },
         {
@@ -128,14 +123,14 @@ export default function GeoAboutPage({ locale }: { locale: GeoLocale }) {
           body: [
             'The advisors are virtual personas created by Callastral: a first name, a reading style and preferred topics. They have no real age, no years of practice and no human career.',
             `Before payment, the booking page states “${AI_VOICE_SHORT.en}”. At the start of the call, the advisor says: “${AI_ACT_SPOKEN.en}” The terms of use (in French) describe how this works.`,
-            'Your birth chart is computed from your date, time and place of birth with Swiss Ephemeris (planet and house positions). The advisor uses this calculation and current transits to answer your question.',
+            'Your birth chart is computed from your date, time and place of birth (planet and house positions). The advisor uses this calculation and current transits to answer your question.',
           ],
         },
         {
           title: 'What the advisors do not do',
           body: [
             'They do not guarantee any prediction: astrology is a symbolic reading, not a certainty.',
-            'They do not remember your previous calls: each call starts again from your chart.',
+            'After each call, a short summary is saved in the account and read back to the same advisor. You can view it and delete it.',
             'They give no medical, legal or financial advice.',
             'This is not a psychic service, and no human speaks in their place.',
           ],
@@ -143,9 +138,7 @@ export default function GeoAboutPage({ locale }: { locale: GeoLocale }) {
         {
           title: 'Prices',
           body: [
-            `From ${c.min} to ${c.max} per minute depending on the advisor, billed by the second; the first three minutes are at a reduced rate.`,
-            ...(c.founding ? [`Founder offer: ${c.founding.minutes} minutes for ${c.founding.price}, once per account.`] : []),
-            `Minute packs, with no expiry: ${packsEn}.`,
+            'A 3-minute call is free once, after an email code. The server ends the call at 180 seconds.',
             `Weekly plans, 60 minutes maximum per call, cancel in one click: ${c.weekly.decouverte.name} ${c.weekly.decouverte.trial} the first week then ${c.weekly.decouverte.full}/week (${c.weekly.decouverte.minutes} min); ${c.weekly.essentiel.name} ${c.weekly.essentiel.trial} then ${c.weekly.essentiel.full} (${c.weekly.essentiel.minutes} min); ${c.weekly.premium.name} ${c.weekly.premium.trial} then ${c.weekly.premium.full} (${c.weekly.premium.minutes} min).`,
           ],
         },
@@ -153,7 +146,7 @@ export default function GeoAboutPage({ locale }: { locale: GeoLocale }) {
           title: 'Cancellation and refunds',
           body: [
             'Up to 24 hours before a booking starts, the amount paid is fully refunded. After that, it becomes a credit valid for 30 days.',
-            'For per-minute consultations, only the actual duration is charged. The subscription is cancelled from your account; access runs until the end of the paid period.',
+            'The subscription is cancelled from your account; access runs until the end of the paid period.',
           ],
         },
         {

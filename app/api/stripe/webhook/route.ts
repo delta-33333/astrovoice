@@ -7,6 +7,8 @@ import { fulfillCheckoutReport } from '@/lib/reports';
 import { getStripe } from '@/lib/stripe';
 import { noteUpcomingFullCharge, subscriptionIdFromInvoice, syncSubscription, syncSubscriptionById } from '@/lib/subscriptions';
 import { deliverPaidSummary, markSummaryPaid } from '@/lib/summaries';
+import { cancelUserSequences } from '@/lib/mail-schedule';
+import { sendPasswordSetupIfNeeded } from '@/lib/password-setup';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -41,6 +43,8 @@ export async function POST(request: NextRequest) {
             userId: session.metadata?.userId,
             checkoutSessionId: session.id,
           });
+          await cancelUserSequences(session.metadata?.userId).catch(() => undefined);
+          await sendPasswordSetupIfNeeded(session.metadata?.userId).catch(() => undefined);
         }
         if (session.metadata?.purpose === 'prepaid') {
           const result = await grantPrepaidCredits(session, { allowCookie: false });
@@ -77,6 +81,11 @@ export async function POST(request: NextRequest) {
       case 'customer.subscription.deleted': {
         const subscription = event.data.object as Stripe.Subscription;
         const saved = await syncSubscription(subscription);
+        if (event.type === 'customer.subscription.created') {
+          const userId = subscription.metadata?.userId;
+          await cancelUserSequences(userId).catch(() => undefined);
+          await sendPasswordSetupIfNeeded(userId).catch(() => undefined);
+        }
         console.log('Abonnement', event.type, subscription.id, saved);
         break;
       }

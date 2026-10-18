@@ -7,7 +7,7 @@ import PromoStrip from '@/components/PromoStrip';
 import SeoChrome from '@/components/SeoChrome';
 import { getCopy } from '@/lib/ascendant-copy';
 import { AVIS_PATH } from '@/lib/avis-callastral';
-import { chartReadingCta } from '@/lib/book-funnel';
+import { chartReadingCta, discoveryPriceLabel } from '@/lib/book-funnel';
 import { calculatorHubLinks, risingResultLinks } from '@/lib/internal-links';
 import {
   ascendantJsonLd,
@@ -17,14 +17,12 @@ import {
   type ConsultCandidate,
 } from '@/lib/ascendant-tool';
 import { aiActLine } from '@/lib/legal';
-import { readRates, resolveMarket } from '@/lib/market';
+import { resolveMarket } from '@/lib/market';
 import { weeklyCurrency } from '@/lib/weekly';
-import { perMinuteRange } from '@/lib/money';
 import {
   advisorPath,
   hreflangAlternates,
   isLocale,
-  localeCurrency,
   localeHomePath,
   specialtyLabel,
   type Locale,
@@ -110,7 +108,7 @@ export default async function AscendantToolScreen(
   const readingCta = chartReadingCta(locale, offerCurrency);
   const risingLinks = risingResultLinks(locale);
   const hubLinks = calculatorHubLinks(locale);
-  const range = perMinuteRange(localeCurrency(locale), readRates(), locale);
+  const offerPrice = discoveryPriceLabel(locale, offerCurrency);
   const origin = appBaseUrl();
   const path = ascendantPath(locale);
 
@@ -140,7 +138,7 @@ export default async function AscendantToolScreen(
         </div>
 
         <section className="mt-6 rounded-3xl border border-celestial-gold/30 bg-celestial-purple/10 p-5 sm:p-6">
-          <p className="text-sm text-white/75 leading-relaxed">{copy.bridge(range.floor, range.ceiling)}</p>
+          <p className="text-sm text-white/75 leading-relaxed">{copy.bridge(offerPrice, offerPrice)}</p>
           <Link href={choice.href} data-funnel="book" className="btn-primary mt-4 inline-block w-full text-center">
             {cta}
           </Link>

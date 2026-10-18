@@ -31,8 +31,13 @@ export default function AboutService({ locale }: { locale: Locale }) {
           <span>{copy.h1}</span>
         </nav>
         <h1 className="font-[family-name:var(--font-cinzel)] text-3xl sm:text-4xl text-white">{copy.h1}</h1>
-        {copy.paragraphs.map((paragraph) => (
-          <p key={paragraph} className="mt-4">{paragraph}</p>
+        {copy.sections.map((section) => (
+          <section key={section.h2} className="mt-8">
+            <h2 className="font-[family-name:var(--font-cinzel)] text-2xl text-white">{section.h2}</h2>
+            {section.paragraphs.map((paragraph) => (
+              <p key={paragraph} className="mt-4">{paragraph}</p>
+            ))}
+          </section>
         ))}
         <p className="mt-4">{copy.label} {copy.labelLine}.</p>
         <p className="mt-4">{copy.spoken} « {copy.spokenLine} »</p>

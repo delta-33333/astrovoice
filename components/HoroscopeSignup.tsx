@@ -2,7 +2,9 @@
 
 import { FormEvent, useEffect, useState } from 'react';
 import Link from 'next/link';
+import HeardFromField from '@/components/HeardFromField';
 import HoneypotField from '@/components/HoneypotField';
+import type { HeardFromId } from '@/lib/heard-from';
 import { HONEYPOT_FIELD } from '@/lib/form-checks';
 import { widgetCopy } from '@/lib/horoscope-widget';
 import { privacyPath } from '@/lib/privacy-copy';
@@ -26,6 +28,7 @@ export default function HoroscopeSignup({
   const [chosen, setChosen] = useState<SignId>(sign || 'belier');
   const [birthDate, setBirthDate] = useState('');
   const [consent, setConsent] = useState(false);
+  const [heardFrom, setHeardFrom] = useState<HeardFromId | ''>('');
   const [hp, setHp] = useState('');
   const [pending, setPending] = useState(false);
   const [message, setMessage] = useState('');
@@ -58,6 +61,7 @@ export default function HoroscopeSignup({
         sign: chosen,
         birthDate: birthDate || null,
         consent,
+        heardFrom: heardFrom || null,
         placement,
         ...utm,
         [HONEYPOT_FIELD]: hp,
@@ -92,6 +96,7 @@ export default function HoroscopeSignup({
         {copy.birth}
         <input className={inputClass} type="date" value={birthDate} onChange={(event) => setBirthDate(event.target.value)} />
       </label>
+      <HeardFromField locale={locale} value={heardFrom} onChange={setHeardFrom} />
       <label className="flex items-start gap-2 text-sm text-white/80">
         <input type="checkbox" checked={consent} onChange={(event) => setConsent(event.target.checked)} className="mt-1" />
         <span>

@@ -34,6 +34,7 @@ export interface PublicAdvisor {
   averageRating: number | null;
   bookingCount: number;
   badges: AdvisorBadge[];
+  createdAt?: string | null;
   yearsExperience: number;
   /** Tarif minute de base, en centimes d’euro (0,89 € à 1,99 €). */
   pricePerMinCents: number;

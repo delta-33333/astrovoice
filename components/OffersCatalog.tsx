@@ -246,24 +246,6 @@ export default function OffersCatalog({ labels }: { labels: OfferLabels }) {
       </section>
 
       <section className="rounded-3xl border border-white/10 bg-white/5 p-6 space-y-3">
-        <h2 className="text-xl font-semibold">Consultation à la minute</h2>
-        <p className="text-white/75">
-          Chaque conseiller a son tarif, entre {labels.floor} et {labels.ceiling} la minute. Les trois premières minutes
-          sont à {labels.intro} la minute, une fois par compte.
-        </p>
-        <Link href="/#annuaire" className="text-celestial-gold underline">Choisir un conseiller</Link>
-      </section>
-
-      <section className="rounded-3xl border border-white/10 bg-white/5 p-6 space-y-3">
-        <h2 className="text-xl font-semibold">Offre d’introduction et packs</h2>
-        <p className="text-white/75">
-          Dix minutes fondateur, une fois par compte, puis des packs de 10, 30 et 60 minutes. Les minutes n’expirent pas
-          et passent avant la facturation à la minute.
-        </p>
-        <Link href="/packs" className="btn-secondary inline-block">Voir les packs</Link>
-      </section>
-
-      <section className="rounded-3xl border border-white/10 bg-white/5 p-6 space-y-3">
         <h2 className="text-xl font-semibold">Résumé écrit · {labels.summary}</h2>
         <p className="text-white/75">
           Après une consultation, le résumé de ce qui a été dit est envoyé par e-mail. Le paiement se fait depuis la page

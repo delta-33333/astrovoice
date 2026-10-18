@@ -62,6 +62,17 @@ const nextConfig: NextConfig = {
       },
       { source: '/a-propos', destination: '/fr/a-propos', permanent: true },
       { source: '/about', destination: '/en/about', permanent: true },
+      { source: '/packs', destination: '/offres', permanent: true },
+      { source: '/pricing', destination: '/offres', permanent: true },
+      { source: '/tarifs', destination: '/offres', permanent: true },
+      { source: '/fr/tarifs', destination: '/offres', permanent: true },
+      { source: '/prix', destination: '/offres', permanent: true },
+      { source: '/contact', destination: '/fr/mentions-legales#contact', permanent: true },
+      { source: '/fr/contact', destination: '/fr/mentions-legales#contact', permanent: true },
+      { source: '/fr/avis', destination: '/fr/avis-callastral', permanent: true },
+      { source: '/en/reviews', destination: '/en/about', permanent: true },
+      { source: '/fr/astrologie-ia', destination: '/fr', permanent: true },
+      { source: '/astrologers', destination: '/?all=1', permanent: true },
     ];
   },
   async headers() {

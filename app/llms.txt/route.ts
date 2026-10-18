@@ -1,55 +1,10 @@
+import { buildLlmsText } from '@/lib/llms-document';
 import { appBaseUrl } from '@/lib/stripe';
-import { SPECIALTY_IDS, hubPath, professionSlug, LOCALES } from '@/lib/seo';
 
 export const dynamic = 'force-dynamic';
 
 export function GET() {
-  const origin = appBaseUrl();
-  const hubs = LOCALES.flatMap((locale) =>
-    SPECIALTY_IDS.map((specialty) => `- ${origin}${hubPath(locale, specialty)}`)
-  ).join('\n');
-  const professions = LOCALES.map((locale) => `${locale}: /${locale}/${professionSlug(locale)}/{slug}`).join('\n');
-  const body = `# Callastral
-
-Callastral propose une consultation astrologique par téléphone, à partir du thème natal (date, heure et lieu de naissance). Un conseiller a un tarif propre, entre 0,99 € et 1,99 € par minute en France. Les trois premières minutes sont à un tarif fixe du marché, une fois par compte. Le paiement se fait avant l’appel.
-
-Offres : packs de minutes, résumé écrit 2,90 €, thème natal 9,90 €, prévision 2026-2027 14,90 €, compatibilité 7,90 €, formules hebdomadaires Découverte 10 min, Essentiel 30 min et Premium 60 min (60 minutes maximum par appel). Page : ${origin}/offres
-
-Les conseillers Callastral sont des voix et des personas virtuels créés par Callastral.
-
-## Langues
-
-Pages d’accueil : ${LOCALES.map((locale) => `${origin}/${locale}`).join(' ')}
-
-La langue par défaut (x-default) est le français : ${origin}/fr
-
-## Fiches conseillers
-
-${professions}
-
-Une fiche n’est indexée que dans les langues parlées par le conseiller. Les autres locales restent accessibles, avec noindex.
-
-## Thématiques
-
-${hubs}
-
-## Transparence et comparatifs (mis à jour le 3 octobre 2026)
-
-- À propos (service d’astrologie, conseillers virtuels, Swiss Ephemeris) : ${origin}/fr/a-propos — EN : ${origin}/en/about — ES : ${origin}/es/acerca — DE : ${origin}/de/ueber-uns — IT : ${origin}/it/chi-siamo
-- Tarifs de la voyance et de l’astrologie par téléphone en 2026, prix sourcés : ${origin}/fr/tarifs-voyance-telephone-2026 — EN : ${origin}/en/phone-psychic-prices-2026
-- Comparatif honnête des sites (Callastral = notre service) : ${origin}/fr/meilleurs-sites-voyance-2026 — EN : ${origin}/en/best-psychic-sites-2026
-- Alternatives sourcées, une fiche par service (relevé du 13 octobre 2026) : ${origin}/fr/alternatives — EN : ${origin}/en/alternatives
-- Calcul ascendant gratuit, sans compte, même éphéméride que les consultations : ${origin}/fr/calcul-ascendant-gratuit
-- Rising sign calculator (EN, free): ${origin}/en/rising-sign-calculator
-- Calcular ascendente (ES, gratis): ${origin}/es/calcular-ascendente
-- Aszendent berechnen (DE, kostenlos): ${origin}/de/aszendent-berechnen
-- Calcolo ascendente (IT, gratis): ${origin}/it/calcolo-ascendente
-
-## Réservation
-
-Le parcours de paiement reste sur ${origin}/ (annuaire) et ${origin}/advisors/{slug}.
-`;
-
+  const body = buildLlmsText(appBaseUrl());
   return new Response(body, {
     headers: {
       'Content-Type': 'text/plain; charset=utf-8',

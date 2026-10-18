@@ -21,7 +21,7 @@ import { WEEKLY_PLAN_IDS, WEEKLY_PLANS } from '@/lib/weekly';
 export const metadata: Metadata = {
   title: 'Offres — Callastral',
   description:
-    'Consultation à la minute, packs, résumé écrit, thème natal, prévision et formules hebdomadaires.',
+    'Formules hebdomadaires Découverte, Essentiel et Premium, plus les documents écrits.',
   alternates: { canonical: '/offres', languages: { fr: '/offres', 'x-default': '/offres' } },
 };
 

@@ -39,7 +39,6 @@ export default function PacksPage() {
   const savingsOf = (pack: MinutePack) => labels[pack.id]?.savingsLabel || formatCurrency(pack.regularCents - pack.amountCents);
 
   const standardPacks = MINUTE_PACKS.filter((pack) => !pack.founding);
-  const founding = MINUTE_PACKS.find((pack) => pack.founding);
 
   const closeSheet = useCallback(() => {
     setSheetOpen(false);
@@ -109,37 +108,6 @@ export default function PacksPage() {
         {error && (
           <div className="mb-6 bg-red-500/10 border border-red-500/50 rounded-xl p-4 text-center">
             <p className="text-red-200">{error}</p>
-          </div>
-        )}
-
-        {founding && (
-          <div className="mb-8 bg-celestial-gold/10 border border-celestial-gold/40 rounded-3xl p-8">
-            <p className="text-xs uppercase tracking-[0.18em] text-celestial-gold mb-2">Cercle Fondateur</p>
-            <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6">
-              <div>
-                <h2 className="font-[family-name:var(--font-cinzel)] text-3xl mb-2">
-                  {founding.minutes} minutes
-                </h2>
-                <p className="text-white/70 text-sm max-w-md">
-                  Une place fondateur : dix minutes pour {amountOf(founding)}, une fois par compte.
-                </p>
-              </div>
-              <div className="text-left sm:text-right">
-                <div className="text-4xl font-bold text-celestial-gold">
-                  {amountOf(founding)}
-                </div>
-                <div className="text-sm text-white/40 line-through">
-                  {regularOf(founding)}
-                </div>
-                <button
-                  onClick={() => handlePurchase(founding)}
-                  disabled={sheetOpen || (isPurchasing && selectedPack === founding.id)}
-                  className="btn-primary mt-4 disabled:opacity-50"
-                >
-                  {isPurchasing && selectedPack === founding.id ? 'Préparation…' : 'Rejoindre'}
-                </button>
-              </div>
-            </div>
           </div>
         )}
 

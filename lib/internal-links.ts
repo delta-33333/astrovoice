@@ -4,6 +4,8 @@ import { AVIS_PATH } from './avis-callastral.ts';
 import { ascendantPath } from './ascendant-tool.ts';
 import { getCopy } from './ascendant-copy.ts';
 import { GEO_PATHS } from './geo-pages.ts';
+import { factsPath } from './facts.ts';
+import { legalNoticePath } from './legal-notice.ts';
 import { privacyPath } from './privacy-copy.ts';
 import { hubPath, localeHomePath, SPECIALTY_IDS, type Locale, type SpecialtyId } from './seo.ts';
 import { VIDEOS_PATH } from './videos.ts';
@@ -405,6 +407,8 @@ export function footerLinks(locale: Locale): TextLink[] {
     { href: '/cgu', label: copy.terms },
     { href: '/terms', label: copy.sales },
     { href: privacyPath(locale), label: copy.privacy },
+    { href: legalNoticePath(locale), label: locale === 'fr' ? 'Mentions légales' : locale === 'de' ? 'Impressum' : locale === 'es' ? 'Aviso legal' : locale === 'it' ? 'Note legali' : 'Legal notice' },
+    { href: factsPath(locale), label: locale === 'fr' ? 'Faits et chiffres' : locale === 'de' ? 'Fakten' : locale === 'es' ? 'Datos' : locale === 'it' ? 'Fatti' : 'Facts' },
     { href: ascendantPath(locale), label: getCopy(locale).h1 },
     { href: '/faq', label: 'FAQ' },
     { href: VIDEOS_PATH, label: copy.videos },

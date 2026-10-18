@@ -137,6 +137,8 @@ test('les formules précèdent les conseillers, Essentiel reste mis en avant', (
   const localeHome = fs.readFileSync(new URL('../app/[locale]/page.tsx', import.meta.url), 'utf8');
   const plans = fs.readFileSync(new URL('../components/HomePlans.tsx', import.meta.url), 'utf8');
   assert.ok(root.indexOf('<HomePlans') < root.indexOf('<AdvisorDirectory'));
+  const hero = root.slice(root.indexOf('return ('));
+  assert.ok(hero.indexOf('data-primary-cta="trial"') < hero.indexOf('{HOME_DISCLOSURE}'));
   assert.ok(localeHome.indexOf('<HomePlans') < localeHome.indexOf('ordered.map'));
   assert.match(plans, /grid-cols-1/);
   assert.match(plans, /md:grid-cols-3/);
