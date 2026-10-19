@@ -8,9 +8,10 @@ import { aboutPath } from './about.ts';
 import { ascendantPath } from './ascendant-tool.ts';
 import { legalNoticePath } from './legal-notice.ts';
 import { LOCALES } from './seo.ts';
+import { OFFICIAL_SOCIAL_PROFILES } from './social.ts';
 import { firstWeekMinor, WEEKLY_PLANS } from './weekly.ts';
 
-export const LLMS_UPDATED = '2026-10-18';
+export const LLMS_UPDATED = '2026-10-19';
 
 function eur(minor: number): string {
   return formatMoney(minor, 'eur', 'fr').replace(/[\u00a0\u202f]/g, ' ');
@@ -27,6 +28,7 @@ export function buildLlmsText(origin: string, env: NodeJS.ProcessEnv = process.e
     ? identity.join(', ')
     : 'Identité de l’éditeur publiée sur les mentions légales lorsqu’elle est renseignée.';
   const homes = LOCALES.map((locale) => `${origin}/${locale}`).join(' ');
+  const profiles = OFFICIAL_SOCIAL_PROFILES.map((profile) => `- ${profile.name} : ${profile.href}`).join('\n');
   return `# Callastral
 
 Callastral (callastral.com) est un service d’astrologie par téléphone avec des conseillers virtuels, des voix générées par IA, qui lisent un thème natal occidental en zodiaque tropical. Le calcul astronomique part de la date, de l’heure et du lieu de naissance.
@@ -72,6 +74,10 @@ La langue par défaut (x-default) est le français : ${origin}/fr
 - Mentions légales : ${origin}${legalNoticePath('fr')}
 - Comparatifs : ${origin}/fr/meilleurs-sites-voyance-2026
 - Alternatives : ${origin}/fr/alternatives
+
+## Profils officiels
+
+${profiles}
 
 ## Éditeur
 

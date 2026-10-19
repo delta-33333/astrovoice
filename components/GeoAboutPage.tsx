@@ -6,14 +6,8 @@ import { ascendantPath } from '@/lib/ascendant-tool';
 import { getCopy } from '@/lib/ascendant-copy';
 import { GEO_PATHS, GEO_UPDATED_ISO, callastralFacts, type GeoLocale } from '@/lib/geo-pages';
 import { AI_ACT_SPOKEN, AI_VOICE_SHORT } from '@/lib/legal';
+import { sameAsUrls } from '@/lib/social';
 import { appBaseUrl } from '@/lib/stripe';
-
-function envList(name: string): string[] {
-  return (process.env[name] || '')
-    .split(',')
-    .map((item) => item.trim())
-    .filter((item) => /^https:\/\//.test(item));
-}
 
 function legal() {
   const email = (process.env.CONTACT_EMAIL || '').trim();
@@ -44,7 +38,7 @@ export default function GeoAboutPage({ locale }: { locale: GeoLocale }) {
   const origin = appBaseUrl();
   const url = `${origin}${GEO_PATHS.about[locale]}`;
   const info = legal();
-  const sameAs = envList('SITE_SAME_AS');
+  const sameAs = sameAsUrls();
   const sections = fr
     ? [
         {
