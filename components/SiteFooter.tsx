@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { CookieSettingsButton } from '@/components/Consent';
+import SocialProfiles from '@/components/SocialProfiles';
 import { footerLinks } from '@/lib/internal-links';
 import type { Locale } from '@/lib/seo';
 
@@ -21,6 +22,7 @@ export default function SiteFooter({ locale }: { locale: Locale }) {
         ))}
         <CookieSettingsButton label={COOKIES[locale]} />
       </nav>
+      <SocialProfiles locale={locale} />
       <p className="mt-3 text-xs text-white/80">© {year} Callastral</p>
     </footer>
   );

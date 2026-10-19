@@ -1,6 +1,7 @@
 import { MEMORY_FAQ } from './home-offer.ts';
 import { AI_ACT_LINE, VIRTUAL_ADVISOR_DISCLOSURE } from './legal.ts';
 import { formatMoney, type Currency } from './money.ts';
+import { sameAsUrls } from './social.ts';
 import { firstWeekMinor, WEEKLY_PLANS } from './weekly.ts';
 
 export const LOCALES = ['fr', 'en', 'es', 'de', 'it'] as const;
@@ -487,13 +488,9 @@ export function homeFaqs(locale: Locale): FaqItem[] {
   return rest[locale];
 }
 
-/** URLs officielles pour schema.org sameAs. SITE_SAME_AS ou SAME_AS_URLS, séparés par des virgules. */
+/** URLs schema.org sameAs : profils officiels, puis SAME_AS_URLS et SITE_SAME_AS, sans doublon. */
 export function siteSameAs(env: NodeJS.ProcessEnv = process.env): string[] {
-  const raw = `${env.SAME_AS_URLS || ''},${env.SITE_SAME_AS || ''}`;
-  return raw
-    .split(',')
-    .map((item) => item.trim())
-    .filter((item) => /^https:\/\/[^\s]+$/.test(item));
+  return sameAsUrls(env);
 }
 
 function offerNode(plan: 'decouverte' | 'essentiel' | 'premium'): Record<string, unknown> {
