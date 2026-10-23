@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { alternativeRedirects } from "./lib/alternatives.ts";
 
 const contentSecurityPolicy = [
   "default-src 'self'",
@@ -73,6 +74,8 @@ const nextConfig: NextConfig = {
       { source: '/en/reviews', destination: '/en/about', permanent: true },
       { source: '/fr/astrologie-ia', destination: '/fr', permanent: true },
       { source: '/astrologers', destination: '/?all=1', permanent: true },
+      // Fiches « alternative à » fusionnées dans /fr/alternatives et /en/alternatives.
+      ...alternativeRedirects(),
     ];
   },
   async headers() {

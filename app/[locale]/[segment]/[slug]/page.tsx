@@ -7,9 +7,9 @@ import JsonLd from '@/components/JsonLd';
 import SeoChrome from '@/components/SeoChrome';
 import { localizedBio } from '@/lib/advisor-bio';
 import { bookPath } from '@/lib/book-path';
-import { readRates } from '@/lib/market';
-import { quoteAdvisor } from '@/lib/money';
 import { appBaseUrl } from '@/lib/stripe';
+import { homeOfferLine } from '@/lib/home-offer';
+import { firstWeekMinor, weeklyCurrency } from '@/lib/weekly';
 import { getAdvisorProfile, listDirectoryAdvisors } from '@/lib/slots';
 import {
   advisorAlternates,
@@ -50,11 +50,11 @@ export async function generateMetadata(
   const { locale, segment, slug } = await props.params;
   const advisor = await load(locale, segment, slug);
   if (!advisor || !isLocale(locale)) return {};
-  const currency = localeCurrency(locale);
-  const quote = quoteAdvisor(advisor.pricePerMinCents, currency, readRates(), undefined, locale);
+  // Même source et même texte de prix que l’accueil (offre hebdomadaire Découverte).
+  const offer = homeOfferLine(locale, weeklyCurrency(localeCurrency(locale)));
   const topic = specialtyLabel(locale, advisor.specialties[0] || 'amour');
-  const title = `${advisor.name} — ${topic} — ${phonePhrase(locale)} dès ${quote.introLabel}`;
-  const description = `${advisor.name}, ${advisorLabel(locale, advisor.gender)} : ${phonePhrase(locale)} sur ${advisor.specialties.map((item) => specialtyLabel(locale, item)).join(', ')}. ${styleLabel(locale, advisor.readingStyle)}. Dès ${quote.introLabel}.`.slice(0, 160);
+  const title = `${advisor.name} — ${topic} — ${phonePhrase(locale)}`;
+  const description = `${advisor.name}, ${advisorLabel(locale, advisor.gender)} : ${phonePhrase(locale)} sur ${advisor.specialties.map((item) => specialtyLabel(locale, item)).join(', ')}. ${offer}`.slice(0, 160);
   const path = advisorPath(locale, advisor.slug);
   const indexable = indexableAdvisorLocales(advisor.languages);
   const listed = indexable.includes(locale);
@@ -62,7 +62,8 @@ export async function generateMetadata(
   return {
     title,
     description,
-    robots: listed ? { index: true, follow: true } : { index: false, follow: true },
+    // Fiches générées en série : hors index, liens suivis (pages conservées).
+    robots: { index: false, follow: true },
     alternates: {
       canonical,
       ...(listed ? { languages: advisorAlternates(advisor.slug, advisor.languages) } : {}),
@@ -79,9 +80,9 @@ export default async function AdvisorSeoPage(
   const advisor = await load(locale, segment, slug);
   if (!advisor) notFound();
 
-  const currency = localeCurrency(locale);
-  const rates = readRates();
-  const quote = quoteAdvisor(advisor.pricePerMinCents, currency, rates, undefined, locale);
+  const currency = weeklyCurrency(localeCurrency(locale));
+  // Même source et même texte de prix que l’accueil (offre hebdomadaire Découverte).
+  const offer = homeOfferLine(locale, currency);
   const topics = advisor.specialties.map((item) => specialtyLabel(locale, item));
   const languages = advisor.languages.map((code) => languageLabel(locale, code));
   const availability = availabilitySentence(locale, advisor.availability);
@@ -92,8 +93,9 @@ export default async function AdvisorSeoPage(
     specialties: topics.join(', '),
     style: styleLabel(locale, advisor.readingStyle),
     languages: languages.join(', '),
-    intro: quote.introLabel,
-    standard: quote.perMinLabel,
+    intro: offer,
+    standard: offer,
+    offer,
     availability,
     gender: advisor.gender,
   });
@@ -124,15 +126,15 @@ export default async function AdvisorSeoPage(
   };
 
   const intro: Record<Locale, string> = {
-    fr: `${advisor.name} propose une ${phonePhrase(locale)} dès ${quote.introLabel} (puis ${quote.perMinLabel}) sur ${topics.join(', ')}. Le style est ${styleLabel(locale, advisor.readingStyle)}. Langues : ${languages.join(', ')}. ${availability}`,
-    en: `${advisor.name} offers a ${phonePhrase(locale)} from ${quote.introLabel} (then ${quote.perMinLabel}) on ${topics.join(', ')}. The style is ${styleLabel(locale, advisor.readingStyle)}. Languages: ${languages.join(', ')}. ${availability}`,
-    es: `${advisor.name} ofrece una ${phonePhrase(locale)} desde ${quote.introLabel} (luego ${quote.perMinLabel}) sobre ${topics.join(', ')}. El estilo es ${styleLabel(locale, advisor.readingStyle)}. Idiomas: ${languages.join(', ')}. ${availability}`,
-    de: `${advisor.name} bietet eine ${phonePhrase(locale)} ab ${quote.introLabel} (danach ${quote.perMinLabel}) zu ${topics.join(', ')}. Der Stil ist ${styleLabel(locale, advisor.readingStyle)}. Sprachen: ${languages.join(', ')}. ${availability}`,
-    it: `${advisor.name} offre un ${phonePhrase(locale)} da ${quote.introLabel} (poi ${quote.perMinLabel}) su ${topics.join(', ')}. Lo stile è ${styleLabel(locale, advisor.readingStyle)}. Lingue: ${languages.join(', ')}. ${availability}`,
+    fr: `${advisor.name} propose une ${phonePhrase(locale)} sur ${topics.join(', ')}. Le style est ${styleLabel(locale, advisor.readingStyle)}. Langues : ${languages.join(', ')}. ${availability}`,
+    en: `${advisor.name} offers a ${phonePhrase(locale)} on ${topics.join(', ')}. The style is ${styleLabel(locale, advisor.readingStyle)}. Languages: ${languages.join(', ')}. ${availability}`,
+    es: `${advisor.name} ofrece una ${phonePhrase(locale)} sobre ${topics.join(', ')}. El estilo es ${styleLabel(locale, advisor.readingStyle)}. Idiomas: ${languages.join(', ')}. ${availability}`,
+    de: `${advisor.name} bietet eine ${phonePhrase(locale)} zu ${topics.join(', ')}. Der Stil ist ${styleLabel(locale, advisor.readingStyle)}. Sprachen: ${languages.join(', ')}. ${availability}`,
+    it: `${advisor.name} offre un ${phonePhrase(locale)} su ${topics.join(', ')}. Lo stile è ${styleLabel(locale, advisor.readingStyle)}. Lingue: ${languages.join(', ')}. ${availability}`,
   };
 
   const showRating = advisor.averageRating != null && advisor.reviewCount >= 5;
-  const priceMajor = currency === 'jpy' ? quote.introMinor : (quote.introMinor / 100).toFixed(2);
+  const priceMajor = (firstWeekMinor('decouverte', currency) / 100).toFixed(2);
   const listed = indexableAdvisorLocales(advisor.languages).includes(locale);
   const orgId = `${origin}/#organization`;
 
@@ -150,7 +152,7 @@ export default async function AdvisorSeoPage(
         <h1 className="font-[family-name:var(--font-cinzel)] text-3xl sm:text-5xl">{advisor.name}</h1>
         <AdvisorLabel locale={locale} gender={advisor.gender} className="mt-3" />
         <p className="mt-4 text-lg text-white/85 leading-relaxed">{intro[locale]}</p>
-        <p className="mt-3 text-celestial-gold">{quote.introLabel} · {quote.perMinLabel}</p>
+        <p className="mt-3 text-celestial-gold">{offer}</p>
         <Link href={bookHref} className="btn-primary inline-block mt-6">{cta[locale]}</Link>
 
         <dl className="mt-8 grid gap-3 text-sm">
@@ -236,7 +238,7 @@ export default async function AdvisorSeoPage(
                 ...(advisor.availability.hasImmediate || advisor.availability.nextSlotAt
                   ? { availability: 'https://schema.org/InStock' }
                   : {}),
-                description: `${quote.introLabel} / ${quote.perMinLabel}`,
+                description: offer,
               },
             },
             {

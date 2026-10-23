@@ -1,5 +1,5 @@
 import { aboutAlternates, aboutPath } from './about.ts';
-import { ALT_CHECKED_ISO, COMPETITORS, HUB_PATHS, hubAlternates } from './alternatives.ts';
+import { HUB_PATHS, hubAlternates } from './alternatives.ts';
 import { AVIS_PATH } from './avis-callastral.ts';
 import { ascendantPath } from './ascendant-tool.ts';
 import { coupleAlternates, couplePath } from './couple-compat.ts';
@@ -79,17 +79,11 @@ export function pageEntries(): SitemapEntry[] {
   for (const locale of ['fr', 'en'] as const) {
     entries.push({
       path: HUB_PATHS[locale],
-      lastModified: ALT_CHECKED_ISO,
+      lastModified: '2026-10-23',
       languages: hubAlternates(),
     });
   }
-  for (const page of COMPETITORS) {
-    entries.push({
-      path: page.path,
-      lastModified: ALT_CHECKED_ISO,
-      languages: selfLanguages(page.market, page.path),
-    });
-  }
+  // Fiches « alternative à » : fusionnées dans HUB_PATHS (301), hors sitemap.
   entries.push({
     path: AVIS_PATH,
     lastModified: '2026-10-13',

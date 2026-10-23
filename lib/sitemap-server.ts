@@ -1,23 +1,12 @@
-import { listPublicAdvisors } from './astrologers.ts';
-import { advisorAlternates, advisorPath, indexableAdvisorLocales } from './seo.ts';
 import { entriesFor, pageEntries, type SitemapEntry } from './sitemap-public.ts';
 import { VIDEOS_PATH } from './videos.ts';
 
+/**
+ * Pages du sitemap « pages ». Les fiches conseillers (/xx/astrologue/<nom>…) sont en noindex
+ * depuis le 23/10/2026 et ne figurent plus au sitemap ; le nom est gardé pour les appelants.
+ */
 export async function pageEntriesWithAdvisors(): Promise<SitemapEntry[]> {
-  const entries = pageEntries();
-  try {
-    const { advisors } = await listPublicAdvisors();
-    for (const advisor of advisors) {
-      const locales = indexableAdvisorLocales(advisor.languages);
-      const languages = advisorAlternates(advisor.slug, advisor.languages);
-      for (const locale of locales) {
-        entries.push({ path: advisorPath(locale, advisor.slug), languages });
-      }
-    }
-  } catch (error) {
-    console.warn('sitemap conseillers:', error instanceof Error ? error.message : error);
-  }
-  return entries;
+  return pageEntries();
 }
 
 export async function indexablePaths(): Promise<string[]> {
