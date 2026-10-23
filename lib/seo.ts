@@ -327,8 +327,11 @@ export function advisorFaqs(input: {
   standard: string;
   availability: string;
   gender?: 'femme' | 'homme' | null;
+  /** Phrase de prix de l’accueil (offre hebdomadaire) ; remplace le tarif à la minute. */
+  offer?: string;
 }): FaqItem[] {
   const { locale, name, specialties, style, languages, intro, standard, availability } = input;
+  const offer = input.offer;
   const pronoun = input.gender === 'femme' ? 'elle' : 'il';
   const copy: Record<Locale, FaqItem[]> = {
     fr: [
@@ -342,7 +345,7 @@ export function advisorFaqs(input: {
       },
       {
         question: `Quel est le tarif de ${name} ?`,
-        answer: `La consultation commence à ${intro} pendant les trois premières minutes, puis ${standard}. Le montant d’un rendez-vous est le nombre de minutes multiplié par ces tarifs.`,
+        answer: offer ?? `La consultation commence à ${intro} pendant les trois premières minutes, puis ${standard}. Le montant d’un rendez-vous est le nombre de minutes multiplié par ces tarifs.`,
       },
       {
         question: `En quelles langues ${name} consulte-t-${pronoun} ?`,
@@ -364,7 +367,7 @@ export function advisorFaqs(input: {
       },
       {
         question: `What does ${name} charge?`,
-        answer: `The consultation starts at ${intro} for the first three minutes, then ${standard}. A booking is the number of minutes times those rates.`,
+        answer: offer ?? `The consultation starts at ${intro} for the first three minutes, then ${standard}. A booking is the number of minutes times those rates.`,
       },
       {
         question: `Which languages does ${name} use?`,
@@ -386,7 +389,7 @@ export function advisorFaqs(input: {
       },
       {
         question: `¿Cuál es el precio de ${name}?`,
-        answer: `La consulta empieza a ${intro} durante los tres primeros minutos y sigue a ${standard}. Una reserva es el número de minutos por esas tarifas.`,
+        answer: offer ?? `La consulta empieza a ${intro} durante los tres primeros minutos y sigue a ${standard}. Una reserva es el número de minutos por esas tarifas.`,
       },
       {
         question: `¿En qué idiomas consulta ${name}?`,
@@ -408,7 +411,7 @@ export function advisorFaqs(input: {
       },
       {
         question: `Was kostet ${name}?`,
-        answer: `Die Beratung beginnt mit ${intro} in den ersten drei Minuten, danach ${standard}. Eine Buchung ist die Minutenzahl mal diesen Tarifen.`,
+        answer: offer ?? `Die Beratung beginnt mit ${intro} in den ersten drei Minuten, danach ${standard}. Eine Buchung ist die Minutenzahl mal diesen Tarifen.`,
       },
       {
         question: `In welchen Sprachen berät ${name}?`,
@@ -430,7 +433,7 @@ export function advisorFaqs(input: {
       },
       {
         question: `Qual è il prezzo di ${name}?`,
-        answer: `Il consulto parte da ${intro} per i primi tre minuti, poi ${standard}. Una prenotazione è il numero di minuti per queste tariffe.`,
+        answer: offer ?? `Il consulto parte da ${intro} per i primi tre minuti, poi ${standard}. Una prenotazione è il numero di minuti per queste tariffe.`,
       },
       {
         question: `In quali lingue consulta ${name}?`,

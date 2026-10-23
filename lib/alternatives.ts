@@ -48,6 +48,11 @@ export const HUB_PATHS = {
   en: '/en/alternatives',
 } as const;
 
+/** Anciennes fiches → page alternatives de leur langue, à l’ancre du service (301). */
+export function alternativeRedirects(): Array<{ source: string; destination: string; statusCode: 301 }> {
+  return COMPETITORS.map((page) => ({ source: page.path, destination: `${HUB_PATHS[page.market]}#${page.id}`, statusCode: 301 as const }));
+}
+
 export function hubAlternates(): Record<string, string> {
   return { fr: HUB_PATHS.fr, en: HUB_PATHS.en, 'x-default': HUB_PATHS.fr };
 }
@@ -685,7 +690,7 @@ export function hubCopy(locale: AltLocale): {
       h1: 'Alternatives à la voyance par téléphone',
       title: 'Alternatives à la voyance par téléphone',
       description:
-        'Alternatives à la voyance par téléphone : dix fiches sourcées (Voyance.fr, Wengo, Kasamba…). Prix, format et humain ou virtuel, relevés le 13 octobre 2026.',
+        'Alternatives à la voyance par téléphone : dix comparatifs sourcés (Voyance.fr, Wengo, Kasamba…). Prix, format et humain ou virtuel, relevés le 13 octobre 2026.',
       faqs: [
         {
           question: 'Quelle alternative à la voyance par téléphone correspond à de l’astrologie ?',

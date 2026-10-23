@@ -251,28 +251,85 @@ export function AlternativeArticle({ locale, id }: { locale: string; id: string 
   );
 }
 
+/** Comparatif complet d’un service, intégré à la page alternatives (ancres #id). */
+function AlternativeSection({ locale, page }: { locale: AltLocale; page: CompetitorPage }) {
+  const copy = ui(locale);
+  return (
+    <section id={page.id} className="mt-12 scroll-mt-20">
+      <h3 className="text-xl text-white font-semibold">{page.h1}</h3>
+      <div className="mt-4 overflow-x-auto">
+        <table className="w-full text-sm border-collapse">
+          <caption className="text-left text-white/60 mb-2">{copy.table} — {checkedLabel(locale)}</caption>
+          <thead>
+            <tr className="text-left text-white">
+              <th scope="col" className="border-b border-white/20 py-2 pr-3">{locale === 'fr' ? 'Critère' : 'Criterion'}</th>
+              <th scope="col" className="border-b border-white/20 py-2 pr-3">{copy.ours}</th>
+              <th scope="col" className="border-b border-white/20 py-2">{page.name}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows(locale, page).map(([label, ours, theirs]) => (
+              <tr key={label}>
+                <th scope="row" className="border-b border-white/10 py-3 pr-3 text-left align-top text-white">{label}</th>
+                <td className="border-b border-white/10 py-3 pr-3 align-top bg-celestial-gold/10">{ours}</td>
+                <td className="border-b border-white/10 py-3 align-top">{theirs}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <h4 className="mt-6 text-white font-semibold">{copy.when(page.name)}</h4>
+      <ul className="mt-2 list-disc pl-5 space-y-2">
+        {page.whenChoose.map((line) => <li key={line}>{line}</li>)}
+      </ul>
+      <h4 className="mt-6 text-white font-semibold">{copy.faq} — {page.name}</h4>
+      <dl className="mt-2 space-y-4">
+        {page.faqs.map((faq) => (
+          <div key={faq.question}>
+            <dt className="font-semibold text-white">{faq.question}</dt>
+            <dd className="mt-1">{faq.answer}</dd>
+          </div>
+        ))}
+      </dl>
+      <h4 className="mt-6 text-white font-semibold">{copy.sources}</h4>
+      <ol className="mt-2 text-sm space-y-1">
+        {page.sources.map((source) => (
+          <li key={source.url}>
+            [{source.id}]{' '}
+            <a href={source.url} rel="noopener noreferrer nofollow" target="_blank" className="underline text-celestial-gold">{source.label}</a>
+          </li>
+        ))}
+      </ol>
+    </section>
+  );
+}
+
+/** Sommaire + comparatifs complets : une seule page indexée par langue (les anciennes fiches redirigent en 301 ici). */
 export function AlternativeDirectory({ locale }: { locale: AltLocale }) {
-  const heading = locale === 'fr' ? 'Fiches détaillées par service' : 'A page for each service';
+  const copy = ui(locale);
+  const heading = locale === 'fr' ? 'Comparatifs détaillés par service' : 'Detailed comparison for each service';
   const lead = locale === 'fr'
-    ? 'Chaque fiche reprend les mêmes critères, avec la date et les pages sources. Callastral y est présenté en premier.'
-    : 'Each page uses the same criteria, with the date and the source pages. Callastral is listed first.';
+    ? 'Chaque comparatif reprend les mêmes critères, avec la date et les pages sources. Callastral y est présenté en premier.'
+    : 'Each comparison uses the same criteria, with the date and the source pages. Callastral is listed first.';
   const groups: AltLocale[] = locale === 'fr' ? ['fr', 'en'] : ['en', 'fr'];
+  const all = groups.flatMap((market) => competitorsFor(market));
   return (
     <section className="mt-10">
       <h2 className="text-xl text-white font-semibold">{heading}</h2>
       <p className="mt-2 text-sm text-white/70">{lead}</p>
-      {groups.map((market) => (
-        <div key={market} className="mt-4">
-          <h3 className="text-white">{market === 'fr' ? 'France' : 'English'}</h3>
-          <ul className="mt-2 space-y-1 text-sm">
-            {competitorsFor(market).map((item) => (
-              <li key={item.id}>
-                <Link href={item.path} className="underline text-celestial-gold">{item.h1}</Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-      ))}
+      <p className="mt-2 text-sm text-white/70">{copy.sourcesLead}</p>
+      <ul className="mt-4 space-y-1 text-sm">
+        {all.map((item) => (
+          <li key={item.id}>
+            <a href={`#${item.id}`} className="underline text-celestial-gold">{item.name}</a>
+          </li>
+        ))}
+      </ul>
+      {all.map((item) => <AlternativeSection key={item.id} locale={locale} page={item} />)}
+      <h2 className="mt-12 text-xl text-white font-semibold">{copy.limitsTitle}</h2>
+      <ul className="mt-3 list-disc pl-5 space-y-2">
+        {copy.limits.map((line) => <li key={line}>{line}</li>)}
+      </ul>
     </section>
   );
 }

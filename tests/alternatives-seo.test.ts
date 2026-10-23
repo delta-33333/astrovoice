@@ -81,7 +81,9 @@ test('un CTA, redirect Instagram 307, sitemap, sans pénurie inventée', () => {
   assert.match(insta, /permanent: false/);
   const sitemap = fs.readFileSync(new URL('../lib/sitemap-public.ts', import.meta.url), 'utf8');
   assert.equal(sitemap.includes('HUB_PATHS'), true);
-  assert.equal(sitemap.includes('COMPETITORS'), true);
+  // Fiches « alternative à » fusionnées dans le hub : hors sitemap, 301 vers le hub.
+  assert.equal(sitemap.includes('COMPETITORS'), false);
+  assert.match(config, /alternativeRedirects\(\)/);
   const footer = fs.readFileSync(new URL('../components/SiteFooter.tsx', import.meta.url), 'utf8');
   const links = fs.readFileSync(new URL('../lib/internal-links.ts', import.meta.url), 'utf8');
   assert.equal(footer.includes('footerLinks'), true);
@@ -92,4 +94,15 @@ test('un CTA, redirect Instagram 307, sitemap, sans pénurie inventée', () => {
   }
   assert.equal(ALT_CHECKED_ISO, '2026-10-13');
   assert.equal(data.includes('non communiqué'), true);
+});
+
+test('anciennes fiches alternatives : 301 vers le hub de leur langue', async () => {
+  const { alternativeRedirects, COMPETITORS, HUB_PATHS } = await import('../lib/alternatives.ts');
+  const redirects = alternativeRedirects();
+  assert.equal(redirects.length, COMPETITORS.length);
+  for (const r of redirects) {
+    assert.equal(r.statusCode, 301);
+    const page = COMPETITORS.find((p) => p.path === r.source)!;
+    assert.equal(r.destination, `${HUB_PATHS[page.market]}#${page.id}`);
+  }
 });

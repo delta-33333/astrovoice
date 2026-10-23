@@ -71,21 +71,38 @@ export function homeSecondaryCta(locale: Locale, currency: WeeklyCurrency): stri
   }
 }
 
-/** Meta description. Le prix vient des constantes, jamais d’un montant écrit en dur. */
-export function homeDescription(locale: Locale, currency: WeeklyCurrency): string {
+/** Phrase de prix de l’accueil (Découverte), reprise telle quelle sur les fiches conseillers. Le prix vient des constantes. */
+export function homeOfferLine(locale: Locale, currency: WeeklyCurrency): string {
   const first = discoveryHeadline(locale, currency);
   const full = formatMoney(WEEKLY_PLANS.decouverte.amounts[currency], currency, locale);
   switch (locale) {
     case 'en':
-      return `Talk to an AI astrologer by phone: a reading of your birth chart, and your calls are remembered. ${first}, then ${full}/week, cancel any time.`;
+      return `${first}, then ${full}/week, cancel any time.`;
     case 'es':
-      return `Habla con un astrólogo IA por teléfono: lectura de tu carta natal y memoria de las llamadas. ${first}, luego ${full}/semana, sin permanencia.`;
+      return `${first}, luego ${full}/semana, sin permanencia.`;
     case 'de':
-      return `Sprechen Sie mit einem KI-Astrologen am Telefon: Geburtshoroskop und Erinnerung an Ihre Anrufe. ${first}, danach ${full}/Woche, ohne Bindung.`;
+      return `${first}, danach ${full}/Woche, ohne Bindung.`;
     case 'it':
-      return `Parla con un astrologo IA al telefono: lettura del tema natale e memoria delle chiamate. ${first}, poi ${full}/settimana, senza vincoli.`;
+      return `${first}, poi ${full}/settimana, senza vincoli.`;
     default:
-      return `Parlez à une astrologue IA au téléphone : lecture de votre thème natal, mémoire de vos appels. ${first}, puis ${full}/semaine, sans engagement.`;
+      return `${first}, puis ${full}/semaine, sans engagement.`;
+  }
+}
+
+/** Meta description. Le prix vient des constantes, jamais d’un montant écrit en dur. */
+export function homeDescription(locale: Locale, currency: WeeklyCurrency): string {
+  const offer = homeOfferLine(locale, currency);
+  switch (locale) {
+    case 'en':
+      return `Talk to an AI astrologer by phone: a reading of your birth chart, and your calls are remembered. ${offer}`;
+    case 'es':
+      return `Habla con un astrólogo IA por teléfono: lectura de tu carta natal y memoria de las llamadas. ${offer}`;
+    case 'de':
+      return `Sprechen Sie mit einem KI-Astrologen am Telefon: Geburtshoroskop und Erinnerung an Ihre Anrufe. ${offer}`;
+    case 'it':
+      return `Parla con un astrologo IA al telefono: lettura del tema natale e memoria delle chiamate. ${offer}`;
+    default:
+      return `Parlez à une astrologue IA au téléphone : lecture de votre thème natal, mémoire de vos appels. ${offer}`;
   }
 }
 
