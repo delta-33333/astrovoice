@@ -209,7 +209,9 @@ export function signArticleModel(locale: Locale, id: SignId): ArticleModel {
     {
       h2: H2.signLinks[locale],
       paragraphs: [],
-      links: clusterChips({ kind: 'sign', locale, id }),
+      links: locale === 'fr'
+        ? [{ href: `/fr/horoscope-2027/${id}`, label: `Horoscope 2027 ${name}` }, ...clusterChips({ kind: 'sign', locale, id })]
+        : clusterChips({ kind: 'sign', locale, id }),
     },
   ];
   return {

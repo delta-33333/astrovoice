@@ -410,6 +410,7 @@ export function footerLinks(locale: Locale): TextLink[] {
     { href: legalNoticePath(locale), label: locale === 'fr' ? 'Mentions légales' : locale === 'de' ? 'Impressum' : locale === 'es' ? 'Aviso legal' : locale === 'it' ? 'Note legali' : 'Legal notice' },
     { href: factsPath(locale), label: locale === 'fr' ? 'Faits et chiffres' : locale === 'de' ? 'Fakten' : locale === 'es' ? 'Datos' : locale === 'it' ? 'Fatti' : 'Facts' },
     { href: ascendantPath(locale), label: getCopy(locale).h1 },
+    ...(locale === 'fr' ? [{ href: '/fr/horoscope-2027', label: 'Horoscope 2027' }] : []),
     { href: '/faq', label: 'FAQ' },
     { href: VIDEOS_PATH, label: copy.videos },
     { href: aboutPath(locale), label: copy.about },

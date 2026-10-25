@@ -193,6 +193,8 @@ export default async function LocaleHome(props: {
               <>
                 {' · '}
                 <Link href={AVIS_PATH} className="underline">Avis Callastral</Link>
+                {' · '}
+                <Link href="/fr/horoscope-2027" className="underline">Horoscope 2027</Link>
               </>
             )}
           </p>
