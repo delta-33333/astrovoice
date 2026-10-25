@@ -23,6 +23,9 @@ export default function FunnelTracker() {
       const target = event.target instanceof Element ? event.target.closest('a[href],[data-funnel="book"]') : null;
       if (!target) return;
       const href = target.getAttribute('href') || '';
+      if (/^(https:\/\/callastral\.com)?\/[a-z]{2}\/essai(\?|#|$)/.test(href)) {
+        postEvent('cta_click', { metadata: { source: window.location.pathname.slice(0, 80), href: href.slice(0, 80), label: (target.getAttribute('data-cta') || target.textContent || '').trim().slice(0, 80) } });
+      }
       if (target.getAttribute('data-funnel') === 'book' || /^\/book(\?|$)/.test(href)) {
         funnel('book_click', { from: window.location.pathname }, { log: true, metadata: { source: window.location.pathname.slice(0, 80) } });
       }

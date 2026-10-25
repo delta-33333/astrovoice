@@ -6,6 +6,7 @@ import CallScreen from '@/components/CallScreen';
 import { useAdvisor } from '@/components/use-advisor';
 import type { BirthData } from '@/lib/types';
 import { loadBirthData } from '@/lib/birth-client';
+import { postEvent } from '@/lib/funnel-client';
 
 export default function CallPage() {
   const router = useRouter();
@@ -62,6 +63,13 @@ export default function CallPage() {
     };
     void load();
   }, [router]);
+
+  const trialLogged = useRef(false);
+  useEffect(() => {
+    if (!ready || trialLogged.current || !trialRef.current) return;
+    trialLogged.current = true;
+    postEvent('trial_call_start', { metadata: { source: 'trial' } });
+  }, [ready]);
 
   // Appelé uniquement quand la facturation a réellement démarré (socket ouvert + premier audio).
   const finish = async (seconds: number, _prepaid: number, note?: string) => {

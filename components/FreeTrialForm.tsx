@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import HeardFromField from '@/components/HeardFromField';
 import HoneypotField from '@/components/HoneypotField';
 import { HONEYPOT_FIELD } from '@/lib/form-checks';
+import { postEvent } from '@/lib/funnel-client';
 import type { Locale } from '@/lib/seo';
 import type { HeardFromId } from '@/lib/heard-from';
 import { SIGN_IDS, signName, type SignId } from '@/lib/zodiac/signs';
@@ -141,6 +142,7 @@ export default function FreeTrialForm({ locale }: { locale: Locale }) {
     event.preventDefault();
     setError('');
     setPending(true);
+    postEvent('trial_start', { metadata: { source: 'essai' } });
     const response = await fetch('/api/trial/start', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -175,6 +177,7 @@ export default function FreeTrialForm({ locale }: { locale: Locale }) {
       setError(payload?.error || 'Indisponible');
       return;
     }
+    postEvent('trial_code_sent', { metadata: { source: 'essai' } });
     setSent(true);
   };
 

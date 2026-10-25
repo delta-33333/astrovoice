@@ -33,6 +33,34 @@ type Props = Record<string, string | number | boolean | null>;
 // document.referrer ne change pas lors des navigations internes : on ne l'envoie qu'une fois par chargement.
 let referrerSent = false;
 
+const VID_KEY = 'cl_vid';
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+let memoryVid: string | null = null;
+
+/** Identifiant visiteur anonyme (UUID aléatoire, first-party), même finalité que le cookie cl_vid. */
+export function visitorId(): string | null {
+  try {
+    const stored = window.localStorage.getItem(VID_KEY);
+    if (stored && UUID_RE.test(stored)) return stored;
+    const fresh = memoryVid ?? crypto.randomUUID();
+    memoryVid = fresh;
+    window.localStorage.setItem(VID_KEY, fresh);
+    return fresh;
+  } catch {
+    memoryVid = memoryVid ?? (typeof crypto !== 'undefined' && crypto.randomUUID ? crypto.randomUUID() : null);
+    return memoryVid;
+  }
+}
+
+function looksLikeBot(): boolean {
+  try {
+    const ua = navigator.userAgent || '';
+    return navigator.webdriver === true || ua.trim().length < 12 || /headless|phantomjs|puppeteer|playwright|selenium|dataprovider|bot\b|crawl|spider/i.test(ua);
+  } catch {
+    return false;
+  }
+}
+
 export function postEvent(name: string, extra: { advisorId?: string | null; metadata?: Record<string, string> } = {}) {
   try {
     const body = JSON.stringify({
@@ -42,6 +70,8 @@ export function postEvent(name: string, extra: { advisorId?: string | null; meta
       referrer: referrerSent ? null : document.referrer || null,
       advisorId: extra.advisorId ?? null,
       metadata: extra.metadata ?? {},
+      visitorId: visitorId(),
+      bot: looksLikeBot(),
     });
     referrerSent = true;
     if (navigator.sendBeacon) {

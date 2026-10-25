@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { cleanPath, cleanReferrer, isInternalReferrer, utmFrom, type Utm } from '@/lib/attribution';
+import { VISITOR_COOKIE, VISITOR_MAX_AGE, cleanPath, cleanReferrer, isInternalReferrer, utmFrom, validVisitorId, type Utm } from '@/lib/attribution';
 import { getBooking } from '@/lib/bookings';
 import { trackEvent, type EventName } from '@/lib/events';
 import { tooManyRequests } from '@/lib/guard';
@@ -10,7 +10,7 @@ export const dynamic = 'force-dynamic';
 
 const CALL_EVENTS = new Set(['call_reengage', 'call_silence_end']);
 /** Étapes envoyées par le navigateur (les étapes serveur — compte, paiement, appel — sont enregistrées par leurs routes). */
-const CLIENT_EVENTS = new Set(['page_view', 'book_click', 'signup_view', 'birth_start', 'select_slot', 'slot_selected', 'sample_play']);
+const CLIENT_EVENTS = new Set(['page_view', 'book_click', 'signup_view', 'birth_start', 'select_slot', 'slot_selected', 'sample_play', 'cta_click', 'trial_start', 'trial_code_sent', 'trial_call_start']);
 const LOCALES = new Set(['fr', 'en', 'es', 'de', 'it']);
 const PROFESSION = new Set(['astrologue', 'astrologer', 'astrologo', 'astrologe']);
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -78,6 +78,9 @@ export async function POST(request: NextRequest) {
   }
 
   const user = await getSession();
+  // Cookie httpOnly (posé par le middleware) prioritaire ; sinon l'identifiant persistant du navigateur.
+  const cookieVisitor = validVisitorId(request.cookies.get(VISITOR_COOKIE)?.value);
+  const bodyVisitor = validVisitorId(typeof body.visitorId === 'string' ? body.visitorId : null);
   const path = cleanPath(str(body.path, 300));
   let utm: Utm = {};
   const search = str(body.search, 600);
@@ -94,10 +97,12 @@ export async function POST(request: NextRequest) {
     // Navigation interne : pas un référent.
     referrer: referrer && !isInternalReferrer(referrer, request.headers.get('host')) ? referrer : null,
     utm,
+    visitorId: cookieVisitor ?? bodyVisitor,
+    clientBot: body.bot === true,
   };
   const raw = body.metadata && typeof body.metadata === 'object' ? (body.metadata as Record<string, unknown>) : {};
   const metadata: Record<string, string> = {};
-  for (const key of ['slotId', 'source', 'label', 'mode']) {
+  for (const key of ['slotId', 'source', 'label', 'mode', 'href']) {
     const value = str(raw[key], 80);
     if (value) metadata[key] = value;
   }
@@ -120,5 +125,15 @@ export async function POST(request: NextRequest) {
   }
 
   await trackEvent({ name: eventName, userId: user?.id, advisorId, metadata, context });
-  return NextResponse.json({ ok: true });
+  const response = NextResponse.json({ ok: true });
+  if (!cookieVisitor && bodyVisitor) {
+    response.cookies.set(VISITOR_COOKIE, bodyVisitor, {
+      httpOnly: true,
+      sameSite: 'lax',
+      secure: request.nextUrl.protocol === 'https:',
+      path: '/',
+      maxAge: VISITOR_MAX_AGE,
+    });
+  }
+  return response;
 }
