@@ -54,6 +54,7 @@ export default function AdvisorDirectory({
   country = null,
   rates = DEFAULT_RATES,
   embedded = false,
+  hideSticky = false,
   highlightId = '',
   showPerMinute = false,
 }: {
@@ -65,6 +66,8 @@ export default function AdvisorDirectory({
   country?: string | null;
   rates?: FxRates;
   embedded?: boolean;
+  /** La page porte déjà sa propre barre fixe. */
+  hideSticky?: boolean;
   highlightId?: string;
   showPerMinute?: boolean;
 }) {
@@ -301,7 +304,7 @@ export default function AdvisorDirectory({
         })}
       </div>
 
-      {lead?.availability.immediateSlotId && lead.availability.immediateStartsAt && (
+      {!hideSticky && lead?.availability.immediateSlotId && lead.availability.immediateStartsAt && (
         <div className="sm:hidden fixed bottom-0 inset-x-0 z-40 border-t border-white/10 bg-[#0c1018]/95 px-4 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
           <Link
             href={bookPath(lead.availability.immediateSlotId, lead.availability.immediateStartsAt, lead.id)}

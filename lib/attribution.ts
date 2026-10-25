@@ -31,7 +31,7 @@ const BOT_RE = new RegExp(
     'perplexity', 'google-inspectiontool', 'google-extended', 'googleother', 'apis-google',
     'mediapartners', 'adsbot', 'feedfetcher', 'bingpreview', 'duckduckbot', 'applebot',
     'phantomjs', 'selenium', 'playwright', 'puppeteer', 'cypress', 'vercel-screenshot',
-    'vercelbot', 'vercel-favicon', 'stripe/', 'cloudflare-', 'zgrab', 'masscan', 'nmap',
+    'vercelbot', 'dataprovider', 'headlesschrome', 'lighthouse', 'chrome-lighthouse', 'prerender', 'python/', 'scrapy', 'vercel-favicon', 'stripe/', 'cloudflare-', 'zgrab', 'masscan', 'nmap',
   ].join('|'),
   'i'
 );

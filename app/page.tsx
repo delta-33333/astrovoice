@@ -6,6 +6,7 @@ import InstallPrompt from '@/components/InstallPrompt';
 import PromoStrip from '@/components/PromoStrip';
 import SiteFooter from '@/components/SiteFooter';
 import SiteHeader from '@/components/SiteHeader';
+import TrialStickyCta from '@/components/TrialStickyCta';
 import VoiceSample from '@/components/VoiceSample';
 import {
   FEATURED_ADVISOR_LIMIT,
@@ -81,13 +82,13 @@ export default async function LandingPage({
   return (
     <main className="min-h-screen pb-28 sm:pb-12">
       <SiteHeader />
-      <div className="max-w-4xl mx-auto px-4 pt-8">
-        <h1 className="font-[family-name:var(--font-cinzel)] text-3xl sm:text-4xl text-glow">
+      <div className="max-w-4xl mx-auto px-4 pt-5 sm:pt-8">
+        <h1 className="font-[family-name:var(--font-cinzel)] text-2xl sm:text-4xl text-glow">
           {HOME_H1.fr}
         </h1>
         <p className="mt-3 text-white/80 leading-relaxed">{HOME_SUB.fr}</p>
-        <div className="mt-6 flex flex-col sm:flex-row sm:items-center gap-3">
-          <Link href={trialPath('fr')} data-primary-cta="trial" className="btn-primary text-center">
+        <div className="mt-4 sm:mt-6 flex flex-col sm:flex-row sm:items-center gap-3">
+          <Link href={trialPath('fr')} data-primary-cta="trial" data-cta="hero-home" className="btn-primary text-center">
             {homePrimaryCta('fr')}
           </Link>
           <Link href="/book?offer=decouverte" className="btn-secondary text-center">
@@ -119,6 +120,7 @@ export default async function LandingPage({
       </div>
       <AdvisorDirectory
         embedded
+        hideSticky
         advisors={featured}
         unavailable={unavailable}
         preferredLanguage="fr"
@@ -159,6 +161,7 @@ export default async function LandingPage({
         <SiteFooter locale="fr" />
       </div>
       <InstallPrompt lifted />
+      <TrialStickyCta href={trialPath('fr')} source="home" />
     </main>
   );
 }

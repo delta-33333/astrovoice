@@ -113,7 +113,7 @@ export default async function AscendantToolScreen(
   const path = ascendantPath(locale);
 
   return (
-    <main>
+    <main className="pb-28 sm:pb-0">
       <SeoChrome locale={locale} alternatePath={ascendantPath} />
 
       <article className="max-w-3xl mx-auto px-4 py-8">

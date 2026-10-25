@@ -5,6 +5,7 @@ import Link from 'next/link';
 import HoneypotField from '@/components/HoneypotField';
 import HoroscopeSignup from '@/components/HoroscopeSignup';
 import VoiceSample from '@/components/VoiceSample';
+import TrialStickyCta from '@/components/TrialStickyCta';
 import type { AscendantResult } from '@/lib/ascendant-tool';
 import type { AscendantFormCopy, SignCopy } from '@/lib/ascendant-copy';
 import { resultCheckoutPath } from '@/lib/book-funnel';
@@ -191,6 +192,7 @@ export default function AscendantCalculator({
             >
               {readingCta}
             </Link>
+            {(locale ?? 'fr') === 'fr' && <TrialStickyCta source="ascendant" />}
           </div>
         ) : (
           <p className="text-sm text-white/45 leading-relaxed">

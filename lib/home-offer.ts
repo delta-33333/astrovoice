@@ -32,7 +32,7 @@ export const HOME_SUB: Record<Locale, string> = {
 };
 
 const PRIMARY: Record<Locale, string> = {
-  fr: 'Essayer 3 minutes gratuitement',
+  fr: '3 min offertes, sans carte',
   en: 'Try 3 minutes free',
   es: 'Probar 3 minutos gratis',
   de: '3 Minuten kostenlos testen',

@@ -37,6 +37,10 @@ export const EVENT_NAMES = [
   'trial_code',
   'trial_verified',
   'ai_bot_hit',
+  'cta_click',
+  'trial_start',
+  'trial_code_sent',
+  'trial_call_start',
 ] as const;
 
 /** Anciens noms en double, conservés lisibles : la vue SQL events_canonical applique la même table. */
@@ -116,6 +120,8 @@ export type EventContext = {
   path?: string | null;
   referrer?: string | null;
   utm?: Utm;
+  /** Signal robot remonté par le navigateur (navigator.webdriver, UA headless). */
+  clientBot?: boolean;
 };
 
 type ResolvedContext = {
@@ -175,7 +181,7 @@ async function requestContext(given: EventContext | undefined, userId: string | 
       utm_campaign: utm.utm_campaign ?? null,
       user_agent: userAgent.slice(0, 300) || null,
       // Les comptes connectés ne sont pas des robots ; un visiteur anonyme l'est si son navigateur l'indique.
-      is_bot: !userId && isBotUserAgent(userAgent),
+      is_bot: !userId && (given?.clientBot === true || isBotUserAgent(userAgent)),
     };
   } catch {
     return EMPTY_CONTEXT;
@@ -194,7 +200,8 @@ export async function trackEvent(input: {
   if (!supabaseAvailable) return;
   const userId = asUuid(input.userId);
   const context = input.context === false ? EMPTY_CONTEXT : await requestContext(input.context, userId);
-  if (isAdminPath(context.path) || context.is_bot) return;
+  // Les robots sont enregistrés avec is_bot = true (filtrables) plutôt qu'ignorés.
+  if (isAdminPath(context.path)) return;
   const { error } = await getSupabaseAdmin().from('events').insert({
     name: input.name,
     user_id: userId,
