@@ -1,3 +1,4 @@
+import { H2027_SIGNS, H2027_UPDATED, h2027Path } from './horoscope-2027.ts';
 import { aboutAlternates, aboutPath } from './about.ts';
 import { HUB_PATHS, hubAlternates } from './alternatives.ts';
 import { AVIS_PATH } from './avis-callastral.ts';
@@ -28,6 +29,8 @@ export interface SitemapEntry {
   lastModified?: string;
   languages?: Record<string, string>;
 }
+
+const H2027_PATHS = [h2027Path(), ...H2027_SIGNS.map((id) => h2027Path(id))];
 
 function selfLanguages(locale: string, path: string): Record<string, string> {
   return { [locale]: path, 'x-default': path };
@@ -99,6 +102,9 @@ export function pageEntries(): SitemapEntry[] {
         languages,
       });
     }
+  }
+  for (const path of H2027_PATHS) {
+    entries.push({ path, lastModified: H2027_UPDATED, languages: selfLanguages('fr', path) });
   }
   for (const path of ['/cgu', '/terms', '/faq', '/offres']) {
     entries.push({ path, languages: selfLanguages('fr', path) });
