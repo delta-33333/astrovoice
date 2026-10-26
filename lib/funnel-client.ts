@@ -2,6 +2,7 @@
 
 import { track } from '@vercel/analytics';
 import { analyticsAllowed } from '@/lib/consent';
+import { pickAttribution, type Landing } from '@/lib/attribution-pick';
 
 /*
  * Étapes du parcours côté navigateur.
@@ -30,8 +31,28 @@ const SERVER_NAME: Partial<Record<FunnelEvent, string>> = {
 
 type Props = Record<string, string | number | boolean | null>;
 
-// document.referrer ne change pas lors des navigations internes : on ne l'envoie qu'une fois par chargement.
-let referrerSent = false;
+// Source d'arrivée mémorisée pour la session (référent externe + UTM), envoyée avec chaque événement,
+// y compris view_home atteint après une navigation interne.
+const LANDING_KEY = 'cl_landing';
+let memoryLanding: Landing | null = null;
+
+function attribution(): { referrer: string | null; search: string } {
+  let stored: Landing | null = memoryLanding;
+  try {
+    const raw = window.sessionStorage.getItem(LANDING_KEY);
+    if (raw) stored = JSON.parse(raw) as Landing;
+  } catch {
+    /* stockage indisponible */
+  }
+  const picked = pickAttribution({ referrer: document.referrer || null, search: window.location.search, host: window.location.host, stored });
+  memoryLanding = picked.landing;
+  try {
+    window.sessionStorage.setItem(LANDING_KEY, JSON.stringify(picked.landing));
+  } catch {
+    /* stockage indisponible */
+  }
+  return { referrer: picked.referrer, search: picked.search };
+}
 
 const VID_KEY = 'cl_vid';
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -63,17 +84,17 @@ function looksLikeBot(): boolean {
 
 export function postEvent(name: string, extra: { advisorId?: string | null; metadata?: Record<string, string> } = {}) {
   try {
+    const source = attribution();
     const body = JSON.stringify({
       name,
       path: window.location.pathname,
-      search: window.location.search,
-      referrer: referrerSent ? null : document.referrer || null,
+      search: source.search,
+      referrer: source.referrer,
       advisorId: extra.advisorId ?? null,
       metadata: extra.metadata ?? {},
       visitorId: visitorId(),
       bot: looksLikeBot(),
     });
-    referrerSent = true;
     if (navigator.sendBeacon) {
       const sent = navigator.sendBeacon('/api/events', new Blob([body], { type: 'application/json' }));
       if (sent) return;
