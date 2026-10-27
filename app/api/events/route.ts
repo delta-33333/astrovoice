@@ -10,7 +10,7 @@ export const dynamic = 'force-dynamic';
 
 const CALL_EVENTS = new Set(['call_reengage', 'call_silence_end']);
 /** Étapes envoyées par le navigateur (les étapes serveur — compte, paiement, appel — sont enregistrées par leurs routes). */
-const CLIENT_EVENTS = new Set(['page_view', 'book_click', 'signup_view', 'birth_start', 'select_slot', 'slot_selected', 'sample_play', 'cta_click', 'trial_start', 'trial_code_sent', 'trial_call_start']);
+const CLIENT_EVENTS = new Set(['page_view', 'book_click', 'signup_view', 'birth_start', 'select_slot', 'slot_selected', 'sample_play', 'cta_click', 'trial_start', 'trial_code_sent', 'trial_call_start', 'chat_start', 'chat_paywall_view']);
 const LOCALES = new Set(['fr', 'en', 'es', 'de', 'it']);
 const PROFESSION = new Set(['astrologue', 'astrologer', 'astrologo', 'astrologe']);
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;

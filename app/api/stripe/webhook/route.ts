@@ -5,6 +5,8 @@ import { cancelCheckoutReminder } from '@/lib/checkout-reminder';
 import { grantPrepaidCredits } from '@/lib/credits';
 import { fulfillCheckoutReport } from '@/lib/reports';
 import { getStripe } from '@/lib/stripe';
+import { syncChatSubscription } from '@/lib/chat-store';
+import { trackEvent } from '@/lib/events';
 import { noteUpcomingFullCharge, subscriptionIdFromInvoice, syncSubscription, syncSubscriptionById } from '@/lib/subscriptions';
 import { deliverPaidSummary, markSummaryPaid } from '@/lib/summaries';
 import { cancelUserSequences } from '@/lib/mail-schedule';
@@ -71,6 +73,16 @@ export async function POST(request: NextRequest) {
           const subscriptionId = typeof subscriptionRef === 'string' ? subscriptionRef : subscriptionRef?.id;
           if (subscriptionId) await syncSubscriptionById(subscriptionId);
           console.log('Abonnement', session.id, subscriptionId);
+        } else if (session.metadata?.purpose === 'chat') {
+          const ref = session.subscription;
+          const subscriptionId = typeof ref === 'string' ? ref : ref?.id;
+          if (subscriptionId) {
+            const synced = await syncChatSubscription(await stripe.subscriptions.retrieve(subscriptionId));
+            if (synced && synced.previous !== 'active' && synced.status === 'active') {
+              await trackEvent({ name: 'chat_subscribe', metadata: { source: 'webhook' }, context: false });
+            }
+          }
+          console.log('Abonnement chat', session.id, subscriptionId);
         } else if (session.metadata?.purpose === 'call_meter') {
           console.log('Empreinte consultation confirmée', session.id, session.payment_status);
         }
@@ -80,6 +92,11 @@ export async function POST(request: NextRequest) {
       case 'customer.subscription.updated':
       case 'customer.subscription.deleted': {
         const subscription = event.data.object as Stripe.Subscription;
+        if (subscription.metadata?.purpose === 'chat') {
+          await syncChatSubscription(subscription);
+          console.log('Abonnement chat', event.type, subscription.id);
+          break;
+        }
         const saved = await syncSubscription(subscription);
         if (event.type === 'customer.subscription.created') {
           const userId = subscription.metadata?.userId;
@@ -99,7 +116,11 @@ export async function POST(request: NextRequest) {
       case 'invoice.payment_failed': {
         const invoice = event.data.object as Stripe.Invoice;
         const subscriptionId = subscriptionIdFromInvoice(invoice);
-        if (subscriptionId) await syncSubscriptionById(subscriptionId);
+        if (subscriptionId) {
+          const sub = await stripe.subscriptions.retrieve(subscriptionId);
+          if (sub.metadata?.purpose === 'chat') await syncChatSubscription(sub);
+          else await syncSubscriptionById(subscriptionId);
+        }
         console.log('Facture', event.type, invoice.id, subscriptionId);
         break;
       }

@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import ChatCta from '@/components/ChatCta';
 import { notFound } from 'next/navigation';
 import HoroscopeSignup from '@/components/HoroscopeSignup';
 import JsonLd from '@/components/JsonLd';
@@ -142,6 +143,7 @@ function ArticleView({ model }: { model: ArticleModel }) {
           <Link href={ctas.calc.href} className="btn-primary text-center">{ctas.calc.label}</Link>
           <Link href={ctas.book.href} data-funnel="book" className="btn-secondary text-center">{ctas.book.label}</Link>
         </div>
+        <div className="mt-3"><ChatCta locale={model.locale} placement="horoscope" className="w-full sm:w-auto" /></div>
       </article>
       <JsonLd data={articleJsonLd(origin, model)} />
     </main>
