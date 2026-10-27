@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import ChatCta from '@/components/ChatCta';
 import { notFound } from 'next/navigation';
 import { Chrome, Disclaimer, SignChips, SkyTable, TrialCta } from '@/components/Horoscope2027View';
 import { H2027_BASE, H2027_ORIGIN, h2027JsonLd } from '@/lib/horoscope-2027';
@@ -64,6 +65,7 @@ export default async function Page(props: { params: Promise<{ locale: string }> 
       <section className="mt-10">
         <h2 className="font-[family-name:var(--font-cinzel)] text-2xl">Calendrier astrologique 2027</h2>
         <SkyTable />
+        <div className="mt-8"><ChatCta locale="fr" placement="horoscope-2027" className="w-full sm:w-auto" /></div>
         <p className="mt-4 text-xs text-white/60">Méthode : longitudes géocentriques tropicales apparentes, éphéméride JPL DE440, dates converties à l’heure de Paris. Un horoscope solaire reste général ; un thème natal complet utilise aussi l’heure et le lieu de naissance (<Link href="/fr/calcul-ascendant-gratuit" className="underline">calculer son ascendant</Link>).</p>
       </section>
       <TrialCta />

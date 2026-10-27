@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import ChatCta from '@/components/ChatCta';
 import AdvisorDirectory from '@/components/AdvisorDirectory';
 import HomePlans from '@/components/HomePlans';
 import InstallPrompt from '@/components/InstallPrompt';
@@ -95,6 +96,7 @@ export default async function LandingPage({
             {homeSecondaryCta('fr', currency)}
           </Link>
         </div>
+        <div className="mt-3"><ChatCta locale="fr" placement="home-hero" className="w-full sm:w-auto" /></div>
         <p className="mt-3 text-sm text-white/70">{HOME_DISCLOSURE}</p>
         <p className="mt-2 text-xs text-white/50">{homeReassure('fr')}</p>
         <VoiceSample locale="fr" src="/samples/sample-fr.mp3" />

@@ -10,7 +10,7 @@
     "type-check": "tsc --noEmit",
     "links:report": "node --experimental-strip-types scripts/internal-links-report.ts",
     "content:audit": "node --experimental-strip-types scripts/thin-content-audit.ts",
-    "test": "node --experimental-strip-types --test tests/natal-reference.test.ts tests/ascendant-seo.test.ts tests/quality-audit.test.ts tests/alternatives-seo.test.ts tests/market-pricing.test.ts tests/conversion.test.ts tests/organic-seo.test.ts tests/internal-links.test.ts tests/thin-content.test.ts tests/trust-technical.test.ts tests/release-guard.test.ts tests/couple-memory-horoscope.test.ts tests/geo-narrative.test.ts tests/free-trial.test.ts tests/mail-sequences.test.ts tests/attribution-ai.test.ts tests/social.test.ts tests/view-home-attribution.test.ts"
+    "test": "node --experimental-strip-types --test tests/natal-reference.test.ts tests/ascendant-seo.test.ts tests/quality-audit.test.ts tests/alternatives-seo.test.ts tests/market-pricing.test.ts tests/conversion.test.ts tests/organic-seo.test.ts tests/internal-links.test.ts tests/thin-content.test.ts tests/trust-technical.test.ts tests/release-guard.test.ts tests/couple-memory-horoscope.test.ts tests/geo-narrative.test.ts tests/free-trial.test.ts tests/mail-sequences.test.ts tests/attribution-ai.test.ts tests/social.test.ts tests/view-home-attribution.test.ts tests/chat.test.ts"
   },
   "dependencies": {
     "@stripe/react-stripe-js": "^6.12.0",

@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import ChatCta from '@/components/ChatCta';
 import AdvisorLabel from '@/components/AdvisorLabel';
 import JsonLd from '@/components/JsonLd';
 import PromoStrip from '@/components/PromoStrip';
@@ -97,6 +98,7 @@ export default async function LocaleHome(props: {
           <Link href={trialPath(locale)} data-primary-cta="trial" className="btn-primary text-center">{homePrimaryCta(locale)}</Link>
           <Link href="/book?offer=decouverte" className="btn-secondary text-center">{homeSecondaryCta(locale, weekly)}</Link>
         </div>
+        <div className="mt-3"><ChatCta locale={locale} placement="home-hero" className="w-full sm:w-auto" /></div>
         <p className="mt-3 text-sm text-white/70">{HOME_DISCLOSURE}</p>
         <VoiceSample locale={locale} src={locale === 'en' ? '/samples/sample-en.mp3' : '/samples/sample-fr.mp3'} />
         <p className="mt-4">

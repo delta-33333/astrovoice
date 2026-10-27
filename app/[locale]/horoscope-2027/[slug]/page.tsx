@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import ChatCta from '@/components/ChatCta';
 import { notFound } from 'next/navigation';
 import { Chrome, Disclaimer, SignChips, SkyTable, TrialCta } from '@/components/Horoscope2027View';
 import { H2027_BASE, H2027_ORIGIN, H2027_SIGNS, h2027JsonLd, h2027Model, isH2027Sign } from '@/lib/horoscope-2027';
@@ -51,6 +52,7 @@ export default async function Page(props: { params: Promise<{ locale: string; sl
       <section className="mt-10">
         <h2 className="font-[family-name:var(--font-cinzel)] text-2xl">Les autres signes en 2027</h2>
         <SignChips current={model.id} />
+        <div className="mt-8"><ChatCta locale="fr" placement="horoscope-2027-sign" className="w-full sm:w-auto" /></div>
         <p className="mt-4"><Link href={H2027_BASE} className="text-celestial-gold underline">Retour à l’horoscope 2027</Link></p>
       </section>
     </Chrome>

@@ -41,6 +41,11 @@ export const EVENT_NAMES = [
   'trial_start',
   'trial_code_sent',
   'trial_call_start',
+  'chat_start',
+  'chat_email',
+  'chat_first_reply',
+  'chat_paywall_view',
+  'chat_subscribe',
 ] as const;
 
 /** Anciens noms en double, conservés lisibles : la vue SQL events_canonical applique la même table. */

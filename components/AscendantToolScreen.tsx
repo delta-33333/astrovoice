@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import ChatCta from '@/components/ChatCta';
 import { notFound, permanentRedirect } from 'next/navigation';
 import AscendantCalculator from '@/components/AscendantCalculator';
 import JsonLd from '@/components/JsonLd';
@@ -136,6 +137,7 @@ export default async function AscendantToolScreen(
             locale={locale}
           />
         </div>
+        <div className="mt-4"><ChatCta locale={locale} placement="rising-result" className="w-full" /></div>
 
         <section className="mt-6 rounded-3xl border border-celestial-gold/30 bg-celestial-purple/10 p-5 sm:p-6">
           <p className="text-sm text-white/75 leading-relaxed">{copy.bridge(offerPrice, offerPrice)}</p>
