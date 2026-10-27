@@ -143,7 +143,7 @@ function ArticleView({ model }: { model: ArticleModel }) {
           <Link href={ctas.calc.href} className="btn-primary text-center">{ctas.calc.label}</Link>
           <Link href={ctas.book.href} data-funnel="book" className="btn-secondary text-center">{ctas.book.label}</Link>
         </div>
-        <div className="mt-3"><ChatCta locale={model.locale} placement="horoscope" className="w-full sm:w-auto" /></div>
+        <div className="mt-3"><ChatCta locale={model.locale} placement="organic" className="w-full sm:w-auto" /></div>
       </article>
       <JsonLd data={articleJsonLd(origin, model)} />
     </main>
@@ -186,6 +186,7 @@ export function HoroscopePage({ model }: { model: HoroscopeModel }) {
             <p key={paragraph} className="mt-4 text-white/80 leading-relaxed">{paragraph}</p>
           ))}
           <InlineParagraph parts={horoscopeLeadParts(model.locale)} />
+          <div className="mt-5"><ChatCta locale={model.locale} placement="horoscope-top" className="w-full sm:w-auto" /></div>
         </section>
         {model.sections.map((section) => (
           <section key={section.id} id={section.slug} className="mt-10">
@@ -206,6 +207,7 @@ export function HoroscopePage({ model }: { model: HoroscopeModel }) {
           <Link href={ctas.calc.href} className="btn-primary text-center">{ctas.calc.label}</Link>
           <Link href={ctas.book.href} data-funnel="book" className="btn-secondary text-center">{ctas.book.label}</Link>
         </div>
+        <div className="mt-3"><ChatCta locale={model.locale} placement="horoscope" className="w-full sm:w-auto" /></div>
       </article>
       <JsonLd data={articleJsonLd(origin, model)} />
     </main>
