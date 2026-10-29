@@ -27,7 +27,7 @@
   }
   
   .card-glow {
-    box-shadow: 0 0 30px rgba(107, 70, 193, 0.3), 0 0 60px rgba(107, 70, 193, 0.1);
+    box-shadow: 0 0 30px rgba(212, 175, 55, 0.14), 0 0 60px rgba(44, 63, 143, 0.25);
   }
   
   .btn-primary {
@@ -55,7 +55,7 @@
 }
 
 select option {
-  background: #0a0e1a;
+  background: #0b1230;
   color: #fff;
 }
 
@@ -95,4 +95,100 @@ select option {
   0% { box-shadow: 0 0 0 0 rgba(167, 224, 184, 0.45); }
   70% { box-shadow: 0 0 0 28px rgba(167, 224, 184, 0); }
   100% { box-shadow: 0 0 0 0 rgba(167, 224, 184, 0); }
+}
+
+/* ───────────── Callastral brand tokens & motion ───────────── */
+:root {
+  --brand-night: #0b1230;
+  --brand-ink: #060a1f;
+  --brand-gold: #d4af37;
+  --brand-gold-soft: #f1d98a;
+  --brand-gold-deep: #a8842a;
+  --brand-radius: 9999px;
+  --brand-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --sky-y: 0px;
+  --background-start-rgb: 6, 10, 31;
+  --background-end-rgb: 11, 18, 48;
+}
+
+h1, h2 { font-family: var(--font-cinzel), Georgia, serif; letter-spacing: 0.02em; }
+
+/* Ciel étoilé + parallaxe (transform only, GPU) */
+.brand-sky { position: fixed; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; }
+.brand-sky-layer { position: absolute; inset: -20% 0; background-repeat: repeat; will-change: transform; }
+.brand-sky-far {
+  background-image:
+    radial-gradient(1px 1px at 20px 30px, rgba(255,255,255,.55), transparent 60%),
+    radial-gradient(1px 1px at 140px 90px, rgba(255,255,255,.4), transparent 60%),
+    radial-gradient(1px 1px at 260px 160px, rgba(241,217,138,.5), transparent 60%),
+    radial-gradient(1px 1px at 80px 220px, rgba(255,255,255,.35), transparent 60%);
+  background-size: 300px 260px;
+  transform: translate3d(0, calc(var(--sky-y) * -0.04), 0);
+}
+.brand-sky-near {
+  background-image:
+    radial-gradient(1.5px 1.5px at 60px 80px, rgba(241,217,138,.75), transparent 60%),
+    radial-gradient(1.5px 1.5px at 330px 260px, rgba(255,255,255,.6), transparent 60%),
+    radial-gradient(2px 2px at 450px 120px, rgba(212,175,55,.6), transparent 60%);
+  background-size: 520px 420px;
+  transform: translate3d(0, calc(var(--sky-y) * -0.1), 0);
+  animation: sky-twinkle 6s ease-in-out infinite alternate;
+}
+.brand-sky-glow {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 60% 40% at 50% -5%, rgba(212,175,55,.12), transparent 70%),
+    radial-gradient(ellipse 70% 50% at 50% 110%, rgba(58,84,168,.22), transparent 70%);
+}
+@keyframes sky-twinkle { from { opacity: .55; } to { opacity: 1; } }
+
+/* Révélation au scroll (classe ajoutée par JS seulement, contenu visible sans JS) */
+.reveal { opacity: 0; transform: translate3d(0, 24px, 0); }
+.reveal.is-revealed {
+  opacity: 1; transform: none;
+  transition: opacity .7s var(--brand-ease) var(--reveal-delay, 0ms), transform .7s var(--brand-ease) var(--reveal-delay, 0ms);
+}
+
+/* Boutons : lift + reflet doré + pression + focus */
+.btn-primary, .btn-secondary { position: relative; overflow: hidden; isolation: isolate; }
+.btn-primary {
+  background-image: linear-gradient(135deg, var(--brand-gold-soft), var(--brand-gold) 55%, var(--brand-gold-deep)) !important;
+  color: var(--brand-ink) !important;
+  box-shadow: 0 6px 20px -8px rgba(212,175,55,.55);
+}
+.btn-primary::after, .btn-secondary::after {
+  content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background: linear-gradient(110deg, transparent 30%, rgba(255,255,255,.55) 50%, transparent 70%);
+  transform: translateX(-120%);
+}
+.btn-secondary::after { background: linear-gradient(110deg, transparent 30%, rgba(241,217,138,.28) 50%, transparent 70%); }
+.btn-secondary { border-color: rgba(212,175,55,.35) !important; }
+@media (hover: hover) {
+  .btn-primary:hover, .btn-secondary:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 12px 28px -10px rgba(212,175,55,.65), 0 0 0 1px rgba(241,217,138,.35);
+  }
+  .btn-primary:hover::after, .btn-secondary:hover::after { transform: translateX(120%); transition: transform .8s var(--brand-ease); }
+}
+.btn-primary:active, .btn-secondary:active { transform: translateY(0) scale(.97) !important; transition-duration: .08s; }
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--brand-gold); outline-offset: 3px; border-radius: 6px;
+}
+.btn-primary:focus-visible, .btn-secondary:focus-visible { outline-offset: 3px; border-radius: var(--brand-radius); }
+
+/* Pulsation CTA : usage ponctuel via .cta-pulse */
+.cta-pulse { animation: cta-pulse 3.2s ease-out infinite; }
+@keyframes cta-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(212,175,55,.45); }
+  70% { box-shadow: 0 0 0 16px rgba(212,175,55,0); }
+  100% { box-shadow: 0 0 0 0 rgba(212,175,55,0); }
+}
+.text-gold-glow { text-shadow: 0 0 18px rgba(212,175,55,.45); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; scroll-behavior: auto !important; }
+  .brand-sky-layer { transform: none !important; }
+  .reveal { opacity: 1 !important; transform: none !important; }
+  .btn-primary:hover, .btn-secondary:hover, .btn-primary:active, .btn-secondary:active { transform: none !important; }
+  .btn-primary::after, .btn-secondary::after { display: none; }
 }

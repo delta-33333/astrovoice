@@ -89,7 +89,7 @@ export default async function LandingPage({
         </h1>
         <p className="mt-3 text-white/80 leading-relaxed">{HOME_SUB.fr}</p>
         <div className="mt-4 sm:mt-6 flex flex-col sm:flex-row sm:items-center gap-3">
-          <Link href={trialPath('fr')} data-primary-cta="trial" data-cta="hero-home" className="btn-primary text-center">
+          <Link href={trialPath('fr')} data-primary-cta="trial" data-cta="hero-home" className="btn-primary cta-pulse text-center">
             {homePrimaryCta('fr')}
           </Link>
           <Link href="/book?offer=decouverte" className="btn-secondary text-center">

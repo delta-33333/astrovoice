@@ -5,6 +5,7 @@ import { ConsentRoot } from "@/components/Consent";
 import ExitOffer from "@/components/ExitOffer";
 import FunnelTracker from "@/components/FunnelTracker";
 import JsonLd from "@/components/JsonLd";
+import BrandMotion from "@/components/BrandMotion";
 import { trackAiBot } from "@/lib/events";
 import { freeCallEnabled } from "@/lib/free-call";
 import { isLocale, organizationGraph } from "@/lib/seo";
@@ -44,7 +45,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#6b46c1",
+  themeColor: "#0b1230",
 };
 
 export default async function RootLayout({
@@ -75,10 +76,11 @@ export default async function RootLayout({
       <body className={inter.className}>
         <ConsentRoot>
         <div className="relative min-h-screen">
-          {/* Starfield background */}
-          <div className="fixed inset-0 overflow-hidden pointer-events-none">
-            <div className="absolute inset-0 bg-gradient-radial from-celestial-purple/10 via-transparent to-transparent"></div>
-            {/* Stars will be added dynamically */}
+          {/* Starfield background (parallax piloté par BrandMotion via --sky-y) */}
+          <div className="brand-sky" aria-hidden="true">
+            <div className="brand-sky-layer brand-sky-far" />
+            <div className="brand-sky-layer brand-sky-near" />
+            <div className="brand-sky-glow" />
           </div>
           
           {/* Main content */}
@@ -89,6 +91,7 @@ export default async function RootLayout({
         </div>
         <ExitOffer trialEnabled={freeCallEnabled()} />
         <FunnelTracker />
+        <BrandMotion />
         </ConsentRoot>
       </body>
     </html>
