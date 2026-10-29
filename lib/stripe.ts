@@ -22,6 +22,7 @@ export function getStripe(): Stripe | null {
       apiVersion: API_VERSION,
       typescript: true,
     });
+    attachReferral(stripeClient);
   }
   return stripeClient;
 }
@@ -44,4 +45,42 @@ export function integrationIdentifier(
     suffix += alphabet[bytes[i] % alphabet.length];
   }
   return `callastral-${flow}-${suffix}`;
+}
+
+/** Lit le cookie d’affiliation de la requête en cours (absent hors requête). */
+async function currentRef(): Promise<string | null> {
+  try {
+    const { cookies } = await import('next/headers');
+    const { REF_COOKIE, validRefCode } = await import('./affiliate');
+    return validRefCode((await cookies()).get(REF_COOKIE)?.value);
+  } catch {
+    return null;
+  }
+}
+
+type WithMeta = { metadata?: Stripe.MetadataParam | '' | null } & Record<string, unknown>;
+
+async function withRef<T>(params: T): Promise<T> {
+  const ref = await currentRef();
+  if (!ref || !params || typeof params !== 'object') return params;
+  const next = { ...(params as WithMeta) };
+  const meta = next.metadata && typeof next.metadata === 'object' ? next.metadata : {};
+  next.metadata = { ...meta, ref };
+  return next as T;
+}
+
+/** Ajoute metadata.ref (cookie ?ref=) à toute session Checkout, PaymentIntent ou abonnement créé. */
+function attachReferral(client: Stripe): void {
+  const sessions = client.checkout.sessions;
+  const createSession = sessions.create.bind(sessions);
+  sessions.create = (async (params?: Stripe.Checkout.SessionCreateParams, options?: Stripe.RequestOptions) =>
+    createSession(await withRef(params ?? {}), options)) as typeof sessions.create;
+  const intents = client.paymentIntents;
+  const createIntent = intents.create.bind(intents);
+  intents.create = (async (params: Stripe.PaymentIntentCreateParams, options?: Stripe.RequestOptions) =>
+    createIntent(await withRef(params), options)) as typeof intents.create;
+  const subs = client.subscriptions;
+  const createSub = subs.create.bind(subs);
+  subs.create = (async (params: Stripe.SubscriptionCreateParams, options?: Stripe.RequestOptions) =>
+    createSub(await withRef(params), options)) as typeof subs.create;
 }

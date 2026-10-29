@@ -13,6 +13,7 @@ import {
   utmFrom,
   validVisitorId,
 } from '@/lib/attribution';
+import { REF_COOKIE, REF_MAX_AGE, validRefCode } from '@/lib/affiliate';
 
 const LOCALES = new Set(['fr', 'en', 'es', 'de', 'it']);
 const INDEXNOW_KEY = (process.env.INDEXNOW_KEY || '').trim();
@@ -51,6 +52,11 @@ export function middleware(request: NextRequest) {
   }
 
   const response = NextResponse.next({ request: { headers: requestHeaders } });
+  // Affiliation : ?ref=CODE mémorisé 30 jours (dernier lien cliqué).
+  const ref = validRefCode(request.nextUrl.searchParams.get('ref'));
+  if (ref) {
+    response.cookies.set(REF_COOKIE, ref, { httpOnly: true, sameSite: 'lax', secure, path: '/', maxAge: REF_MAX_AGE });
+  }
   if (!capture) return response;
 
   if (!existing && visitorId) {

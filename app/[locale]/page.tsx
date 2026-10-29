@@ -5,6 +5,8 @@ import AdvisorLabel from '@/components/AdvisorLabel';
 import JsonLd from '@/components/JsonLd';
 import PromoStrip from '@/components/PromoStrip';
 import { ascendantPath } from '@/lib/ascendant-tool';
+import { bigThreePath, moonPath } from '@/lib/free-tools';
+import { COMMON } from '@/lib/free-tools-copy';
 import { couplePath } from '@/lib/couple-compat';
 import { getCopy } from '@/lib/ascendant-copy';
 import { AVIS_PATH } from '@/lib/avis-callastral';
@@ -191,6 +193,10 @@ export default async function LocaleHome(props: {
             <Link href={locale === 'fr' ? HUB_PATHS.fr : HUB_PATHS.en} className="underline">Alternatives</Link>
             {' · '}
             <Link href={ascendantPath(locale)} className="underline">{getCopy(locale).h1}</Link>
+            {' · '}
+            <Link href={bigThreePath(locale)} className="underline">{COMMON[locale].bigThreeTool}</Link>
+            {' · '}
+            <Link href={moonPath(locale)} className="underline">{COMMON[locale].moonTool}</Link>
             {locale === 'fr' && (
               <>
                 {' · '}

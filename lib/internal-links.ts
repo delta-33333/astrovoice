@@ -2,6 +2,9 @@ import { aboutPath } from './about.ts';
 import { HUB_PATHS } from './alternatives.ts';
 import { AVIS_PATH } from './avis-callastral.ts';
 import { ascendantPath } from './ascendant-tool.ts';
+import { affiliatePath } from './affiliate.ts';
+import { bigThreePath, moonPath } from './free-tools.ts';
+import { COMMON as TOOL_COMMON } from './free-tools-copy.ts';
 import { getCopy } from './ascendant-copy.ts';
 import { GEO_PATHS } from './geo-pages.ts';
 import { factsPath } from './facts.ts';
@@ -410,6 +413,9 @@ export function footerLinks(locale: Locale): TextLink[] {
     { href: legalNoticePath(locale), label: locale === 'fr' ? 'Mentions légales' : locale === 'de' ? 'Impressum' : locale === 'es' ? 'Aviso legal' : locale === 'it' ? 'Note legali' : 'Legal notice' },
     { href: factsPath(locale), label: locale === 'fr' ? 'Faits et chiffres' : locale === 'de' ? 'Fakten' : locale === 'es' ? 'Datos' : locale === 'it' ? 'Fatti' : 'Facts' },
     { href: ascendantPath(locale), label: getCopy(locale).h1 },
+    { href: bigThreePath(locale), label: TOOL_COMMON[locale].bigThreeTool },
+    { href: moonPath(locale), label: TOOL_COMMON[locale].moonTool },
+    { href: affiliatePath(locale), label: TOOL_COMMON[locale].affiliateLink },
     ...(locale === 'fr' ? [{ href: '/fr/horoscope-2027', label: 'Horoscope 2027' }] : []),
     { href: '/faq', label: 'FAQ' },
     { href: VIDEOS_PATH, label: copy.videos },
