@@ -3,6 +3,8 @@ import { aboutAlternates, aboutPath } from './about.ts';
 import { HUB_PATHS, hubAlternates } from './alternatives.ts';
 import { AVIS_PATH } from './avis-callastral.ts';
 import { ascendantPath } from './ascendant-tool.ts';
+import { affiliatePath } from './affiliate.ts';
+import { bigThreePath, moonPath } from './free-tools.ts';
 import { coupleAlternates, couplePath } from './couple-compat.ts';
 import { GEO_PATHS, GEO_UPDATED_ISO, geoAlternates, type GeoPage } from './geo-pages.ts';
 import { factsAlternates, factsPath } from './facts.ts';
@@ -54,6 +56,9 @@ export function pageEntries(): SitemapEntry[] {
       lastModified: '2026-10-08',
       languages: hreflangAlternates(ascendantPath),
     });
+    entries.push({ path: bigThreePath(locale), lastModified: '2026-10-29', languages: hreflangAlternates(bigThreePath) });
+    entries.push({ path: moonPath(locale), languages: hreflangAlternates(moonPath) });
+    entries.push({ path: affiliatePath(locale), lastModified: '2026-10-29', languages: hreflangAlternates(affiliatePath) });
     entries.push({
       path: couplePath(locale),
       lastModified: '2026-10-17',

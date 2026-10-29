@@ -8,6 +8,7 @@ const LINKS = [
   ['/admin/users', 'Comptes'],
   ['/admin/advisors', 'Conseillers'],
   ['/admin/reviews', 'Avis'],
+  ['/admin/affiliates', 'Affiliés'],
 ];
 
 export default function AdminNav() {

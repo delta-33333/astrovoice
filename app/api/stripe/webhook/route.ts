@@ -11,6 +11,7 @@ import { noteUpcomingFullCharge, subscriptionIdFromInvoice, syncSubscription, sy
 import { deliverPaidSummary, markSummaryPaid } from '@/lib/summaries';
 import { cancelUserSequences } from '@/lib/mail-schedule';
 import { sendPasswordSetupIfNeeded } from '@/lib/password-setup';
+import { recordReferral } from '@/lib/referrals';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -40,6 +41,18 @@ export async function POST(request: NextRequest) {
       case 'checkout.session.completed':
       case 'checkout.session.async_payment_succeeded': {
         const session = event.data.object as Stripe.Checkout.Session;
+        if (session.payment_status === 'paid' && session.metadata?.ref) {
+          const customer = typeof session.customer === 'string' ? session.customer : session.customer?.id;
+          const referral = await recordReferral({
+            ref: session.metadata.ref,
+            customerKey: session.customer_details?.email || customer || session.metadata.userId,
+            stripeObjectId: session.id,
+            amountCents: session.amount_total,
+            currency: session.currency,
+            purpose: session.metadata.purpose,
+          }).catch(() => 'error');
+          console.log('Affiliation', session.id, referral);
+        }
         if (session.payment_status === 'paid' || session.payment_status === 'no_payment_required') {
           await cancelCheckoutReminder({
             userId: session.metadata?.userId,
@@ -118,6 +131,18 @@ export async function POST(request: NextRequest) {
         const subscriptionId = subscriptionIdFromInvoice(invoice);
         if (subscriptionId) {
           const sub = await stripe.subscriptions.retrieve(subscriptionId);
+          if (event.type === 'invoice.paid' && sub.metadata?.ref) {
+            const customer = typeof invoice.customer === 'string' ? invoice.customer : invoice.customer?.id;
+            const referral = await recordReferral({
+              ref: sub.metadata.ref,
+              customerKey: invoice.customer_email || customer || sub.metadata.userId,
+              stripeObjectId: invoice.id ?? `inv:${subscriptionId}`,
+              amountCents: invoice.amount_paid,
+              currency: invoice.currency,
+              purpose: sub.metadata.purpose,
+            }).catch(() => 'error');
+            console.log('Affiliation', invoice.id, referral);
+          }
           if (sub.metadata?.purpose === 'chat') await syncChatSubscription(sub);
           else await syncSubscriptionById(subscriptionId);
         }
@@ -126,6 +151,18 @@ export async function POST(request: NextRequest) {
       }
       case 'payment_intent.succeeded': {
         const intent = event.data.object as Stripe.PaymentIntent;
+        if (intent.metadata?.ref) {
+          const customer = typeof intent.customer === 'string' ? intent.customer : intent.customer?.id;
+          const referral = await recordReferral({
+            ref: intent.metadata.ref,
+            customerKey: intent.receipt_email || customer || intent.metadata.userId,
+            stripeObjectId: intent.id,
+            amountCents: intent.amount_received,
+            currency: intent.currency,
+            purpose: intent.metadata.purpose,
+          }).catch(() => 'error');
+          console.log('Affiliation', intent.id, referral);
+        }
         if (intent.metadata?.purpose === 'call_meter') {
           console.log('Compteur arrêté, montant encaissé', intent.id, intent.amount_received);
         }
