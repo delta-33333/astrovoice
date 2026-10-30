@@ -18,7 +18,7 @@ import HoroscopeSignup from '@/components/HoroscopeSignup';
 import HomePlans from '@/components/HomePlans';
 import SeoChrome from '@/components/SeoChrome';
 import { weeklyCurrency } from '@/lib/weekly';
-import { listDirectoryAdvisors } from '@/lib/slots';
+import { listDirectoryAdvisorsCached } from '@/lib/slots';
 import VoiceSample from '@/components/VoiceSample';
 import {
   FEATURED_ADVISOR_LIMIT,
@@ -77,9 +77,9 @@ export default async function LocaleHome(props: {
   if (!isLocale(locale)) notFound();
 
   const currency = localeCurrency(locale);
-  let advisors: Awaited<ReturnType<typeof listDirectoryAdvisors>>['advisors'] = [];
+  let advisors: Awaited<ReturnType<typeof listDirectoryAdvisorsCached>>['advisors'] = [];
   try {
-    advisors = (await listDirectoryAdvisors()).advisors;
+    advisors = (await listDirectoryAdvisorsCached()).advisors;
   } catch {
     advisors = [];
   }

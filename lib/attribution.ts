@@ -193,3 +193,6 @@ export function decodeFirstTouch(raw: string | null | undefined): FirstTouch | n
     return null;
   }
 }
+
+/** Cookie posé sur les appareils de l’équipe : leurs événements sont marqués is_internal. */
+export const INTERNAL_COOKIE = 'cl_internal';

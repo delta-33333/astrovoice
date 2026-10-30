@@ -3,6 +3,7 @@ import type { NextRequest } from 'next/server';
 import {
   FIRST_TOUCH_COOKIE,
   FIRST_TOUCH_MAX_AGE,
+  INTERNAL_COOKIE,
   VISITOR_COOKIE,
   VISITOR_MAX_AGE,
   aiBotName,
@@ -43,7 +44,9 @@ export function middleware(request: NextRequest) {
     (request.headers.get('accept') || '').includes('text/html');
   const capture = documentRequest && shouldCaptureVisit(request.nextUrl.pathname, request.headers.get('user-agent'));
   const existing = validVisitorId(request.cookies.get(VISITOR_COOKIE)?.value);
-  const visitorId = existing ?? (capture ? crypto.randomUUID() : null);
+  // Tout visiteur humain (document ou navigation client) reçoit un identifiant dès la 1re requête.
+  const humanGet = request.method === 'GET' && shouldCaptureVisit(request.nextUrl.pathname, request.headers.get('user-agent'));
+  const visitorId = existing ?? (humanGet ? crypto.randomUUID() : null);
   if (visitorId) requestHeaders.set('x-cl-vid', visitorId);
   const aiBot = aiBotName(request.headers.get('user-agent'));
   if (aiBot) {
@@ -57,8 +60,13 @@ export function middleware(request: NextRequest) {
   if (ref) {
     response.cookies.set(REF_COOKIE, ref, { httpOnly: true, sameSite: 'lax', secure, path: '/', maxAge: REF_MAX_AGE });
   }
-  if (!capture) return response;
-
+  // Trafic interne : /admin ou ?internal=1 pose cl_internal (exclu des vues d’entonnoir) ; ?internal=0 l’enlève.
+  const internalParam = request.nextUrl.searchParams.get('internal');
+  if (request.nextUrl.pathname.startsWith('/admin') || internalParam === '1') {
+    response.cookies.set(INTERNAL_COOKIE, '1', { httpOnly: true, sameSite: 'lax', secure, path: '/', maxAge: 60 * 60 * 24 * 365 });
+  } else if (internalParam === '0') {
+    response.cookies.delete(INTERNAL_COOKIE);
+  }
   if (!existing && visitorId) {
     response.cookies.set(VISITOR_COOKIE, visitorId, {
       httpOnly: true,
@@ -68,6 +76,7 @@ export function middleware(request: NextRequest) {
       maxAge: VISITOR_MAX_AGE,
     });
   }
+  if (!capture) return response;
   // Première visite seulement : la source, le référent et la page d’arrivée ne sont pas réécrits ensuite.
   if (!request.cookies.get(FIRST_TOUCH_COOKIE)?.value) {
     const referrer = cleanReferrer(request.headers.get('referer'));

@@ -1,3 +1,4 @@
+import { isLocale, type Locale } from '@/lib/seo';
 import { NextRequest, NextResponse } from 'next/server';
 import { createSubscriptionCheckout } from '@/lib/checkout';
 import { resolveMarket } from '@/lib/market';
@@ -30,16 +31,19 @@ export async function POST(request: NextRequest) {
     locale: market.language,
     currency: market.currency,
   });
-  const currency = MARKET_PRICING[code].currency;
+  // Page Offres localisée : fr/es/de/it affichent et encaissent en euros, dans la langue de la page.
+  const pageLocale: Locale | null = typeof body?.locale === 'string' && isLocale(body.locale) ? body.locale : null;
+  const currency = pageLocale && pageLocale !== 'en' ? 'eur' : MARKET_PRICING[code].currency;
+  const language = pageLocale ?? market.language;
   try {
     const session = await createSubscriptionCheckout({
       request,
       user,
       currency,
       plan,
-      language: market.language,
+      language: language,
     });
-    const terms = renewalTerms(plan, currency, market.language, new Date(), session.introWeek);
+    const terms = renewalTerms(plan, currency, language, new Date(), session.introWeek);
     return NextResponse.json({
       clientSecret: session.clientSecret,
       checkoutSessionId: session.checkoutSessionId,
@@ -48,7 +52,7 @@ export async function POST(request: NextRequest) {
       plan,
       amountLabel: session.introWeek ? terms.trialLabel : terms.fullLabel,
       renewal: terms.sentence,
-      name: WEEKLY_PLANS[plan].names[market.language],
+      name: WEEKLY_PLANS[plan].names[language],
     });
   } catch (error) {
     const codeName = error instanceof Error ? error.message : '';

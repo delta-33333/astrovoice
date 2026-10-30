@@ -25,7 +25,7 @@ import {
 import { resolveMarket } from '@/lib/market';
 import { MARKET_PRICING, marketCodeForContext } from '@/lib/money';
 import { hreflangAlternates, localeHomePath } from '@/lib/seo';
-import { listDirectoryAdvisors } from '@/lib/slots';
+import { listDirectoryAdvisorsCached } from '@/lib/slots';
 import { trialPath } from '@/lib/free-call';
 import { weeklyCurrency } from '@/lib/weekly';
 
@@ -60,10 +60,10 @@ export default async function LandingPage({
 }) {
   const params = await searchParams;
   const market = await resolveMarket();
-  let advisors: Awaited<ReturnType<typeof listDirectoryAdvisors>>['advisors'] = [];
+  let advisors: Awaited<ReturnType<typeof listDirectoryAdvisorsCached>>['advisors'] = [];
   let unavailable = false;
   try {
-    const result = await listDirectoryAdvisors();
+    const result = await listDirectoryAdvisorsCached();
     advisors = result.advisors;
     unavailable = result.unavailable;
   } catch {
