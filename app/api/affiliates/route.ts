@@ -5,6 +5,19 @@ import { clientIp } from '@/lib/rate-limit';
 import { localeHomePath } from '@/lib/seo';
 import { appBaseUrl } from '@/lib/stripe';
 import { getSupabaseAdmin, supabaseAvailable } from '@/lib/supabase';
+import { sendMail } from '@/lib/email';
+import { AFFILIATE_CONTACT, AFFILIATE_EXTRA, affiliateStatsPath } from '@/lib/affiliate-extra-copy';
+
+const esc = (value: string) => value.replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
+
+async function sendWelcome(input: { to: string; name: string; code: string; link: string; statsUrl: string; locale: AffLocale }) {
+  const m = AFFILIATE_EXTRA[input.locale].mail;
+  const html = `<p>${esc(m.hello)} ${esc(input.name)},</p><p>${esc(m.intro)}</p>
+<p><strong>${esc(m.link)} :</strong> <a href="${esc(input.link)}">${esc(input.link)}</a><br/><strong>${esc(m.code)} :</strong> ${esc(input.code)}</p>
+<p><a href="${esc(input.statsUrl)}">${esc(m.stats)}</a></p><p>${esc(m.payout)}</p><p>${esc(m.rules)}</p><p>${esc(m.sign)}</p>`;
+  const ok = await sendMail({ to: input.to, subject: m.subject, html, from: 'Julien de Callastral <julien@callastral.com>', replyTo: AFFILIATE_CONTACT });
+  if (!ok) console.warn('Affiliation : e-mail de bienvenue non envoyé');
+}
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -32,6 +45,9 @@ export async function POST(request: NextRequest) {
   const name = cleanName(body.name);
   const email = normalizeEmail(body.email);
   const handle = cleanHandle(body.social);
+  const payoutRaw = typeof body.payout === 'string' ? body.payout.trim().replace(/\s+/g, ' ') : '';
+  if (payoutRaw.length > 200 || /[<>"]/.test(payoutRaw)) return NextResponse.json({ error: 'FAIL' }, { status: 400, headers: NO_STORE });
+  const payout = payoutRaw || null;
   const locale: AffLocale = typeof body.locale === 'string' && body.locale in AFFILIATE_PATHS ? (body.locale as AffLocale) : 'fr';
   if (!name) return NextResponse.json({ error: 'NAME' }, { status: 400, headers: NO_STORE });
   if (!email || email.length > 160) return NextResponse.json({ error: 'EMAIL' }, { status: 400, headers: NO_STORE });
@@ -42,9 +58,11 @@ export async function POST(request: NextRequest) {
   const admin = getSupabaseAdmin();
   for (let attempt = 0; attempt < 5; attempt += 1) {
     const code = makeRefCode(name);
-    const { error } = await admin.from('affiliates').insert({ code, name, email, social_handle: handle, locale });
+    const { error } = await admin.from('affiliates').insert({ code, name, email, social_handle: handle, locale, payout_details: payout });
     if (!error) {
-      const link = `${appBaseUrl(request.nextUrl.origin)}${localeHomePath(locale)}?ref=${code}`;
+      const base = appBaseUrl(request.nextUrl.origin);
+      const link = `${base}${localeHomePath(locale)}?ref=${code}`;
+      await sendWelcome({ to: email, name, code, link, statsUrl: `${base}${affiliateStatsPath(locale)}`, locale });
       return NextResponse.json({ code, link }, { headers: NO_STORE });
     }
     if (error.code === '23505' && /email/i.test(error.message + (error.details ?? ''))) {

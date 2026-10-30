@@ -8,10 +8,11 @@ import type { AffiliateCopy } from '@/lib/free-tools-copy';
 const inputClass =
   'mt-1 w-full px-4 py-3 text-base bg-white/10 border border-white/20 rounded-xl focus:outline-none focus:border-celestial-gold focus:ring-2 focus:ring-celestial-gold/40';
 
-export default function AffiliateForm({ copy, locale }: { copy: AffiliateCopy['form']; locale: string }) {
+export default function AffiliateForm({ copy, locale }: { copy: AffiliateCopy['form'] & { payout: string; payoutHint: string; emailSent: string }; locale: string }) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [social, setSocial] = useState('');
+  const [payout, setPayout] = useState('');
   const [accept, setAccept] = useState(false);
   const [trap, setTrap] = useState('');
   const [busy, setBusy] = useState(false);
@@ -26,7 +27,7 @@ export default function AffiliateForm({ copy, locale }: { copy: AffiliateCopy['f
       const response = await fetch('/api/affiliates', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, social, accept, locale, [HONEYPOT_FIELD]: trap }),
+        body: JSON.stringify({ name, email, social, payout, accept, locale, [HONEYPOT_FIELD]: trap }),
       });
       const data = await response.json().catch(() => ({}));
       if (response.ok && data?.code) setDone({ code: data.code, link: data.link });
@@ -46,6 +47,7 @@ export default function AffiliateForm({ copy, locale }: { copy: AffiliateCopy['f
         <p className="font-mono text-2xl">{done.code}</p>
         <p className="mt-3 text-sm text-white/70">{copy.yourLink}</p>
         <p className="break-all font-mono text-sm">{done.link}</p>
+        <p className="mt-3 text-sm text-white/70">{copy.emailSent}</p>
         <button type="button" className="btn-secondary mt-4" onClick={() => navigator.clipboard?.writeText(done.link)}>{copy.copy}</button>
       </div>
     );
@@ -63,6 +65,10 @@ export default function AffiliateForm({ copy, locale }: { copy: AffiliateCopy['f
       </label>
       <label className="text-sm text-white/80">{copy.social}
         <input required minLength={2} maxLength={120} value={social} placeholder={copy.socialPlaceholder} onChange={(e) => setSocial(e.target.value)} className={inputClass} />
+      </label>
+      <label className="text-sm text-white/80">{copy.payout}
+        <input maxLength={200} value={payout} onChange={(e) => setPayout(e.target.value)} className={inputClass} autoComplete="off" />
+        <span className="mt-1 block text-xs text-white/50">{copy.payoutHint}</span>
       </label>
       <label className="flex items-start gap-2 text-sm text-white/80">
         <input type="checkbox" required checked={accept} onChange={(e) => setAccept(e.target.checked)} className="mt-1" />

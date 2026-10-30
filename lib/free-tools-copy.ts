@@ -66,8 +66,6 @@ export interface AffiliateCopy {
   how: string[];
   termsTitle: string;
   terms: string[];
-  cta?: string;
-  example?: { title: string; lines: string[]; note: string };
   form: {
     title: string;
     name: string;
@@ -338,8 +336,6 @@ export const AFFILIATE: Record<ToolLang, AffiliateCopy> = {
     h1: 'Programme d’affiliation : 30 % pour les créateurs astro',
     answer: 'Vous parlez d’astrologie à une communauté ? Recevez 30 % du premier paiement de chaque nouveau client arrivé par votre lien Callastral. L’inscription est gratuite et votre lien est créé tout de suite. Les commissions sont versées manuellement, une fois par mois.',
     points: ['30 % du premier paiement de chaque nouveau client', 'Suivi 30 jours par cookie après le clic', 'Votre audience peut essayer 3 minutes d’appel offertes et poser une première question par message offerte', 'Versement manuel mensuel, sans plateforme tierce'],
-    cta: 'Créer mon lien gratuit',
-    example: { title: 'Exemple de gain (illustratif)', lines: ['1 client achète le pack 30 minutes (34,90 €) → 10,47 € pour vous', '10 clients sur ce pack → 104,70 €', '1 client prend l’offre d’accueil 10 minutes (4,90 €) → 1,47 €'], note: 'Exemple calculé sur les prix publics France actuels. Ce n’est pas une promesse de revenus : vos gains dépendent de vos ventes réelles.' },
     howTitle: 'Comment ça marche',
     how: ['Inscrivez-vous ci-dessous : nom, e-mail, compte social.', 'Partagez votre lien personnel (bio, story, description de vidéo, newsletter).', 'Quand une personne arrivée par votre lien paie pour la première fois, 30 % de ce paiement vous est attribué.'],
     termsTitle: 'Conditions du programme',
@@ -353,13 +349,11 @@ export const AFFILIATE: Record<ToolLang, AffiliateCopy> = {
       'Vous déclarez vous-même vos revenus selon votre statut. Callastral peut modifier ou arrêter le programme avec 30 jours de préavis ; les commissions déjà acquises restent dues.',
     ],
     form: { title: 'Rejoindre le programme', name: 'Nom ou nom de créateur', email: 'E-mail', social: 'Compte principal (TikTok, Instagram, YouTube, X…)', socialPlaceholder: '@moncompte sur TikTok', accept: 'J’accepte les conditions du programme ci-dessus.', submit: 'Créer mon lien', submitting: 'Création…', done: 'C’est fait. Votre lien est actif.', yourCode: 'Votre code', yourLink: 'Votre lien', copy: 'Copier',
-      errors: { NAME: 'Indiquez un nom (2 à 80 caractères).', EMAIL: 'Adresse e-mail invalide.', SOCIAL: 'Indiquez votre compte social.', TERMS: 'Acceptez les conditions pour continuer.', EXISTS: 'Cette adresse est déjà inscrite. Écrivez-nous depuis cette adresse pour récupérer votre lien.', RATE: 'Trop d’essais. Réessayez plus tard.', FAIL: 'Inscription impossible pour le moment. Réessayez.' } },
+      errors: { NAME: 'Indiquez un nom (2 à 80 caractères).', EMAIL: 'Adresse e-mail invalide.', SOCIAL: 'Indiquez votre compte social.', TERMS: 'Acceptez les conditions pour continuer.', EXISTS: 'Cette adresse est déjà inscrite. Écrivez à callastralcom@gmail.com depuis cette adresse pour récupérer votre lien.', RATE: 'Trop d’essais. Réessayez plus tard.', FAIL: 'Inscription impossible pour le moment. Réessayez.' } },
     faqTitle: 'Questions fréquentes',
     faq: [
       { q: 'Combien coûte l’inscription ?', a: 'Rien. Le programme est gratuit et sans engagement.' },
       { q: 'Quand suis-je payé ?', a: 'Une fois par mois, manuellement, pour les commissions de plus de 30 jours. Il n’y a pas de versement automatique.' },
-      { q: 'Y a-t-il un minimum de versement ou un tableau de bord ?', a: 'Pas de seuil minimum annoncé. Il n’y a pas encore de tableau de bord en ligne : chaque premier paiement par votre lien est enregistré automatiquement, et le détail vous est communiqué avec le versement mensuel.' },
-      { q: 'Les conseillers sont-ils des humains ?', a: 'Non. Les Conseillères et Conseillers Callastral sont des conseillers virtuels propulsés par l’IA, et c’est indiqué clairement aux utilisateurs. Merci de le dire aussi à votre audience.' },
       { q: 'Que peut tester mon audience gratuitement ?', a: '3 minutes d’appel offertes avec une Conseillère ou un Conseiller Callastral, une première réponse par message offerte, et les outils gratuits : thème astral, ascendant, Lune du jour.' },
     ],
   },
@@ -369,8 +363,6 @@ export const AFFILIATE: Record<ToolLang, AffiliateCopy> = {
     h1: 'Affiliate program: 30% for astrology creators',
     answer: 'Do you talk about astrology to an audience? Earn 30% of the first payment of every new customer who comes through your Callastral link. Joining is free and your link is created instantly. Commissions are paid manually once a month.',
     points: ['30% of every new customer’s first payment', '30-day cookie tracking after the click', 'Your audience can try 3 free call minutes and a free first message answer', 'Manual monthly payout, no third-party platform'],
-    cta: 'Get my free link',
-    example: { title: 'Example earnings (illustrative)', lines: ['1 customer buys the 30-minute pack (€34.90) → €10.47 for you', '10 customers on that pack → €104.70', '1 customer takes the 10-minute welcome offer (€4.90) → €1.47'], note: 'Example based on current public prices in France. Not an income promise: your earnings depend on your actual sales.' },
     howTitle: 'How it works',
     how: ['Sign up below: name, email, social handle.', 'Share your personal link (bio, story, video description, newsletter).', 'When someone who arrived through your link pays for the first time, 30% of that payment is credited to you.'],
     termsTitle: 'Program terms',
@@ -384,13 +376,11 @@ export const AFFILIATE: Record<ToolLang, AffiliateCopy> = {
       'You declare your own income according to your status. Callastral may change or end the program with 30 days’ notice; commissions already earned remain payable.',
     ],
     form: { title: 'Join the program', name: 'Name or creator name', email: 'Email', social: 'Main account (TikTok, Instagram, YouTube, X…)', socialPlaceholder: '@myhandle on TikTok', accept: 'I accept the program terms above.', submit: 'Create my link', submitting: 'Creating…', done: 'Done. Your link is live.', yourCode: 'Your code', yourLink: 'Your link', copy: 'Copy',
-      errors: { NAME: 'Enter a name (2 to 80 characters).', EMAIL: 'Invalid email address.', SOCIAL: 'Enter your social handle.', TERMS: 'Accept the terms to continue.', EXISTS: 'This email is already registered. Write to us from that address to get your link again.', RATE: 'Too many attempts. Try again later.', FAIL: 'Sign-up is unavailable right now. Please try again.' } },
+      errors: { NAME: 'Enter a name (2 to 80 characters).', EMAIL: 'Invalid email address.', SOCIAL: 'Enter your social handle.', TERMS: 'Accept the terms to continue.', EXISTS: 'This email is already registered. Email callastralcom@gmail.com from that address to get your link again.', RATE: 'Too many attempts. Try again later.', FAIL: 'Sign-up is unavailable right now. Please try again.' } },
     faqTitle: 'Frequently asked questions',
     faq: [
       { q: 'How much does it cost to join?', a: 'Nothing. The program is free with no commitment.' },
       { q: 'When do I get paid?', a: 'Once a month, manually, for commissions older than 30 days. There are no automatic payouts.' },
-      { q: 'Is there a payout minimum or a dashboard?', a: 'No minimum is announced. There is no online dashboard yet: every first payment through your link is recorded automatically, and the details are shared with the monthly payout.' },
-      { q: 'Are the advisors human?', a: 'No. Callastral Advisors are virtual, AI-powered advisors, and users are told so clearly. Please tell your audience too.' },
       { q: 'What can my audience try for free?', a: '3 free call minutes with a Callastral advisor, a free first answer by message, and the free tools: birth chart, rising sign, Moon today.' },
     ],
   },
@@ -413,7 +403,7 @@ export const AFFILIATE: Record<ToolLang, AffiliateCopy> = {
       'Declaras tus ingresos según tu situación. Callastral puede modificar o cerrar el programa con 30 días de aviso; las comisiones ya generadas siguen siendo debidas.',
     ],
     form: { title: 'Unirme al programa', name: 'Nombre o nombre de creador', email: 'Correo', social: 'Cuenta principal (TikTok, Instagram, YouTube, X…)', socialPlaceholder: '@micuenta en TikTok', accept: 'Acepto las condiciones del programa.', submit: 'Crear mi enlace', submitting: 'Creando…', done: 'Listo. Tu enlace está activo.', yourCode: 'Tu código', yourLink: 'Tu enlace', copy: 'Copiar',
-      errors: { NAME: 'Indica un nombre (2 a 80 caracteres).', EMAIL: 'Correo no válido.', SOCIAL: 'Indica tu cuenta social.', TERMS: 'Acepta las condiciones para continuar.', EXISTS: 'Este correo ya está registrado. Escríbenos desde esa dirección para recuperar tu enlace.', RATE: 'Demasiados intentos. Inténtalo más tarde.', FAIL: 'Registro no disponible ahora. Inténtalo de nuevo.' } },
+      errors: { NAME: 'Indica un nombre (2 a 80 caracteres).', EMAIL: 'Correo no válido.', SOCIAL: 'Indica tu cuenta social.', TERMS: 'Acepta las condiciones para continuar.', EXISTS: 'Este correo ya está registrado. Escribe a callastralcom@gmail.com desde esa dirección para recuperar tu enlace.', RATE: 'Demasiados intentos. Inténtalo más tarde.', FAIL: 'Registro no disponible ahora. Inténtalo de nuevo.' } },
     faqTitle: 'Preguntas frecuentes',
     faq: [
       { q: '¿Cuánto cuesta unirse?', a: 'Nada. El programa es gratis y sin compromiso.' },
@@ -440,7 +430,7 @@ export const AFFILIATE: Record<ToolLang, AffiliateCopy> = {
       'Du versteuerst deine Einnahmen selbst. Callastral kann das Programm mit 30 Tagen Vorlauf ändern oder beenden; bereits verdiente Provisionen bleiben fällig.',
     ],
     form: { title: 'Am Programm teilnehmen', name: 'Name oder Creator-Name', email: 'E-Mail', social: 'Hauptaccount (TikTok, Instagram, YouTube, X…)', socialPlaceholder: '@meinaccount auf TikTok', accept: 'Ich akzeptiere die Programmbedingungen.', submit: 'Meinen Link erstellen', submitting: 'Wird erstellt…', done: 'Fertig. Dein Link ist aktiv.', yourCode: 'Dein Code', yourLink: 'Dein Link', copy: 'Kopieren',
-      errors: { NAME: 'Bitte einen Namen angeben (2 bis 80 Zeichen).', EMAIL: 'Ungültige E-Mail-Adresse.', SOCIAL: 'Bitte deinen Social-Account angeben.', TERMS: 'Bitte die Bedingungen akzeptieren.', EXISTS: 'Diese E-Mail ist bereits registriert. Schreib uns von dieser Adresse, um deinen Link zu erhalten.', RATE: 'Zu viele Versuche. Bitte später erneut.', FAIL: 'Anmeldung gerade nicht möglich. Bitte erneut versuchen.' } },
+      errors: { NAME: 'Bitte einen Namen angeben (2 bis 80 Zeichen).', EMAIL: 'Ungültige E-Mail-Adresse.', SOCIAL: 'Bitte deinen Social-Account angeben.', TERMS: 'Bitte die Bedingungen akzeptieren.', EXISTS: 'Diese E-Mail ist bereits registriert. Schreib an callastralcom@gmail.com von dieser Adresse, um deinen Link zu erhalten.', RATE: 'Zu viele Versuche. Bitte später erneut.', FAIL: 'Anmeldung gerade nicht möglich. Bitte erneut versuchen.' } },
     faqTitle: 'Häufige Fragen',
     faq: [
       { q: 'Was kostet die Teilnahme?', a: 'Nichts. Das Programm ist kostenlos und unverbindlich.' },
@@ -467,7 +457,7 @@ export const AFFILIATE: Record<ToolLang, AffiliateCopy> = {
       'Dichiari tu i tuoi redditi secondo il tuo regime. Callastral può modificare o chiudere il programma con 30 giorni di preavviso; le commissioni già maturate restano dovute.',
     ],
     form: { title: 'Unisciti al programma', name: 'Nome o nome da creator', email: 'E-mail', social: 'Account principale (TikTok, Instagram, YouTube, X…)', socialPlaceholder: '@mioaccount su TikTok', accept: 'Accetto le condizioni del programma.', submit: 'Crea il mio link', submitting: 'Creazione…', done: 'Fatto. Il tuo link è attivo.', yourCode: 'Il tuo codice', yourLink: 'Il tuo link', copy: 'Copia',
-      errors: { NAME: 'Inserisci un nome (da 2 a 80 caratteri).', EMAIL: 'E-mail non valida.', SOCIAL: 'Inserisci il tuo account social.', TERMS: 'Accetta le condizioni per continuare.', EXISTS: 'Questa e-mail è già iscritta. Scrivici da quell’indirizzo per recuperare il link.', RATE: 'Troppi tentativi. Riprova più tardi.', FAIL: 'Iscrizione non disponibile ora. Riprova.' } },
+      errors: { NAME: 'Inserisci un nome (da 2 a 80 caratteri).', EMAIL: 'E-mail non valida.', SOCIAL: 'Inserisci il tuo account social.', TERMS: 'Accetta le condizioni per continuare.', EXISTS: 'Questa e-mail è già iscritta. Scrivi a callastralcom@gmail.com da quell’indirizzo per recuperare il link.', RATE: 'Troppi tentativi. Riprova più tardi.', FAIL: 'Iscrizione non disponibile ora. Riprova.' } },
     faqTitle: 'Domande frequenti',
     faq: [
       { q: 'Quanto costa iscriversi?', a: 'Niente. Il programma è gratuito e senza impegno.' },
