@@ -64,6 +64,14 @@ export default async function AffiliateScreen(props: { params: Promise<{ locale:
             <li key={point} className="card-glow rounded-2xl border border-celestial-gold/30 bg-celestial-purple/10 p-4 text-sm">{point}</li>
           ))}
         </ul>
+        {copy.cta ? <a href="#join" className="btn-primary mt-6 inline-block w-full text-center sm:w-auto">{copy.cta}</a> : null}
+        {copy.example ? (
+          <section className="mt-10 rounded-2xl border border-white/15 bg-white/5 p-4 sm:p-5">
+            <h2 className="font-[family-name:var(--font-cinzel)] text-xl text-celestial-gold">{copy.example.title}</h2>
+            <ul className="mt-3 list-disc pl-5 space-y-1 text-white/85">{copy.example.lines.map((line) => <li key={line}>{line}</li>)}</ul>
+            <p className="mt-3 text-xs text-white/55">{copy.example.note}</p>
+          </section>
+        ) : null}
         <section className="mt-10">
           <h2 className="font-[family-name:var(--font-cinzel)] text-2xl text-celestial-gold">{copy.howTitle}</h2>
           <ol className="mt-3 list-decimal pl-5 space-y-2 text-white/80">{copy.how.map((step) => <li key={step}>{step}</li>)}</ol>
