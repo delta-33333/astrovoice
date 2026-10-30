@@ -111,8 +111,12 @@ export function pageEntries(): SitemapEntry[] {
   for (const path of H2027_PATHS) {
     entries.push({ path, lastModified: H2027_UPDATED, languages: selfLanguages('fr', path) });
   }
-  for (const path of ['/cgu', '/terms', '/faq', '/offres']) {
+  for (const path of ['/cgu', '/terms', '/faq']) {
     entries.push({ path, languages: selfLanguages('fr', path) });
+  }
+  const offersLanguages = { fr: '/fr/offres', en: '/en/offres', es: '/es/offres', de: '/de/offres', it: '/it/offres', 'x-default': '/fr/offres' };
+  for (const path of Object.values(offersLanguages).slice(0, 5)) {
+    entries.push({ path, languages: offersLanguages });
   }
   return entries;
 }

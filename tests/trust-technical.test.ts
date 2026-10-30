@@ -105,7 +105,7 @@ test('canonical auto-référent, hreflang x-default, sitemap index par type', ()
   assert.match(organic, /canonical: model\.path/);
   assert.match(organic, /publishedAlternates/);
   assert.match(organic, /index: false/);
-  for (const file of ['app/cgu/page.tsx', 'app/terms/page.tsx', 'app/offres/page.tsx']) {
+  for (const file of ['app/cgu/page.tsx', 'app/terms/page.tsx', 'app/[locale]/offres/page.tsx']) {
     const source = fs.readFileSync(new URL(`../${file}`, import.meta.url), 'utf8');
     assert.match(source, /canonical:/, file);
     assert.match(source, /x-default/, file);

@@ -1,3 +1,4 @@
+import { unstable_cache } from 'next/cache';
 import { advisorBadges, suppressCommonNouveau } from './advisor-badges';
 import { listPublicAdvisors, getAdvisorById, toPublicAdvisor } from './astrologers';
 import { availabilityLabel, hasImmediateSlot } from './scarcity';
@@ -255,3 +256,10 @@ export async function regenerateSlots(): Promise<unknown> {
   if (error) throw new Error(error.message);
   return data;
 }
+
+/** Annuaire pour les pages d’accueil : mis en cache 60 s pour réduire le TTFB (pas d’écriture par visite). */
+export const listDirectoryAdvisorsCached = unstable_cache(
+  async () => listDirectoryAdvisors(),
+  ['directory-advisors-home'],
+  { revalidate: 60 },
+);

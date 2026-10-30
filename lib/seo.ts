@@ -499,12 +499,11 @@ export function siteSameAs(env: NodeJS.ProcessEnv = process.env): string[] {
 function offerNode(plan: 'decouverte' | 'essentiel' | 'premium'): Record<string, unknown> {
   const row = WEEKLY_PLANS[plan];
   const full = (row.amounts.eur / 100).toFixed(2);
-  const first = (firstWeekMinor(plan, 'eur') / 100).toFixed(2);
   return {
     '@type': 'Offer',
     price: full,
     priceCurrency: 'EUR',
-    description: `${row.names.fr} : ${row.minutes} minutes par semaine, ${formatMoney(row.amounts.eur, 'eur', 'fr')} puis 1re semaine ${formatMoney(firstWeekMinor(plan, 'eur'), 'eur', 'fr')} (${first} €).`,
+    description: `${row.names.fr} : ${row.minutes} minutes par semaine, ${formatMoney(firstWeekMinor(plan, 'eur'), 'eur', 'fr')} la 1re semaine puis ${formatMoney(row.amounts.eur, 'eur', 'fr')}/semaine, sans engagement.`,
   };
 }
 

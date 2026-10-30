@@ -27,6 +27,7 @@ const COPY: Record<Locale, {
   once: string;
   horoscope: string;
   sign: string;
+  more: string;
 }> = {
   fr: {
     title: '3 minutes offertes avec une astrologue IA',
@@ -45,6 +46,7 @@ const COPY: Record<Locale, {
     once: 'Une seule fois par personne. Aucune carte bancaire demandée.',
     horoscope: 'Recevoir l’horoscope du matin',
     sign: 'Signe pour l’horoscope',
+    more: 'Personnaliser (facultatif) : prénom, naissance, horoscope',
   },
   en: {
     title: '3 free minutes with an AI astrologer',
@@ -63,6 +65,7 @@ const COPY: Record<Locale, {
     once: 'Once per person. No card is requested.',
     horoscope: 'Receive the morning horoscope',
     sign: 'Sign for the horoscope',
+    more: 'Personalise (optional): name, birth, horoscope',
   },
   es: {
     title: '3 minutos gratis con un astrólogo IA',
@@ -81,6 +84,7 @@ const COPY: Record<Locale, {
     once: 'Una sola vez por persona. No se pide tarjeta.',
     horoscope: 'Recibir el horóscopo de la mañana',
     sign: 'Signo del horóscopo',
+    more: 'Personalizar (opcional): nombre, nacimiento, horóscopo',
   },
   de: {
     title: '3 Minuten gratis mit einem KI-Astrologen',
@@ -99,6 +103,7 @@ const COPY: Record<Locale, {
     once: 'Einmal pro Person. Keine Karte nötig.',
     horoscope: 'Das Morgenhoroskop erhalten',
     sign: 'Zeichen für das Horoskop',
+    more: 'Anpassen (optional): Name, Geburt, Horoskop',
   },
   it: {
     title: '3 minuti gratis con un astrologo IA',
@@ -117,6 +122,7 @@ const COPY: Record<Locale, {
     once: 'Una sola volta a persona. Nessuna carta richiesta.',
     horoscope: 'Ricevere l’oroscopo del mattino',
     sign: 'Segno per l’oroscopo',
+    more: 'Personalizza (facoltativo): nome, nascita, oroscopo',
   },
 };
 
@@ -230,6 +236,9 @@ export default function FreeTrialForm({ locale }: { locale: Locale }) {
             {copy.email}
             <input className="mt-1 w-full rounded-xl border border-white/20 bg-white/10 px-3 py-3" type="email" value={email} onChange={(event) => setEmail(event.target.value)} autoComplete="email" required />
           </label>
+          <details className="rounded-xl border border-white/10 px-3 py-2">
+            <summary className="cursor-pointer text-sm text-white/70">{copy.more}</summary>
+            <div className="mt-3 space-y-3">
           <label className="block text-sm">
             {copy.name}
             <input className="mt-1 w-full rounded-xl border border-white/20 bg-white/10 px-3 py-3" value={firstName} onChange={(event) => setFirstName(event.target.value)} autoComplete="given-name" />
@@ -264,6 +273,8 @@ export default function FreeTrialForm({ locale }: { locale: Locale }) {
               </select>
             </label>
           )}
+            </div>
+          </details>
           <label className="flex gap-2 text-sm text-white/80">
             <input type="checkbox" checked={consent} onChange={(event) => setConsent(event.target.checked)} required />
             <span>{copy.consent}</span>

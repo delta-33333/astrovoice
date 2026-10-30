@@ -6,6 +6,8 @@ import { useRouter } from 'next/navigation';
 import PaymentSheet from '@/components/PaymentSheet';
 import { birthLine } from '@/components/BirthSummary';
 import type { BirthData } from '@/lib/types';
+import { OFFERS_COPY, type OffersCopy } from '@/lib/offers-copy';
+import type { Locale } from '@/lib/seo';
 
 interface BirthForm {
   name: string;
@@ -69,21 +71,21 @@ function Field({
   );
 }
 
-function BirthFields({ value, onChange }: { value: BirthForm; onChange: (next: BirthForm) => void }) {
+function BirthFields({ value, onChange, t }: { value: BirthForm; onChange: (next: BirthForm) => void; t: OffersCopy }) {
   return (
     <div className="space-y-3">
-      <Field label="Prénom" value={value.name} onChange={(name) => onChange({ ...value, name })} />
-      <Field label="Date de naissance" type="date" value={value.date} onChange={(date) => onChange({ ...value, date })} />
-      <Field label="Heure" type="time" value={value.time} onChange={(time) => onChange({ ...value, time })} />
+      <Field label={t.name} value={value.name} onChange={(name) => onChange({ ...value, name })} />
+      <Field label={t.birthDate} type="date" value={value.date} onChange={(date) => onChange({ ...value, date })} />
+      <Field label={t.time} type="time" value={value.time} onChange={(time) => onChange({ ...value, time })} />
       <label className="flex items-center gap-2 text-sm text-white/70">
         <input
           type="checkbox"
           checked={value.timeUnknown}
           onChange={(event) => onChange({ ...value, timeUnknown: event.target.checked })}
         />
-        Heure inconnue (midi utilisé pour les maisons)
+        {t.timeUnknown}
       </label>
-      <Field label="Lieu de naissance" value={value.place} onChange={(place) => onChange({ ...value, place })} />
+      <Field label={t.place} value={value.place} onChange={(place) => onChange({ ...value, place })} />
     </div>
   );
 }
@@ -95,7 +97,9 @@ function AccountBirth({
   onEdit,
   value,
   onChange,
+  t,
 }: {
+  t: OffersCopy;
   saved: BirthForm | null;
   editing: boolean;
   onEdit: () => void;
@@ -105,16 +109,17 @@ function AccountBirth({
   if (saved && saved.name && !editing) {
     return (
       <div className="rounded-2xl border border-white/10 bg-white/5 p-3 text-sm text-left">
-        <p className="text-white/50">Vos coordonnées de naissance</p>
+        <p className="text-white/50">{t.savedBirth}</p>
         <p className="text-white/90">{saved.name ? `${saved.name} · ` : ''}{birthLine(saved as BirthData)}</p>
-        <button type="button" className="mt-1 text-celestial-gold underline" onClick={onEdit}>Modifier</button>
+        <button type="button" className="mt-1 text-celestial-gold underline" onClick={onEdit}>{t.edit}</button>
       </div>
     );
   }
-  return <BirthFields value={value} onChange={onChange} />;
+  return <BirthFields value={value} onChange={onChange} t={t} />;
 }
 
-export default function OffersCatalog({ labels }: { labels: OfferLabels }) {
+export default function OffersCatalog({ labels, locale = 'fr' }: { labels: OfferLabels; locale?: Locale }) {
+  const t = OFFERS_COPY[locale];
   const router = useRouter();
   const [natal, setNatal] = useState(emptyBirth);
   const [forecast, setForecast] = useState(emptyBirth);
@@ -177,7 +182,7 @@ export default function OffersCatalog({ labels }: { labels: OfferLabels }) {
       return;
     }
     if (!response.ok) {
-      setError(payload?.error || 'Le paiement n’a pas pu être préparé.');
+      setError(payload?.error || t.error);
       return;
     }
     setClientSecret(payload.clientSecret);
@@ -199,10 +204,10 @@ export default function OffersCatalog({ labels }: { labels: OfferLabels }) {
 
       <section id="formules" className="space-y-4">
         <div>
-          <p className="text-xs uppercase tracking-[0.18em] text-celestial-gold">Chaque semaine</p>
-          <h2 className="font-[family-name:var(--font-cinzel)] text-3xl">Trois formules</h2>
+          <p className="text-xs uppercase tracking-[0.18em] text-celestial-gold">{t.weekly}</p>
+          <h2 className="font-[family-name:var(--font-cinzel)] text-3xl">{t.three}</h2>
           <p className="mt-2 text-white/75">
-            60 minutes maximum par appel. La première semaine est à tarif réduit, puis le prix affiché. Sans engagement, résiliable en 1 clic.
+            {t.plansIntro}
           </p>
         </div>
         <div className="grid gap-4 md:grid-cols-3">
@@ -216,14 +221,14 @@ export default function OffersCatalog({ labels }: { labels: OfferLabels }) {
               }`}
             >
               {plan.highlighted ? (
-                <p className="text-xs uppercase tracking-[0.16em] text-celestial-gold">Recommandé</p>
+                <p className="text-xs uppercase tracking-[0.16em] text-celestial-gold">{t.recommended}</p>
               ) : (
-                <p className="text-xs uppercase tracking-[0.16em] text-white/40">Formule</p>
+                <p className="text-xs uppercase tracking-[0.16em] text-white/40">{t.plan}</p>
               )}
               <h3 className="mt-2 font-[family-name:var(--font-cinzel)] text-2xl">{plan.name}</h3>
               <p className="mt-3 text-3xl font-bold text-celestial-gold">{plan.trialLabel}</p>
-              <p className="text-sm text-white/60">la 1re semaine, puis {plan.priceLabel}/semaine</p>
-              <p className="mt-3 text-sm text-white/80">{plan.minutes} minutes par semaine</p>
+              <p className="text-sm text-white/60">{t.firstWeek(plan.priceLabel)}</p>
+              <p className="mt-3 text-sm text-white/80">{t.perWeek(plan.minutes)}</p>
               <p className="mt-3 text-sm leading-relaxed text-white/80">{plan.renewal}</p>
               <button
                 type="button"
@@ -231,14 +236,14 @@ export default function OffersCatalog({ labels }: { labels: OfferLabels }) {
                 disabled={busy}
                 onClick={() => void openCheckout(
                   '/api/billing/subscribe',
-                  { plan: plan.id },
+                  { plan: plan.id, locale },
                   plan.name,
                   plan.trialLabel,
                   'subscription',
                   plan.renewal,
                 )}
               >
-                Choisir {plan.name}
+                {t.choose(plan.name)}
               </button>
             </article>
           ))}
@@ -246,72 +251,70 @@ export default function OffersCatalog({ labels }: { labels: OfferLabels }) {
       </section>
 
       <section className="rounded-3xl border border-white/10 bg-white/5 p-6 space-y-3">
-        <h2 className="text-xl font-semibold">Résumé écrit · {labels.summary}</h2>
+        <h2 className="text-xl font-semibold">{t.summary} · {labels.summary}</h2>
         <p className="text-white/75">
-          Après une consultation, le résumé de ce qui a été dit est envoyé par e-mail. Le paiement se fait depuis la page
-          de fin d’appel.
+          {t.summaryBody}
         </p>
       </section>
 
       <section className="rounded-3xl border border-white/10 bg-white/5 p-6 space-y-4">
-        <h2 className="text-xl font-semibold">Thème natal · {labels.natal}</h2>
-        <p className="text-white/75">Portrait écrit à partir des positions calculées, en PDF dans le compte et par e-mail.</p>
+        <h2 className="text-xl font-semibold">{t.natal} · {labels.natal}</h2>
+        <p className="text-white/75">{t.natalBody}</p>
         <form
           className="space-y-3"
           onSubmit={(event: FormEvent) => {
             event.preventDefault();
-            void payReport('natal_pdf', natal, 'Thème natal', labels.natal);
+            void payReport('natal_pdf', natal, t.natal, labels.natal);
           }}
         >
-          <AccountBirth saved={saved} editing={editing.natal} onEdit={() => setEditing({ ...editing, natal: true })} value={natal} onChange={setNatal} />
-          <button className="btn-secondary" type="submit" disabled={busy}>Recevoir le thème</button>
+          <AccountBirth t={t} saved={saved} editing={editing.natal} onEdit={() => setEditing({ ...editing, natal: true })} value={natal} onChange={setNatal} />
+          <button className="btn-secondary" type="submit" disabled={busy}>{t.natalCta}</button>
         </form>
       </section>
 
       <section className="rounded-3xl border border-white/10 bg-white/5 p-6 space-y-4">
-        <h2 className="text-xl font-semibold">Prévision 2026 et 2027 · {labels.forecast}</h2>
-        <p className="text-white/75">Lecture de l’année à partir du thème natal et du ciel du 1er janvier de chaque année.</p>
+        <h2 className="text-xl font-semibold">{t.forecast} · {labels.forecast}</h2>
+        <p className="text-white/75">{t.forecastBody}</p>
         <form
           className="space-y-3"
           onSubmit={(event: FormEvent) => {
             event.preventDefault();
-            void payReport('forecast', forecast, 'Prévision 2026 et 2027', labels.forecast);
+            void payReport('forecast', forecast, t.forecast, labels.forecast);
           }}
         >
-          <AccountBirth saved={saved} editing={editing.forecast} onEdit={() => setEditing({ ...editing, forecast: true })} value={forecast} onChange={setForecast} />
-          <button className="btn-secondary" type="submit" disabled={busy}>Recevoir la prévision</button>
+          <AccountBirth t={t} saved={saved} editing={editing.forecast} onEdit={() => setEditing({ ...editing, forecast: true })} value={forecast} onChange={setForecast} />
+          <button className="btn-secondary" type="submit" disabled={busy}>{t.forecastCta}</button>
         </form>
       </section>
 
       <section className="rounded-3xl border border-white/10 bg-white/5 p-6 space-y-4">
-        <h2 className="text-xl font-semibold">Compatibilité · {labels.compatibility}</h2>
-        <p className="text-white/75">Lecture croisée de deux thèmes, envoyée par e-mail et conservée dans le compte.</p>
+        <h2 className="text-xl font-semibold">{t.compat} · {labels.compatibility}</h2>
+        <p className="text-white/75">{t.compatBody}</p>
         <form
           className="space-y-4"
           onSubmit={(event: FormEvent) => {
             event.preventDefault();
-            void payReport('compatibility', { a: personA, b: personB }, 'Lecture de compatibilité', labels.compatibility);
+            void payReport('compatibility', { a: personA, b: personB }, t.compatTitle, labels.compatibility);
           }}
         >
           <div>
-            <p className="text-sm text-white/50 mb-2">Première personne</p>
-            <AccountBirth saved={saved} editing={editing.a} onEdit={() => setEditing({ ...editing, a: true })} value={personA} onChange={setPersonA} />
+            <p className="text-sm text-white/50 mb-2">{t.personA}</p>
+            <AccountBirth t={t} saved={saved} editing={editing.a} onEdit={() => setEditing({ ...editing, a: true })} value={personA} onChange={setPersonA} />
           </div>
           <div>
-            <p className="text-sm text-white/50 mb-2">Deuxième personne</p>
-            <BirthFields value={personB} onChange={setPersonB} />
+            <p className="text-sm text-white/50 mb-2">{t.personB}</p>
+            <BirthFields value={personB} onChange={setPersonB} t={t} />
           </div>
-          <button className="btn-secondary" type="submit" disabled={busy}>Recevoir la lecture</button>
+          <button className="btn-secondary" type="submit" disabled={busy}>{t.compatCta}</button>
         </form>
       </section>
 
       <section className="rounded-3xl border border-white/10 bg-white/5 p-6 space-y-3">
-        <h2 className="text-xl font-semibold">Reprise · 15 %</h2>
+        <h2 className="text-xl font-semibold">{t.rebook}</h2>
         <p className="text-white/75">
-          Après une consultation, le prochain rendez-vous payant bénéficie de 15 % de réduction, pendant 30 jours.
-          Une seule offre en attente à la fois.
+          {t.rebookBody}
         </p>
-        <Link href="/astrologers?dispo=now" className="text-celestial-gold underline">Reprendre un créneau</Link>
+        <Link href="/astrologers?dispo=now" className="text-celestial-gold underline">{t.rebookCta}</Link>
       </section>
 
       <PaymentSheet
@@ -319,9 +322,9 @@ export default function OffersCatalog({ labels }: { labels: OfferLabels }) {
         open={sheetOpen}
         title={sheetTitle}
         amountLabel={sheetAmount}
-        detail={sheetKind === 'subscription' ? '60 minutes maximum par appel.' : 'Paiement sécurisé. Le document arrive par e-mail et dans le compte.'}
+        detail={sheetKind === 'subscription' ? t.subDetail : t.reportDetail}
         renewal={sheetKind === 'subscription' ? sheetRenewal : undefined}
-        payLabel={sheetAmount ? `Payer ${sheetAmount}` : 'Payer'}
+        payLabel={sheetAmount ? `${t.pay} ${sheetAmount}` : t.pay}
         clientSecret={clientSecret}
         collectContact={collectContact}
         onClose={() => setSheetOpen(false)}

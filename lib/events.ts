@@ -8,6 +8,7 @@ import {
   isBotUserAgent,
   validVisitorId,
   type Utm,
+  INTERNAL_COOKIE,
 } from './attribution';
 import { getSupabaseAdmin, supabaseAvailable } from './supabase';
 
@@ -138,6 +139,7 @@ type ResolvedContext = {
   utm_campaign: string | null;
   user_agent: string | null;
   is_bot: boolean;
+  is_internal: boolean;
 };
 
 const EMPTY_CONTEXT: ResolvedContext = {
@@ -149,6 +151,7 @@ const EMPTY_CONTEXT: ResolvedContext = {
   utm_campaign: null,
   user_agent: null,
   is_bot: false,
+  is_internal: false,
 };
 
 /** Contexte de la requête en cours (cookie visiteur, référent, UTM, navigateur). Aucun en dehors d'une requête. */
@@ -187,6 +190,7 @@ async function requestContext(given: EventContext | undefined, userId: string | 
       user_agent: userAgent.slice(0, 300) || null,
       // Les comptes connectés ne sont pas des robots ; un visiteur anonyme l'est si son navigateur l'indique.
       is_bot: !userId && (given?.clientBot === true || isBotUserAgent(userAgent)),
+      is_internal: jar.get(INTERNAL_COOKIE)?.value === '1',
     };
   } catch {
     return EMPTY_CONTEXT;

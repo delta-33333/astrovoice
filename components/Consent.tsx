@@ -34,6 +34,7 @@ async function saveChoice(choice: ConsentValue) {
 
 const COPY: Record<Locale, {
   text: string;
+  short: string;
   accept: string;
   refuse: string;
   customise: string;
@@ -42,6 +43,7 @@ const COPY: Record<Locale, {
   privacy: string;
 }> = {
   fr: {
+    short: 'Mesure d’audience facultative ; le site marche sans.',
     text: 'Les cookies cl_vid et cl_ft sont posés à la première visite pour mesurer l’entonnoir (source, référent, page d’arrivée). Vercel Analytics ne se charge qu’avec votre accord. Le site, le paiement et l’appel fonctionnent aussi si vous le refusez.',
     accept: 'Accepter',
     refuse: 'Refuser',
@@ -51,6 +53,7 @@ const COPY: Record<Locale, {
     privacy: 'Politique de confidentialité',
   },
   en: {
+    short: 'Optional audience measurement; the site works without it.',
     text: 'The cl_vid and cl_ft cookies are set on the first visit to measure the funnel (source, referrer, landing page). Vercel Analytics loads only with your agreement. The site, payment and the call work if you refuse it.',
     accept: 'Accept',
     refuse: 'Refuse',
@@ -60,6 +63,7 @@ const COPY: Record<Locale, {
     privacy: 'Privacy policy',
   },
   es: {
+    short: 'Medición de audiencia opcional; el sitio funciona sin ella.',
     text: 'Las cookies cl_vid y cl_ft se colocan en la primera visita para medir el embudo (fuente, referente, página de llegada). Vercel Analytics solo se carga con su acuerdo. El sitio, el pago y la llamada funcionan si lo rechaza.',
     accept: 'Aceptar',
     refuse: 'Rechazar',
@@ -69,6 +73,7 @@ const COPY: Record<Locale, {
     privacy: 'Política de privacidad',
   },
   de: {
+    short: 'Optionale Reichweitenmessung; die Seite geht auch ohne.',
     text: 'Die Cookies cl_vid und cl_ft werden beim ersten Besuch gesetzt, um den Trichter zu messen (Quelle, Referrer, Einstiegsseite). Vercel Analytics startet nur mit Ihrer Zustimmung. Website, Zahlung und Anruf funktionieren auch ohne.',
     accept: 'Akzeptieren',
     refuse: 'Ablehnen',
@@ -78,6 +83,7 @@ const COPY: Record<Locale, {
     privacy: 'Datenschutz',
   },
   it: {
+    short: 'Misurazione facoltativa; il sito funziona anche senza.',
     text: 'I cookie cl_vid e cl_ft vengono impostati alla prima visita per misurare il percorso (fonte, referrer, pagina di arrivo). Vercel Analytics parte solo con il tuo consenso. Il sito, il pagamento e la chiamata funzionano anche se rifiuti.',
     accept: 'Accetta',
     refuse: 'Rifiuta',
@@ -94,7 +100,7 @@ function localeFromPath(path: string): Locale {
 }
 
 const buttonClass =
-  'w-full rounded-full border border-white/40 bg-white/10 px-4 py-3 text-sm font-semibold text-white hover:bg-white/20';
+  'w-full rounded-full border border-white/40 bg-white/10 px-2 py-2 text-xs sm:px-4 sm:py-3 sm:text-sm font-semibold text-white hover:bg-white/20';
 
 export function ConsentRoot({ children }: { children: React.ReactNode }) {
   const [choice, setChoice] = useState<Choice>(null);
@@ -149,14 +155,15 @@ export function ConsentRoot({ children }: { children: React.ReactNode }) {
         </>
       )}
       {ready && open && (
-        <div className="fixed inset-x-0 bottom-0 z-[70] p-3 sm:p-4">
+        <div className="fixed inset-x-0 bottom-0 z-[70] sm:p-4">
           <div
             role="dialog"
             aria-labelledby="cookie-title"
-            className="mx-auto max-w-3xl rounded-2xl border border-white/20 bg-[#121826] p-4 shadow-2xl"
+            className="mx-auto max-w-3xl border-t border-white/20 bg-[#121826] px-3 py-2 shadow-2xl sm:rounded-2xl sm:border sm:p-4"
           >
-            <p id="cookie-title" className="text-sm leading-relaxed text-white">
-              {copy.text}{' '}
+            <p id="cookie-title" className="text-xs leading-snug text-white sm:text-sm sm:leading-relaxed">
+              <span className={panel ? '' : 'hidden sm:inline'}>{copy.text}</span>
+              <span className={panel ? 'hidden' : 'sm:hidden'}>{copy.short}</span>{' '}
               <a href={privacyPath(locale)} className="underline text-celestial-gold">
                 {copy.privacy}
               </a>
@@ -172,7 +179,7 @@ export function ConsentRoot({ children }: { children: React.ReactNode }) {
                 <span>{copy.analytics}</span>
               </label>
             )}
-            <div className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-3">
+            <div className="mt-2 grid grid-cols-3 gap-2 sm:mt-4">
               <button type="button" className={buttonClass} disabled={pending} onClick={() => void apply('essential')}>
                 {copy.refuse}
               </button>
