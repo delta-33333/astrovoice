@@ -8,6 +8,7 @@ import { bigThreePath, moonPath } from './free-tools.ts';
 import { coupleAlternates, couplePath } from './couple-compat.ts';
 import { GEO_PATHS, GEO_UPDATED_ISO, geoAlternates, type GeoPage } from './geo-pages.ts';
 import { factsAlternates, factsPath } from './facts.ts';
+import { SKY_EVENT_IDS, SKY_EVENT_PATHS, SKY_EVENTS_PUBLISHED, skyEventAlternates } from './sky-events.ts';
 import { legalNoticeAlternates, legalNoticePath } from './legal-notice.ts';
 import { privacyPath } from './privacy-copy.ts';
 import {
@@ -106,6 +107,13 @@ export function pageEntries(): SitemapEntry[] {
         lastModified: GEO_UPDATED_ISO,
         languages,
       });
+    }
+  }
+  // Pages « événement du ciel » (novembre 2026), FR + EN.
+  for (const id of SKY_EVENT_IDS) {
+    const languages = skyEventAlternates(id);
+    for (const locale of ['en', 'fr'] as const) {
+      entries.push({ path: SKY_EVENT_PATHS[id][locale], lastModified: SKY_EVENTS_PUBLISHED, languages });
     }
   }
   for (const path of H2027_PATHS) {
