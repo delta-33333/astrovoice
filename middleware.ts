@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
+import type { NextFetchEvent, NextRequest } from 'next/server';
 import {
   FIRST_TOUCH_COOKIE,
   FIRST_TOUCH_MAX_AGE,
@@ -20,7 +20,7 @@ const LOCALES = new Set(['fr', 'en', 'es', 'de', 'it']);
 const INDEXNOW_KEY = (process.env.INDEXNOW_KEY || '').trim();
 const INDEXNOW_READY = /^[A-Za-z0-9-]{8,128}$/.test(INDEXNOW_KEY);
 
-export function middleware(request: NextRequest) {
+export function middleware(request: NextRequest, event: NextFetchEvent) {
   if (INDEXNOW_READY && request.nextUrl.pathname === `/${INDEXNOW_KEY}.txt`) {
     return new NextResponse(INDEXNOW_KEY, {
       status: 200,
@@ -58,6 +58,15 @@ export function middleware(request: NextRequest) {
   // Affiliation : ?ref=CODE mémorisé 30 jours (dernier lien cliqué).
   const ref = validRefCode(request.nextUrl.searchParams.get('ref'));
   if (ref) {
+    if (humanGet && request.cookies.get(REF_COOKIE)?.value !== ref) {
+      event.waitUntil(
+        fetch(new URL('/api/affiliates/click', request.url), {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'x-forwarded-for': request.headers.get('x-forwarded-for') || '' },
+          body: JSON.stringify({ code: ref, vid: existing || visitorId || null }),
+        }).catch(() => undefined)
+      );
+    }
     response.cookies.set(REF_COOKIE, ref, { httpOnly: true, sameSite: 'lax', secure, path: '/', maxAge: REF_MAX_AGE });
   }
   // Trafic interne : /admin ou ?internal=1 pose cl_internal (exclu des vues d’entonnoir) ; ?internal=0 l’enlève.

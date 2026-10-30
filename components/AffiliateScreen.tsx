@@ -7,6 +7,7 @@ import JsonLd from '@/components/JsonLd';
 import SeoChrome from '@/components/SeoChrome';
 import { affiliatePath } from '@/lib/affiliate';
 import { AFFILIATE, COMMON } from '@/lib/free-tools-copy';
+import { AFFILIATE_EXTRA, affiliateStatsPath } from '@/lib/affiliate-extra-copy';
 import type { ToolLang } from '@/lib/free-tools';
 import { hreflangAlternates, isLocale, localeHomePath } from '@/lib/seo';
 import { appBaseUrl } from '@/lib/stripe';
@@ -32,6 +33,8 @@ export default async function AffiliateScreen(props: { params: Promise<{ locale:
   if (`/${locale}/${props.slug}` !== path) permanentRedirect(path);
   const copy = AFFILIATE[locale];
   const common = COMMON[locale];
+  const extra = AFFILIATE_EXTRA[locale];
+  const faq = [...copy.faq, ...extra.faq];
   const origin = appBaseUrl();
   const jsonLd = [
     {
@@ -46,7 +49,7 @@ export default async function AffiliateScreen(props: { params: Promise<{ locale:
     {
       '@context': 'https://schema.org',
       '@type': 'FAQPage',
-      mainEntity: copy.faq.map((item) => ({ '@type': 'Question', name: item.q, acceptedAnswer: { '@type': 'Answer', text: item.a } })),
+      mainEntity: faq.map((item) => ({ '@type': 'Question', name: item.q, acceptedAnswer: { '@type': 'Answer', text: item.a } })),
     },
   ];
   return (
@@ -64,12 +67,15 @@ export default async function AffiliateScreen(props: { params: Promise<{ locale:
             <li key={point} className="card-glow rounded-2xl border border-celestial-gold/30 bg-celestial-purple/10 p-4 text-sm">{point}</li>
           ))}
         </ul>
-        {copy.cta ? <a href="#join" className="btn-primary mt-6 inline-block w-full text-center sm:w-auto">{copy.cta}</a> : null}
-        {copy.example ? (
+        <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center">
+          <a href="#join" className="btn-primary inline-block text-center">{extra.cta}</a>
+          <Link href={affiliateStatsPath(locale)} className="text-sm text-celestial-gold underline">{extra.statsLink}</Link>
+        </div>
+        {extra.example ? (
           <section className="mt-10 rounded-2xl border border-white/15 bg-white/5 p-4 sm:p-5">
-            <h2 className="font-[family-name:var(--font-cinzel)] text-xl text-celestial-gold">{copy.example.title}</h2>
-            <ul className="mt-3 list-disc pl-5 space-y-1 text-white/85">{copy.example.lines.map((line) => <li key={line}>{line}</li>)}</ul>
-            <p className="mt-3 text-xs text-white/55">{copy.example.note}</p>
+            <h2 className="font-[family-name:var(--font-cinzel)] text-xl text-celestial-gold">{extra.example.title}</h2>
+            <ul className="mt-3 list-disc pl-5 space-y-1 text-white/85">{extra.example.lines.map((line) => <li key={line}>{line}</li>)}</ul>
+            <p className="mt-3 text-xs text-white/55">{extra.example.note}</p>
           </section>
         ) : null}
         <section className="mt-10">
@@ -77,7 +83,7 @@ export default async function AffiliateScreen(props: { params: Promise<{ locale:
           <ol className="mt-3 list-decimal pl-5 space-y-2 text-white/80">{copy.how.map((step) => <li key={step}>{step}</li>)}</ol>
         </section>
         <section className="mt-10" id="join">
-          <AffiliateForm copy={copy.form} locale={locale} />
+          <AffiliateForm copy={{ ...copy.form, payout: extra.payout, payoutHint: extra.payoutHint, emailSent: extra.emailSent }} locale={locale} />
         </section>
         <section className="mt-10" id="terms">
           <h2 className="font-[family-name:var(--font-cinzel)] text-2xl text-celestial-gold">{copy.termsTitle}</h2>
@@ -86,11 +92,12 @@ export default async function AffiliateScreen(props: { params: Promise<{ locale:
         <section className="mt-10">
           <h2 className="font-[family-name:var(--font-cinzel)] text-2xl text-celestial-gold">{copy.faqTitle}</h2>
           <dl className="mt-3 space-y-4">
-            {copy.faq.map((item) => (
+            {faq.map((item) => (
               <div key={item.q}><dt className="font-semibold">{item.q}</dt><dd className="mt-1 text-white/75">{item.a}</dd></div>
             ))}
           </dl>
         </section>
+        <p className="mt-10 text-sm text-white/70">{extra.contact}</p>
         <FreeToolLinks locale={locale} current="affiliate" />
       </article>
     </main>

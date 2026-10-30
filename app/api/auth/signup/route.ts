@@ -8,6 +8,8 @@ import { tooManyRequests } from '@/lib/guard';
 import { recordFirstTouch, trackEvent } from '@/lib/events';
 import { clientIp, rateLimit } from '@/lib/rate-limit';
 import { createSession } from '@/lib/session';
+import { REF_COOKIE } from '@/lib/affiliate';
+import { recordAffiliateEvent } from '@/lib/affiliate-events';
 import { supabaseAvailable } from '@/lib/supabase';
 
 export const dynamic = 'force-dynamic';
@@ -73,6 +75,7 @@ export async function POST(request: NextRequest) {
       if (saved.error && !isMissingRelation(saved.error)) console.warn('heard_from:', saved.error.message);
     }
     await recordFirstTouch(result.userId);
+    await recordAffiliateEvent(request.cookies.get(REF_COOKIE)?.value, 'signup', `user:${result.userId}`);
     await trackEvent({ name: 'signup', userId: result.userId, metadata: heard ? { heardFrom: heard } : undefined });
     return NextResponse.json({ success: true, needsBirthData: true });
   } catch (error) {

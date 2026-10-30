@@ -15,6 +15,8 @@ interface MailInput {
   subject: string;
   html: string;
   attachments?: MailAttachment[];
+  from?: string;
+  replyTo?: string;
   headers?: Record<string, string>;
   /** Envoi différé Resend (ISO 8601). Compatible avec un hébergement sans cron horaire. */
   scheduledAt?: string;
@@ -40,7 +42,8 @@ export async function dispatchMail(input: MailInput): Promise<string | null> {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      from: resendFrom(),
+      from: input.from || resendFrom(),
+      ...(input.replyTo ? { reply_to: input.replyTo } : {}),
       to: [input.to],
       subject: input.subject,
       html: input.html,
