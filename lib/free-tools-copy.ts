@@ -66,6 +66,8 @@ export interface AffiliateCopy {
   how: string[];
   termsTitle: string;
   terms: string[];
+  cta?: string;
+  example?: { title: string; lines: string[]; note: string };
   form: {
     title: string;
     name: string;
@@ -336,6 +338,8 @@ export const AFFILIATE: Record<ToolLang, AffiliateCopy> = {
     h1: 'Programme d’affiliation : 30 % pour les créateurs astro',
     answer: 'Vous parlez d’astrologie à une communauté ? Recevez 30 % du premier paiement de chaque nouveau client arrivé par votre lien Callastral. L’inscription est gratuite et votre lien est créé tout de suite. Les commissions sont versées manuellement, une fois par mois.',
     points: ['30 % du premier paiement de chaque nouveau client', 'Suivi 30 jours par cookie après le clic', 'Votre audience peut essayer 3 minutes d’appel offertes et poser une première question par message offerte', 'Versement manuel mensuel, sans plateforme tierce'],
+    cta: 'Créer mon lien gratuit',
+    example: { title: 'Exemple de gain (illustratif)', lines: ['1 client achète le pack 30 minutes (34,90 €) → 10,47 € pour vous', '10 clients sur ce pack → 104,70 €', '1 client prend l’offre d’accueil 10 minutes (4,90 €) → 1,47 €'], note: 'Exemple calculé sur les prix publics France actuels. Ce n’est pas une promesse de revenus : vos gains dépendent de vos ventes réelles.' },
     howTitle: 'Comment ça marche',
     how: ['Inscrivez-vous ci-dessous : nom, e-mail, compte social.', 'Partagez votre lien personnel (bio, story, description de vidéo, newsletter).', 'Quand une personne arrivée par votre lien paie pour la première fois, 30 % de ce paiement vous est attribué.'],
     termsTitle: 'Conditions du programme',
@@ -354,6 +358,8 @@ export const AFFILIATE: Record<ToolLang, AffiliateCopy> = {
     faq: [
       { q: 'Combien coûte l’inscription ?', a: 'Rien. Le programme est gratuit et sans engagement.' },
       { q: 'Quand suis-je payé ?', a: 'Une fois par mois, manuellement, pour les commissions de plus de 30 jours. Il n’y a pas de versement automatique.' },
+      { q: 'Y a-t-il un minimum de versement ou un tableau de bord ?', a: 'Pas de seuil minimum annoncé. Il n’y a pas encore de tableau de bord en ligne : chaque premier paiement par votre lien est enregistré automatiquement, et le détail vous est communiqué avec le versement mensuel.' },
+      { q: 'Les conseillers sont-ils des humains ?', a: 'Non. Les Conseillères et Conseillers Callastral sont des conseillers virtuels propulsés par l’IA, et c’est indiqué clairement aux utilisateurs. Merci de le dire aussi à votre audience.' },
       { q: 'Que peut tester mon audience gratuitement ?', a: '3 minutes d’appel offertes avec une Conseillère ou un Conseiller Callastral, une première réponse par message offerte, et les outils gratuits : thème astral, ascendant, Lune du jour.' },
     ],
   },
@@ -363,6 +369,8 @@ export const AFFILIATE: Record<ToolLang, AffiliateCopy> = {
     h1: 'Affiliate program: 30% for astrology creators',
     answer: 'Do you talk about astrology to an audience? Earn 30% of the first payment of every new customer who comes through your Callastral link. Joining is free and your link is created instantly. Commissions are paid manually once a month.',
     points: ['30% of every new customer’s first payment', '30-day cookie tracking after the click', 'Your audience can try 3 free call minutes and a free first message answer', 'Manual monthly payout, no third-party platform'],
+    cta: 'Get my free link',
+    example: { title: 'Example earnings (illustrative)', lines: ['1 customer buys the 30-minute pack (€34.90) → €10.47 for you', '10 customers on that pack → €104.70', '1 customer takes the 10-minute welcome offer (€4.90) → €1.47'], note: 'Example based on current public prices in France. Not an income promise: your earnings depend on your actual sales.' },
     howTitle: 'How it works',
     how: ['Sign up below: name, email, social handle.', 'Share your personal link (bio, story, video description, newsletter).', 'When someone who arrived through your link pays for the first time, 30% of that payment is credited to you.'],
     termsTitle: 'Program terms',
@@ -381,6 +389,8 @@ export const AFFILIATE: Record<ToolLang, AffiliateCopy> = {
     faq: [
       { q: 'How much does it cost to join?', a: 'Nothing. The program is free with no commitment.' },
       { q: 'When do I get paid?', a: 'Once a month, manually, for commissions older than 30 days. There are no automatic payouts.' },
+      { q: 'Is there a payout minimum or a dashboard?', a: 'No minimum is announced. There is no online dashboard yet: every first payment through your link is recorded automatically, and the details are shared with the monthly payout.' },
+      { q: 'Are the advisors human?', a: 'No. Callastral Advisors are virtual, AI-powered advisors, and users are told so clearly. Please tell your audience too.' },
       { q: 'What can my audience try for free?', a: '3 free call minutes with a Callastral advisor, a free first answer by message, and the free tools: birth chart, rising sign, Moon today.' },
     ],
   },
