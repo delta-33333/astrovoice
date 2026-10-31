@@ -8,6 +8,7 @@ import { bigThreePath, moonPath } from './free-tools.ts';
 import { coupleAlternates, couplePath } from './couple-compat.ts';
 import { GEO_PATHS, GEO_UPDATED_ISO, geoAlternates, type GeoPage } from './geo-pages.ts';
 import { factsAlternates, factsPath } from './facts.ts';
+import { dailySitemapEntries } from './daily-horoscope.ts';
 import { SKY_EVENT_IDS, SKY_EVENT_PATHS, SKY_EVENTS_PUBLISHED, skyEventAlternates } from './sky-events.ts';
 import { legalNoticeAlternates, legalNoticePath } from './legal-notice.ts';
 import { privacyPath } from './privacy-copy.ts';
@@ -116,6 +117,8 @@ export function pageEntries(): SitemapEntry[] {
       entries.push({ path: SKY_EVENT_PATHS[id][locale], lastModified: SKY_EVENTS_PUBLISHED, languages });
     }
   }
+  // Horoscope du jour (EN + FR) : hub + 12 signes, archives datées.
+  entries.push(...dailySitemapEntries());
   for (const path of H2027_PATHS) {
     entries.push({ path, lastModified: H2027_UPDATED, languages: selfLanguages('fr', path) });
   }
