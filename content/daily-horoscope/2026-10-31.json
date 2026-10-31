@@ -1,0 +1,147 @@
+{
+ "date": "2026-10-31",
+ "sky": {
+  "date": "2026-10-31",
+  "computedAt": "08:00 Europe/Paris",
+  "phase": {
+   "id": "lastQuarter",
+   "illumination": 67,
+   "waxing": false
+  },
+  "bodies": [
+   {
+    "name": "Soleil",
+    "sign": "Scorpion",
+    "degree": 7,
+    "retrograde": false
+   },
+   {
+    "name": "Lune",
+    "sign": "Cancer",
+    "degree": 17,
+    "retrograde": false
+   },
+   {
+    "name": "Mercure",
+    "sign": "Scorpion",
+    "degree": 17,
+    "retrograde": true
+   },
+   {
+    "name": "Vénus",
+    "sign": "Balance",
+    "degree": 26,
+    "retrograde": true
+   },
+   {
+    "name": "Mars",
+    "sign": "Lion",
+    "degree": 18,
+    "retrograde": false
+   },
+   {
+    "name": "Jupiter",
+    "sign": "Lion",
+    "degree": 24,
+    "retrograde": false
+   },
+   {
+    "name": "Saturne",
+    "sign": "Bélier",
+    "degree": 9,
+    "retrograde": true
+   },
+   {
+    "name": "Uranus",
+    "sign": "Gémeaux",
+    "degree": 4,
+    "retrograde": true
+   },
+   {
+    "name": "Neptune",
+    "sign": "Bélier",
+    "degree": 2,
+    "retrograde": true
+   },
+   {
+    "name": "Pluton",
+    "sign": "Verseau",
+    "degree": 3,
+    "retrograde": false
+   },
+   {
+    "name": "Nœud nord",
+    "sign": "Verseau",
+    "degree": 26,
+    "retrograde": true
+   }
+  ],
+  "ingresses": [],
+  "aspects": [
+   {
+    "a": "Lune",
+    "b": "Mercure",
+    "aspect": "trine",
+    "orb": 0
+   },
+   {
+    "a": "Vénus",
+    "b": "Nœud nord",
+    "aspect": "trine",
+    "orb": 0.5
+   },
+   {
+    "a": "Mercure",
+    "b": "Mars",
+    "aspect": "square",
+    "orb": 0.8
+   },
+   {
+    "a": "Vénus",
+    "b": "Jupiter",
+    "aspect": "sextile",
+    "orb": 2.4
+   },
+   {
+    "a": "Mars",
+    "b": "Jupiter",
+    "aspect": "conjunction",
+    "orb": 6
+   }
+  ]
+ },
+ "en": {
+  "summary": "Saturday 31 October 2026: the Moon spends the whole day in Cancer, waning and about two-thirds lit as it nears its last quarter. The Sun is in Scorpio with Mercury retrograde beside it, Venus is retrograde in Libra, and Mars and Jupiter travel together in Leo. The Moon forms an exact trine to Mercury, while Mars squares Mercury.",
+  "signs": {
+   "belier": "Aries, today is about home before ambition: the Moon in Cancer lights up your private life, so the most useful moves happen behind closed doors.\n\nA waning Moon favours clearing rather than starting. Sort a drawer, settle a household question, call the relative you keep postponing. With Mercury retrograde in Scorpio, money you share with others or a contract detail may need a second reading before you sign anything.\n\nMars and Jupiter in Leo keep your playful side awake, and an evening of something creative or simply fun suits the sky. Mars squaring Mercury can make words sharper than you intend, so count to three before replying to a message that stings. Venus retrograde in Libra asks the same patience in a close relationship: listen first, decide later.",
+   "taureau": "Taurus, today's theme is conversation: the Moon in Cancer moves through your sector of short trips, siblings and everyday messages, and its exact trine to Mercury makes talking things through easier than usual.\n\nYour opposite sign Scorpio hosts both the Sun and a retrograde Mercury, so a partner or associate may revisit an old topic. Treat it as a chance to clarify rather than a reopening of hostilities.\n\nMars and Jupiter in Leo heat up the home front: a family plan or a repair can take more energy than expected. Venus, your ruler, is retrograde in Libra, a reminder to review routines, health habits and work rhythms instead of adding new ones. Keep the evening simple and close to home. Good food and early sleep suit you.",
+   "gemeaux": "Gemini, today points to money and comfort: the Moon in Cancer crosses your resources sector, so checking your budget or treating yourself sensibly fits the day.\n\nMercury, your ruler, is retrograde in Scorpio, in the part of your chart linked to work and routines. Double-check a schedule, an email or a file before sending it on. The square from Mars in Leo can speed up your words, and a quick remark could land harder than meant with a neighbour or a sibling.\n\nVenus retrograde in Libra invites you to return to a hobby, a romance or a creative project you put aside. Uranus, still retrograde in your sign, keeps the urge for change active, but the waning Moon says finish before you start something new.",
+   "cancer": "Cancer, the Moon is in your own sign all day, so your feelings set the tone and it is worth listening to them before reacting to others.\n\nThe Moon's exact trine to Mercury retrograde in Scorpio helps you express yourself warmly, perhaps on a subject linked to a child, a love story or a creative project from the past. A waning Moon, about two-thirds lit, favours tidying, resting and letting go of what weighs on you.\n\nMars and Jupiter in Leo are in your money sector: spending can feel tempting, so set a limit before going shopping. Venus retrograde in Libra touches home and family; a conversation about your living space can resurface. A calm, cosy Saturday suits you better than a crowded agenda.",
+   "lion": "Leo, today is quieter than your sky suggests: the Moon in Cancer passes through your most private sector, so recharging matters more than performing.\n\nMars and Jupiter are both in your sign, giving you energy and confidence, yet the square from Mars to Mercury retrograde in Scorpio can stir tension at home or with family. Say what you mean calmly, and avoid making decisions about your home in a rush.\n\nVenus retrograde in Libra crosses your communication sector, so an old message, a former contact or an unfinished discussion may come back. Answer kindly, without promising more than you can give. The waning Moon is a good moment for sleep, a long bath or journaling, and you will start next week clearer.",
+   "vierge": "Virgo, today's theme is friendship: the Moon in Cancer moves through your social sector, and a group, a friend or an online community can bring you comfort.\n\nMercury, your ruler, is retrograde in Scorpio, in your sector of messages and short trips. Expect a delayed reply, a changed plan or a forgotten detail, and keep some margin in your timetable. Mercury's square with Mars in Leo can make you overthink in the background; writing your worries down helps.\n\nVenus retrograde in Libra asks you to look again at your spending and at what you really value. The trine between the Moon and Mercury is a good support for a frank but gentle talk with someone you trust. Keep it light this evening.",
+   "balance": "Libra, today highlights your public image and your goals: the Moon in Cancer crosses the top of your chart, so how you handle responsibilities is noticed.\n\nVenus, your ruler, is retrograde in your own sign, still a phase for reviewing your appearance, your choices and your relationships rather than launching big changes. Mercury retrograde in Scorpio sits in your money sector, so check bank details, bills and subscriptions before paying.\n\nMars and Jupiter in Leo light up your friendships and plans with others. An invitation can arrive, and you can enjoy it without overcommitting. Mars squaring Mercury may tense a discussion about money with a friend; keep the facts clear. With a waning Moon, finish a task rather than starting a new project.",
+   "scorpion": "Scorpio, today supports reflection and perspective: the Moon in Cancer, a fellow water sign, forms an exact trine to Mercury retrograde in your sign, so your intuition and your thinking work well together.\n\nThe Sun in Scorpio gives your birthday season its weight, and Mercury retrograde here invites you to reconsider a personal plan, a way of presenting yourself or an old decision. Mars squaring Mercury from Leo can create friction with a boss or someone in authority; stay factual and avoid power struggles.\n\nVenus retrograde in Libra works in your quietest sector, a good time to rest and to let go of a regret. Reading, a short trip or a call to someone far away suits the sky this Saturday.",
+   "sagittaire": "Sagittarius, today touches deeper matters: the Moon in Cancer crosses your sector of shared resources and intimacy, which can raise questions about trust, debts or common money.\n\nThe Sun and Mercury retrograde are in Scorpio, in your most hidden sector, so you may think more than you speak. That is fine; let ideas mature before sharing them. Mars and Jupiter, your ruler, travel together in Leo, a fellow fire sign, encouraging travel plans, learning and broader horizons.\n\nVenus retrograde in Libra crosses your friendships: an old friend may reappear, or you may reconsider your place in a group. The waning Moon favours closing files, paying what you owe and clearing space, rather than signing up for something new today. A short walk outside will help you think.",
+   "capricorne": "Capricorn, today centres on others: the Moon in Cancer, your opposite sign, highlights partnerships, so a close relationship asks for attention and a little tenderness.\n\nMercury retrograde in Scorpio sits in your sector of friends and plans, so a group project may slip or need reorganising. Mars squaring Mercury from Leo can make a shared financial topic tense; slow down and check the figures together.\n\nVenus retrograde in Libra crosses the top of your chart, inviting you to review your professional image or a career choice made recently. Saturn, your ruler, is retrograde in Aries, which reinforces the message: rework the foundations before building higher. A quiet evening with someone close fits the waning Moon perfectly. Let someone else take the lead for once; it can be a relief.",
+   "verseau": "Aquarius, today is practical: the Moon in Cancer moves through your sector of daily routines and health, so sleep, food and an organised to-do list help you most.\n\nMars and Jupiter in Leo, your opposite sign, give energy to relationships and partnerships, but the square from Mars to Mercury retrograde in Scorpio can bring tension around work or your public role. Choose your words carefully with a colleague or manager, and avoid answering an important email in the heat of the moment.\n\nVenus retrograde in Libra crosses your sector of travel and learning, so an old project, a course or a trip may come back to mind. Pluto in your sign keeps you in a long transformation; today, small habits matter more than big declarations.",
+   "poissons": "Pisces, today favours pleasure and creativity: the Moon in Cancer, a fellow water sign, crosses your sector of romance, play and children, and its exact trine to Mercury helps heartfelt expression.\n\nMercury retrograde in Scorpio sits in your sector of beliefs and faraway places, so you may revisit a philosophy, a study plan or a trip. Check travel bookings twice. Mars squaring Mercury from Leo may stir friction at work or about daily obligations; keep perspective and pace yourself.\n\nVenus retrograde in Libra touches shared money and intimacy, a moment for honest reflection rather than big commitments. A waning Moon, close to its last quarter, invites you to release something you no longer need. Music, art or time with loved ones will feel right tonight."
+  }
+ },
+ "fr": {
+  "summary": "Samedi 31 octobre 2026 : la Lune reste toute la journée en Cancer, décroissante et éclairée aux deux tiers environ, à l’approche de son dernier quartier. Le Soleil est en Scorpion avec Mercure rétrograde à ses côtés, Vénus est rétrograde en Balance, et Mars voyage avec Jupiter en Lion. La Lune forme un trigone exact à Mercure, tandis que Mars est au carré de Mercure.",
+  "signs": {
+   "belier": "Bélier, aujourd’hui le foyer passe avant l’ambition : la Lune en Cancer éclaire votre vie privée, et c’est chez vous que se jouent les gestes les plus utiles.\n\nUne Lune décroissante favorise le tri plutôt que les débuts. Rangez un placard, réglez une question domestique, appelez le proche que vous repoussez depuis des jours. Avec Mercure rétrograde en Scorpion, un détail de contrat ou une somme partagée mérite une seconde lecture avant toute signature.\n\nMars et Jupiter en Lion gardent votre côté joueur bien éveillé : une soirée créative ou simplement légère va dans le sens du ciel. Le carré de Mars à Mercure peut rendre vos mots plus tranchants que prévu, alors respirez avant de répondre à un message qui pique. Vénus rétrograde en Balance demande la même patience en couple : écouter d’abord, trancher ensuite.",
+   "taureau": "Taureau, le thème du jour est l’échange : la Lune en Cancer traverse votre secteur des déplacements courts, de la fratrie et des messages du quotidien, et son trigone exact à Mercure rend les discussions plus fluides que d’habitude.\n\nVotre signe opposé, le Scorpion, accueille le Soleil et Mercure rétrograde : un partenaire ou un associé peut revenir sur un vieux sujet. Voyez-y une occasion de clarifier, pas de rouvrir les hostilités.\n\nMars et Jupiter en Lion chauffent le front familial : un projet pour la maison ou une réparation peut demander plus d’énergie que prévu. Vénus, votre planète, est rétrograde en Balance, un rappel pour revoir vos routines, votre hygiène de vie et votre rythme de travail plutôt que d’en ajouter. Un bon repas et un coucher tôt vous feront du bien.",
+   "gemeaux": "Gémeaux, la journée tourne autour de l’argent et du confort : la Lune en Cancer traverse votre secteur des ressources, le bon moment pour faire le point sur votre budget ou vous offrir un plaisir raisonnable.\n\nMercure, votre planète, est rétrograde en Scorpion, dans la zone de votre thème liée au travail et aux habitudes. Vérifiez un planning, un mail ou un fichier avant de l’envoyer. Le carré de Mars en Lion peut accélérer vos paroles, et une remarque rapide risque de blesser plus que prévu un voisin ou un frère.\n\nVénus rétrograde en Balance vous invite à reprendre un loisir, une histoire de cœur ou un projet créatif mis de côté. Uranus, toujours rétrograde dans votre signe, entretient l’envie de changement, mais la Lune décroissante conseille de finir avant de commencer.",
+   "cancer": "Cancer, la Lune est dans votre signe toute la journée : vos émotions donnent le ton, et mieux vaut les écouter avant de réagir aux autres.\n\nLe trigone exact de la Lune à Mercure rétrograde en Scorpion vous aide à vous exprimer avec chaleur, peut-être sur un sujet lié à un enfant, une histoire d’amour ou un projet créatif du passé. Une Lune décroissante, éclairée aux deux tiers, favorise le rangement, le repos et le lâcher-prise.\n\nMars et Jupiter en Lion occupent votre secteur financier : la dépense peut tenter, fixez donc une limite avant de faire les magasins. Vénus rétrograde en Balance touche la maison et la famille, et une discussion sur votre lieu de vie peut refaire surface. Un samedi calme et douillet vous conviendra mieux qu’un agenda chargé.",
+   "lion": "Lion, la journée est plus calme que votre ciel ne le laisse croire : la Lune en Cancer traverse votre secteur le plus intime, et recharger vos batteries compte plus que briller.\n\nMars et Jupiter sont tous deux dans votre signe et vous donnent énergie et assurance, mais le carré de Mars à Mercure rétrograde en Scorpion peut créer des tensions à la maison ou en famille. Dites les choses calmement et évitez de décider dans la précipitation pour votre logement.\n\nVénus rétrograde en Balance traverse votre secteur de la communication : un ancien message, un contact perdu de vue ou une discussion inachevée peut revenir. Répondez avec gentillesse, sans promettre plus que vous ne pouvez tenir. La Lune décroissante se prête au sommeil, à un long bain ou à l’écriture, et vous aborderez la semaine prochaine plus clairement.",
+   "vierge": "Vierge, le thème du jour est l’amitié : la Lune en Cancer traverse votre secteur social, et un groupe, un ami ou une communauté en ligne peut vous apporter du réconfort.\n\nMercure, votre planète, est rétrograde en Scorpion, dans votre secteur des messages et des petits trajets. Attendez-vous à une réponse en retard, à un plan qui change ou à un détail oublié, et gardez de la marge dans votre emploi du temps. Le carré de Mercure avec Mars en Lion peut nourrir des ruminations en arrière-plan : les mettre par écrit aide.\n\nVénus rétrograde en Balance vous demande de revoir vos dépenses et ce qui compte vraiment pour vous. Le trigone entre la Lune et Mercure soutient une conversation franche mais douce avec une personne de confiance. Restez léger ce soir.",
+   "balance": "Balance, la journée met en avant votre image publique et vos objectifs : la Lune en Cancer traverse le haut de votre thème, et la façon dont vous gérez vos responsabilités se remarque.\n\nVénus, votre planète, est rétrograde dans votre signe : c’est toujours une phase pour revoir votre apparence, vos choix et vos relations plutôt que pour lancer de grands changements. Mercure rétrograde en Scorpion occupe votre secteur de l’argent, alors vérifiez coordonnées bancaires, factures et abonnements avant de payer.\n\nMars et Jupiter en Lion animent vos amitiés et vos projets collectifs. Une invitation peut arriver, profitez-en sans trop vous engager. Le carré de Mars à Mercure peut tendre une discussion d’argent avec un ami : appuyez-vous sur des faits clairs. Avec une Lune décroissante, terminez une tâche plutôt que d’en commencer une autre.",
+   "scorpion": "Scorpion, la journée soutient la réflexion et la prise de recul : la Lune en Cancer, signe d’eau comme le vôtre, forme un trigone exact à Mercure rétrograde dans votre signe, et votre intuition travaille main dans la main avec votre raisonnement.\n\nLe Soleil en Scorpion donne du poids à votre saison d’anniversaire, et Mercure rétrograde vous invite à reconsidérer un projet personnel, votre manière de vous présenter ou une ancienne décision. Le carré de Mars depuis le Lion peut créer des frictions avec un supérieur ou une figure d’autorité : restez factuel et évitez les rapports de force.\n\nVénus rétrograde en Balance agit dans votre secteur le plus discret, un bon moment pour vous reposer et tourner la page d’un regret. Une lecture, une petite escapade ou un appel à quelqu’un d’éloigné conviennent à ce samedi.",
+   "sagittaire": "Sagittaire, la journée touche à des sujets profonds : la Lune en Cancer traverse votre secteur des ressources partagées et de l’intimité, ce qui peut soulever des questions de confiance, de dettes ou d’argent commun.\n\nLe Soleil et Mercure rétrograde sont en Scorpion, dans votre secteur le plus caché : vous réfléchirez peut-être plus que vous ne parlerez, et c’est très bien ainsi. Laissez mûrir vos idées avant de les partager. Mars et Jupiter, votre planète, voyagent ensemble en Lion, signe de feu comme le vôtre, ce qui encourage les projets de voyage, l’apprentissage et l’ouverture.\n\nVénus rétrograde en Balance traverse vos amitiés : un ancien ami peut réapparaître, ou vous pouvez repenser votre place dans un groupe. La Lune décroissante favorise les dossiers bouclés et les comptes soldés. Une marche au grand air vous aidera à y voir clair.",
+   "capricorne": "Capricorne, la journée est centrée sur les autres : la Lune en Cancer, votre signe opposé, éclaire vos partenariats, et une relation proche demande de l’attention et un peu de tendresse.\n\nMercure rétrograde en Scorpion occupe votre secteur des amis et des projets : un projet de groupe peut prendre du retard ou devoir être réorganisé. Le carré de Mars à Mercure depuis le Lion peut tendre un sujet financier commun, alors ralentissez et vérifiez les chiffres ensemble.\n\nVénus rétrograde en Balance traverse le haut de votre thème et vous invite à revoir votre image professionnelle ou un choix de carrière récent. Saturne, votre planète, est rétrograde en Bélier, ce qui renforce le message : retravaillez les fondations avant de construire plus haut. Pour une fois, laissez quelqu’un d’autre mener ; ce peut être un soulagement.",
+   "verseau": "Verseau, la journée est pratique : la Lune en Cancer traverse votre secteur des routines et de la santé, et le sommeil, l’alimentation et une liste de tâches bien organisée vous aident le plus.\n\nMars et Jupiter en Lion, votre signe opposé, donnent de l’élan aux relations et aux associations, mais le carré de Mars à Mercure rétrograde en Scorpion peut créer des tensions autour du travail ou de votre rôle public. Pesez vos mots avec un collègue ou un responsable, et évitez de répondre à chaud à un mail important.\n\nVénus rétrograde en Balance traverse votre secteur des voyages et des études : un ancien projet, une formation ou un voyage peut vous revenir en tête. Pluton dans votre signe vous maintient dans une longue transformation ; aujourd’hui, les petites habitudes comptent plus que les grandes déclarations.",
+   "poissons": "Poissons, la journée favorise le plaisir et la créativité : la Lune en Cancer, signe d’eau comme le vôtre, traverse votre secteur des amours, du jeu et des enfants, et son trigone exact à Mercure aide à dire ce que vous avez sur le cœur.\n\nMercure rétrograde en Scorpion occupe votre secteur des convictions et des horizons lointains : vous pourriez revoir une façon de penser, un projet d’études ou un voyage. Vérifiez deux fois vos réservations. Le carré de Mars depuis le Lion peut créer des frictions au travail ou autour des obligations du quotidien : gardez du recul et ménagez-vous.\n\nVénus rétrograde en Balance touche l’argent partagé et l’intimité, un moment pour réfléchir honnêtement plutôt que pour s’engager. Une Lune décroissante, proche de son dernier quartier, invite à lâcher ce qui ne vous sert plus. Musique, art ou temps avec vos proches vous iront bien ce soir."
+  }
+ }
+}
