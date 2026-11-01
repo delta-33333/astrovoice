@@ -5,6 +5,8 @@ export async function loadDailyDay(date: string): Promise<DailyDay | null> {
   switch (date) {
     case '2026-10-31':
       return (await import('../content/daily-horoscope/2026-10-31.json')).default as unknown as DailyDay;
+    case '2026-11-01':
+      return (await import('../content/daily-horoscope/2026-11-01.json')).default as unknown as DailyDay;
     default:
       return null;
   }

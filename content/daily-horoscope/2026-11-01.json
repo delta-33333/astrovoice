@@ -1,0 +1,159 @@
+{
+ "date": "2026-11-01",
+ "sky": {
+  "date": "2026-11-01",
+  "computedAt": "08:00 Europe/Paris",
+  "phase": {
+   "id": "lastQuarter",
+   "illumination": 56,
+   "waxing": false
+  },
+  "bodies": [
+   {
+    "name": "Soleil",
+    "sign": "Scorpion",
+    "degree": 8,
+    "retrograde": false
+   },
+   {
+    "name": "Lune",
+    "sign": "Lion",
+    "degree": 1,
+    "retrograde": false
+   },
+   {
+    "name": "Mercure",
+    "sign": "Scorpion",
+    "degree": 16,
+    "retrograde": true
+   },
+   {
+    "name": "Vénus",
+    "sign": "Balance",
+    "degree": 26,
+    "retrograde": true
+   },
+   {
+    "name": "Mars",
+    "sign": "Lion",
+    "degree": 18,
+    "retrograde": false
+   },
+   {
+    "name": "Jupiter",
+    "sign": "Lion",
+    "degree": 24,
+    "retrograde": false
+   },
+   {
+    "name": "Saturne",
+    "sign": "Bélier",
+    "degree": 9,
+    "retrograde": true
+   },
+   {
+    "name": "Uranus",
+    "sign": "Gémeaux",
+    "degree": 4,
+    "retrograde": true
+   },
+   {
+    "name": "Neptune",
+    "sign": "Bélier",
+    "degree": 2,
+    "retrograde": true
+   },
+   {
+    "name": "Pluton",
+    "sign": "Verseau",
+    "degree": 3,
+    "retrograde": false
+   },
+   {
+    "name": "Nœud nord",
+    "sign": "Verseau",
+    "degree": 26,
+    "retrograde": true
+   }
+  ],
+  "ingresses": [
+   {
+    "name": "Lune",
+    "from": "Cancer",
+    "to": "Lion"
+   }
+  ],
+  "aspects": [
+   {
+    "a": "Vénus",
+    "b": "Nœud nord",
+    "aspect": "trine",
+    "orb": 0
+   },
+   {
+    "a": "Lune",
+    "b": "Neptune",
+    "aspect": "trine",
+    "orb": 0.5
+   },
+   {
+    "a": "Lune",
+    "b": "Pluton",
+    "aspect": "opposition",
+    "orb": 1.5
+   },
+   {
+    "a": "Vénus",
+    "b": "Jupiter",
+    "aspect": "sextile",
+    "orb": 1.7
+   },
+   {
+    "a": "Mercure",
+    "b": "Mars",
+    "aspect": "square",
+    "orb": 2.4
+   },
+   {
+    "a": "Mars",
+    "b": "Jupiter",
+    "aspect": "conjunction",
+    "orb": 5.6
+   }
+  ]
+ },
+ "en": {
+  "summary": "Sunday 1 November 2026: the Moon has just entered Leo and stays there all day, waning and close to half lit as it reaches its last quarter. The Sun is in Scorpio with Mercury retrograde, Venus is retrograde in Libra, and Mars and Jupiter are still together in Leo. The Moon trines Neptune and opposes Pluto, Venus forms an exact trine to the North Node, and Mercury still squares Mars.",
+  "signs": {
+   "belier": "Aries, today is about pleasure and self-expression: the Moon moves into Leo, your sector of fun, romance and creativity, so a Sunday spent on something you genuinely enjoy is well spent.\n\nThe Moon's trine to Neptune in your own sign adds imagination, a good mood for drawing, music, writing or simply daydreaming without guilt. Its opposition to Pluto can stir a tense moment within a group of friends; you do not have to win every exchange.\n\nWith Mercury retrograde in Scorpio, a shared expense or a private matter deserves a calm review rather than a quick decision. Venus, retrograde in Libra and in exact trine to the North Node, brings a partner or an old connection back into focus. The last-quarter Moon favours closing a chapter gently rather than opening a new one.",
+   "taureau": "Taurus, today centres on home and family: the Moon in Leo lights up your roots, and a quiet day among close ones or a little time arranging your space suits the sky.\n\nThe opposition from the Moon to Pluto in Aquarius may bring a work or status worry into a family conversation. Name it calmly, then let it rest until Monday. The trine to Neptune helps you recharge through sleep, silence or a walk alone.\n\nMercury retrograde in Scorpio keeps a relationship topic open: someone may want to revisit what was said last week, and listening costs you nothing. Venus, your ruler, is retrograde in Libra and in exact trine to the North Node, a nudge to adjust a daily habit that no longer serves your health. Mars and Jupiter in Leo can make a household project bigger than planned, so keep it small.",
+   "gemeaux": "Gemini, today is about words and short distances: the Moon enters Leo, your sector of conversations, messages and local outings, so a call, a visit nearby or a good chat is the natural move.\n\nThe Moon trines Neptune, which makes it easier to share a hope or a plan with friends. The opposition to Pluto can make a debate about beliefs or the future more heated than expected; curiosity works better than conviction today.\n\nMercury, your ruler, is still retrograde in Scorpio and square Mars, so an email about work or a schedule is worth rereading before it goes out. Venus retrograde in Libra and in exact trine to the North Node brings back a creative idea or a romance from the past. Uranus, retrograde in your sign, keeps you restless, but the last-quarter Moon favours finishing over starting.",
+   "cancer": "Cancer, today puts money and self-worth at the centre: the Moon leaves your sign for Leo, your resources sector, so it is a good day to look at your budget and at what really makes you feel secure.\n\nMars and Jupiter are also in Leo, which can make spending feel justified. Decide on a limit before you shop or book anything. The Moon's opposition to Pluto may stir a question about shared money or debts; gather the facts instead of worrying.\n\nThe trine to Neptune supports a career idea that has been forming quietly. Mercury retrograde in Scorpio brings an old love story, a child's matter or a creative project back to mind. Venus retrograde in Libra touches home: a family arrangement may need a second conversation. The last-quarter Moon is ideal for tidying papers and letting go of what you no longer use.",
+   "lion": "Leo, the Moon arrives in your sign today, so your mood is visible and your needs deserve to come first for once.\n\nYou already host Mars and Jupiter, and the Moon joining them adds warmth and confidence. Use it for something personal: rest, a change of look, a plan that is truly yours. The opposition to Pluto in your partnership sector can bring a power struggle into a close relationship; state what you need without turning it into a contest.\n\nThe trine to Neptune favours reading, learning or planning a future trip. Mercury retrograde in Scorpio keeps a home or family question open, and its square to Mars asks you to choose your words with care. Venus retrograde in Libra in exact trine to the North Node brings back a message or a contact worth answering. The last-quarter Moon says finish rather than launch.",
+   "vierge": "Virgo, today is a day to step back: the Moon enters Leo, the most private part of your chart, so rest, solitude and quiet reflection serve you better than a busy schedule.\n\nThe Moon's trine to Neptune helps you understand what you have been feeling about a partnership, and its opposition to Pluto may bring a work or health routine into question. Note it down and deal with it later in the week.\n\nMercury, your ruler, is retrograde in Scorpio and square Mars, so a message to a sibling or a neighbour could be misread; keep it simple and kind. Venus retrograde in Libra in exact trine to the North Node points to your finances: review a subscription or a spending habit rather than adding a new one. The last-quarter Moon is perfect for clearing out and sleeping early.",
+   "balance": "Libra, today highlights friends and groups: the Moon in Leo moves through your social sector, so a gathering, a call with a friend or a shared plan is where the energy is.\n\nThe Moon trines Neptune in your partnership sector, making it easier to understand someone close. The opposition to Pluto can stir jealousy or competition around a romance or a creative project; you can step aside without losing face.\n\nVenus, your ruler, is retrograde in your sign and forms an exact trine to the North Node, a meaningful moment to reconsider how you present yourself and what you want next. Mercury retrograde in Scorpio asks you to recheck money matters before committing. Mars and Jupiter in Leo push you towards new contacts, but the last-quarter Moon suggests reconnecting with people you already know.",
+   "scorpion": "Scorpio, today puts your public life and ambitions in focus: the Moon enters Leo at the top of your chart, so even on a Sunday you may think about your career, your reputation or a long-term goal.\n\nThe Moon's opposition to Pluto, your modern ruler, makes this personal: a family need and a professional wish may pull in opposite directions. Look for a fair balance rather than an all-or-nothing choice. The trine to Neptune supports a healthier daily rhythm.\n\nThe Sun and a retrograde Mercury are both in your sign, a time to revise your own plans and to reread before you speak. The square from Mercury to Mars can make you blunt with a family member. Venus retrograde in Libra works quietly in your inner world; rest helps. The last-quarter Moon favours closing a task over taking on a new one.",
+   "sagittaire": "Sagittarius, today is about horizons: the Moon in Leo crosses your sector of travel, learning and beliefs, so planning a trip, starting a book or exploring a new subject suits the day.\n\nThe Moon trines Neptune in your romance and creativity sector, which favours art, music and tender moments. Its opposition to Pluto may make a casual conversation turn serious; you can listen without having to convince anyone.\n\nMars and Jupiter, your ruler, are also in Leo, adding enthusiasm and possibly a tendency to promise too much. Mercury retrograde in Scorpio asks for rest and a look back at what you have not yet processed. Venus retrograde in Libra and in exact trine to the North Node brings an old friend or group back into your life. The last-quarter Moon is ideal for sorting what you want to keep.",
+   "capricorne": "Capricorn, today turns to what you share with others: the Moon enters Leo, your sector of joint money, intimacy and deep change, so an honest look at a shared budget or a close bond is useful.\n\nThe Moon's opposition to Pluto in your money sector can bring a worry about income or security to the surface. Name it, check the figures, and avoid big decisions on a Sunday. The trine to Neptune helps you find peace at home.\n\nMercury retrograde in Scorpio brings back a friend or a group project that needs a second look. Venus retrograde in Libra in exact trine to the North Node concerns your career: an earlier idea or contact could be worth revisiting. Saturn, your ruler, is retrograde in Aries, another sign that this is a time to consolidate. The last-quarter Moon favours letting go.",
+   "verseau": "Aquarius, today is about your relationships: the Moon enters Leo, your partnership sector, so time with a partner, a close friend or an associate is where the day's important moments happen.\n\nThe Moon's opposition to Pluto in your sign makes emotions run deeper than usual. You may notice who gives and who takes in a relationship; say it simply rather than holding it in. The trine to Neptune helps you speak gently.\n\nMars and Jupiter in Leo also sit opposite you, so others may push or ask a lot. Mercury retrograde in Scorpio revisits a professional subject, and its square to Mars can make a work message sharper than needed. Venus retrograde in Libra in exact trine to the North Node points to study, travel or a belief you are reconsidering. The last-quarter Moon favours clarifying over deciding.",
+   "poissons": "Pisces, today is about daily life and wellbeing: the Moon in Leo moves through your sector of routines, health and work, so a gentle reset of your habits is the most useful thing you can do.\n\nThe Moon trines Neptune, your modern ruler, now in Aries and in your money sector, which can bring an intuition about finances. Check it against the facts before acting. The opposition to Pluto may stir something hidden or tiring; rest is not a luxury today.\n\nMercury retrograde in Scorpio brings back a trip, a course or a philosophical question you had put aside. Venus retrograde in Libra in exact trine to the North Node concerns shared resources or intimacy: an honest talk can clear the air. The last-quarter Moon is ideal for tidying your space, your agenda and your mind."
+  }
+ },
+ "fr": {
+  "summary": "Dimanche 1er novembre 2026 : la Lune vient d’entrer en Lion et y reste toute la journée, décroissante et éclairée à moitié environ, à son dernier quartier. Le Soleil est en Scorpion avec Mercure rétrograde, Vénus est rétrograde en Balance, et Mars et Jupiter voyagent toujours ensemble en Lion. La Lune forme un trigone à Neptune et s’oppose à Pluton, Vénus est en trigone exact au Nœud nord, et Mercure reste au carré de Mars.",
+  "signs": {
+   "belier": "Bélier, aujourd’hui le plaisir et l’expression de soi passent en tête : la Lune entre en Lion, votre secteur des loisirs, des amours et de la créativité, et un dimanche consacré à ce qui vous fait vraiment du bien est un dimanche réussi.\n\nLe trigone de la Lune à Neptune dans votre signe nourrit l’imagination : dessin, musique, écriture ou simple rêverie sans culpabilité. Son opposition à Pluton peut tendre un échange au sein d’un groupe d’amis ; inutile de gagner chaque discussion.\n\nAvec Mercure rétrograde en Scorpion, une dépense commune ou une affaire privée mérite d’être revue au calme plutôt que tranchée vite. Vénus, rétrograde en Balance et en trigone exact au Nœud nord, ramène un partenaire ou un ancien lien au premier plan. La Lune au dernier quartier invite à refermer doucement un chapitre plutôt qu’à en ouvrir un nouveau.",
+   "taureau": "Taureau, aujourd’hui tout tourne autour du foyer et de la famille : la Lune en Lion éclaire vos racines, et une journée tranquille avec vos proches ou un peu de temps passé à arranger votre intérieur va dans le sens du ciel.\n\nL’opposition de la Lune à Pluton en Verseau peut faire surgir un souci professionnel au milieu d’une conversation de famille. Nommez-le calmement, puis laissez-le attendre lundi. Le trigone à Neptune vous aide à recharger les batteries par le sommeil, le silence ou une marche en solitaire.\n\nMercure rétrograde en Scorpion garde un sujet de couple ouvert : quelqu’un voudra peut-être revenir sur ce qui a été dit la semaine dernière, et écouter ne vous coûte rien. Vénus, votre maîtresse, rétrograde en Balance et en trigone exact au Nœud nord, vous pousse à ajuster une habitude qui ne sert plus votre santé. Mars et Jupiter en Lion peuvent faire grossir un projet domestique : gardez-le modeste.",
+   "gemeaux": "Gémeaux, aujourd’hui les mots et les petits trajets sont à l’honneur : la Lune entre en Lion, votre secteur des échanges, des messages et des sorties de proximité, alors un appel, une visite dans le quartier ou une bonne discussion s’imposent naturellement.\n\nLe trigone de la Lune à Neptune facilite le partage d’un espoir ou d’un projet avec vos amis. L’opposition à Pluton peut rendre plus vif que prévu un débat sur les convictions ou l’avenir ; la curiosité fonctionne mieux que la certitude aujourd’hui.\n\nMercure, votre maître, est toujours rétrograde en Scorpion et au carré de Mars : relisez un e-mail de travail ou un planning avant de l’envoyer. Vénus rétrograde en Balance, en trigone exact au Nœud nord, fait revenir une idée créative ou une histoire de cœur passée. Uranus, rétrograde dans votre signe, entretient l’agitation, mais le dernier quartier de Lune favorise ce qui se termine plutôt que ce qui commence.",
+   "cancer": "Cancer, aujourd’hui l’argent et l’estime de soi sont au centre : la Lune quitte votre signe pour le Lion, votre secteur des ressources, et c’est le bon jour pour regarder votre budget et ce qui vous donne réellement un sentiment de sécurité.\n\nMars et Jupiter sont eux aussi en Lion, ce qui peut rendre une dépense étrangement justifiable. Fixez une limite avant de faire des achats ou de réserver quoi que ce soit. L’opposition de la Lune à Pluton peut soulever une question d’argent partagé ou de dette : rassemblez les faits au lieu de vous inquiéter.\n\nLe trigone à Neptune soutient une idée professionnelle qui mûrit en silence. Mercure rétrograde en Scorpion vous ramène à une ancienne histoire d’amour, à une affaire liée à un enfant ou à un projet créatif. Vénus rétrograde en Balance touche le foyer : un arrangement familial peut demander une deuxième discussion. Le dernier quartier de Lune est idéal pour trier vos papiers et vous défaire de ce qui ne sert plus.",
+   "lion": "Lion, la Lune arrive dans votre signe aujourd’hui : votre humeur se voit, et vos besoins méritent pour une fois de passer en premier.\n\nVous accueillez déjà Mars et Jupiter, et la Lune qui les rejoint ajoute chaleur et confiance. Servez-vous-en pour quelque chose de personnel : du repos, un changement de look, un projet qui vous appartient vraiment. L’opposition à Pluton dans votre secteur des partenariats peut installer un rapport de force dans une relation proche ; dites ce dont vous avez besoin sans en faire une compétition.\n\nLe trigone à Neptune favorise la lecture, l’apprentissage ou l’organisation d’un futur voyage. Mercure rétrograde en Scorpion laisse ouverte une question de maison ou de famille, et son carré à Mars vous demande de choisir vos mots avec soin. Vénus rétrograde en Balance, en trigone exact au Nœud nord, ramène un message ou un contact qui mérite une réponse. Le dernier quartier de Lune dit : finir plutôt que lancer.",
+   "vierge": "Vierge, aujourd’hui est une journée pour prendre du recul : la Lune entre en Lion, la zone la plus intime de votre thème, et le repos, la solitude et la réflexion vous servent mieux qu’un agenda chargé.\n\nLe trigone de la Lune à Neptune vous aide à comprendre ce que vous ressentez au sujet d’une relation, et son opposition à Pluton peut remettre en question une routine de travail ou de santé. Notez-le et traitez-le plus tard dans la semaine.\n\nMercure, votre maître, est rétrograde en Scorpion et au carré de Mars : un message à un frère, une sœur ou un voisin pourrait être mal compris, alors restez simple et bienveillant. Vénus rétrograde en Balance, en trigone exact au Nœud nord, pointe vos finances : revoyez un abonnement ou une habitude de dépense plutôt que d’en ajouter une. Le dernier quartier de Lune est parfait pour faire le vide et vous coucher tôt.",
+   "balance": "Balance, aujourd’hui les amis et les groupes sont mis en avant : la Lune en Lion traverse votre secteur social, et c’est dans une réunion, un appel à un ami ou un projet commun que se trouve l’énergie du jour.\n\nLa Lune forme un trigone à Neptune dans votre secteur des partenariats, ce qui aide à comprendre un proche. L’opposition à Pluton peut réveiller jalousie ou rivalité autour d’une histoire d’amour ou d’un projet créatif ; vous pouvez prendre de la distance sans perdre la face.\n\nVénus, votre maîtresse, est rétrograde dans votre signe et forme un trigone exact au Nœud nord : un moment important pour repenser la façon dont vous vous présentez et ce que vous voulez ensuite. Mercure rétrograde en Scorpion vous demande de revérifier les questions d’argent avant de vous engager. Mars et Jupiter en Lion vous poussent vers de nouveaux contacts, mais le dernier quartier de Lune conseille plutôt de renouer avec ceux que vous connaissez déjà.",
+   "scorpion": "Scorpion, aujourd’hui votre vie publique et vos ambitions sont au premier plan : la Lune entre en Lion au sommet de votre thème, et même un dimanche vous pourriez penser à votre carrière, à votre réputation ou à un objectif à long terme.\n\nL’opposition de la Lune à Pluton, votre maître moderne, rend la question très personnelle : un besoin familial et un souhait professionnel peuvent tirer dans des directions opposées. Cherchez un juste équilibre plutôt qu’un choix tout ou rien. Le trigone à Neptune soutient un rythme quotidien plus sain.\n\nLe Soleil et Mercure rétrograde sont tous deux dans votre signe : le moment de réviser vos propres plans et de relire avant de parler. Le carré de Mercure à Mars peut vous rendre abrupt avec un membre de la famille. Vénus rétrograde en Balance travaille en silence dans votre monde intérieur, et le repos vous aide. Le dernier quartier de Lune favorise une tâche menée à terme plutôt qu’une nouvelle.",
+   "sagittaire": "Sagittaire, aujourd’hui il est question d’horizons : la Lune en Lion traverse votre secteur des voyages, des études et des convictions, et préparer un déplacement, commencer un livre ou explorer un nouveau sujet convient parfaitement à la journée.\n\nLa Lune forme un trigone à Neptune dans votre secteur des amours et de la créativité, ce qui favorise l’art, la musique et les moments tendres. Son opposition à Pluton peut transformer une conversation légère en échange sérieux ; vous pouvez écouter sans chercher à convaincre.\n\nMars et Jupiter, votre maître, sont aussi en Lion : de l’enthousiasme, avec peut-être la tentation de trop promettre. Mercure rétrograde en Scorpion réclame du repos et un retour sur ce que vous n’avez pas encore digéré. Vénus rétrograde en Balance, en trigone exact au Nœud nord, ramène dans votre vie un ancien ami ou un groupe. Le dernier quartier de Lune est idéal pour trier ce que vous voulez garder.",
+   "capricorne": "Capricorne, aujourd’hui le regard se tourne vers ce que vous partagez avec les autres : la Lune entre en Lion, votre secteur de l’argent commun, de l’intimité et des transformations profondes, et un regard honnête sur un budget partagé ou un lien proche sera utile.\n\nL’opposition de la Lune à Pluton dans votre secteur financier peut faire remonter une inquiétude sur vos revenus ou votre sécurité. Nommez-la, vérifiez les chiffres et évitez les grandes décisions un dimanche. Le trigone à Neptune vous aide à trouver la paix à la maison.\n\nMercure rétrograde en Scorpion fait revenir un ami ou un projet de groupe qui mérite un second regard. Vénus rétrograde en Balance, en trigone exact au Nœud nord, concerne votre carrière : une idée ou un contact d’avant pourrait valoir la peine d’être repris. Saturne, votre maître, est rétrograde en Bélier, autre signe que l’heure est à la consolidation. Le dernier quartier de Lune favorise le lâcher-prise.",
+   "verseau": "Verseau, aujourd’hui vos relations sont au cœur de la journée : la Lune entre en Lion, votre secteur des partenariats, et c’est avec un conjoint, un ami proche ou un associé que se jouent les moments importants.\n\nL’opposition de la Lune à Pluton dans votre signe rend les émotions plus profondes que d’habitude. Vous remarquerez peut-être qui donne et qui prend dans une relation ; dites-le simplement plutôt que de le garder pour vous. Le trigone à Neptune vous aide à parler avec douceur.\n\nMars et Jupiter en Lion se trouvent eux aussi face à vous : les autres peuvent pousser ou beaucoup demander. Mercure rétrograde en Scorpion revient sur un sujet professionnel, et son carré à Mars peut rendre un message de travail plus sec que nécessaire. Vénus rétrograde en Balance, en trigone exact au Nœud nord, pointe des études, un voyage ou une conviction que vous reconsidérez. Le dernier quartier de Lune favorise la clarification plutôt que la décision.",
+   "poissons": "Poissons, aujourd’hui le quotidien et le bien-être passent en premier : la Lune en Lion traverse votre secteur des routines, de la santé et du travail, et remettre doucement vos habitudes à plat est ce que vous pouvez faire de plus utile.\n\nLa Lune forme un trigone à Neptune, votre maître moderne, aujourd’hui en Bélier dans votre secteur financier, ce qui peut apporter une intuition sur l’argent. Confrontez-la aux faits avant d’agir. L’opposition à Pluton peut remuer quelque chose de caché ou de fatigant : le repos n’est pas un luxe aujourd’hui.\n\nMercure rétrograde en Scorpion ramène un voyage, une formation ou une question philosophique laissée de côté. Vénus rétrograde en Balance, en trigone exact au Nœud nord, touche aux ressources partagées et à l’intimité : une discussion honnête peut apaiser l’atmosphère. Le dernier quartier de Lune est idéal pour ranger votre espace, votre agenda et vos pensées."
+  }
+ }
+}
