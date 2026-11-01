@@ -60,11 +60,17 @@ type VoiceGrant = {
   subscription?: boolean;
 };
 
+/** En dessous d’une minute de conversation, une coupure ne décompte rien. */
+const DROP_FREE_SECONDS = 60;
+const DROP_NOTE = 'La ligne a coupé. Seul le temps de conversation effectif est décompté : les minutes non utilisées restent sur votre compte.';
+
 type LiveCall = {
   stopped: boolean;
   billingStarted: boolean;
   socketOpen: boolean;
   heardAudio: boolean;
+  /** Dernier audio reçu du conseiller (ms epoch) : borne du temps décompté si la ligne coupe. */
+  lastAudioMs: number;
   canSendAudio: boolean;
   localClose: boolean;
   greeted: boolean;
@@ -138,6 +144,7 @@ function emptyLive(): LiveCall {
     billingStarted: false,
     socketOpen: false,
     heardAudio: false,
+    lastAudioMs: 0,
     canSendAudio: false,
     localClose: false,
     greeted: false,
@@ -344,13 +351,17 @@ export default function CallScreen({
     }
   };
 
-  const finishRef = useRef<(note?: string) => Promise<void>>(async () => {});
+  const finishRef = useRef<(note?: string, dropped?: boolean) => Promise<void>>(async () => {});
 
-  const finishCall = async (note?: string) => {
+  const finishCall = async (note?: string, dropped = false) => {
     const live = liveRef.current;
     if (live.stopped) return;
     const shouldBill = live.billingStarted;
-    const raw = shouldBill ? Math.max(0, Math.floor((Date.now() - live.startMs) / 1000)) : 0;
+    // Coupure anormale : seul le temps de conversation effectif (jusqu’au dernier audio reçu) est décompté,
+    // et rien du tout si la ligne tombe dans la première minute. Le reste reste sur le compte.
+    const endMs = dropped ? Math.min(Date.now(), Math.max(live.startMs, live.lastAudioMs)) : Date.now();
+    let raw = shouldBill ? Math.max(0, Math.floor((endMs - live.startMs) / 1000)) : 0;
+    if (dropped && raw < DROP_FREE_SECONDS) raw = 0;
     const capped = live.cap ? Math.min(raw, live.cap) : raw;
     const seconds = live.metered ? capped : Math.min(capped, live.prepaid);
     live.stopped = true;
@@ -575,6 +586,7 @@ export default function CallScreen({
     const live = liveRef.current;
     if (live.stopped || samples.length === 0) return;
     live.heardAudio = true;
+    live.lastAudioMs = Date.now();
     void live.ctx?.resume();
     live.player?.enqueue(samples);
     maybeBill();
@@ -887,7 +899,7 @@ export default function CallScreen({
         }
         console.error('Liaison vocale interrompue');
         if (live.billingStarted) {
-          void finishRef.current('La liaison vocale a été interrompue. Le temps déjà écoulé est comptabilisé.');
+          void finishRef.current(DROP_NOTE, true);
         } else {
           fail('La consultation vocale a rencontré un problème. Réessayez.');
         }
@@ -897,7 +909,7 @@ export default function CallScreen({
     ws.onerror = () => {
       if (liveRef.current !== live || live.localClose || live.stopped) return;
       if (live.billingStarted) {
-        void finishRef.current('La liaison vocale a été interrompue. Le temps déjà écoulé est comptabilisé.');
+        void finishRef.current(DROP_NOTE, true);
       } else {
         fail('La liaison vocale a été interrompue. Réessayez.');
       }
@@ -906,7 +918,7 @@ export default function CallScreen({
     ws.onclose = () => {
       if (liveRef.current !== live || live.localClose || live.stopped) return;
       if (live.billingStarted) {
-        void finishRef.current('La liaison vocale a été coupée. Le temps déjà écoulé est comptabilisé.');
+        void finishRef.current(DROP_NOTE, true);
         return;
       }
       fail('La liaison vocale a été interrompue. Réessayez.');
@@ -1029,7 +1041,9 @@ export default function CallScreen({
               </p>
             ) : (
               <p className="mt-2 text-sm text-white/70">
-                {included || (quote.coveredSeconds > 0 && quote.amountCents === 0)
+                {!snap && prepaid > 0
+                  ? `${mmss(Math.max(0, prepaid - elapsed))} restantes · arrêt automatique, rien de plus`
+                  : included || (quote.coveredSeconds > 0 && quote.amountCents === 0)
                   ? 'Inclus dans vos minutes'
                   : snap
                     ? moneyLabel(quote.amountCents)
@@ -1050,8 +1064,8 @@ export default function CallScreen({
             {!booking && prepaid < 180 && (
               <p className="text-sm text-white/70">
                 Moins de 3 minutes d’avance.{' '}
-                <Link href="/offres" className="text-celestial-gold underline">
-                  Voir les formules
+                <Link href="/packs" className="text-celestial-gold underline">
+                  Voir les packs à prix fixe
                 </Link>
               </p>
             )}

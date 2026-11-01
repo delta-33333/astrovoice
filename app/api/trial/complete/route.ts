@@ -33,7 +33,7 @@ export async function POST(request: NextRequest) {
   const secret = authSecret();
   const origin = appBaseUrl();
   const advisor = finished.advisorId || '';
-  const resumeUrl = `${origin}/book?offer=decouverte&advisor=${encodeURIComponent(advisor)}&utm_source=trial`;
+  const resumeUrl = `${origin}/packs?pack=20min&lang=${locale === 'en' ? 'en' : 'fr'}&advisor=${encodeURIComponent(advisor)}&utm_source=trial`;
   const unsubscribeUrl = secret
     ? `${origin}/api/email/unsubscribe?token=${encodeURIComponent(signOptOut(user.id, secret))}&lang=${locale}`
     : `${origin}/account`;

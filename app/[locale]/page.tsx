@@ -15,7 +15,10 @@ import { HUB_PATHS } from '@/lib/alternatives';
 import { aboutPath } from '@/lib/about';
 import { GEO_PATHS } from '@/lib/geo-pages';
 import HoroscopeSignup from '@/components/HoroscopeSignup';
-import HomePlans from '@/components/HomePlans';
+import FixedPacks from '@/components/FixedPacks';
+import Commitments from '@/components/Commitments';
+import UseCases from '@/components/UseCases';
+import { TRUST_PROMISE } from '@/lib/trust-copy';
 import SeoChrome from '@/components/SeoChrome';
 import { weeklyCurrency } from '@/lib/weekly';
 import { listDirectoryAdvisorsCached } from '@/lib/slots';
@@ -32,7 +35,6 @@ import {
   SKY_PROMISE,
   homeDescription,
   homePrimaryCta,
-  homeSecondaryCta,
 } from '@/lib/home-offer';
 import { trialPath } from '@/lib/free-call';
 import {
@@ -92,7 +94,6 @@ export default async function LocaleHome(props: {
     .sort((a, b) => Number(b.availability.hasImmediate) - Number(a.availability.hasImmediate));
   const ordered = query.all === '1' ? orderedAll : orderedAll.slice(0, FEATURED_ADVISOR_LIMIT);
   const faqs = homeFaqs(locale);
-  const weekly = weeklyCurrency(currency);
   const sky = locale === 'fr' || locale === 'en' ? locale : null;
   const disclosure = locale === 'fr' ? HOME_DISCLOSURE : VIRTUAL_ADVISOR_DISCLOSURE_EN;
 
@@ -104,6 +105,7 @@ export default async function LocaleHome(props: {
           <>
             <p className="text-xs uppercase tracking-[0.18em] text-celestial-gold/80">{SKY_PROMISE[sky].eyebrow}</p>
             <h1 className="mt-2 font-[family-name:var(--font-cinzel)] text-3xl sm:text-4xl text-glow">{SKY_PROMISE[sky].h1}</h1>
+            <p className="mt-2 text-celestial-gold font-semibold" data-trust-promise>{TRUST_PROMISE[sky]}</p>
             <p className="mt-3 text-white/80 leading-relaxed">{SKY_PROMISE[sky].sub}</p>
             <SkyNowHero locale={sky} trialHref={trialPath(locale)} disclosure={disclosure} />
             <p className="mt-4 text-center sm:text-left">
@@ -122,7 +124,7 @@ export default async function LocaleHome(props: {
           </>
         )}
         <div className="mt-6 flex flex-col sm:flex-row gap-3">
-          <Link href="/book?offer=decouverte" className="btn-secondary text-center">{homeSecondaryCta(locale, weekly)}</Link>
+          <Link href={`/packs?pack=20min&lang=${sky ?? 'en'}`} className="btn-secondary text-center">{locale === 'fr' ? 'Pack 20 minutes à prix fixe' : '20-minute fixed-price pack'}</Link>
           <ChatCta locale={locale} placement="home-hero" className="w-full sm:w-auto" />
         </div>
         <VoiceSample locale={locale} src={locale === 'en' ? '/samples/sample-en.mp3' : '/samples/sample-fr.mp3'} />
@@ -139,7 +141,9 @@ export default async function LocaleHome(props: {
         </p>
         <HoroscopeSignup locale={locale} placement="home" />
       </div>
-      <HomePlans locale={locale} currency={weeklyCurrency(currency)} />
+      {sky && <UseCases locale={sky} trialHref={trialPath(locale)} />}
+      <FixedPacks locale={sky ?? 'en'} pageLocale={locale} trialHref={trialPath(locale)} />
+      <Commitments locale={locale === 'fr' ? 'fr' : 'en'} promise={false} />
       <div className="max-w-3xl mx-auto px-4 pb-8">
         <section className="mt-10 grid gap-4 sm:grid-cols-3">
           <h2 className="sm:col-span-3 font-[family-name:var(--font-cinzel)] text-2xl">
@@ -147,7 +151,7 @@ export default async function LocaleHome(props: {
           </h2>
           <p className="text-sm text-white/75">1. {{ fr: 'Écoutez un extrait de 25 secondes, généré par IA.', en: 'Listen to a 25-second AI-generated excerpt.', es: 'Escucha un extracto de 25 segundos generado por IA.', de: 'Hören Sie einen 25-Sekunden-Auszug, erzeugt von KI.', it: 'Ascolta un estratto di 25 secondi generato dall’IA.' }[locale]}</p>
           <p className="text-sm text-white/75">2. {{ fr: 'Essayez 3 minutes avec un code reçu par e-mail.', en: 'Try 3 minutes with a code sent by email.', es: 'Prueba 3 minutos con un código enviado por correo.', de: 'Testen Sie 3 Minuten mit einem Code per E-Mail.', it: 'Prova 3 minuti con un codice inviato per e-mail.' }[locale]}</p>
-          <p className="text-sm text-white/75">3. {{ fr: 'Choisissez votre formule hebdomadaire.', en: 'Choose your weekly plan.', es: 'Elige tu fórmula semanal.', de: 'Wählen Sie Ihren Wochentarif.', it: 'Scegli la formula settimanale.' }[locale]}</p>
+          <p className="text-sm text-white/75">3. {{ fr: 'Prenez un pack à prix fixe : l’appel s’arrête quand il est utilisé.', en: 'Pick a fixed-price pack: the call stops when it is used.', es: 'Elige un paquete de precio fijo: la llamada se detiene al agotarlo.', de: 'Wählen Sie ein Festpreis-Paket: der Anruf endet, wenn es aufgebraucht ist.', it: 'Scegli un pacchetto a prezzo fisso: la chiamata si ferma quando è esaurito.' }[locale]}</p>
         </section>
         <nav className="mt-8" aria-label={homeLabel(locale)}>
           <ul className="flex flex-wrap gap-2">
@@ -171,13 +175,13 @@ export default async function LocaleHome(props: {
                 <p className="text-sm text-white/70 mt-1">
                   {advisor.specialties.map((item) => specialtyLabel(locale, item)).join(' · ')}
                   {' · '}
-                  {locale === 'en' ? 'Included in the weekly plans' : 'Inclus dans les formules hebdomadaires'}
+                  {locale === 'fr' ? 'Packs à prix fixe' : 'Fixed-price packs'}
                 </p>
                 <p className="text-sm text-white/55 mt-1">
                   {availabilitySentence(locale, advisor.availability)}
                 </p>
-                <Link href={`/book?offer=decouverte&advisor=${encodeURIComponent(advisor.id)}`} className="mt-3 inline-block text-sm text-celestial-gold underline">
-                  {homeSecondaryCta(locale, weekly)}
+                <Link href={`/packs?pack=20min&lang=${sky ?? 'en'}`} className="mt-3 inline-block text-sm text-celestial-gold underline">
+                  {locale === 'fr' ? 'Packs à prix fixe, dès 10 min' : 'Fixed-price packs, from 10 min'}
                 </Link>
               </li>
           ))}

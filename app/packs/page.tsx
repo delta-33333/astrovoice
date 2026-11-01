@@ -1,10 +1,11 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import PaymentSheet from '@/components/PaymentSheet';
-import { formatCurrency, MINUTE_PACKS, type MinutePack } from '@/lib/pricing';
+import { FIXED_PACKS, formatCurrency, type MinutePack } from '@/lib/pricing';
+import { DROP_CREDIT, FIXED_PRICE_LINE } from '@/lib/trust-copy';
 
 export default function PacksPage() {
   const router = useRouter();
@@ -20,8 +21,16 @@ export default function PacksPage() {
   const [sheetDetail, setSheetDetail] = useState('');
   const [labels, setLabels] = useState<Record<string, { amountLabel: string; regularLabel: string; perMinLabel: string; savingsLabel: string }>>({});
 
+  const [lang, setLang] = useState<'fr' | 'en'>('fr');
+  const autoPicked = useRef(false);
+  const [wanted, setWanted] = useState<string | null>(null);
+
   useEffect(() => {
-    fetch('/api/market')
+    const params = new URLSearchParams(window.location.search);
+    const l = params.get('lang') === 'en' ? 'en' : 'fr';
+    setLang(l);
+    setWanted(params.get('pack'));
+    fetch(`/api/market?lang=${l}`)
       .then((response) => response.json())
       .then((payload) => {
         const next: typeof labels = {};
@@ -34,11 +43,9 @@ export default function PacksPage() {
   }, []);
 
   const amountOf = (pack: MinutePack) => labels[pack.id]?.amountLabel || formatCurrency(pack.amountCents);
-  const regularOf = (pack: MinutePack) => labels[pack.id]?.regularLabel || formatCurrency(pack.regularCents);
   const perMinOf = (pack: MinutePack) => labels[pack.id]?.perMinLabel || `${formatCurrency(Math.round(pack.amountCents / pack.minutes))}/min`;
-  const savingsOf = (pack: MinutePack) => labels[pack.id]?.savingsLabel || formatCurrency(pack.regularCents - pack.amountCents);
 
-  const standardPacks = MINUTE_PACKS.filter((pack) => !pack.founding);
+  const standardPacks = FIXED_PACKS;
 
   const closeSheet = useCallback(() => {
     setSheetOpen(false);
@@ -55,8 +62,13 @@ export default function PacksPage() {
       const response = await fetch('/api/purchase-pack', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ packId: pack.id }),
+        body: JSON.stringify({ packId: pack.id, lang }),
       });
+      if (response.status === 401) {
+        sessionStorage.setItem('afterAuth', `/packs?pack=${pack.id}&lang=${lang}`);
+        router.push('/auth');
+        return;
+      }
 
       const data = await response.json();
 
@@ -75,7 +87,9 @@ export default function PacksPage() {
       setSheetDetail(
         pack.founding
           ? 'Dix minutes ajoutées à votre compte, une seule fois.'
-          : `${pack.minutes} minutes ajoutées à votre compte dès confirmation. Elles n’expirent pas.`
+          : lang === 'en'
+            ? `${pack.minutes} minutes added to your account once confirmed. One-off payment, no subscription, no auto top-up.`
+            : `${pack.minutes} minutes ajoutées à votre compte dès confirmation. Paiement unique : pas d’abonnement, pas de recharge automatique.`
       );
       setSheetOpen(true);
       setIsPurchasing(false);
@@ -86,22 +100,32 @@ export default function PacksPage() {
     }
   };
 
+  // Pack choisi depuis l’accueil ou /offres : ouvre directement le paiement.
+  useEffect(() => {
+    if (autoPicked.current || !wanted) return;
+    const pack = standardPacks.find((item) => item.id === wanted);
+    if (!pack) return;
+    autoPicked.current = true;
+    void handlePurchase(pack);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [wanted]);
+
+  const en = lang === 'en';
   return (
-    <main className="min-h-screen px-4 py-12">
+    <main className="min-h-screen px-4 py-12" lang={lang}>
       <div className="max-w-4xl mx-auto">
-        <div className="text-center mb-12">
-          <Link href="/home" className="inline-block mb-6 text-white/60 hover:text-white text-sm">
-            ← Retour
+        <div className="text-center mb-10">
+          <Link href={en ? '/en' : '/'} className="inline-block mb-6 text-white/60 hover:text-white text-sm">
+            {en ? '← Back' : '← Retour'}
           </Link>
-          <div className="text-4xl mb-4">💎</div>
           <h1 className="font-[family-name:var(--font-cinzel)] text-4xl sm:text-5xl font-bold mb-4 text-glow">
-            Packs Minutes
+            {en ? 'Fixed-price minute packs' : 'Packs de minutes à prix fixe'}
           </h1>
-          <p className="text-white/70 text-lg max-w-2xl mx-auto">
-            Des minutes d’avance, au calme, pour vos prochaines consultations Callastral.
-          </p>
-          <p className="text-sm text-white/60 mt-4">
-            Solde bas ou appels fréquents : <Link href="/offres" className="text-celestial-gold underline">les formules hebdomadaires</Link>, de 10 à 60 minutes par semaine, 60 minutes par appel.
+          <p className="text-xl text-celestial-gold font-semibold">{FIXED_PRICE_LINE[lang]}</p>
+          <p className="text-white/70 mt-3 max-w-2xl mx-auto">
+            {en
+              ? 'You pay once. The call stops by itself when your minutes are used. No subscription, no auto top-up.'
+              : 'Vous payez une fois. L’appel s’arrête tout seul quand vos minutes sont utilisées. Pas d’abonnement, pas de recharge automatique.'}
           </p>
         </div>
 
@@ -115,69 +139,39 @@ export default function PacksPage() {
           {standardPacks.map((pack) => (
             <div
               key={pack.id}
+              data-pack={pack.id}
               className={`relative bg-white/5 backdrop-blur-sm rounded-3xl border-2 p-8 transition-all ${
-                pack.popular
-                  ? 'border-celestial-gold shadow-lg shadow-celestial-gold/20'
-                  : 'border-white/10'
+                pack.popular ? 'border-celestial-gold shadow-lg shadow-celestial-gold/20' : 'border-white/10'
               }`}
             >
-              {pack.popular && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-celestial-gold text-celestial-darker px-4 py-1 rounded-full text-xs font-semibold">
-                  Plus demandé
-                </div>
-              )}
-
-              <div className="text-center mb-6">
+              <div className="text-center mb-4">
                 <div className="text-5xl font-bold mb-2">{pack.minutes}</div>
                 <div className="text-white/60">minutes</div>
               </div>
-
-              <div className="text-center mb-6">
-                <div className="text-4xl font-bold text-celestial-gold mb-1">
-                  {amountOf(pack)}
-                </div>
-                <div className="text-sm text-white/50 line-through">
-                  {regularOf(pack)}
-                </div>
-                <div className="text-sm text-green-400 mt-2">
-                  Économisez {savingsOf(pack)}
-                </div>
-              </div>
-
-              <div className="text-center text-xs text-white/50 mb-6">
-                {perMinOf(pack)}
-              </div>
-
+              <div className="text-center mb-2 text-4xl font-bold text-celestial-gold">{amountOf(pack)}</div>
+              <div className="text-center text-xs text-white/50 mb-6">{perMinOf(pack)}</div>
               <button
                 onClick={() => handlePurchase(pack)}
                 disabled={sheetOpen || (isPurchasing && selectedPack === pack.id)}
                 className="btn-primary w-full disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {isPurchasing && selectedPack === pack.id ? 'Préparation…' : 'Choisir'}
+                {isPurchasing && selectedPack === pack.id ? (en ? 'Preparing…' : 'Préparation…') : en ? 'Choose' : 'Choisir'}
               </button>
             </div>
           ))}
         </div>
 
-        <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 p-6 space-y-3">
-          <h3 className="font-semibold text-center mb-4">Comment ça se passe</h3>
+        <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 p-6">
           <ul className="space-y-2 text-sm text-white/70">
-            <li className="flex items-start gap-2">
-              <span className="text-celestial-gold mt-0.5">✓</span>
-              <span>Le règlement se fait ici, sans quitter Callastral</span>
-            </li>
-            <li className="flex items-start gap-2">
-              <span className="text-celestial-gold mt-0.5">✓</span>
-              <span>Les minutes sont ajoutées à votre compte dès confirmation</span>
-            </li>
-            <li className="flex items-start gap-2">
-              <span className="text-celestial-gold mt-0.5">✓</span>
-              <span>Elles sont utilisées en premier lors de vos appels</span>
-            </li>
-            <li className="flex items-start gap-2">
-              <span className="text-celestial-gold mt-0.5">✓</span>
-              <span>Aucune date d’expiration. Au-delà, le tarif à la minute reprend</span>
-            </li>
+            {(en
+              ? ['One-off payment on Callastral (Stripe), nothing recurring', 'Minutes are added to your account once confirmed and never expire', 'The call stops automatically when your minutes run out: never a cent more', DROP_CREDIT.en]
+              : ['Paiement unique sur Callastral (Stripe), rien de récurrent', 'Les minutes sont ajoutées dès confirmation et n’expirent pas', 'L’appel s’arrête automatiquement quand vos minutes sont épuisées : jamais un centime de plus', DROP_CREDIT.fr]
+            ).map((line) => (
+              <li key={line} className="flex items-start gap-2">
+                <span className="text-celestial-gold mt-0.5">✓</span>
+                <span>{line}</span>
+              </li>
+            ))}
           </ul>
         </div>
       </div>
@@ -188,7 +182,7 @@ export default function PacksPage() {
         title={sheetTitle}
         amountLabel={sheetAmount}
         detail={sheetDetail}
-        payLabel={sheetAmount ? `Payer ${sheetAmount}` : 'Payer'}
+        payLabel={sheetAmount ? `${en ? 'Pay' : 'Payer'} ${sheetAmount}` : en ? 'Pay' : 'Payer'}
         clientSecret={clientSecret}
         collectContact={collectContact}
         onClose={closeSheet}

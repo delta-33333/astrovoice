@@ -41,14 +41,14 @@ export type MarketCurrency = 'eur' | 'chf' | 'gbp' | 'usd';
  * Les autres pays suivent les États-Unis.
  */
 export const MARKET_PRICING = {
-  FR: { currency: 'eur', minMinor: 99, maxMinor: 199, introMinor: 49, packs: { '10min': 1290, '30min': 3490, '60min': 5990 }, founding: 490 },
-  BE: { currency: 'eur', minMinor: 99, maxMinor: 199, introMinor: 49, packs: { '10min': 1290, '30min': 3490, '60min': 5990 }, founding: 490 },
-  DE: { currency: 'eur', minMinor: 99, maxMinor: 199, introMinor: 49, packs: { '10min': 1290, '30min': 3490, '60min': 5990 }, founding: 490 },
-  ES: { currency: 'eur', minMinor: 89, maxMinor: 149, introMinor: 45, packs: { '10min': 990, '30min': 2690, '60min': 4790 }, founding: 490 },
-  IT: { currency: 'eur', minMinor: 89, maxMinor: 129, introMinor: 45, packs: { '10min': 990, '30min': 2690, '60min': 4790 }, founding: 490 },
-  CH: { currency: 'chf', minMinor: 99, maxMinor: 199, introMinor: 49, packs: { '10min': 1290, '30min': 3490, '60min': 5990 }, founding: 490 },
-  GB: { currency: 'gbp', minMinor: 99, maxMinor: 179, introMinor: 49, packs: { '10min': 1190, '30min': 2990, '60min': 4990 }, founding: 490 },
-  US: { currency: 'usd', minMinor: 149, maxMinor: 299, introMinor: 69, packs: { '10min': 1990, '30min': 4990, '60min': 8990 }, founding: 590 },
+  FR: { currency: 'eur', minMinor: 99, maxMinor: 199, introMinor: 49, packs: { '10min': 1290, '20min': 2290, '40min': 3990, '30min': 3490, '60min': 5990 }, founding: 490 },
+  BE: { currency: 'eur', minMinor: 99, maxMinor: 199, introMinor: 49, packs: { '10min': 1290, '20min': 2290, '40min': 3990, '30min': 3490, '60min': 5990 }, founding: 490 },
+  DE: { currency: 'eur', minMinor: 99, maxMinor: 199, introMinor: 49, packs: { '10min': 1290, '20min': 2290, '40min': 3990, '30min': 3490, '60min': 5990 }, founding: 490 },
+  ES: { currency: 'eur', minMinor: 89, maxMinor: 149, introMinor: 45, packs: { '10min': 990, '20min': 1790, '40min': 3190, '30min': 2690, '60min': 4790 }, founding: 490 },
+  IT: { currency: 'eur', minMinor: 89, maxMinor: 129, introMinor: 45, packs: { '10min': 990, '20min': 1790, '40min': 3190, '30min': 2690, '60min': 4790 }, founding: 490 },
+  CH: { currency: 'chf', minMinor: 99, maxMinor: 199, introMinor: 49, packs: { '10min': 1290, '20min': 2290, '40min': 3990, '30min': 3490, '60min': 5990 }, founding: 490 },
+  GB: { currency: 'gbp', minMinor: 99, maxMinor: 179, introMinor: 49, packs: { '10min': 1190, '20min': 1990, '40min': 3490, '30min': 2990, '60min': 4990 }, founding: 490 },
+  US: { currency: 'usd', minMinor: 149, maxMinor: 299, introMinor: 69, packs: { '10min': 1990, '20min': 3490, '40min': 5990, '30min': 4990, '60min': 8990 }, founding: 590 },
 } as const;
 
 const EURO_COUNTRIES = new Set([
@@ -341,4 +341,17 @@ export function quoteAdvisor(
       return { minutes, minor, label: formatMoney(minor, local.currency, locale) };
     }),
   };
+}
+
+/**
+ * Grille des packs pour une page : fr/es/de/it affichent et encaissent la grille euro de la langue,
+ * en suit le marché détecté. Même règle à l’affichage et au paiement (un seul prix partout).
+ */
+export function packMarketFor(
+  pageLocale: string | null | undefined,
+  market: { country?: string | null; language?: string | null; currency?: Currency | null },
+): MarketCode {
+  const lang = (pageLocale || '').toLowerCase().slice(0, 2);
+  if (lang && lang !== 'en' && ['fr', 'es', 'de', 'it'].includes(lang)) return marketCodeForContext({ locale: lang });
+  return marketCodeForContext({ country: market.country, locale: market.language, currency: market.currency });
 }

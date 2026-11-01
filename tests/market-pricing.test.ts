@@ -33,7 +33,7 @@ const BANNED = ['illi' + 'mit', 'unlim' + 'ited'];
 test('la grille marché reprend les montants publiés', () => {
   assert.deepEqual(MARKET_PRICING.FR, {
     currency: 'eur', minMinor: 99, maxMinor: 199, introMinor: 49,
-    packs: { '10min': 1290, '30min': 3490, '60min': 5990 }, founding: 490,
+    packs: { '10min': 1290, '20min': 2290, '40min': 3990, '30min': 3490, '60min': 5990 }, founding: 490,
   });
   assert.equal(MARKET_PRICING.BE.minMinor, 99);
   assert.equal(MARKET_PRICING.DE.maxMinor, 199);

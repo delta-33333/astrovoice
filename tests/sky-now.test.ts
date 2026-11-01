@@ -35,3 +35,28 @@ test('en-tête : la langue de l’URL prime sur le cookie (/fr/offres en FR/EUR)
   assert.match(header, /x-locale/);
   assert.match(header, /pathLocale !== 'en' \? 'eur'/);
 });
+
+test('packs à prix fixe : grille unique 10/20/40, remise à la minute, sans abonnement', async () => {
+  const { FIXED_PACKS, isFixedPackId } = await import('../lib/pricing.ts');
+  const { MARKET_PRICING } = await import('../lib/money.ts');
+  assert.deepEqual(FIXED_PACKS.map((p) => p.id), ['10min', '20min', '40min']);
+  assert.equal(isFixedPackId('30min'), false);
+  const fr = MARKET_PRICING.FR.packs;
+  assert.deepEqual([fr['10min'], fr['20min'], fr['40min']], [1290, 2290, 3990]);
+  assert.ok(fr['20min'] / 20 < fr['10min'] / 10 && fr['40min'] / 40 < fr['20min'] / 20);
+  assert.ok(fr['40min'] / 40 >= 99 && fr['10min'] / 10 <= 149);
+  const purchase = fs.readFileSync(new URL('../app/api/purchase-pack/route.ts', import.meta.url), 'utf8');
+  assert.match(purchase, /isFixedPackId/);
+  assert.match(purchase, /autoRecharge: 'false'/);
+});
+
+test('appel : minutes restantes visibles, crédit si coupure, règles de conduite', async () => {
+  const call = fs.readFileSync(new URL('../components/CallScreen.tsx', import.meta.url), 'utf8');
+  assert.match(call, /restantes · arrêt automatique/);
+  assert.match(call, /DROP_FREE_SECONDS/);
+  const rules = fs.readFileSync(new URL('../lib/voice-prompts.ts', import.meta.url), 'utf8');
+  assert.match(rules, /3114/);
+  assert.match(rules, /Ne donne jamais de date/);
+  assert.match(rules, /Never promise that an ex will come back/);
+  assert.match(rules, /CONDUCT_RULES\[lang\]/);
+});

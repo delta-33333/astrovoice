@@ -1,5 +1,7 @@
 import Link from 'next/link';
 import FreeTrialForm from '@/components/FreeTrialForm';
+import Commitments from '@/components/Commitments';
+import { TRIAL_NO_CHARGE, TRUST_PROMISE } from '@/lib/trust-copy';
 import { discoveryHeadline } from '@/lib/book-funnel';
 import { freeCallEnabled } from '@/lib/free-call';
 import { localeCurrency, type Locale } from '@/lib/seo';
@@ -45,7 +47,14 @@ export default function TrialPage({ locale }: { locale: Locale }) {
   }
   return (
     <main>
+      {(locale === 'fr' || locale === 'en') && (
+        <div className="max-w-lg mx-auto px-4 pt-8 -mb-6">
+          <p className="text-sm font-semibold text-celestial-gold" data-trust-promise>{TRUST_PROMISE[locale]}</p>
+          <p className="mt-1 text-xs text-white/70">{TRIAL_NO_CHARGE[locale]}</p>
+        </div>
+      )}
       <FreeTrialForm locale={locale} />
+      {(locale === 'fr' || locale === 'en') && <Commitments locale={locale} promise={false} />}
     </main>
   );
 }
