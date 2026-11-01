@@ -1,6 +1,6 @@
 import { discoveryHeadline } from './book-funnel.ts';
 import { VIRTUAL_ADVISOR_DISCLOSURE } from './legal.ts';
-import { formatMoney, type AdvisorLang } from './money.ts';
+import { formatMoney, MARKET_PRICING, type AdvisorLang } from './money.ts';
 import type { Locale } from './seo.ts';
 import { firstWeekMinor, WEEKLY_PLANS, type WeeklyCurrency } from './weekly.ts';
 
@@ -40,8 +40,8 @@ const PRIMARY: Record<Locale, string> = {
 };
 
 const REASSURE: Record<Locale, string> = {
-  fr: 'Sans engagement · résiliable en 1 clic · Apple Pay / Google Pay',
-  en: 'No commitment · cancel in one click · Apple Pay / Google Pay',
+  fr: 'Prix fixe · aucun abonnement · aucune recharge automatique · Apple Pay / Google Pay',
+  en: 'Fixed price · no subscription · no auto top-up · Apple Pay / Google Pay',
   es: 'Sin permanencia · cancela en 1 clic · Apple Pay / Google Pay',
   de: 'Ohne Bindung · mit 1 Klick kündbar · Apple Pay / Google Pay',
   it: 'Senza vincoli · disdici in 1 clic · Apple Pay / Google Pay',
@@ -73,28 +73,32 @@ export function homeSecondaryCta(locale: Locale, currency: WeeklyCurrency): stri
 
 /** Phrase de prix de l’accueil (Découverte), reprise telle quelle sur les fiches conseillers. Le prix vient des constantes. */
 export function homeOfferLine(locale: Locale, currency: WeeklyCurrency): string {
-  const first = discoveryHeadline(locale, currency);
-  const full = formatMoney(WEEKLY_PLANS.decouverte.amounts[currency], currency, locale);
+  // Grille unique : packs prépayés à prix fixe (10 / 20 / 40 min), sans abonnement.
+  const grid = currency === 'gbp' ? MARKET_PRICING.GB : currency === 'usd' ? MARKET_PRICING.US : currency === 'chf' ? MARKET_PRICING.CH : locale === 'es' ? MARKET_PRICING.ES : locale === 'it' ? MARKET_PRICING.IT : MARKET_PRICING.FR;
+  const from = formatMoney(grid.packs['10min'], grid.currency, locale);
   switch (locale) {
     case 'en':
-      return `${first}, then ${full}/week, cancel any time.`;
+      return `Fixed-price packs from ${from} for 10 minutes, no subscription, never a cent more.`;
     case 'es':
-      return `${first}, luego ${full}/semana, sin permanencia.`;
+      return `Paquetes de precio fijo desde ${from} los 10 minutos, sin suscripción.`;
     case 'de':
-      return `${first}, danach ${full}/Woche, ohne Bindung.`;
+      return `Festpreis-Pakete ab ${from} für 10 Minuten, ohne Abo.`;
     case 'it':
-      return `${first}, poi ${full}/settimana, senza vincoli.`;
+      return `Pacchetti a prezzo fisso da ${from} per 10 minuti, senza abbonamento.`;
     default:
-      return `${first}, puis ${full}/semaine, sans engagement.`;
+      return `Packs à prix fixe dès ${from} les 10 minutes, sans abonnement, jamais un centime de plus.`;
   }
 }
 
 /** Meta description. Le prix vient des constantes, jamais d’un montant écrit en dur. */
+const POSITIONING_FR = 'Callastral, c’est la voix qui lit ton vrai ciel quand ton cœur ou ta vie s’emmêlent : pour comprendre ce qui se joue, sans dates inventées.';
+const POSITIONING_EN = 'Callastral is the voice that reads your real sky when your heart or your life gets tangled: to understand what is at play, with no invented dates.';
+
 export function homeDescription(locale: Locale, currency: WeeklyCurrency): string {
   const offer = homeOfferLine(locale, currency);
   switch (locale) {
     case 'en':
-      return `Talk to an AI astrologer by phone: a reading of your birth chart, and your calls are remembered. ${offer}`;
+      return `${POSITIONING_EN} ${offer}`;
     case 'es':
       return `Habla con un astrólogo IA por teléfono: lectura de tu carta natal y memoria de las llamadas. ${offer}`;
     case 'de':
@@ -102,7 +106,7 @@ export function homeDescription(locale: Locale, currency: WeeklyCurrency): strin
     case 'it':
       return `Parla con un astrologo IA al telefono: lettura del tema natale e memoria delle chiamate. ${offer}`;
     default:
-      return `Parlez à une astrologue IA au téléphone : lecture de votre thème natal, mémoire de vos appels. ${offer}`;
+      return `${POSITIONING_FR} ${offer}`;
   }
 }
 
@@ -156,15 +160,21 @@ export function publicPerMinute(env: NodeJS.ProcessEnv = process.env): boolean {
 /** Promesse du premier écran, alignée sur les vidéos « le vrai ciel » (YouTube). */
 export const SKY_PROMISE: Record<'fr' | 'en', { eyebrow: string; h1: string; sub: string; direct: string }> = {
   fr: {
-    eyebrow: 'Le vrai ciel, calculé à l’instant',
-    h1: 'Votre ciel, en ce moment. Le vrai.',
-    sub: 'Votre date de naissance suffit : la Lune et le Soleil réels, maintenant, lus pour votre signe. Gratuit, sans compte. Puis parlez-en à une astrologue IA au téléphone.',
+    eyebrow: 'Amour, rupture, ex : le vrai ciel, calculé à l’instant',
+    h1: 'Il revient ou pas ? Comprends enfin ton lien. Tes 3 premières minutes sont offertes.',
+    sub: 'Commence par ta date de naissance : la Lune et le Soleil réels, maintenant, lus pour ton signe. Gratuit, sans compte. Puis parles-en à une astrologue IA au téléphone.',
     direct: 'Ou directement : 3 min offertes au téléphone, sans carte',
   },
   en: {
-    eyebrow: 'The real sky, computed right now',
-    h1: 'Your sky, right now. The real one.',
+    eyebrow: 'Love, breakup, the ex: the real sky, computed right now',
+    h1: 'Is he coming back or not? Finally understand your bond. Your first 3 minutes are free.',
     sub: 'Your date of birth is enough: the real Moon and Sun, right now, read for your sign. Free, no account. Then talk it through with an AI astrologer by phone.',
     direct: 'Or go straight to 3 free minutes by phone, no card',
   },
+};
+
+/** Phrase de positionnement (meta, à propos). */
+export const POSITIONING: Record<'fr' | 'en', string> = {
+  fr: 'Callastral, c’est la voix qui lit ton vrai ciel quand ton cœur ou ta vie s’emmêlent : pour comprendre ce qui se joue, sans dates inventées.',
+  en: 'Callastral is the voice that reads your real sky when your heart or your life gets tangled: to understand what is at play, with no invented dates.',
 };

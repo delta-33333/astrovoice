@@ -202,6 +202,7 @@ export default function OffersCatalog({ labels, locale = 'fr' }: { labels: Offer
     <div className="space-y-8">
       {error && <p className="text-sm text-red-200">{error}</p>}
 
+      {labels.plans.length > 0 && (
       <section id="formules" className="space-y-4">
         <div>
           <p className="text-xs uppercase tracking-[0.18em] text-celestial-gold">{t.weekly}</p>
@@ -249,6 +250,7 @@ export default function OffersCatalog({ labels, locale = 'fr' }: { labels: Offer
           ))}
         </div>
       </section>
+      )}
 
       <section className="rounded-3xl border border-white/10 bg-white/5 p-6 space-y-3">
         <h2 className="text-xl font-semibold">{t.summary} · {labels.summary}</h2>

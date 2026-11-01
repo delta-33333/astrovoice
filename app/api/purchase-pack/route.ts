@@ -5,8 +5,8 @@ import { trackEvent } from '@/lib/events';
 import { foundingAlreadyClaimed } from '@/lib/credits';
 import { FOUNDING_MAX_SALES, foundingOfferOpen } from '@/lib/founding';
 import { resolveMarket } from '@/lib/market';
-import { formatMoney, MARKET_PRICING, marketCodeForContext } from '@/lib/money';
-import { getPack, packForMarket, packSeconds } from '@/lib/pricing';
+import { formatMoney, MARKET_PRICING, packMarketFor } from '@/lib/money';
+import { getPack, isFixedPackId, packForMarket, packSeconds } from '@/lib/pricing';
 import { getSupabaseAdmin, supabaseAvailable } from '@/lib/supabase';
 import { stripeSecretConfigured } from '@/lib/stripe';
 
@@ -20,9 +20,12 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Non authentifié' }, { status: 401 });
     }
 
-    const { packId } = await request.json();
+    const body = await request.json().catch(() => ({}));
+    const packId = typeof body?.packId === 'string' ? body.packId : '';
+    const lang = typeof body?.lang === 'string' ? body.lang.slice(0, 2) : null;
     const pack = getPack(packId);
-    if (!pack) {
+    // Seuls les packs à prix fixe en vigueur (10, 20, 40 min) sont vendus ; jamais d’abonnement ni de recharge auto.
+    if (!pack || (!pack.founding && !isFixedPackId(pack.id))) {
       return NextResponse.json({ error: 'Offre introuvable' }, { status: 400 });
     }
 
@@ -53,11 +56,7 @@ export async function POST(request: NextRequest) {
       ? 'Cercle Fondateur'
       : `Pack ${pack.minutes} minutes`;
     const market = await resolveMarket();
-    const code = marketCodeForContext({
-      country: market.country,
-      locale: market.language,
-      currency: market.currency,
-    });
+    const code = packMarketFor(lang, market);
     const priced = packForMarket(pack, code);
     const currency = MARKET_PRICING[code].currency;
     const amount = priced.amountCents;
@@ -79,6 +78,7 @@ export async function POST(request: NextRequest) {
         packId: pack.id,
         minutes: String(pack.minutes),
         seconds: String(packSeconds(pack)),
+        autoRecharge: 'false',
       },
     });
 
@@ -92,7 +92,7 @@ export async function POST(request: NextRequest) {
       clientSecret: checkout.clientSecret,
       checkoutSessionId: checkout.checkoutSessionId,
       amount: checkout.amountCents,
-      amountLabel: formatMoney(checkout.amountCents, currency, market.language),
+      amountLabel: formatMoney(checkout.amountCents, currency, lang || market.language),
       currency,
       minutes: pack.minutes,
       label,

@@ -142,7 +142,7 @@ export default function AdvisorDirectory({
             À partir de {floor}/min · tarif réduit les 3 premières minutes
           </p>
         ) : (
-          <p className="text-sm text-celestial-gold mt-1">Inclus dans les formules hebdomadaires</p>
+          <p className="text-sm text-celestial-gold mt-1">Packs à prix fixe, dès 10 min</p>
         )}
       </div>
 
@@ -217,7 +217,7 @@ export default function AdvisorDirectory({
           const slotHref = advisor.availability.immediateSlotId && advisor.availability.immediateStartsAt
             ? bookPath(advisor.availability.immediateSlotId, advisor.availability.immediateStartsAt, advisor.id)
             : null;
-          const callHref = showPerMinute ? slotHref : `/book?offer=decouverte&advisor=${encodeURIComponent(advisor.id)}`;
+          const callHref = showPerMinute ? slotHref : '/packs?pack=20min&lang=fr';
           return (
             <motion.article
               key={advisor.id}
@@ -284,7 +284,7 @@ export default function AdvisorDirectory({
                     {quote.introLabel} les 3 premières minutes
                   </>
                 ) : (
-                  <span className="text-celestial-gold font-semibold">Inclus dans les formules hebdomadaires</span>
+                  <span className="text-celestial-gold font-semibold">Packs à prix fixe, dès 10 min</span>
                 )}
               </p>
 

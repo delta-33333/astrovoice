@@ -13,7 +13,7 @@ export interface OffersCopy {
 
 export const OFFERS_COPY: Record<Locale, OffersCopy> = {
   fr: {
-    title: 'Offres', intro: 'Tous les prix ci-dessous sont ceux encaissés. Chaque formule inclut un volume de minutes par semaine, avec 60 minutes maximum par appel.',
+    title: 'Offres', intro: 'Tous les prix ci-dessous sont ceux encaissés. Une seule grille : des packs de minutes payés une fois, sans abonnement ni recharge automatique.',
     weekly: 'Chaque semaine', three: 'Trois formules', plansIntro: '60 minutes maximum par appel. La première semaine est à tarif réduit, puis le prix affiché. Sans engagement, résiliable en 1 clic.',
     recommended: 'Recommandé', plan: 'Formule', firstWeek: (p) => `la 1re semaine, puis ${p}/semaine`, perWeek: (m) => `${m} minutes par semaine`, choose: (n) => `Choisir ${n}`,
     summary: 'Résumé écrit', summaryBody: 'Après une consultation, le résumé de ce qui a été dit est envoyé par e-mail. Le paiement se fait depuis la page de fin d’appel.',
@@ -26,7 +26,7 @@ export const OFFERS_COPY: Record<Locale, OffersCopy> = {
     metaDescription: 'Formules hebdomadaires Découverte, Essentiel et Premium, plus les documents écrits.',
   },
   en: {
-    title: 'Plans', intro: 'All prices below are the amounts charged. Each plan includes a number of minutes per week, with 60 minutes maximum per call.',
+    title: 'Plans', intro: 'All prices below are the amounts charged. One price list: minute packs paid once, no subscription, no auto top-up.',
     weekly: 'Every week', three: 'Three plans', plansIntro: '60 minutes maximum per call. The first week is discounted, then the price shown. No commitment, cancel in one click.',
     recommended: 'Recommended', plan: 'Plan', firstWeek: (p) => `the first week, then ${p}/week`, perWeek: (m) => `${m} minutes per week`, choose: (n) => `Choose ${n}`,
     summary: 'Written summary', summaryBody: 'After a consultation, a summary of what was said is sent by email. Payment is made from the end-of-call page.',

@@ -1,8 +1,7 @@
 import { MEMORY_FAQ } from './home-offer.ts';
 import { AI_ACT_LINE, VIRTUAL_ADVISOR_DISCLOSURE } from './legal.ts';
-import { formatMoney, type Currency } from './money.ts';
+import { formatMoney, MARKET_PRICING, type Currency } from './money.ts';
 import { sameAsUrls } from './social.ts';
-import { firstWeekMinor, WEEKLY_PLANS } from './weekly.ts';
 
 export const LOCALES = ['fr', 'en', 'es', 'de', 'it'] as const;
 export type Locale = (typeof LOCALES)[number];
@@ -460,13 +459,13 @@ export function homeFaqs(locale: Locale): FaqItem[] {
     fr: [
       { question: 'Qui sont les conseillers Callastral ?', answer: disclosure.fr },
       { question: 'Comment se passe une consultation par téléphone ?', answer: 'Vous choisissez un conseiller, un créneau, puis vous payez. Le compte se crée à ce moment-là. Le lien d’appel s’ouvre cinq minutes avant le début.' },
-      { question: 'Quels sont les tarifs ?', answer: 'Les formules sont hebdomadaires : Découverte, Essentiel et Premium. La 1re semaine Découverte est à tarif réduit, puis le tarif plein. Une formule se résilie en un clic. Un appel de 3 minutes est offert une fois.' },
+      { question: 'Quels sont les tarifs ?', answer: 'Des packs prépayés à prix fixe : 10 minutes 12,90 €, 20 minutes 22,90 €, 40 minutes 39,90 €. L’appel s’arrête tout seul quand le pack est utilisé : pas d’abonnement, pas de recharge automatique, jamais un centime de plus. Un appel de 3 minutes est offert une fois, sans carte.' },
       { question: 'Le conseiller se souvient-il des appels précédents ?', answer: 'Oui. Après chaque appel, un court résumé est enregistré dans le compte et transmis au même conseiller au début de l’appel suivant. Vous pouvez le consulter et l’effacer depuis le compte.' },
     ],
     en: [
       { question: 'Who are the Callastral advisors?', answer: disclosure.en },
       { question: 'How does a phone consultation work?', answer: 'You choose an advisor and a time, then pay. The account is created at that step. The call link opens fifteen minutes before the start.' },
-      { question: 'What are the prices?', answer: 'Plans are weekly: Discovery, Essential and Premium. The first Discovery week is reduced, then the full price. Cancel in one click. A 3-minute call is free once.' },
+      { question: 'What are the prices?', answer: 'Prepaid fixed-price packs of 10, 20 or 40 minutes. The call stops by itself when the pack is used: no subscription, no auto top-up, never a cent more. A 3-minute call is free once, no card.' },
       { question: 'Does the advisor remember previous calls?', answer: 'Yes. After each call a short summary is saved in the account and given to the same advisor at the start of the next call. You can read it and delete it from the account.' },
     ],
     es: [
@@ -496,14 +495,14 @@ export function siteSameAs(env: NodeJS.ProcessEnv = process.env): string[] {
   return sameAsUrls(env);
 }
 
-function offerNode(plan: 'decouverte' | 'essentiel' | 'premium'): Record<string, unknown> {
-  const row = WEEKLY_PLANS[plan];
-  const full = (row.amounts.eur / 100).toFixed(2);
+function offerNode(packId: '10min' | '20min' | '40min'): Record<string, unknown> {
+  const cents = MARKET_PRICING.FR.packs[packId];
+  const minutes = Number.parseInt(packId, 10);
   return {
     '@type': 'Offer',
-    price: full,
+    price: (cents / 100).toFixed(2),
     priceCurrency: 'EUR',
-    description: `${row.names.fr} : ${row.minutes} minutes par semaine, ${formatMoney(firstWeekMinor(plan, 'eur'), 'eur', 'fr')} la 1re semaine puis ${formatMoney(row.amounts.eur, 'eur', 'fr')}/semaine, sans engagement.`,
+    description: `Pack ${minutes} minutes à prix fixe, ${formatMoney(cents, 'eur', 'fr')}, paiement unique, sans abonnement ni recharge automatique.`,
   };
 }
 
@@ -544,7 +543,7 @@ export function organizationGraph(origin: string, env: NodeJS.ProcessEnv = proce
       serviceType: 'Consultation d’astrologie par téléphone avec IA',
       provider: { '@id': `${origin}/#organization` },
       description: VIRTUAL_ADVISOR_DISCLOSURE,
-      offers: [offerNode('decouverte'), offerNode('essentiel'), offerNode('premium')],
+      offers: [offerNode('10min'), offerNode('20min'), offerNode('40min')],
     },
   ];
 }

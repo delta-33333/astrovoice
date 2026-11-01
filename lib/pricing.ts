@@ -15,7 +15,11 @@ export const PER_MINUTE_CENTS = 149;
 /** Empreinte d'environ 10 minutes, encaissée au réel à la fin. */
 export const CALL_HOLD_SECONDS = 10 * 60;
 
-export type PackId = 'founding' | '10min' | '30min' | '60min';
+export type PackId = 'founding' | '10min' | '20min' | '40min' | '30min' | '60min';
+
+/** Packs prépayés à prix fixe, offre principale. Aucun abonnement, aucune recharge automatique. */
+export const FIXED_PACK_IDS = ['10min', '20min', '40min'] as const;
+export type FixedPackId = (typeof FIXED_PACK_IDS)[number];
 
 export interface MinutePack {
   id: PackId;
@@ -41,11 +45,24 @@ export const MINUTE_PACKS: MinutePack[] = [
     regularCents: 1490,
   },
   {
+    id: '20min',
+    minutes: 20,
+    amountCents: 2290,
+    regularCents: 2980,
+    popular: true,
+  },
+  {
+    id: '40min',
+    minutes: 40,
+    amountCents: 3990,
+    regularCents: 5960,
+  },
+  /* Anciens packs, plus proposés : conservés pour relire les achats passés. */
+  {
     id: '30min',
     minutes: 30,
     amountCents: 3490,
     regularCents: 4470,
-    popular: true,
   },
   {
     id: '60min',
@@ -54,6 +71,12 @@ export const MINUTE_PACKS: MinutePack[] = [
     regularCents: 8940,
   },
 ];
+
+export const FIXED_PACKS: MinutePack[] = MINUTE_PACKS.filter((pack) => (FIXED_PACK_IDS as readonly string[]).includes(pack.id));
+
+export function isFixedPackId(id: string): id is FixedPackId {
+  return (FIXED_PACK_IDS as readonly string[]).includes(id);
+}
 
 export function getPack(id: string): MinutePack | undefined {
   return MINUTE_PACKS.find((pack) => pack.id === id);

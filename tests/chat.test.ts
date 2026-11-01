@@ -38,6 +38,7 @@ test('relance toujours présente, CTA FR exact, consignes conformes', () => {
   assert.equal(chatPath('en'), '/en/chat');
   const prompt = chatSystemPrompt({ locale: 'fr', advisorName: 'Léa Durand', advisorLabel: 'Conseillère Callastral', personaPrompt: 'Douce.', firstName: 'Ana', birth: '1990-05-04', place: 'Lyon', timeUnknown: true, topic: 'love', chartText: 'Soleil Taureau', today: '2026-10-27' });
   assert.match(prompt, /Conseillère Callastral/);
-  assert.match(prompt, /questions de relance/);
+  assert.match(prompt, /une seule question/);
+  assert.match(prompt, /3114/);
   assert.doesNotMatch(prompt, new RegExp(['astrology', 'api'].join('-'), 'i'));
 });

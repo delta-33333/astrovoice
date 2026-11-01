@@ -2,7 +2,10 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import ChatCta from '@/components/ChatCta';
 import AdvisorDirectory from '@/components/AdvisorDirectory';
-import HomePlans from '@/components/HomePlans';
+import FixedPacks from '@/components/FixedPacks';
+import Commitments from '@/components/Commitments';
+import UseCases from '@/components/UseCases';
+import { TRUST_PROMISE } from '@/lib/trust-copy';
 import PromoStrip from '@/components/PromoStrip';
 import SiteFooter from '@/components/SiteFooter';
 import SiteHeader from '@/components/SiteHeader';
@@ -17,7 +20,6 @@ import {
   SKY_PROMISE,
   homeDescription,
   homeReassure,
-  homeSecondaryCta,
   publicPerMinute,
 } from '@/lib/home-offer';
 import { resolveMarket } from '@/lib/market';
@@ -87,6 +89,7 @@ export default async function LandingPage({
         <h1 className="mt-2 font-[family-name:var(--font-cinzel)] text-2xl sm:text-4xl text-glow">
           {SKY_PROMISE.fr.h1}
         </h1>
+        <p className="mt-2 text-celestial-gold font-semibold" data-trust-promise>{TRUST_PROMISE.fr}</p>
         <p className="mt-3 text-white/80 leading-relaxed">{SKY_PROMISE.fr.sub}</p>
         <SkyNowHero locale="fr" trialHref={trialPath('fr')} disclosure={VIRTUAL_ADVISOR_DISCLOSURE} />
         <p className="mt-4 text-center sm:text-left">
@@ -97,7 +100,9 @@ export default async function LandingPage({
         <p className="mt-3 text-xs text-white/60">{HOME_DISCLOSURE}</p>
         <p className="mt-1 text-xs text-white/45">{homeReassure('fr')}</p>
       </div>
-      <HomePlans locale="fr" currency={currency} />
+      <UseCases locale="fr" trialHref={trialPath('fr')} />
+      <FixedPacks locale="fr" trialHref={trialPath('fr')} />
+      <Commitments locale="fr" promise={false} />
       <div className="max-w-4xl mx-auto px-4">
         <section className="py-16 space-y-8">
           <h2 className="font-[family-name:var(--font-cinzel)] text-3xl font-bold text-center text-glow">
@@ -108,16 +113,16 @@ export default async function LandingPage({
               Vingt-cinq secondes, générées par IA, pour entendre le ton avant d’appeler.
             </Step>
             <Step n="2" title="Essayez 3 minutes">
-              Un code à six chiffres arrive par e-mail. L’appel s’arrête à trois minutes.
+              Un code à six chiffres arrive par e-mail. Aucune carte, aucun abonnement, aucun prélèvement. L’appel s’arrête à trois minutes.
             </Step>
-            <Step n="3" title="Choisissez votre formule">
-              Découverte, Essentiel ou Premium. La première semaine Découverte est à tarif réduit. Résiliation en un clic.
+            <Step n="3" title="Prenez un pack à prix fixe">
+              10, 20 ou 40 minutes, payées une fois. L’appel s’arrête tout seul quand le pack est utilisé. Jamais un centime de plus.
             </Step>
           </div>
           <VoiceSample locale="fr" src="/samples/sample-fr.mp3" />
           <div className="flex flex-col sm:flex-row sm:items-center gap-3">
-            <Link href="/book?offer=decouverte" className="btn-secondary text-center">
-              {homeSecondaryCta('fr', currency)}
+            <Link href="/packs?pack=20min&lang=fr" className="btn-secondary text-center">
+              Pack 20 minutes à prix fixe
             </Link>
             <ChatCta locale="fr" placement="home-hero" className="w-full sm:w-auto" />
           </div>
@@ -157,7 +162,7 @@ export default async function LandingPage({
           <details className="p-6 rounded-xl bg-white/5 border border-white/10">
             <summary className="cursor-pointer text-lg font-semibold">Puis-je arrêter quand je veux ?</summary>
             <p className="mt-4 text-white/70 text-sm leading-relaxed">
-              Oui. L’essai s’arrête à trois minutes. Une formule hebdomadaire se résilie en un clic depuis le compte.
+              Oui. Vous raccrochez quand vous voulez et les minutes restantes restent sur votre compte. Il n’y a ni abonnement ni recharge automatique : rien n’est prélevé après l’achat d’un pack.
             </p>
           </details>
         </section>

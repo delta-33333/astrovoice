@@ -9,6 +9,7 @@ import {
   isCurrency,
   MARKET_PRICING,
   marketCodeForContext,
+  packMarketFor,
   perMinuteRange,
 } from '@/lib/money';
 import {
@@ -22,7 +23,7 @@ import { WEEKLY_MAX_CALL_MINUTES, WEEKLY_PLAN_IDS, WEEKLY_PLANS } from '@/lib/we
 
 export const dynamic = 'force-dynamic';
 
-export async function GET() {
+export async function GET(request: Request) {
   const market = await resolveMarket();
   const code = marketCodeForContext({
     country: market.country,
@@ -30,6 +31,10 @@ export async function GET() {
     currency: market.currency,
   });
   const grid = MARKET_PRICING[code];
+  const pageLang = new URL(request.url).searchParams.get('lang');
+  const packCode = packMarketFor(pageLang, market);
+  const packGrid = MARKET_PRICING[packCode];
+  const showPack = (minor: number) => formatMoney(minor, packGrid.currency, pageLang || market.language);
   const show = (minor: number) => formatMoney(minor, grid.currency, market.language);
   const money = (eurCents: number) =>
     formatMoney(convertEurCents(eurCents, market.currency, market.rates), market.currency, market.language);
@@ -49,6 +54,7 @@ export async function GET() {
   });
 
   return NextResponse.json({
+    packCurrency: packGrid.currency,
     language: market.language,
     currency: grid.currency,
     country: market.country,
@@ -68,13 +74,13 @@ export async function GET() {
       plans,
     },
     packs: MINUTE_PACKS.map((pack) => {
-      const priced = packForMarket(pack, code);
+      const priced = packForMarket(pack, packCode);
       return {
         id: pack.id,
-        amountLabel: show(priced.amountCents),
-        regularLabel: show(priced.regularCents),
-        perMinLabel: `${show(Math.round(priced.amountCents / pack.minutes))}/min`,
-        savingsLabel: show(Math.max(0, priced.regularCents - priced.amountCents)),
+        amountLabel: showPack(priced.amountCents),
+        regularLabel: showPack(priced.regularCents),
+        perMinLabel: `${showPack(Math.round(priced.amountCents / pack.minutes))}/min`,
+        savingsLabel: showPack(Math.max(0, priced.regularCents - priced.amountCents)),
       };
     }),
   });
