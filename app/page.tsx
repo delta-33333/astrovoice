@@ -3,21 +3,19 @@ import Link from 'next/link';
 import ChatCta from '@/components/ChatCta';
 import AdvisorDirectory from '@/components/AdvisorDirectory';
 import HomePlans from '@/components/HomePlans';
-import InstallPrompt from '@/components/InstallPrompt';
 import PromoStrip from '@/components/PromoStrip';
 import SiteFooter from '@/components/SiteFooter';
 import SiteHeader from '@/components/SiteHeader';
+import SkyNowHero from '@/components/SkyNowHero';
 import TrialStickyCta from '@/components/TrialStickyCta';
 import VoiceSample from '@/components/VoiceSample';
 import {
   FEATURED_ADVISOR_LIMIT,
   HOME_DISCLOSURE,
-  HOME_H1,
-  HOME_SUB,
   HOME_TITLE,
   MEMORY_FAQ,
+  SKY_PROMISE,
   homeDescription,
-  homePrimaryCta,
   homeReassure,
   homeSecondaryCta,
   publicPerMinute,
@@ -27,6 +25,7 @@ import { MARKET_PRICING, marketCodeForContext } from '@/lib/money';
 import { hreflangAlternates, localeHomePath } from '@/lib/seo';
 import { listDirectoryAdvisorsCached } from '@/lib/slots';
 import { trialPath } from '@/lib/free-call';
+import { VIRTUAL_ADVISOR_DISCLOSURE } from '@/lib/legal';
 import { weeklyCurrency } from '@/lib/weekly';
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -84,22 +83,19 @@ export default async function LandingPage({
     <main className="min-h-screen pb-28 sm:pb-12">
       <SiteHeader />
       <div className="max-w-4xl mx-auto px-4 pt-5 sm:pt-8">
-        <h1 className="font-[family-name:var(--font-cinzel)] text-2xl sm:text-4xl text-glow">
-          {HOME_H1.fr}
+        <p className="text-xs uppercase tracking-[0.18em] text-celestial-gold/80">{SKY_PROMISE.fr.eyebrow}</p>
+        <h1 className="mt-2 font-[family-name:var(--font-cinzel)] text-2xl sm:text-4xl text-glow">
+          {SKY_PROMISE.fr.h1}
         </h1>
-        <p className="mt-3 text-white/80 leading-relaxed">{HOME_SUB.fr}</p>
-        <div className="mt-4 sm:mt-6 flex flex-col sm:flex-row sm:items-center gap-3">
-          <Link href={trialPath('fr')} data-primary-cta="trial" data-cta="hero-home" className="btn-primary cta-pulse text-center">
-            {homePrimaryCta('fr')}
+        <p className="mt-3 text-white/80 leading-relaxed">{SKY_PROMISE.fr.sub}</p>
+        <SkyNowHero locale="fr" trialHref={trialPath('fr')} disclosure={VIRTUAL_ADVISOR_DISCLOSURE} />
+        <p className="mt-4 text-center sm:text-left">
+          <Link href={trialPath('fr')} data-primary-cta="trial" data-cta="hero-home" className="text-sm text-celestial-gold underline underline-offset-4">
+            {SKY_PROMISE.fr.direct}
           </Link>
-          <Link href="/book?offer=decouverte" className="btn-secondary text-center">
-            {homeSecondaryCta('fr', currency)}
-          </Link>
-        </div>
-        <div className="mt-3"><ChatCta locale="fr" placement="home-hero" className="w-full sm:w-auto" /></div>
-        <p className="mt-3 text-sm text-white/70">{HOME_DISCLOSURE}</p>
-        <p className="mt-2 text-xs text-white/50">{homeReassure('fr')}</p>
-        <VoiceSample locale="fr" src="/samples/sample-fr.mp3" />
+        </p>
+        <p className="mt-3 text-xs text-white/60">{HOME_DISCLOSURE}</p>
+        <p className="mt-1 text-xs text-white/45">{homeReassure('fr')}</p>
       </div>
       <HomePlans locale="fr" currency={currency} />
       <div className="max-w-4xl mx-auto px-4">
@@ -117,6 +113,13 @@ export default async function LandingPage({
             <Step n="3" title="Choisissez votre formule">
               Découverte, Essentiel ou Premium. La première semaine Découverte est à tarif réduit. Résiliation en un clic.
             </Step>
+          </div>
+          <VoiceSample locale="fr" src="/samples/sample-fr.mp3" />
+          <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+            <Link href="/book?offer=decouverte" className="btn-secondary text-center">
+              {homeSecondaryCta('fr', currency)}
+            </Link>
+            <ChatCta locale="fr" placement="home-hero" className="w-full sm:w-auto" />
           </div>
         </section>
       </div>
@@ -162,8 +165,7 @@ export default async function LandingPage({
         <PromoStrip ids={['10']} />
         <SiteFooter locale="fr" />
       </div>
-      <InstallPrompt lifted />
-      <TrialStickyCta href={trialPath('fr')} source="home" />
+      <TrialStickyCta href={trialPath('fr')} source="home" locale="fr" />
     </main>
   );
 }
