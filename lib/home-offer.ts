@@ -152,3 +152,19 @@ export function publicPerMinute(env: NodeJS.ProcessEnv = process.env): boolean {
   const raw = (env.PUBLIC_PER_MINUTE ?? '').trim().toLowerCase();
   return raw === '1' || raw === 'true' || raw === 'on';
 }
+
+/** Promesse du premier écran, alignée sur les vidéos « le vrai ciel » (YouTube). */
+export const SKY_PROMISE: Record<'fr' | 'en', { eyebrow: string; h1: string; sub: string; direct: string }> = {
+  fr: {
+    eyebrow: 'Le vrai ciel, calculé à l’instant',
+    h1: 'Votre ciel, en ce moment. Le vrai.',
+    sub: 'Votre date de naissance suffit : la Lune et le Soleil réels, maintenant, lus pour votre signe. Gratuit, sans compte. Puis parlez-en à une astrologue IA au téléphone.',
+    direct: 'Ou directement : 3 min offertes au téléphone, sans carte',
+  },
+  en: {
+    eyebrow: 'The real sky, computed right now',
+    h1: 'Your sky, right now. The real one.',
+    sub: 'Your date of birth is enough: the real Moon and Sun, right now, read for your sign. Free, no account. Then talk it through with an AI astrologer by phone.',
+    direct: 'Or go straight to 3 free minutes by phone, no card',
+  },
+};

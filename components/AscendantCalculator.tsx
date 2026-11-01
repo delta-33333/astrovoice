@@ -192,7 +192,9 @@ export default function AscendantCalculator({
             >
               {readingCta}
             </Link>
-            {(locale ?? 'fr') === 'fr' && <TrialStickyCta source="ascendant" />}
+            {((locale ?? 'fr') === 'fr' || locale === 'en') && (
+              <TrialStickyCta source="ascendant" locale={locale === 'en' ? 'en' : 'fr'} href={locale === 'en' ? '/en/free-trial' : '/fr/essai'} afterPx={0} />
+            )}
           </div>
         ) : (
           <p className="text-sm text-white/45 leading-relaxed">

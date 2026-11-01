@@ -20,12 +20,16 @@ import SeoChrome from '@/components/SeoChrome';
 import { weeklyCurrency } from '@/lib/weekly';
 import { listDirectoryAdvisorsCached } from '@/lib/slots';
 import VoiceSample from '@/components/VoiceSample';
+import SkyNowHero from '@/components/SkyNowHero';
+import TrialStickyCta from '@/components/TrialStickyCta';
+import { VIRTUAL_ADVISOR_DISCLOSURE_EN } from '@/lib/legal';
 import {
   FEATURED_ADVISOR_LIMIT,
   HOME_DISCLOSURE,
   HOME_H1,
   HOME_SUB,
   HOME_TITLE,
+  SKY_PROMISE,
   homeDescription,
   homePrimaryCta,
   homeSecondaryCta,
@@ -89,19 +93,38 @@ export default async function LocaleHome(props: {
   const ordered = query.all === '1' ? orderedAll : orderedAll.slice(0, FEATURED_ADVISOR_LIMIT);
   const faqs = homeFaqs(locale);
   const weekly = weeklyCurrency(currency);
+  const sky = locale === 'fr' || locale === 'en' ? locale : null;
+  const disclosure = locale === 'fr' ? HOME_DISCLOSURE : VIRTUAL_ADVISOR_DISCLOSURE_EN;
 
   return (
-    <main>
+    <main className="pb-28 sm:pb-0">
       <SeoChrome locale={locale} alternatePath={localeHomePath} />
       <div className="max-w-3xl mx-auto px-4 py-8">
-        <h1 className="font-[family-name:var(--font-cinzel)] text-3xl sm:text-4xl text-glow">{HOME_H1[locale]}</h1>
-        <p className="mt-4 text-white/80 leading-relaxed">{HOME_SUB[locale]}</p>
-        <div className="mt-5 flex flex-col sm:flex-row gap-3">
-          <Link href={trialPath(locale)} data-primary-cta="trial" className="btn-primary text-center">{homePrimaryCta(locale)}</Link>
+        {sky ? (
+          <>
+            <p className="text-xs uppercase tracking-[0.18em] text-celestial-gold/80">{SKY_PROMISE[sky].eyebrow}</p>
+            <h1 className="mt-2 font-[family-name:var(--font-cinzel)] text-3xl sm:text-4xl text-glow">{SKY_PROMISE[sky].h1}</h1>
+            <p className="mt-3 text-white/80 leading-relaxed">{SKY_PROMISE[sky].sub}</p>
+            <SkyNowHero locale={sky} trialHref={trialPath(locale)} disclosure={disclosure} />
+            <p className="mt-4 text-center sm:text-left">
+              <Link href={trialPath(locale)} data-primary-cta="trial" data-cta="hero-home" className="text-sm text-celestial-gold underline underline-offset-4">{SKY_PROMISE[sky].direct}</Link>
+            </p>
+            <p className="mt-3 text-xs text-white/60">{disclosure}</p>
+          </>
+        ) : (
+          <>
+            <h1 className="font-[family-name:var(--font-cinzel)] text-3xl sm:text-4xl text-glow">{HOME_H1[locale]}</h1>
+            <p className="mt-4 text-white/80 leading-relaxed">{HOME_SUB[locale]}</p>
+            <div className="mt-5 flex flex-col sm:flex-row gap-3">
+              <Link href={trialPath(locale)} data-primary-cta="trial" className="btn-primary text-center">{homePrimaryCta(locale)}</Link>
+            </div>
+            <p className="mt-3 text-sm text-white/70">{disclosure}</p>
+          </>
+        )}
+        <div className="mt-6 flex flex-col sm:flex-row gap-3">
           <Link href="/book?offer=decouverte" className="btn-secondary text-center">{homeSecondaryCta(locale, weekly)}</Link>
+          <ChatCta locale={locale} placement="home-hero" className="w-full sm:w-auto" />
         </div>
-        <div className="mt-3"><ChatCta locale={locale} placement="home-hero" className="w-full sm:w-auto" /></div>
-        <p className="mt-3 text-sm text-white/70">{HOME_DISCLOSURE}</p>
         <VoiceSample locale={locale} src={locale === 'en' ? '/samples/sample-en.mp3' : '/samples/sample-fr.mp3'} />
         <p className="mt-4">
           <Link href={couplePath(locale)} className="text-celestial-gold underline">
@@ -218,6 +241,7 @@ export default async function LocaleHome(props: {
           {locale === 'fr' && <PromoStrip ids={['10']} />}
         </section>
       </div>
+      {sky && <TrialStickyCta href={trialPath(locale)} source="home" locale={sky} />}
       <JsonLd data={{
         '@context': 'https://schema.org',
         '@graph': [

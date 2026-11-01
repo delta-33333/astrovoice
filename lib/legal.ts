@@ -2,6 +2,10 @@
 export const VIRTUAL_ADVISOR_DISCLOSURE =
   'Les conseillers Callastral sont des voix et des personas virtuels créés par Callastral.';
 
+/** Même mention, en anglais (pages /en). */
+export const VIRTUAL_ADVISOR_DISCLOSURE_EN =
+  'Callastral advisors are virtual voices and personas created by Callastral.';
+
 /**
  * Article 50 du règlement européen sur l’IA, applicable depuis le 2 août 2026.
  * Seules ces lignes peuvent dire « intelligence artificielle » ou « AI ».

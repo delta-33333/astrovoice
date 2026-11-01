@@ -1,6 +1,6 @@
 'use client';
 
-import { FormEvent, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import HeardFromField from '@/components/HeardFromField';
 import HoneypotField from '@/components/HoneypotField';
@@ -143,6 +143,16 @@ export default function FreeTrialForm({ locale }: { locale: Locale }) {
   const [sent, setSent] = useState(false);
   const [error, setError] = useState('');
   const [pending, setPending] = useState(false);
+
+  // Date saisie dans la mini-lecture de l’accueil : reprise ici pour ne pas la redemander.
+  useEffect(() => {
+    try {
+      const saved = sessionStorage.getItem('cl_birth_date');
+      if (saved && /^\d{4}-\d{2}-\d{2}$/.test(saved)) setBirthDate((current) => current || saved);
+    } catch {
+      /* stockage indisponible */
+    }
+  }, []);
 
   const requestCode = async (event: FormEvent) => {
     event.preventDefault();
