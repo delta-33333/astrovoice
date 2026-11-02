@@ -1,0 +1,153 @@
+{
+ "date": "2026-11-02",
+ "sky": {
+  "date": "2026-11-02",
+  "computedAt": "08:00 Europe/Paris",
+  "phase": {
+   "id": "lastQuarter",
+   "illumination": 45,
+   "waxing": false
+  },
+  "bodies": [
+   {
+    "name": "Soleil",
+    "sign": "Scorpion",
+    "degree": 9,
+    "retrograde": false
+   },
+   {
+    "name": "Lune",
+    "sign": "Lion",
+    "degree": 15,
+    "retrograde": false
+   },
+   {
+    "name": "Mercure",
+    "sign": "Scorpion",
+    "degree": 15,
+    "retrograde": true
+   },
+   {
+    "name": "Vénus",
+    "sign": "Balance",
+    "degree": 25,
+    "retrograde": true
+   },
+   {
+    "name": "Mars",
+    "sign": "Lion",
+    "degree": 19,
+    "retrograde": false
+   },
+   {
+    "name": "Jupiter",
+    "sign": "Lion",
+    "degree": 24,
+    "retrograde": false
+   },
+   {
+    "name": "Saturne",
+    "sign": "Bélier",
+    "degree": 9,
+    "retrograde": true
+   },
+   {
+    "name": "Uranus",
+    "sign": "Gémeaux",
+    "degree": 4,
+    "retrograde": true
+   },
+   {
+    "name": "Neptune",
+    "sign": "Bélier",
+    "degree": 2,
+    "retrograde": true
+   },
+   {
+    "name": "Pluton",
+    "sign": "Verseau",
+    "degree": 3,
+    "retrograde": false
+   },
+   {
+    "name": "Nœud nord",
+    "sign": "Verseau",
+    "degree": 26,
+    "retrograde": true
+   }
+  ],
+  "ingresses": [],
+  "aspects": [
+   {
+    "a": "Lune",
+    "b": "Mercure",
+    "aspect": "square",
+    "orb": 0.4
+   },
+   {
+    "a": "Vénus",
+    "b": "Nœud nord",
+    "aspect": "trine",
+    "orb": 0.4
+   },
+   {
+    "a": "Vénus",
+    "b": "Jupiter",
+    "aspect": "sextile",
+    "orb": 1.2
+   },
+   {
+    "a": "Lune",
+    "b": "Mars",
+    "aspect": "conjunction",
+    "orb": 3.8
+   },
+   {
+    "a": "Mars",
+    "b": "Jupiter",
+    "aspect": "conjunction",
+    "orb": 5.2
+   },
+   {
+    "a": "Soleil",
+    "b": "Mercure",
+    "aspect": "conjunction",
+    "orb": 5.3
+   }
+  ]
+ },
+ "en": {
+  "summary": "Monday 2 November 2026: the Moon spends the whole day in Leo, waning at about 45% lit just after its last quarter. It meets Mars in Leo, with Jupiter close by, and forms an exact square to Mercury, which is retrograde in Scorpio next to the Sun. Venus, retrograde in Libra, is still in exact trine to the North Node and now sextiles Jupiter. No planet changes sign today.",
+  "signs": {
+   "belier": "Aries, the week opens with a strong urge to create and to be seen: the Moon joins Mars in Leo, your sector of pleasure, romance and children, and your enthusiasm is easy to share.\n\nThe catch is the Moon's exact square to Mercury retrograde in Scorpio. A remark about money you share, a loan or a private subject can be misread this morning. Check what the other person actually meant before you react.\n\nVenus, retrograde in Libra, sextiles Jupiter and trines the North Node: a partner or a former connection is more generous than you expect, and a frank but warm exchange can repair something. With the Moon past its last quarter, finish a creative project or a promise you made rather than launching a new one. Your energy is high; spend it on what you love, not on proving a point.",
+   "taureau": "Taurus, home matters ask for your attention first today: the Moon meets Mars in Leo in your family sector, so a household task, a repair or a family discussion may not wait.\n\nThe exact square from the Moon to Mercury retrograde in Scorpio, your partnership sector, can create a misunderstanding between what you need at home and what a partner or associate expects. Repeat key details out loud and confirm plans in writing.\n\nVenus, your ruler, is retrograde in Libra and sextile Jupiter: at work, a colleague may offer real help, and an old routine you had dropped can be worth restoring. The trine to the North Node supports small, steady health habits. The waning Moon favours sorting, clearing a cupboard or settling a domestic bill rather than buying something new. Patience with relatives pays back by evening.",
+   "gemeaux": "Gemini, today is about words, messages and short trips: the Moon and Mars together in Leo fire up your communication sector, and you may have a lot to say on a Monday morning.\n\nBe careful with speed. The Moon squares Mercury, your ruler, which is retrograde in Scorpio in your work and health sector. An email sent too fast or a schedule change can cause confusion; reread before sending and keep a margin in your agenda.\n\nThe good news comes from Venus retrograde in Libra, in your sector of love and creativity, sextile Jupiter and trine the North Node. An old flame, a hobby you set aside or a playful conversation with a child brings warmth. The waning Moon suits finishing a draft, replying to old messages and cancelling subscriptions you no longer use. Say less, but say it clearly.",
+   "cancer": "Cancer, money and personal security lead the day: the Moon meets Mars in Leo in your resources sector, which can push you to spend quickly or to defend what you have earned.\n\nThe exact square from the Moon to Mercury retrograde in Scorpio touches your sector of romance and pleasure. A date, a gift or a leisure plan may be more expensive or more complicated than it first looked. Compare before you pay and keep receipts.\n\nVenus retrograde in Libra, sextile Jupiter, works on your home and family: a relative may offer practical help, and a conversation about the household goes better than you fear. The trine to the North Node supports a home project you have been postponing. With the Moon past its last quarter, review your budget and decide what you truly need. Security today comes from clarity, not from accumulating more.",
+   "lion": "Leo, you carry the sky today: the Moon is in your sign together with Mars, and Jupiter is close by, so your energy, your confidence and also your impatience are all turned up.\n\nThe exact square from the Moon to Mercury retrograde in Scorpio, in your home sector, warns that a family matter or a household detail may not go as planned. Listen fully before answering; a sharp reply could escalate a small issue.\n\nVenus, retrograde in Libra in your communication sector, sextiles Jupiter: a kind message, a call to a sibling or a neighbour, or a sincere compliment opens doors. The trine to the North Node rewards honest conversation. The waning Moon asks you to put your strength into finishing something personal you started, rather than starting three new projects. Lead by example and leave room for others to speak.",
+   "vierge": "Virgo, today asks for rest and a step back: the Moon and Mars meet in Leo in your most private sector, so you may feel restless inside while the outside world asks for answers.\n\nMercury, your ruler, is retrograde in Scorpio and in exact square to the Moon. A message from a sibling, a neighbour or a contact may be unclear, and a short trip may be delayed. Leave extra time and double-check addresses and times.\n\nVenus retrograde in Libra, in your money sector, sextiles Jupiter and trines the North Node: a payment you are owed, a past purchase you can return, or a better deal on an old contract can surface. The waning Moon is ideal for closing files, sleeping well and dealing with a worry you have avoided. A quiet morning prepares a sharper afternoon.",
+   "balance": "Libra, friends and groups bring the day's energy: the Moon meets Mars in Leo in your social sector, and a team project, an association or a group chat can become lively, even heated.\n\nThe exact square from the Moon to Mercury retrograde in Scorpio touches your finances. A discussion about who pays what, or an expense linked to a group activity, needs clear figures. Do not commit money on the spot.\n\nVenus, your ruler, is retrograde in your sign, sextile Jupiter and in exact trine to the North Node. This is a time to reconsider how you present yourself and what you want from relationships. A friend offers sincere support, and an old link can be renewed if you are honest. The waning Moon favours ending a commitment that drains you. Choose the people who lift you up.",
+   "scorpion": "Scorpio, your career and public image are in the spotlight today: the Moon and Mars meet in Leo at the top of your chart, pushing you to act, to decide and to show results.\n\nThe Moon squares Mercury retrograde in your sign exactly, so what you think and what you are asked to do may clash. You may also be tempted to answer a manager or a client too abruptly. Take a breath, reread your notes and speak once you are sure.\n\nThe Sun and Mercury, both in Scorpio, keep you in a phase of review: revise a plan rather than rushing it. Venus retrograde in Libra, sextile Jupiter, works quietly in your inner world and supports rest and forgiveness. The waning Moon suits completing a professional task left pending. Your determination is an asset when it stays calm.",
+   "sagittaire": "Sagittarius, today feeds your appetite for learning and wide horizons: the Moon and Mars together in Leo light up your sector of travel, study and beliefs, and Jupiter, your ruler, is right beside them.\n\nThe exact square from the Moon to Mercury retrograde in Scorpio, in your hidden sector, can bring back a doubt or an unspoken worry just as you want to move forward. Do not ignore it; write it down and look at it calmly.\n\nVenus retrograde in Libra, in your friendship sector, sextiles Jupiter: a friend's advice, a group, or an online community offers real encouragement, and an old friend may reappear. The trine to the North Node supports a shared goal. With the Moon past its last quarter, finish a course, a book or a travel plan before booking the next one. Enthusiasm works best with a little preparation.",
+   "capricorne": "Capricorn, today brings deep subjects to the surface: the Moon meets Mars in Leo in your sector of shared resources and intimacy, so questions of trust, debts or joint money may need a direct answer.\n\nThe exact square from the Moon to Mercury retrograde in Scorpio touches your friendships and groups. A message in a group, or plans with friends, can be misunderstood. Clarify who does what before you commit.\n\nVenus retrograde in Libra, at the top of your chart, sextiles Jupiter and trines the North Node: your professional reputation benefits from patience and courtesy, and a former employer or contact may come back with an opportunity worth examining. The waning Moon favours paying off a bill, closing an account or ending a dependence that weighs on you. Strength today is in clear limits.",
+   "verseau": "Aquarius, other people set the pace today: the Moon and Mars meet in Leo in your partnership sector, opposite your sign, so a partner, a client or an associate may be insistent or quick to react.\n\nThe Moon's exact square to Mercury retrograde in Scorpio touches your career. A professional message, a meeting time or a decision from above may change or be misunderstood. Confirm details and avoid sending an angry reply.\n\nVenus retrograde in Libra, in your sector of study and travel, sextiles Jupiter and trines the North Node: a course, a trip you postponed or a conversation about beliefs opens your mind. Pluto in your sign deepens what you feel; you do not have to hide it. The waning Moon helps you settle an open issue with someone close. Firm and fair works better than cold.",
+   "poissons": "Pisces, your daily routine and your health are today's theme: the Moon joins Mars in Leo in your sector of work and habits, giving energy to tidy, train or catch up on tasks.\n\nThe exact square from the Moon to Mercury retrograde in Scorpio, in your sector of travel and learning, can bring a delay, a change of plans or an exam detail to recheck. Keep your agenda flexible and verify bookings.\n\nVenus retrograde in Libra, in your sector of shared resources and intimacy, sextiles Jupiter and trines the North Node: a joint money question can resolve kindly, and trust can be rebuilt through an honest talk. The waning Moon favours finishing a work file and letting a bad habit go. Do not overload your day; pace yourself and keep an hour for rest. Small, steady efforts count most."
+  }
+ },
+ "fr": {
+  "summary": "Lundi 2 novembre 2026 : la Lune passe toute la journée en Lion, décroissante et éclairée à 45 % environ, juste après son dernier quartier. Elle rejoint Mars en Lion, avec Jupiter tout proche, et forme un carré exact à Mercure, rétrograde en Scorpion près du Soleil. Vénus, rétrograde en Balance, reste en trigone exact au Nœud nord et forme désormais un sextile à Jupiter. Aucune planète ne change de signe aujourd’hui.",
+  "signs": {
+   "belier": "Bélier, la semaine s’ouvre sur une forte envie de créer et de vous montrer : la Lune rejoint Mars en Lion, votre secteur des plaisirs, des amours et des enfants, et votre enthousiasme se communique facilement.\n\nLe point délicat, c’est le carré exact de la Lune à Mercure rétrograde en Scorpion. Une remarque sur un argent commun, un prêt ou un sujet intime peut être mal comprise ce matin. Vérifiez ce que l’autre a vraiment voulu dire avant de réagir.\n\nVénus, rétrograde en Balance, forme un sextile à Jupiter et un trigone au Nœud nord : un partenaire ou un ancien lien se montre plus généreux que prévu, et un échange franc mais chaleureux peut réparer quelque chose. Avec la Lune passée au dernier quartier, terminez un projet créatif ou une promesse faite plutôt que d’en lancer un nouveau. Votre énergie est forte ; mettez-la dans ce que vous aimez, pas dans le besoin d’avoir raison.",
+   "taureau": "Taureau, les affaires du foyer passent en premier aujourd’hui : la Lune rejoint Mars en Lion dans votre secteur familial, et une tâche ménagère, une réparation ou une discussion de famille risque de ne pas pouvoir attendre.\n\nLe carré exact de la Lune à Mercure rétrograde en Scorpion, votre secteur des associations, peut créer un malentendu entre ce dont vous avez besoin à la maison et ce qu’attend un partenaire ou un associé. Répétez les points importants à voix haute et confirmez les projets par écrit.\n\nVénus, votre planète, est rétrograde en Balance et en sextile à Jupiter : au travail, un collègue peut vous apporter une aide réelle, et une ancienne routine abandonnée mérite d’être reprise. Le trigone au Nœud nord soutient de petites habitudes de santé régulières. La Lune décroissante favorise le tri, le rangement d’un placard ou le règlement d’une facture domestique plutôt qu’un nouvel achat. La patience avec vos proches paie d’ici le soir.",
+   "gemeaux": "Gémeaux, la journée tourne autour des mots, des messages et des petits déplacements : la Lune et Mars réunies en Lion enflamment votre secteur de la communication, et vous aurez sans doute beaucoup à dire ce lundi matin.\n\nAttention à la vitesse. La Lune forme un carré à Mercure, votre planète, rétrograde en Scorpion dans votre secteur du travail et de la santé. Un mail envoyé trop vite ou un changement d’horaire peut semer la confusion ; relisez avant d’envoyer et gardez de la marge dans votre agenda.\n\nLa bonne nouvelle vient de Vénus rétrograde en Balance, dans votre secteur des amours et de la créativité, en sextile à Jupiter et en trigone au Nœud nord. Un ancien béguin, un loisir mis de côté ou un moment de jeu avec un enfant apporte de la chaleur. La Lune décroissante convient pour finir un brouillon, répondre aux vieux messages et résilier les abonnements devenus inutiles. Dites moins, mais dites-le clairement.",
+   "cancer": "Cancer, l’argent et la sécurité personnelle mènent la journée : la Lune rejoint Mars en Lion dans votre secteur des ressources, ce qui peut vous pousser à dépenser vite ou à défendre ce que vous avez gagné.\n\nLe carré exact de la Lune à Mercure rétrograde en Scorpion touche votre secteur des amours et des plaisirs. Un rendez-vous, un cadeau ou une sortie peut coûter plus cher ou se révéler plus compliqué que prévu. Comparez avant de payer et gardez les reçus.\n\nVénus rétrograde en Balance, en sextile à Jupiter, agit sur votre foyer et votre famille : un proche peut proposer une aide concrète, et une conversation sur la maison se passe mieux que vous ne le craignez. Le trigone au Nœud nord soutient un projet domestique que vous repoussez. Avec la Lune passée au dernier quartier, revoyez votre budget et décidez de ce dont vous avez vraiment besoin. La sécurité vient aujourd’hui de la clarté, pas de l’accumulation.",
+   "lion": "Lion, c’est vous qui portez le ciel aujourd’hui : la Lune est dans votre signe avec Mars, et Jupiter n’est pas loin, si bien que votre énergie, votre assurance et aussi votre impatience sont amplifiées.\n\nLe carré exact de la Lune à Mercure rétrograde en Scorpion, dans votre secteur du foyer, prévient qu’une affaire familiale ou un détail domestique peut ne pas se dérouler comme prévu. Écoutez jusqu’au bout avant de répondre ; une réplique sèche pourrait envenimer un petit souci.\n\nVénus, rétrograde en Balance dans votre secteur de la communication, forme un sextile à Jupiter : un message gentil, un appel à un frère, une sœur ou un voisin, ou un compliment sincère ouvre des portes. Le trigone au Nœud nord récompense une conversation honnête. La Lune décroissante vous demande de mettre votre force dans l’achèvement d’un projet personnel déjà commencé, plutôt que d’en démarrer trois. Montrez l’exemple et laissez la parole aux autres.",
+   "vierge": "Vierge, la journée demande du repos et du recul : la Lune et Mars se rejoignent en Lion dans votre secteur le plus intime, et vous pouvez vous sentir agitée ou agité intérieurement alors que l’extérieur attend des réponses.\n\nMercure, votre planète, est rétrograde en Scorpion et en carré exact à la Lune. Un message d’un frère, d’une sœur, d’un voisin ou d’un contact peut manquer de clarté, et un petit trajet peut prendre du retard. Prévoyez de la marge et vérifiez adresses et horaires.\n\nVénus rétrograde en Balance, dans votre secteur de l’argent, forme un sextile à Jupiter et un trigone au Nœud nord : une somme qu’on vous doit, un achat que vous pouvez retourner ou de meilleures conditions sur un ancien contrat peuvent refaire surface. La Lune décroissante est idéale pour clore des dossiers, bien dormir et régler une inquiétude que vous évitiez. Une matinée calme prépare un après-midi plus efficace.",
+   "balance": "Balance, les amis et les groupes donnent le ton de la journée : la Lune rejoint Mars en Lion dans votre secteur social, et un projet d’équipe, une association ou une discussion de groupe peut devenir animée, voire tendue.\n\nLe carré exact de la Lune à Mercure rétrograde en Scorpion touche vos finances. Une discussion sur qui paie quoi, ou une dépense liée à une activité collective, demande des chiffres clairs. Ne vous engagez pas financièrement sur-le-champ.\n\nVénus, votre planète, est rétrograde dans votre signe, en sextile à Jupiter et en trigone exact au Nœud nord. C’est le moment de reconsidérer la façon dont vous vous présentez et ce que vous attendez de vos relations. Une amie ou un ami vous soutient sincèrement, et un ancien lien peut se renouer si vous êtes honnête. La Lune décroissante favorise la fin d’un engagement qui vous épuise. Choisissez les personnes qui vous tirent vers le haut.",
+   "scorpion": "Scorpion, votre carrière et votre image publique sont sous les projecteurs : la Lune et Mars se rejoignent en Lion au sommet de votre thème, et vous poussent à agir, à trancher et à montrer des résultats.\n\nLa Lune forme un carré exact à Mercure rétrograde dans votre signe : ce que vous pensez et ce qu’on vous demande peuvent entrer en conflit. Vous pourriez aussi répondre trop brusquement à un responsable ou à un client. Respirez, relisez vos notes et parlez une fois sûr de vous.\n\nLe Soleil et Mercure, tous deux en Scorpion, vous maintiennent dans une phase de révision : retravaillez un plan plutôt que de le précipiter. Vénus rétrograde en Balance, en sextile à Jupiter, agit en silence dans votre monde intérieur et soutient le repos et le pardon. La Lune décroissante convient pour boucler une tâche professionnelle en attente. Votre détermination est un atout tant qu’elle reste calme.",
+   "sagittaire": "Sagittaire, la journée nourrit votre soif d’apprendre et de grands horizons : la Lune et Mars réunies en Lion éclairent votre secteur des voyages, des études et des convictions, et Jupiter, votre planète, se trouve juste à côté.\n\nLe carré exact de la Lune à Mercure rétrograde en Scorpion, dans votre secteur caché, peut ramener un doute ou une inquiétude non dite au moment où vous voulez avancer. Ne l’ignorez pas ; notez-la et regardez-la à tête reposée.\n\nVénus rétrograde en Balance, dans votre secteur des amitiés, forme un sextile à Jupiter : le conseil d’une amie ou d’un ami, un groupe ou une communauté en ligne vous encourage vraiment, et une ancienne amitié peut refaire surface. Le trigone au Nœud nord soutient un objectif commun. Avec la Lune passée au dernier quartier, terminez une formation, un livre ou un projet de voyage avant de réserver le suivant. L’enthousiasme gagne à être un peu préparé.",
+   "capricorne": "Capricorne, la journée fait remonter des sujets profonds : la Lune rejoint Mars en Lion dans votre secteur des ressources partagées et de l’intimité, et des questions de confiance, de dettes ou d’argent commun peuvent demander une réponse directe.\n\nLe carré exact de la Lune à Mercure rétrograde en Scorpion touche vos amitiés et vos groupes. Un message dans un groupe ou un projet entre amis peut être mal interprété. Précisez qui fait quoi avant de vous engager.\n\nVénus rétrograde en Balance, au sommet de votre thème, forme un sextile à Jupiter et un trigone au Nœud nord : votre réputation professionnelle profite de la patience et de la courtoisie, et un ancien employeur ou contact peut revenir avec une opportunité qui mérite d’être étudiée. La Lune décroissante favorise le paiement d’une facture, la clôture d’un compte ou la fin d’une dépendance qui vous pèse. Votre force aujourd’hui tient dans des limites claires.",
+   "verseau": "Verseau, ce sont les autres qui donnent le rythme aujourd’hui : la Lune et Mars se rejoignent en Lion dans votre secteur des relations, face à votre signe, et un partenaire, un client ou un associé peut se montrer insistant ou réagir vite.\n\nLe carré exact de la Lune à Mercure rétrograde en Scorpion touche votre carrière. Un message professionnel, l’heure d’une réunion ou une décision venue d’en haut peut changer ou être mal comprise. Confirmez les détails et évitez de répondre sous le coup de la colère.\n\nVénus rétrograde en Balance, dans votre secteur des études et des voyages, forme un sextile à Jupiter et un trigone au Nœud nord : une formation, un voyage reporté ou une conversation sur vos convictions vous ouvre l’esprit. Pluton dans votre signe approfondit ce que vous ressentez ; inutile de le cacher. La Lune décroissante vous aide à régler une question en suspens avec un proche. Ferme et juste vaut mieux que froid.",
+   "poissons": "Poissons, votre quotidien et votre santé sont le thème du jour : la Lune rejoint Mars en Lion dans votre secteur du travail et des habitudes, et vous donne l’énergie de ranger, de bouger ou de rattraper des tâches en retard.\n\nLe carré exact de la Lune à Mercure rétrograde en Scorpion, dans votre secteur des voyages et des études, peut entraîner un retard, un changement de programme ou un détail d’examen à revérifier. Gardez un agenda souple et contrôlez vos réservations.\n\nVénus rétrograde en Balance, dans votre secteur des ressources partagées et de l’intimité, forme un sextile à Jupiter et un trigone au Nœud nord : une question d’argent commun peut se régler avec douceur, et la confiance peut se reconstruire grâce à une discussion honnête. La Lune décroissante favorise l’achèvement d’un dossier et l’abandon d’une mauvaise habitude. Ne surchargez pas votre journée ; gardez une heure pour souffler. Les petits efforts réguliers comptent le plus."
+  }
+ }
+}
