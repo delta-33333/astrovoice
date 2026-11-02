@@ -5,7 +5,7 @@ import ChatCta from '@/components/ChatCta';
 import JsonLd from '@/components/JsonLd';
 import {
   SKY_EVENT_PATHS,
-  SKY_EVENTS_PUBLISHED,
+  SKY_EVENT_MODIFIED,
   SKY_LINKS,
   signRows,
   skyEventCopy,
@@ -47,7 +47,7 @@ export default function SkyEventPage({ id, locale }: { id: SkyEventId; locale: S
           <span>{copy.breadcrumb}</span>
         </nav>
         <h1 className="font-[family-name:var(--font-cinzel)] text-3xl sm:text-4xl text-white text-glow">{copy.h1}</h1>
-        <p className="text-xs text-white/50 mt-2"><time dateTime={SKY_EVENTS_PUBLISHED}>{copy.updated}</time></p>
+        <p className="text-xs text-white/50 mt-2"><time dateTime={SKY_EVENT_MODIFIED[id]}>{copy.updated}</time></p>
         <p className="mt-5 text-lg text-white">{copy.answer[0]}</p>
         <p className="mt-3">{copy.answer[1]}</p>
 

@@ -154,8 +154,8 @@ const COPY: Record<ToolLocale, AscendantCopy> = {
   fr: {
     keyword: 'calcul ascendant gratuit',
     h1: 'Calcul ascendant gratuit',
-    title: 'Calcul ascendant gratuit — résultat immédiat | Callastral',
-    description: 'Calcul ascendant gratuit : date, heure et lieu de naissance. Résultat immédiat, sans inscription. Tradition astrologique, sans prédiction garantie.',
+    title: 'Quel est mon ascendant ? Calcul ascendant gratuit et immédiat | Callastral',
+    description: 'Quel est mon ascendant ? Calcul ascendant gratuit à partir de la date, l’heure exacte et la ville de naissance, à la minute près. Sans compte ni e-mail.',
     home: 'Accueil',
     ctaFemme: 'Parler à une conseillère IA Callastral',
     ctaHomme: 'Parler à un conseiller IA Callastral',
@@ -226,8 +226,8 @@ const COPY: Record<ToolLocale, AscendantCopy> = {
   en: {
     keyword: 'rising sign calculator',
     h1: 'Rising sign calculator',
-    title: 'Rising sign calculator — free, instant result | Callastral',
-    description: 'Rising sign calculator: birth date, exact time and place. Instant and free, no account. Astrology tradition, not a guaranteed prediction.',
+    title: 'What Is My Rising Sign? Free Rising Sign Calculator | Callastral',
+    description: 'What is my rising sign? Free rising sign calculator: enter your birth date, exact time and city to get your ascendant to the minute. No account, no email.',
     home: 'Home',
     ctaFemme: 'Talk to a Callastral AI advisor',
     ctaHomme: 'Talk to a Callastral AI advisor',

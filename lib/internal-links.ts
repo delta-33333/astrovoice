@@ -423,6 +423,7 @@ export function footerLinks(locale: Locale): TextLink[] {
   ];
   if (locale === 'fr' || locale === 'en') {
     links.push(
+      { href: locale === 'fr' ? '/fr/horoscope-du-jour' : '/en/daily-horoscope', label: locale === 'fr' ? 'Horoscope du jour' : 'Daily horoscope' },
       { href: GEO_PATHS.prices[locale], label: copy.prices },
       { href: GEO_PATHS.compare[locale], label: copy.compare },
       { href: HUB_PATHS[locale], label: copy.alternatives },

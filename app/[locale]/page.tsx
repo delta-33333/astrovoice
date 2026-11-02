@@ -14,6 +14,7 @@ import { SIGN_IDS, signName, signPath } from '@/lib/zodiac/signs';
 import { HUB_PATHS } from '@/lib/alternatives';
 import { aboutPath } from '@/lib/about';
 import { GEO_PATHS } from '@/lib/geo-pages';
+import { SKY_EVENT_IDS, SKY_EVENT_LABELS, SKY_EVENT_PATHS, SKY_LINKS } from '@/lib/sky-events';
 import HoroscopeSignup from '@/components/HoroscopeSignup';
 import FixedPacks from '@/components/FixedPacks';
 import Commitments from '@/components/Commitments';
@@ -233,6 +234,23 @@ export default async function LocaleHome(props: {
               </>
             )}
           </p>
+          {(locale === 'fr' || locale === 'en') && (
+            <nav className="text-sm text-white/60" aria-label={locale === 'fr' ? 'Le ciel du moment' : 'The sky right now'}>
+              <p className="font-semibold text-white/75">{locale === 'fr' ? 'Le ciel du moment' : 'The sky right now'}</p>
+              <ul className="mt-1 flex flex-wrap gap-x-3 gap-y-1">
+                <li>
+                  <Link href={SKY_LINKS[locale].daily} className="underline hover:text-white">
+                    {locale === 'fr' ? 'Horoscope du jour (ciel réel)' : 'Daily horoscope (real sky)'}
+                  </Link>
+                </li>
+                {SKY_EVENT_IDS.map((id) => (
+                  <li key={id}>
+                    <Link href={SKY_EVENT_PATHS[id][locale]} className="underline hover:text-white">{SKY_EVENT_LABELS[id][locale]}</Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          )}
           <nav className="text-sm text-white/60" aria-label={locale === 'fr' ? 'Signes' : 'Signs'}>
             <ul className="flex flex-wrap gap-x-3 gap-y-1">
               {SIGN_IDS.map((id) => (

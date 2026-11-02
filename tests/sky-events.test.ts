@@ -63,3 +63,22 @@ test('les pages événement sont au sitemap avec hreflang fr/en', () => {
     }
   }
 });
+
+test('Pleine Lune en Gémeaux et saison du Sagittaire : heures calculées, liens horoscope du jour', () => {
+  assert.equal(formatUtc(SKY_FACTS.fullMoon.utc, 'en'), '24 November 2026, 14:53 UTC');
+  assert.equal(formatParis(SKY_FACTS.fullMoon.utc, 'fr'), '24 novembre 2026 à 15 h 53 (heure de Paris)');
+  assert.equal(formatParis(SKY_FACTS.sunSagittarius.utc, 'en'), '22 November 2026, 08:23 Paris time');
+  assert.equal(formatParis(SKY_FACTS.sunCapricorn.utc, 'fr'), '21 décembre 2026 à 21 h 50 (heure de Paris)');
+  assert.match(skyEventCopy('fullMoonGemini', 'en').answer[0], /14:53 UTC/);
+  assert.match(skyEventCopy('sagittariusSeason', 'fr').answer[0], /8 h 23/);
+  for (const id of SKY_EVENT_IDS) {
+    for (const locale of ['en', 'fr'] as const) {
+      const copy = skyEventCopy(id, locale);
+      const hrefs = copy.links.map((l) => l.href);
+      assert.ok(hrefs.includes(locale === 'fr' ? '/fr/horoscope-du-jour' : '/en/daily-horoscope'), `${copy.path} daily`);
+      assert.equal(new Set([...hrefs, copy.related.href]).size, hrefs.length + 1, `${copy.path} liens en double`);
+      assert.ok(copy.description.length <= 160, `${copy.path} ${copy.description.length}`);
+      assert.equal(/Astrology-API/i.test(JSON.stringify(copy)), false);
+    }
+  }
+});

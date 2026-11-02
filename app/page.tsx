@@ -27,6 +27,7 @@ import { MARKET_PRICING, marketCodeForContext } from '@/lib/money';
 import { hreflangAlternates, localeHomePath } from '@/lib/seo';
 import { listDirectoryAdvisorsCached } from '@/lib/slots';
 import { trialPath } from '@/lib/free-call';
+import { SKY_EVENT_IDS, SKY_EVENT_LABELS, SKY_EVENT_PATHS, SKY_LINKS } from '@/lib/sky-events';
 import { VIRTUAL_ADVISOR_DISCLOSURE } from '@/lib/legal';
 import { weeklyCurrency } from '@/lib/weekly';
 
@@ -165,6 +166,25 @@ export default async function LandingPage({
               Oui. Vous raccrochez quand vous voulez et les minutes restantes restent sur votre compte. Il n’y a ni abonnement ni recharge automatique : rien n’est prélevé après l’achat d’un pack.
             </p>
           </details>
+        </section>
+
+        <section className="pb-10" aria-labelledby="ciel-du-moment">
+          <h2 id="ciel-du-moment" className="font-[family-name:var(--font-cinzel)] text-2xl font-bold text-center text-glow">
+            Le ciel du moment, calculé pour de vrai
+          </h2>
+          <p className="mt-3 text-center text-sm text-white/70">
+            Outils gratuits et dates du ciel calculées avec une éphéméride astronomique. Aucune date inventée.
+          </p>
+          <ul className="mt-5 grid gap-2 sm:grid-cols-2 text-sm">
+            <li><Link href={SKY_LINKS.fr.chart} className="text-celestial-gold underline">Thème astral gratuit : Soleil, Lune et ascendant</Link></li>
+            <li><Link href={SKY_LINKS.fr.moon} className="text-celestial-gold underline">Dans quel signe est la Lune aujourd’hui ?</Link></li>
+            <li><Link href={SKY_LINKS.fr.daily} className="text-celestial-gold underline">Horoscope du jour des 12 signes (ciel réel)</Link></li>
+            {SKY_EVENT_IDS.map((id) => (
+              <li key={id}><Link href={SKY_EVENT_PATHS[id].fr} className="text-celestial-gold underline">{SKY_EVENT_LABELS[id].fr}</Link></li>
+            ))}
+            <li><Link href={SKY_LINKS.fr.chat} className="text-celestial-gold underline">Poser une question par écrit à une Conseillère ou un Conseiller Callastral</Link></li>
+            <li><Link href={SKY_LINKS.fr.trial} className="text-celestial-gold underline">Essayer 3 minutes d’appel offertes, sans carte</Link></li>
+          </ul>
         </section>
 
         <PromoStrip ids={['10']} />
