@@ -95,8 +95,8 @@ export const COMMON: Record<ToolLang, CommonCopy> = {
 
 export const BIG_THREE: Record<ToolLang, BigThreeCopy> = {
   fr: {
-    title: 'Thème astral gratuit : Soleil, Lune et ascendant en 1 minute',
-    description: 'Calculez gratuitement et sans inscription votre signe solaire, votre signe lunaire et votre ascendant à partir de la date, l’heure et le lieu de naissance.',
+    title: 'Thème astral gratuit : signe solaire, lunaire et ascendant (sans inscription)',
+    description: 'Thème astral gratuit en 1 minute : votre signe solaire, votre signe lunaire et votre ascendant, calculés à la minute. Sans inscription, données non conservées.',
     h1: 'Thème astral gratuit : Soleil, Lune, ascendant',
     answer: 'Entrez votre date, votre heure et votre ville de naissance : le calcul donne immédiatement vos trois repères principaux. Le Soleil décrit votre élan de fond, la Lune vos besoins émotionnels, l’ascendant la façon dont on vous perçoit. Gratuit, sans compte, et vos données de naissance ne sont pas enregistrées.',
     form: { date: 'Date de naissance', time: 'Heure de naissance', place: 'Ville de naissance', placePlaceholder: 'Lyon, France', submit: 'Calculer mon thème', submitting: 'Calcul…', timeHint: 'L’heure exacte change l’ascendant (il tourne d’environ un signe toutes les 2 heures).' },
@@ -122,8 +122,8 @@ export const BIG_THREE: Record<ToolLang, BigThreeCopy> = {
     ],
   },
   en: {
-    title: 'Free Birth Chart Calculator: Sun, Moon and Rising Sign',
-    description: 'Get your Sun sign, Moon sign and rising sign free, with no sign-up, from your birth date, time and place. Instant result, nothing stored.',
+    title: 'Free Birth Chart: Find Your Sun, Moon and Rising Sign (No Sign-Up)',
+    description: 'Free birth chart in one minute: your Sun sign, Moon sign and rising sign, calculated to the minute from birth date, time and place. No sign-up, nothing stored.',
     h1: 'Free birth chart: your Sun, Moon and rising sign',
     answer: 'Enter your birth date, time and city and you instantly get your "big three". Your Sun sign is your core drive, your Moon sign is your emotional needs, and your rising sign is how others first see you. Free, no account, and your birth details are not stored.',
     form: { date: 'Birth date', time: 'Birth time', place: 'Birth city', placePlaceholder: 'London, United Kingdom', submit: 'Calculate my chart', submitting: 'Calculating…', timeHint: 'The exact time changes the rising sign (it moves about one sign every 2 hours).' },
@@ -233,8 +233,8 @@ export const BIG_THREE: Record<ToolLang, BigThreeCopy> = {
 
 export const MOON: Record<ToolLang, MoonCopy> = {
   fr: {
-    title: 'Lune aujourd’hui : signe lunaire et phase de la Lune du jour',
-    description: 'Dans quel signe est la Lune aujourd’hui ? Signe lunaire, phase, pourcentage d’illumination et prochain changement de signe, mis à jour toutes les 30 minutes.',
+    title: 'Dans quel signe est la Lune aujourd’hui ? Phase et signe en direct',
+    description: 'La Lune aujourd’hui : son signe, sa phase, son pourcentage d’éclairage et l’heure de son prochain changement de signe, calculés en direct toutes les 30 minutes.',
     h1: 'La Lune aujourd’hui : signe et phase',
     answer: (sign, phase, pct) => `Aujourd’hui, la Lune est en ${sign}, en phase ${phase.toLowerCase()} (${pct} % éclairée).`,
     inSign: 'Signe lunaire', phase: 'Phase', illumination: 'Illumination',
@@ -252,8 +252,8 @@ export const MOON: Record<ToolLang, MoonCopy> = {
     ],
   },
   en: {
-    title: 'Moon Sign Today: Today’s Moon Phase and Zodiac Sign',
-    description: 'What sign is the Moon in today? Live Moon sign, Moon phase, illumination and next sign change, updated every 30 minutes.',
+    title: 'What Sign Is the Moon in Today? Live Moon Sign and Phase',
+    description: 'The Moon today: its zodiac sign, phase, illumination and the exact time of its next sign change, calculated live and refreshed every 30 minutes. Free.',
     h1: 'Moon sign today and current Moon phase',
     answer: (sign, phase, pct) => `Today the Moon is in ${sign}, in its ${phase.toLowerCase()} phase (${pct}% illuminated).`,
     inSign: 'Moon sign', phase: 'Phase', illumination: 'Illumination',

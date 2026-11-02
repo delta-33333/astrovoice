@@ -9,7 +9,7 @@ import { coupleAlternates, couplePath } from './couple-compat.ts';
 import { GEO_PATHS, GEO_UPDATED_ISO, geoAlternates, type GeoPage } from './geo-pages.ts';
 import { factsAlternates, factsPath } from './facts.ts';
 import { dailySitemapEntries } from './daily-horoscope.ts';
-import { SKY_EVENT_IDS, SKY_EVENT_PATHS, SKY_EVENTS_PUBLISHED, skyEventAlternates } from './sky-events.ts';
+import { SKY_EVENT_IDS, SKY_EVENT_MODIFIED, SKY_EVENT_PATHS, skyEventAlternates } from './sky-events.ts';
 import { legalNoticeAlternates, legalNoticePath } from './legal-notice.ts';
 import { privacyPath } from './privacy-copy.ts';
 import {
@@ -110,11 +110,11 @@ export function pageEntries(): SitemapEntry[] {
       });
     }
   }
-  // Pages « événement du ciel » (novembre 2026), FR + EN.
+  // Pages « événement du ciel » (novembre–décembre 2026), FR + EN.
   for (const id of SKY_EVENT_IDS) {
     const languages = skyEventAlternates(id);
     for (const locale of ['en', 'fr'] as const) {
-      entries.push({ path: SKY_EVENT_PATHS[id][locale], lastModified: SKY_EVENTS_PUBLISHED, languages });
+      entries.push({ path: SKY_EVENT_PATHS[id][locale], lastModified: SKY_EVENT_MODIFIED[id], languages });
     }
   }
   // Horoscope du jour (EN + FR) : hub + 12 signes, archives datées.
