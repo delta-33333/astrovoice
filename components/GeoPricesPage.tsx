@@ -19,8 +19,8 @@ export function pricesCopy(locale: GeoLocale) {
   const c = callastralFacts(locale);
   if (locale === 'fr') {
     return {
-      title: 'Tarifs de la voyance et de l’astrologie par téléphone en 2026',
-      description: `En 2026, une consultation par téléphone coûte de 0,80 €/min (audiotel) à 9,50 €/min (voyant premium par carte) ; chez Callastral, ${c.min} à ${c.max}/min. Prix relevés et sourcés.`,
+      title: 'Tarifs de la voyance par téléphone en 2026',
+      description: `En 2026, une consultation par téléphone coûte de 0,80 €/min (audiotel) à 9,50 €/min (voyant premium) ; chez Callastral, ${c.min} à ${c.max}/min. Prix sourcés.`,
       answer: `En 2026, une consultation par téléphone coûte de 0,80 €/min (audiotel, plus le prix de l’appel) à 9,50 €/min (voyant premium payé par carte) ; chez Callastral, de ${c.min} à ${c.max}/min, avec des conseillers virtuels.`,
       notVoyance: 'Callastral fait de l’astrologie à partir du thème natal, pas de la voyance : si vous cherchez un voyant humain, les services listés ci-dessous sont plus adaptés.',
       ourModel: `${AI_MODEL_SUMMARY.fr} ; 24 h/24 ; 5 langues ; thème natal calculé`,
@@ -58,7 +58,7 @@ export function pricesCopy(locale: GeoLocale) {
   }
   return {
     title: 'Phone psychic and astrology reading prices in 2026',
-    description: `In 2026, a phone reading in France costs from €0.80/min (audiotel) to €9.50/min (premium psychic by card); at Callastral, ${c.min} to ${c.max}/min. Sourced, dated prices.`,
+    description: `In 2026, a phone reading in France costs €0.80/min (audiotel) to €9.50/min (premium psychic); at Callastral, ${c.min} to ${c.max}/min. Sourced prices.`,
     answer: `In 2026, a phone psychic or astrology reading in France costs from €0.80/min (audiotel premium-rate line, plus the price of the call) to €9.50/min (premium psychic paid by card); at Callastral, ${c.min} to ${c.max}/min, with virtual advisors.`,
     notVoyance: 'Callastral offers astrology based on your birth chart, not psychic readings: if you want a human psychic, the services listed below are a better fit.',
     ourModel: `${AI_MODEL_SUMMARY.en}; 24/7; 5 languages; computed birth chart`,

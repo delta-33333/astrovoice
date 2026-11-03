@@ -26,6 +26,8 @@ import {
   type DailyLocale,
 } from '@/lib/daily-horoscope';
 import { SIGN_IDS, type SignId } from '@/lib/zodiac/signs';
+import { dailyInsights } from '@/lib/daily-horoscope-insights';
+import { DateTime } from 'luxon';
 
 const h2 = 'font-[family-name:var(--font-cinzel)] text-2xl text-white';
 
@@ -33,7 +35,7 @@ const T = {
   en: {
     home: 'Home',
     hub: 'Daily horoscope',
-    hubTitle: (d: string) => `Daily horoscope for all 12 signs — ${d}`,
+    hubTitle: (d: string) => `Daily horoscope, all 12 signs — ${d}`,
     hubH1: (d: string) => `Today’s horoscope for every sign, ${d}`,
     signTitle: (s: string, d: string) => `${s} horoscope today — ${d}`,
     signH1: (s: string, d: string) => `${s} horoscope for today, ${d}`,
@@ -68,7 +70,7 @@ const T = {
   fr: {
     home: 'Accueil',
     hub: 'Horoscope du jour',
-    hubTitle: (d: string) => `Horoscope du jour des 12 signes — ${d}`,
+    hubTitle: (d: string) => `Horoscope du jour, 12 signes — ${d}`,
     hubH1: (d: string) => `L’horoscope du jour pour chaque signe, ${d}`,
     signTitle: (s: string, d: string) => `Horoscope ${s} du jour — ${d}`,
     signH1: (s: string, d: string) => `Horoscope ${s} d’aujourd’hui, ${d}`,
@@ -135,14 +137,27 @@ export function dailyStaticParams(locale: DailyLocale, depth: 1 | 2): Record<str
   );
 }
 
+/** Date courte pour les balises <title> (≤ 65 caractères avec la marque). */
+function shortDate(locale: DailyLocale, date: string): string {
+  return DateTime.fromISO(date, { zone: 'Europe/Paris' }).setLocale(locale === 'fr' ? 'fr' : 'en-GB').toFormat('ccc d LLL yyyy');
+}
+
+/** Meta description ≤ 160 caractères, coupée sur un mot. */
+function clip(text: string, max = 158): string {
+  if (text.length <= max) return text;
+  const cut = text.slice(0, max - 1);
+  return `${cut.slice(0, cut.lastIndexOf(' ')).replace(/[,;:]$/, '')}…`;
+}
+
 function headline(route: DailyRoute, day: DailyDay) {
   const t = T[route.locale];
   const d = dailyDateLabel(route.locale, route.date);
+  const short = shortDate(route.locale, route.date);
   if (route.sign) {
     const name = dailySignName(route.locale, route.sign);
-    return { title: t.signTitle(name, d), h1: t.signH1(name, d), description: firstSentence(day[route.locale].signs[route.sign]) };
+    return { title: t.signTitle(name, short), h1: t.signH1(name, d), description: clip(firstSentence(day[route.locale].signs[route.sign])) };
   }
-  return { title: t.hubTitle(d), h1: t.hubH1(d), description: firstSentence(day[route.locale].summary) };
+  return { title: t.hubTitle(short), h1: t.hubH1(d), description: clip(firstSentence(day[route.locale].summary)) };
 }
 
 export async function dailyMetadata(route: DailyRoute | null): Promise<Metadata> {
@@ -195,10 +210,11 @@ export default async function DailyHoroscopePage({ route }: { route: DailyRoute 
   const crumbs: { name: string; url: string }[] = [{ name: t.hub, url: `${DAILY_ORIGIN}${dailyHubPath(locale)}` }];
   if (sign) crumbs.push({ name: dailySignName(locale, sign), url: `${DAILY_ORIGIN}${canonical}` });
   const otherLocale: DailyLocale = locale === 'fr' ? 'en' : 'fr';
+  const insights = sign ? dailyInsights(locale, sign, day) : [];
   const previous = dailyDates().filter((item) => item !== latest).reverse().slice(0, 14);
 
   return (
-    <main>
+    <>
       <header className="border-b border-white/10">
         <div className="max-w-3xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
           <Link href={`/${locale}`} className="inline-flex items-center min-w-0">
@@ -212,6 +228,7 @@ export default async function DailyHoroscopePage({ route }: { route: DailyRoute 
           </nav>
         </div>
       </header>
+      <main>
       <article className="max-w-3xl mx-auto px-4 py-8 text-white/85 leading-relaxed">
         <nav aria-label={locale === 'fr' ? 'Fil d’Ariane' : 'Breadcrumb'} className="text-sm text-white/50 mb-4">
           <Link href={`/${locale}`} className="underline">{t.home}</Link>
@@ -232,6 +249,14 @@ export default async function DailyHoroscopePage({ route }: { route: DailyRoute 
           <div className="mt-5 space-y-4">
             {copy.signs[sign].split('\n\n').map((paragraph, index) => (
               <p key={index} className={index === 0 ? 'text-lg text-white' : ''}>{paragraph}</p>
+            ))}
+            {insights.map((section) => (
+              <section key={section.id} className="mt-8">
+                <h2 className={h2}>{section.h2}</h2>
+                {section.paragraphs.map((paragraph, index) => (
+                  <p key={index} className="mt-3">{paragraph}</p>
+                ))}
+              </section>
             ))}
           </div>
         ) : (
@@ -287,6 +312,21 @@ export default async function DailyHoroscopePage({ route }: { route: DailyRoute 
           <div className="mt-4"><ChatCta locale={locale} placement="daily-horoscope" className="w-full sm:w-auto" /></div>
         </div>
 
+        <section className="mt-10">
+          <h2 className={h2}>{t.faqTitle}</h2>
+          <div className="mt-4 space-y-3">
+            {faqs.map((faq) => (
+              <details key={faq.question} className="rounded-xl border border-white/10 p-4">
+                <summary className="cursor-pointer font-semibold text-white">{faq.question}</summary>
+                <p className="mt-2 text-white/80">{faq.answer}</p>
+              </details>
+            ))}
+          </div>
+        </section>
+
+      </article>
+      </main>
+      <aside className="max-w-3xl mx-auto px-4 pb-10 text-white/85 leading-relaxed">
         {sign ? (
           <section className="mt-10">
             <h2 className={h2}>{t.otherSigns}</h2>
@@ -304,18 +344,6 @@ export default async function DailyHoroscopePage({ route }: { route: DailyRoute 
             </ul>
           </section>
         ) : null}
-
-        <section className="mt-10">
-          <h2 className={h2}>{t.faqTitle}</h2>
-          <div className="mt-4 space-y-3">
-            {faqs.map((faq) => (
-              <details key={faq.question} className="rounded-xl border border-white/10 p-4">
-                <summary className="cursor-pointer font-semibold text-white">{faq.question}</summary>
-                <p className="mt-2 text-white/80">{faq.answer}</p>
-              </details>
-            ))}
-          </div>
-        </section>
 
         <section className="mt-10">
           <h2 className={h2}>{t.linksTitle}</h2>
@@ -339,7 +367,7 @@ export default async function DailyHoroscopePage({ route }: { route: DailyRoute 
 
         <p className="mt-10 text-xs text-white/50">{t.method}</p>
         <p className="mt-3 text-xs text-white/50">{t.disclaimer}</p>
-      </article>
+      </aside>
       <JsonLd
         data={dailyJsonLd({
           locale,
@@ -352,6 +380,6 @@ export default async function DailyHoroscopePage({ route }: { route: DailyRoute 
           faqs,
         })}
       />
-    </main>
+    </>
   );
 }

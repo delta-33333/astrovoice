@@ -40,7 +40,9 @@ function hubTitle(locale: Locale, specialty: SpecialtyId): string {
     de: `Astrologie ${topic} — ${phonePhrase(locale)} | Callastral`,
     it: `Astrologia ${topic} — ${phonePhrase(locale)} | Callastral`,
   };
-  return titles[locale];
+  const full = titles[locale];
+  // Titre ≤ 65 caractères : on retire le suffixe de marque si besoin.
+  return full.length > 65 ? full.replace(/ \| Callastral$/, '') : full;
 }
 
 function hubIntro(locale: Locale, specialty: SpecialtyId): string {

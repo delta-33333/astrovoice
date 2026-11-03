@@ -95,7 +95,7 @@ export const COMMON: Record<ToolLang, CommonCopy> = {
 
 export const BIG_THREE: Record<ToolLang, BigThreeCopy> = {
   fr: {
-    title: 'Thème astral gratuit : signe solaire, lunaire et ascendant (sans inscription)',
+    title: 'Thème astral gratuit : Soleil, Lune, ascendant',
     description: 'Thème astral gratuit en 1 minute : votre signe solaire, votre signe lunaire et votre ascendant, calculés à la minute. Sans inscription, données non conservées.',
     h1: 'Thème astral gratuit : Soleil, Lune, ascendant',
     answer: 'Entrez votre date, votre heure et votre ville de naissance : le calcul donne immédiatement vos trois repères principaux. Le Soleil décrit votre élan de fond, la Lune vos besoins émotionnels, l’ascendant la façon dont on vous perçoit. Gratuit, sans compte, et vos données de naissance ne sont pas enregistrées.',
@@ -122,7 +122,7 @@ export const BIG_THREE: Record<ToolLang, BigThreeCopy> = {
     ],
   },
   en: {
-    title: 'Free Birth Chart: Find Your Sun, Moon and Rising Sign (No Sign-Up)',
+    title: 'Free Birth Chart: Sun, Moon and Rising Sign (No Sign-Up)',
     description: 'Free birth chart in one minute: your Sun sign, Moon sign and rising sign, calculated to the minute from birth date, time and place. No sign-up, nothing stored.',
     h1: 'Free birth chart: your Sun, Moon and rising sign',
     answer: 'Enter your birth date, time and city and you instantly get your "big three". Your Sun sign is your core drive, your Moon sign is your emotional needs, and your rising sign is how others first see you. Free, no account, and your birth details are not stored.',
@@ -233,7 +233,7 @@ export const BIG_THREE: Record<ToolLang, BigThreeCopy> = {
 
 export const MOON: Record<ToolLang, MoonCopy> = {
   fr: {
-    title: 'Dans quel signe est la Lune aujourd’hui ? Phase et signe en direct',
+    title: 'Lune aujourd’hui : dans quel signe ? Phase en direct',
     description: 'La Lune aujourd’hui : son signe, sa phase, son pourcentage d’éclairage et l’heure de son prochain changement de signe, calculés en direct toutes les 30 minutes.',
     h1: 'La Lune aujourd’hui : signe et phase',
     answer: (sign, phase, pct) => `Aujourd’hui, la Lune est en ${sign}, en phase ${phase.toLowerCase()} (${pct} % éclairée).`,
@@ -331,8 +331,8 @@ export const MOON: Record<ToolLang, MoonCopy> = {
 
 export const AFFILIATE: Record<ToolLang, AffiliateCopy> = {
   fr: {
-    title: 'Programme d’affiliation Callastral : 30 % pour les créateurs astro',
-    description: 'Créateurs astrologie, tarot, spiritualité : gagnez 30 % du premier paiement de chaque client que vous envoyez à Callastral. Inscription gratuite, lien personnel immédiat.',
+    title: 'Affiliation Callastral : 30 % pour les créateurs astro',
+    description: 'Créateurs astro, tarot, spiritualité : gagnez 30 % du premier paiement de chaque client envoyé à Callastral. Inscription gratuite, lien immédiat.',
     h1: 'Programme d’affiliation : 30 % pour les créateurs astro',
     answer: 'Vous parlez d’astrologie à une communauté ? Recevez 30 % du premier paiement de chaque nouveau client arrivé par votre lien Callastral. L’inscription est gratuite et votre lien est créé tout de suite. Les commissions sont versées manuellement, une fois par mois.',
     points: ['30 % du premier paiement de chaque nouveau client', 'Suivi 30 jours par cookie après le clic', 'Votre audience peut essayer 3 minutes d’appel offertes et poser une première question par message offerte', 'Versement manuel mensuel, sans plateforme tierce'],
@@ -385,7 +385,7 @@ export const AFFILIATE: Record<ToolLang, AffiliateCopy> = {
     ],
   },
   es: {
-    title: 'Programa de afiliados Callastral: 30 % para creadores de astrología',
+    title: 'Afiliados Callastral: 30 % para creadores de astrología',
     description: 'Creadores de astrología, tarot y espiritualidad: gana el 30 % del primer pago de cada cliente que envíes a Callastral. Registro gratis y enlace inmediato.',
     h1: 'Programa de afiliados: 30 % para creadores de astrología',
     answer: '¿Hablas de astrología a una comunidad? Recibe el 30 % del primer pago de cada nuevo cliente que llegue por tu enlace de Callastral. El registro es gratis y tu enlace se crea al instante. Las comisiones se pagan manualmente una vez al mes.',
@@ -439,7 +439,7 @@ export const AFFILIATE: Record<ToolLang, AffiliateCopy> = {
     ],
   },
   it: {
-    title: 'Programma di affiliazione Callastral: 30% per i creator di astrologia',
+    title: 'Affiliazione Callastral: 30% per i creator di astrologia',
     description: 'Creator di astrologia, tarocchi e spiritualità: guadagna il 30% del primo pagamento di ogni cliente che porti a Callastral. Iscrizione gratuita, link subito.',
     h1: 'Programma di affiliazione: 30% per i creator di astrologia',
     answer: 'Parli di astrologia a una community? Ricevi il 30% del primo pagamento di ogni nuovo cliente arrivato dal tuo link Callastral. L’iscrizione è gratuita e il link viene creato subito. Le commissioni sono pagate manualmente una volta al mese.',
