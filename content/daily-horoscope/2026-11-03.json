@@ -1,0 +1,159 @@
+{
+  "date": "2026-11-03",
+  "sky": {
+    "date": "2026-11-03",
+    "computedAt": "08:00 Europe/Paris",
+    "phase": {
+      "id": "lastQuarter",
+      "illumination": 34,
+      "waxing": false
+    },
+    "bodies": [
+      {
+        "name": "Soleil",
+        "sign": "Scorpion",
+        "degree": 10,
+        "retrograde": false
+      },
+      {
+        "name": "Lune",
+        "sign": "Lion",
+        "degree": 29,
+        "retrograde": false
+      },
+      {
+        "name": "Mercure",
+        "sign": "Scorpion",
+        "degree": 13,
+        "retrograde": true
+      },
+      {
+        "name": "Vénus",
+        "sign": "Balance",
+        "degree": 25,
+        "retrograde": true
+      },
+      {
+        "name": "Mars",
+        "sign": "Lion",
+        "degree": 19,
+        "retrograde": false
+      },
+      {
+        "name": "Jupiter",
+        "sign": "Lion",
+        "degree": 24,
+        "retrograde": false
+      },
+      {
+        "name": "Saturne",
+        "sign": "Bélier",
+        "degree": 9,
+        "retrograde": true
+      },
+      {
+        "name": "Uranus",
+        "sign": "Gémeaux",
+        "degree": 4,
+        "retrograde": true
+      },
+      {
+        "name": "Neptune",
+        "sign": "Bélier",
+        "degree": 2,
+        "retrograde": true
+      },
+      {
+        "name": "Pluton",
+        "sign": "Verseau",
+        "degree": 3,
+        "retrograde": false
+      },
+      {
+        "name": "Nœud nord",
+        "sign": "Verseau",
+        "degree": 25,
+        "retrograde": true
+      }
+    ],
+    "ingresses": [
+      {
+        "name": "Lune",
+        "from": "Lion",
+        "to": "Vierge"
+      }
+    ],
+    "aspects": [
+      {
+        "a": "Vénus",
+        "b": "Jupiter",
+        "aspect": "sextile",
+        "orb": 0.6
+      },
+      {
+        "a": "Vénus",
+        "b": "Nœud nord",
+        "aspect": "trine",
+        "orb": 0.8
+      },
+      {
+        "a": "Soleil",
+        "b": "Mercure",
+        "aspect": "conjunction",
+        "orb": 3
+      },
+      {
+        "a": "Lune",
+        "b": "Nœud nord",
+        "aspect": "opposition",
+        "orb": 3.2
+      },
+      {
+        "a": "Lune",
+        "b": "Jupiter",
+        "aspect": "conjunction",
+        "orb": 4.6
+      },
+      {
+        "a": "Mars",
+        "b": "Jupiter",
+        "aspect": "conjunction",
+        "orb": 4.8
+      }
+    ]
+  },
+  "en": {
+    "summary": "Tuesday 3 November 2026: the Moon ends its passage through Leo close to Jupiter and opposite the North Node, then enters Virgo around 9:30 a.m. Paris time. It is waning, about 34% lit, a few days after its last quarter. Mercury, retrograde in Scorpio, stays close to the Sun. Venus, retrograde in Libra, forms an almost exact sextile to Jupiter and trine to the North Node, while Mars and Jupiter remain together in Leo.",
+    "signs": {
+      "belier": "Aries, today shifts from play to practical work: the Moon leaves Leo for Virgo around 9:30 a.m. Paris time, moving into your sector of daily tasks and health, and your to-do list asks for attention.\n\nEarly in the morning the Moon still sits near Jupiter and Mars, your ruler, in Leo, so a burst of confidence is available before breakfast. Use it to start the hardest job of the day rather than to win an argument.\n\nMercury, retrograde in Scorpio beside the Sun, keeps shared money, debts and private agreements under review. Reread a contract, a bank statement or a message about joint costs before you sign or pay. Venus, retrograde in Libra, makes a near-exact sextile to Jupiter: a partner can be kind and helpful if you ask simply. With the Moon waning, clear your backlog, book the check-up you keep postponing or tidy your workspace. Small finished tasks will feel better tonight than big new plans.",
+      "taureau": "Taurus, the day softens after a busy start: once the Moon enters Virgo around 9:30 a.m. Paris time, your sector of pleasure, romance and creativity lights up, and you can allow yourself something you enjoy.\n\nBefore that, the Moon in late Leo near Jupiter keeps your mind on home and family. A relative may need a quick answer early on. Give it, then move on.\n\nMercury, retrograde in Scorpio next to the Sun in your partnership sector, brings back an old conversation with a partner or associate. Listen to the whole story before you decide whether anything has really changed. Venus, your ruler, is retrograde in Libra and sextile Jupiter: at work, returning to an older method or asking a colleague for help can save you time. The waning Moon favours finishing a hobby project, picking up a creative habit again or planning a simple evening with someone you love, rather than spending on something new.",
+      "gemeaux": "Gemini, home becomes the priority today: the Moon moves into Virgo around 9:30 a.m. Paris time, in your sector of family and private life, and you may want to organise your space before anything else.\n\nIn the early hours the Moon is still in Leo, your communication sector, near Jupiter and Mars. Messages and calls flow quickly, so send what matters before mid-morning.\n\nMercury, your ruler, is retrograde in Scorpio and close to the Sun in your work and health sector. A task you thought was done may need corrections, and a routine might have to be adjusted. Double-check times, files and instructions. Venus, retrograde in Libra, sextiles Jupiter and trines the North Node: an old creative idea or an earlier romantic connection may resurface in a pleasant way. With the Moon waning, sort papers at home, fix something small or call a family member you have neglected. Keep the evening quiet.",
+      "cancer": "Cancer, conversation is the thread of your day: your ruler, the Moon, enters Virgo around 9:30 a.m. Paris time, in your sector of messages, errands and neighbours, so practical exchanges take up much of your time.\n\nEarly on the Moon is still in Leo, your money sector, beside Jupiter and Mars. You may feel like spending. Wait until the Moon has changed sign and check whether you still want it.\n\nMercury, retrograde in Scorpio with the Sun, sits in your sector of romance, children and creative work. A past love story, a parenting question or an unfinished project can come back into focus. Talk it through without rushing to a conclusion. Venus, retrograde in Libra in your home sector, sextiles Jupiter: a family member may offer real help, or an older item in the house becomes useful again. The waning Moon favours answering pending emails, short trips and clear, kind wording. One honest phone call can calm a worry.",
+      "lion": "Leo, your energy turns toward money and what you value: the Moon leaves your sign around 9:30 a.m. Paris time and enters Virgo, your sector of income and spending, after a morning that still carries your own spark.\n\nIn those first hours the Moon passes near Jupiter and Mars in Leo, opposite the North Node. You feel bold, but someone close may need you to listen before you lead. Balance your wishes with theirs.\n\nMercury, retrograde in Scorpio next to the Sun, crosses your home and family sector. An old family topic, a repair or a housing question may be reopened. Gather the facts before you decide anything final. Venus, retrograde in Libra, sextiles Jupiter in your sign: a friendly message from a sibling, a neighbour or an old contact can lift your mood. As the Moon wanes, review a budget, cancel a subscription you no longer use or set aside a small sum. Practical steps bring calm.",
+      "vierge": "Virgo, the day puts you back at the centre: the Moon enters your sign around 9:30 a.m. Paris time, and your feelings, needs and body ask to be heard more clearly than usual.\n\nBefore that, the Moon in late Leo, your sector of rest and inner life, sits near Jupiter, which makes the early hours good for sleep, reflection or a quiet coffee alone.\n\nMercury, your ruler, is retrograde in Scorpio with the Sun in your sector of messages, short trips and siblings. Delays, misplaced keys or a misunderstood text are possible. Leave extra time and reread before sending. Venus, retrograde in Libra in your money sector, sextiles Jupiter: following up on an older source of income, a refund or a forgotten payment could be worth it. With a waning Moon in your sign, you may feel tired by evening. Look after your health, simplify your plans and say no to one extra request. Doing less but doing it well suits you today.",
+      "balance": "Libra, today rewards a slower pace: the Moon moves into Virgo around 9:30 a.m. Paris time, in your most private sector, and you may need more silence and rest than your agenda allows.\n\nEarly on, the Moon is still in Leo near Jupiter, in your sector of friends and groups. A message from a friend or a group plan can cheer you up before the day settles down.\n\nVenus, your ruler, is retrograde in your sign, in almost exact sextile to Jupiter and trine to the North Node. You are reviewing what you want from relationships and from your image, and the people around you can be supportive if you are honest with them. Mercury, retrograde in Scorpio with the Sun, sits in your money sector: check bills, refunds and payment dates carefully. The waning Moon in Virgo favours journaling, an early night or quietly finishing something you started. Keep big announcements for another day.",
+      "scorpion": "Scorpio, friendships and future plans gain weight today: the Moon enters Virgo around 9:30 a.m. Paris time, your sector of friends, networks and hopes, after a morning still focused on work.\n\nIn the first hours the Moon in Leo meets Jupiter, near Mars, in your career sector. A bold idea or an early meeting can go well if you stay direct and calm.\n\nMercury is retrograde in your sign beside the Sun. You see your own choices more clearly when you look back rather than forward, and you may need to correct something you said recently. Take your time before replying to strong messages. Venus, retrograde in Libra in your private sector, sextiles Jupiter: quiet support from behind the scenes is possible, and an old feeling may need closure. With the Moon waning, reconnect with a trusted friend, step back from a group that drains you, or refine a long-term goal instead of starting from zero.",
+      "sagittaire": "Sagittarius, your public life comes forward today: the Moon enters Virgo around 9:30 a.m. Paris time, your career and reputation sector, and others notice how reliably you deliver.\n\nEarly on, the Moon in Leo passes near Jupiter, your ruler, in your sector of travel and learning. A course, a trip plan or a bigger idea excites you. Note it down, then return to concrete work.\n\nMercury, retrograde in Scorpio with the Sun, sits in your most private sector. Thoughts you have pushed aside surface again, especially at night. Writing them down helps more than replaying them. Venus, retrograde in Libra in your friendship sector, sextiles Jupiter and trines the North Node: an old friend or former colleague may reappear with good intentions. The waning Moon favours finishing a work task, correcting a detail your manager asked for or tidying your schedule. Avoid promising more than you can deliver this week.",
+      "capricorne": "Capricorn, your horizons widen today: the Moon enters Virgo around 9:30 a.m. Paris time, your sector of study, travel and long-range plans, and learning something practical feels satisfying.\n\nEarly on, the Moon is still in Leo near Jupiter and Mars, in your sector of shared money and intimacy. A conversation about joint costs, taxes or trust may come up before work starts.\n\nMercury, retrograde in Scorpio with the Sun, crosses your sector of friends and groups. Plans with others may shift or need confirming, and an old friend may write to you. Venus, retrograde in Libra in your career sector, sextiles Jupiter: going back to a past proposal or work contact can bring support, as long as you present it clearly. With the Moon waning, finish a training module, sort travel paperwork or read up on a topic that has been on your mind. Patience with slow replies keeps the day smooth.",
+      "verseau": "Aquarius, today asks you to look at what you share with others: the Moon enters Virgo around 9:30 a.m. Paris time, your sector of joint money, debts and intimacy, so practical questions of trust appear.\n\nEarly in the morning the Moon in Leo, your relationship sector, sits near Jupiter and opposite the North Node in your sign. A partner's needs may pull against your own direction. Listening without giving up on yourself is the right balance.\n\nMercury, retrograde in Scorpio with the Sun, crosses your career sector. A project, a review or a past decision at work may be reopened. Be precise in what you tell managers. Venus, retrograde in Libra, sextiles Jupiter and trines the North Node: travel plans, studies or a long-distance contact can bring warmth. The waning Moon favours settling a shared bill, clarifying who pays for what, or having a calm talk about a sensitive subject.",
+      "poissons": "Pisces, relationships take centre stage today: the Moon enters Virgo around 9:30 a.m. Paris time, opposite your sign, in your partnership sector, and you become more aware of what others expect from you.\n\nBefore that, the Moon in Leo near Jupiter and Mars, in your work and health sector, gives you energy for an early task or some exercise. Use it while it lasts.\n\nMercury, retrograde in Scorpio with the Sun, crosses your sector of travel, studies and beliefs. A trip may need rebooking, or an old course or idea comes back. Check the details before you pay. Venus, retrograde in Libra in your sector of shared resources, sextiles Jupiter: an old money question with a partner can be settled with goodwill. With the waning Moon in Virgo, discuss practical details with your partner or an associate rather than big feelings. Clear, modest agreements protect your peace better than vague promises."
+    }
+  },
+  "fr": {
+    "summary": "Mardi 3 novembre 2026 : la Lune termine sa traversée du Lion près de Jupiter et en opposition au Nœud nord, puis entre en Vierge vers 9 h 30 (heure de Paris). Elle est décroissante, éclairée à 34 % environ, quelques jours après son dernier quartier. Mercure, rétrograde en Scorpion, reste proche du Soleil. Vénus, rétrograde en Balance, forme un sextile presque exact à Jupiter et un trigone au Nœud nord, tandis que Mars et Jupiter restent ensemble en Lion.",
+    "signs": {
+      "belier": "Bélier, la journée passe du jeu au concret : la Lune quitte le Lion pour la Vierge vers 9 h 30 (heure de Paris) et entre dans votre secteur des tâches quotidiennes et de la santé. Votre liste de choses à faire réclame de l’attention.\n\nTôt le matin, la Lune est encore proche de Jupiter et de Mars, votre planète, en Lion : un élan de confiance est disponible avant le petit-déjeuner. Servez-vous-en pour attaquer la tâche la plus difficile plutôt que pour gagner une dispute.\n\nMercure, rétrograde en Scorpion près du Soleil, garde l’argent partagé, les dettes et les accords privés en révision. Relisez un contrat, un relevé bancaire ou un message sur des frais communs avant de signer ou de payer. Vénus, rétrograde en Balance, forme un sextile presque exact à Jupiter : un partenaire peut se montrer aimable et utile si vous demandez simplement. Avec la Lune décroissante, rattrapez votre retard, prenez le rendez-vous médical que vous repoussez ou rangez votre bureau. De petites tâches terminées vous feront plus de bien ce soir que de grands projets.",
+      "taureau": "Taureau, la journée s’adoucit après un début chargé : dès que la Lune entre en Vierge vers 9 h 30 (heure de Paris), votre secteur des plaisirs, de l’amour et de la créativité s’éclaire, et vous pouvez vous accorder quelque chose qui vous fait du bien.\n\nAvant cela, la Lune en fin de Lion près de Jupiter garde votre esprit tourné vers la maison et la famille. Un proche peut attendre une réponse rapide tôt dans la matinée. Donnez-la, puis passez à autre chose.\n\nMercure, rétrograde en Scorpion près du Soleil dans votre secteur des associations, ramène une ancienne conversation avec un partenaire ou un associé. Écoutez toute l’histoire avant de décider si quelque chose a vraiment changé. Vénus, votre planète, est rétrograde en Balance et en sextile à Jupiter : au travail, revenir à une ancienne méthode ou demander de l’aide à un collègue peut vous faire gagner du temps. La Lune décroissante favorise la fin d’un projet de loisir, la reprise d’une habitude créative ou une soirée simple avec une personne aimée, plutôt qu’un nouvel achat.",
+      "gemeaux": "Gémeaux, la maison devient la priorité aujourd’hui : la Lune entre en Vierge vers 9 h 30 (heure de Paris), dans votre secteur de la famille et de la vie privée, et vous aurez sans doute envie d’organiser votre espace avant tout le reste.\n\nAux premières heures, la Lune est encore en Lion, votre secteur de la communication, près de Jupiter et de Mars. Messages et appels circulent vite : envoyez ce qui compte avant le milieu de la matinée.\n\nMercure, votre planète, est rétrograde en Scorpion et proche du Soleil dans votre secteur du travail et de la santé. Une tâche que vous pensiez terminée peut demander des corrections, et une routine peut devoir être ajustée. Vérifiez les horaires, les fichiers et les consignes. Vénus, rétrograde en Balance, forme un sextile à Jupiter et un trigone au Nœud nord : une ancienne idée créative ou un lien amoureux passé peut refaire surface de façon agréable. Avec la Lune décroissante, triez les papiers de la maison, réparez une petite chose ou appelez un membre de la famille un peu délaissé. Gardez une soirée calme.",
+      "cancer": "Cancer, la conversation est le fil de votre journée : la Lune, votre astre, entre en Vierge vers 9 h 30 (heure de Paris), dans votre secteur des messages, des courses et du voisinage. Les échanges pratiques occupent une bonne partie de votre temps.\n\nTôt le matin, la Lune est encore en Lion, votre secteur de l’argent, à côté de Jupiter et de Mars. L’envie de dépenser peut se faire sentir. Attendez que la Lune ait changé de signe et vérifiez si vous en avez toujours envie.\n\nMercure, rétrograde en Scorpion avec le Soleil, se trouve dans votre secteur de l’amour, des enfants et de la création. Une ancienne histoire de cœur, une question liée aux enfants ou un projet inachevé peut revenir au premier plan. Parlez-en sans vous précipiter vers une conclusion. Vénus, rétrograde en Balance dans votre secteur du foyer, forme un sextile à Jupiter : un membre de la famille peut vous apporter une aide réelle, ou un vieil objet de la maison redevient utile. La Lune décroissante favorise les e-mails en attente, les petits trajets et des mots clairs et bienveillants. Un appel sincère peut apaiser une inquiétude.",
+      "lion": "Lion, votre énergie se tourne vers l’argent et ce qui compte pour vous : la Lune quitte votre signe vers 9 h 30 (heure de Paris) et entre en Vierge, votre secteur des revenus et des dépenses, après une matinée qui porte encore votre propre étincelle.\n\nPendant ces premières heures, la Lune passe près de Jupiter et de Mars en Lion, en opposition au Nœud nord. Vous vous sentez audacieux, mais un proche peut avoir besoin que vous écoutiez avant de diriger. Équilibrez vos envies et les siennes.\n\nMercure, rétrograde en Scorpion près du Soleil, traverse votre secteur du foyer et de la famille. Un vieux sujet familial, une réparation ou une question de logement peut être rouvert. Rassemblez les faits avant toute décision définitive. Vénus, rétrograde en Balance, forme un sextile à Jupiter dans votre signe : un message amical d’un frère, d’une sœur, d’un voisin ou d’un ancien contact peut vous remonter le moral. Avec la Lune décroissante, revoyez un budget, résiliez un abonnement inutile ou mettez une petite somme de côté. Les gestes concrets apportent du calme.",
+      "vierge": "Vierge, la journée vous remet au centre : la Lune entre dans votre signe vers 9 h 30 (heure de Paris), et vos émotions, vos besoins et votre corps demandent à être entendus plus clairement que d’habitude.\n\nAvant cela, la Lune en fin de Lion, votre secteur du repos et de la vie intérieure, se trouve près de Jupiter : les premières heures se prêtent au sommeil, à la réflexion ou à un café tranquille en solitaire.\n\nMercure, votre planète, est rétrograde en Scorpion avec le Soleil dans votre secteur des messages, des petits trajets et de la fratrie. Retards, clés égarées ou texto mal compris sont possibles. Prévoyez de la marge et relisez avant d’envoyer. Vénus, rétrograde en Balance dans votre secteur de l’argent, forme un sextile à Jupiter : relancer une ancienne source de revenus, un remboursement ou un paiement oublié peut en valoir la peine. Avec une Lune décroissante dans votre signe, la fatigue peut se faire sentir le soir. Prenez soin de votre santé, simplifiez vos plans et refusez une demande de trop. En faire moins, mais bien, vous réussit aujourd’hui.",
+      "balance": "Balance, la journée récompense un rythme plus lent : la Lune entre en Vierge vers 9 h 30 (heure de Paris), dans votre secteur le plus intime, et vous aurez peut-être besoin de plus de silence et de repos que votre agenda ne le permet.\n\nTôt le matin, la Lune est encore en Lion près de Jupiter, dans votre secteur des amis et des groupes. Un message d’un ami ou un projet collectif peut vous faire sourire avant que la journée ne se pose.\n\nVénus, votre planète, est rétrograde dans votre signe, en sextile presque exact à Jupiter et en trigone au Nœud nord. Vous revoyez ce que vous attendez de vos relations et de votre image, et votre entourage peut vous soutenir si vous êtes honnête avec lui. Mercure, rétrograde en Scorpion avec le Soleil, se trouve dans votre secteur de l’argent : vérifiez avec soin factures, remboursements et dates de paiement. La Lune décroissante en Vierge favorise l’écriture d’un journal, un coucher précoce ou la fin discrète d’une chose commencée. Gardez les grandes annonces pour un autre jour.",
+      "scorpion": "Scorpion, amitiés et projets d’avenir prennent du poids aujourd’hui : la Lune entre en Vierge vers 9 h 30 (heure de Paris), votre secteur des amis, des réseaux et des espoirs, après une matinée encore tournée vers le travail.\n\nAux premières heures, la Lune en Lion rejoint Jupiter, près de Mars, dans votre secteur de la carrière. Une idée audacieuse ou une réunion matinale peut bien se passer si vous restez direct et calme.\n\nMercure est rétrograde dans votre signe, à côté du Soleil. Vous voyez plus clairement vos propres choix en regardant en arrière qu’en avant, et vous devrez peut-être corriger une parole récente. Prenez le temps avant de répondre à des messages chargés. Vénus, rétrograde en Balance dans votre secteur caché, forme un sextile à Jupiter : un soutien discret en coulisses est possible, et un ancien sentiment peut demander à être refermé. Avec la Lune décroissante, renouez avec un ami de confiance, prenez du recul face à un groupe qui vous épuise ou affinez un objectif à long terme au lieu de repartir de zéro.",
+      "sagittaire": "Sagittaire, votre vie publique passe au premier plan : la Lune entre en Vierge vers 9 h 30 (heure de Paris), dans votre secteur de la carrière et de la réputation, et votre fiabilité ne passe pas inaperçue.\n\nTôt le matin, la Lune en Lion passe près de Jupiter, votre planète, dans votre secteur des voyages et des études. Une formation, un projet de voyage ou une grande idée vous enthousiasme. Notez-la, puis revenez au travail concret.\n\nMercure, rétrograde en Scorpion avec le Soleil, occupe votre secteur le plus intime. Des pensées mises de côté refont surface, surtout la nuit. Les écrire aide davantage que les ressasser. Vénus, rétrograde en Balance dans votre secteur des amitiés, forme un sextile à Jupiter et un trigone au Nœud nord : un vieil ami ou un ancien collègue peut réapparaître avec de bonnes intentions. La Lune décroissante favorise la fin d’une tâche professionnelle, la correction d’un détail demandé par votre responsable ou le rangement de votre agenda. Évitez de promettre plus que ce que vous pouvez tenir cette semaine.",
+      "capricorne": "Capricorne, vos horizons s’élargissent aujourd’hui : la Lune entre en Vierge vers 9 h 30 (heure de Paris), dans votre secteur des études, des voyages et des projets lointains, et apprendre quelque chose de pratique vous satisfait.\n\nTôt le matin, la Lune est encore en Lion près de Jupiter et de Mars, dans votre secteur de l’argent partagé et de l’intimité. Une discussion sur des frais communs, des impôts ou la confiance peut surgir avant le début du travail.\n\nMercure, rétrograde en Scorpion avec le Soleil, traverse votre secteur des amis et des groupes. Des projets à plusieurs peuvent bouger ou demander confirmation, et un ancien ami peut vous écrire. Vénus, rétrograde en Balance dans votre secteur professionnel, forme un sextile à Jupiter : revenir sur une ancienne proposition ou un contact de travail peut vous valoir du soutien, à condition de le présenter clairement. Avec la Lune décroissante, terminez un module de formation, triez vos papiers de voyage ou documentez-vous sur un sujet qui vous trotte en tête. La patience face aux réponses lentes garde la journée fluide.",
+      "verseau": "Verseau, la journée vous invite à regarder ce que vous partagez avec les autres : la Lune entre en Vierge vers 9 h 30 (heure de Paris), dans votre secteur de l’argent commun, des dettes et de l’intimité, et des questions pratiques de confiance apparaissent.\n\nTôt le matin, la Lune en Lion, votre secteur des relations, se trouve près de Jupiter et en opposition au Nœud nord dans votre signe. Les besoins d’un partenaire peuvent tirer à l’opposé de votre propre direction. Écouter sans vous renier est le bon équilibre.\n\nMercure, rétrograde en Scorpion avec le Soleil, traverse votre secteur de la carrière. Un projet, une évaluation ou une ancienne décision professionnelle peut être rouvert. Soyez précis dans ce que vous dites à vos responsables. Vénus, rétrograde en Balance, forme un sextile à Jupiter et un trigone au Nœud nord : projets de voyage, études ou contact lointain peuvent apporter de la chaleur. La Lune décroissante favorise le règlement d’une facture commune, la clarification de qui paie quoi, ou une discussion calme sur un sujet sensible.",
+      "poissons": "Poissons, les relations prennent le devant de la scène : la Lune entre en Vierge vers 9 h 30 (heure de Paris), face à votre signe, dans votre secteur des associations, et vous percevez mieux ce que les autres attendent de vous.\n\nAvant cela, la Lune en Lion près de Jupiter et de Mars, dans votre secteur du travail et de la santé, vous donne de l’énergie pour une tâche matinale ou un peu de sport. Profitez-en tant qu’elle dure.\n\nMercure, rétrograde en Scorpion avec le Soleil, traverse votre secteur des voyages, des études et des convictions. Un trajet peut devoir être reprogrammé, ou une ancienne formation ou idée revient. Vérifiez les détails avant de payer. Vénus, rétrograde en Balance dans votre secteur des ressources partagées, forme un sextile à Jupiter : une vieille question d’argent avec un partenaire peut se régler avec bonne volonté. Avec la Lune décroissante en Vierge, parlez de détails pratiques avec votre partenaire ou un associé plutôt que de grands sentiments. Des accords clairs et modestes protègent mieux votre paix que des promesses vagues."
+    }
+  }
+}
