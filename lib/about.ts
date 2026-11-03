@@ -51,18 +51,30 @@ export interface AboutSection {
 
 function priceLine(locale: Locale): string {
   const lang = locale;
-  const money = (minor: number) => formatMoney(minor, 'eur', locale === 'en' ? 'en' : 'fr');
+  const money = (minor: number) => formatMoney(minor, 'eur', locale === 'en' ? 'en' : locale === 'fr' ? 'fr' : locale);
   const dec = WEEKLY_PLANS.decouverte;
   const ess = WEEKLY_PLANS.essentiel;
   const pre = WEEKLY_PLANS.premium;
   const first = discoveryHeadline(lang, 'eur');
+  const n = (plan: typeof dec) => plan.names[locale];
+  const fw = (id: 'essentiel' | 'premium') => money(firstWeekMinor(id, 'eur'));
+  const free = FREE_CALL_SECONDS / 60;
+  if (locale === 'es') {
+    return `Callastral cobra ${n(dec)} a ${money(dec.amounts.eur)} por semana (${dec.minutes} minutos, ${first}), ${n(ess)} a ${money(ess.amounts.eur)} (${ess.minutes} minutos, primera semana ${fw('essentiel')}) y ${n(pre)} a ${money(pre.amounts.eur)} (${pre.minutes} minutos, primera semana ${fw('premium')}). Una llamada de ${free} minutos es gratuita una sola vez. Callastral no muestra cuenta atrás.`;
+  }
+  if (locale === 'de') {
+    return `Callastral berechnet für ${n(dec)} ${money(dec.amounts.eur)} pro Woche (${dec.minutes} Minuten, ${first}), für ${n(ess)} ${money(ess.amounts.eur)} (${ess.minutes} Minuten, erste Woche ${fw('essentiel')}) und für ${n(pre)} ${money(pre.amounts.eur)} (${pre.minutes} Minuten, erste Woche ${fw('premium')}). Ein Anruf von ${free} Minuten ist einmalig kostenlos. Callastral zeigt keinen Countdown.`;
+  }
+  if (locale === 'it') {
+    return `Callastral addebita ${n(dec)} a ${money(dec.amounts.eur)} a settimana (${dec.minutes} minuti, ${first}), ${n(ess)} a ${money(ess.amounts.eur)} (${ess.minutes} minuti, prima settimana ${fw('essentiel')}) e ${n(pre)} a ${money(pre.amounts.eur)} (${pre.minutes} minuti, prima settimana ${fw('premium')}). Una chiamata di ${free} minuti è gratuita una sola volta. Callastral non mostra alcun conto alla rovescia.`;
+  }
   if (locale === 'en') {
     return `Callastral charges ${dec.names.en} at ${money(dec.amounts.eur)} per week (${dec.minutes} minutes, ${first}), ${ess.names.en} at ${money(ess.amounts.eur)} (${ess.minutes} minutes, first week ${money(firstWeekMinor('essentiel', 'eur'))}) and ${pre.names.en} at ${money(pre.amounts.eur)} (${pre.minutes} minutes, first week ${money(firstWeekMinor('premium', 'eur'))}). A ${FREE_CALL_SECONDS / 60}-minute call is free once. Callastral does not show a countdown.`;
   }
   return `Callastral facture Découverte ${money(dec.amounts.eur)} par semaine (${dec.minutes} minutes, ${first}), Essentiel ${money(ess.amounts.eur)} (${ess.minutes} minutes, 1re semaine ${money(firstWeekMinor('essentiel', 'eur'))}) et Premium ${money(pre.amounts.eur)} (${pre.minutes} minutes, 1re semaine ${money(firstWeekMinor('premium', 'eur'))}). Un appel de ${FREE_CALL_SECONDS / 60} minutes est offert une fois. Callastral n’affiche pas de compte à rebours.`;
 }
 
-const SECTIONS: Record<'fr' | 'en', AboutSection[]> = {
+const SECTIONS: Record<Locale, AboutSection[]> = {
   fr: [
     {
       h2: 'Qu’est-ce que Callastral ?',
@@ -151,22 +163,108 @@ const SECTIONS: Record<'fr' | 'en', AboutSection[]> = {
       ],
     },
   ],
+  es: [
+    {
+      h2: '¿Qué es Callastral?',
+      paragraphs: ['Callastral es un servicio de astrología por teléfono en el que hablas con consejeros virtuales, voces generadas por IA, que leen tu carta natal.', 'Callastral calcula la carta a partir de la fecha, la hora y el lugar de nacimiento, en el zodiaco tropical. El mismo cálculo se usa en la herramienta gratuita del ascendente y en la de compatibilidad de pareja.'],
+    },
+    {
+      h2: '¿Quién está detrás de Callastral?',
+      paragraphs: ['Callastral es el nombre del servicio. El editor, el identificador, la dirección, el director de la publicación y el correo de contacto figuran en el aviso legal cuando están completados. Callastral no inventa esos datos.', 'Callastral no tiene ninguna relación con Call Astro (callastro.com). El sitio está disponible en francés, inglés, español, alemán e italiano.'],
+    },
+    {
+      h2: '¿Cuánto cuesta?',
+      paragraphs: [priceLine('es')],
+    },
+    {
+      h2: '¿Cómo funciona una llamada?',
+      paragraphs: [`Callastral abre la llamada en el navegador. El consejero recibe el resumen de la carta natal y, si existen, los últimos resúmenes de llamadas. Una llamada dura como máximo ${WEEKLY_MAX_CALL_MINUTES} minutos. Puedes colgar en cualquier momento.`],
+    },
+    {
+      h2: '¿El consejero se acuerda de mí?',
+      paragraphs: ['Después de cada llamada, Callastral guarda un breve resumen: temas, preguntas y consejos. El resumen es visible en la cuenta y se entrega al mismo consejero al comienzo de la siguiente llamada. Callastral te permite leerlo y borrarlo desde la cuenta.'],
+    },
+    {
+      h2: '¿Es una persona real?',
+      paragraphs: [`Callastral no te conecta con una persona humana. Los consejeros son personajes virtuales. Al comienzo de cada llamada, el consejero dice: «${AI_ACT_SPOKEN.es}»`],
+    },
+    {
+      h2: 'Límites',
+      paragraphs: ['Callastral ofrece entretenimiento y reflexión personal. No es un consejo médico, jurídico ni financiero, ni una predicción segura. Para cuestiones de salud, derecho, dinero o en caso de angustia, contacta con un profesional cualificado o con los servicios de emergencia (112).'],
+    },
+  ],
+  de: [
+    {
+      h2: 'Was ist Callastral?',
+      paragraphs: ['Callastral ist ein telefonischer Astrologie-Dienst: Sie sprechen mit virtuellen Beratern, KI-generierten Stimmen, die Ihr Geburtshoroskop lesen.', 'Callastral berechnet das Horoskop aus Geburtsdatum, Geburtszeit und Geburtsort im tropischen Tierkreis. Dieselbe Berechnung nutzen der kostenlose Aszendent-Rechner und der Partner-Kompatibilitätstest.'],
+    },
+    {
+      h2: 'Wer steht hinter Callastral?',
+      paragraphs: ['Callastral ist der Name des Dienstes. Herausgeber, Kennung, Anschrift, verantwortliche Person und Kontakt-E-Mail stehen im Impressum, sobald sie hinterlegt sind. Callastral erfindet diese Angaben nicht.', 'Callastral hat keine Verbindung zu Call Astro (callastro.com). Die Website ist auf Französisch, Englisch, Spanisch, Deutsch und Italienisch verfügbar.'],
+    },
+    {
+      h2: 'Was kostet es?',
+      paragraphs: [priceLine('de')],
+    },
+    {
+      h2: 'Wie läuft ein Anruf ab?',
+      paragraphs: [`Callastral startet den Anruf im Browser. Der Berater erhält die Zusammenfassung des Geburtshoroskops und, falls vorhanden, die letzten Gesprächszusammenfassungen. Ein Anruf dauert höchstens ${WEEKLY_MAX_CALL_MINUTES} Minuten. Sie können jederzeit auflegen.`],
+    },
+    {
+      h2: 'Erinnert sich der Berater an mich?',
+      paragraphs: ['Nach jedem Anruf speichert Callastral eine kurze Zusammenfassung: Themen, Fragen und Ratschläge. Sie ist im Konto sichtbar und wird zu Beginn des nächsten Anrufs an denselben Berater übergeben. Im Konto können Sie sie lesen und löschen.'],
+    },
+    {
+      h2: 'Ist das ein echter Mensch?',
+      paragraphs: [`Callastral verbindet Sie nicht mit einem Menschen. Die Berater sind virtuelle Personas. Zu Beginn jedes Anrufs sagt der Berater: „${AI_ACT_SPOKEN.de}“`],
+    },
+    {
+      h2: 'Grenzen',
+      paragraphs: ['Callastral bietet Unterhaltung und persönliche Reflexion. Es ist keine medizinische, rechtliche oder finanzielle Beratung und keine sichere Vorhersage. Bei Fragen zu Gesundheit, Recht, Geld oder in einer Notlage wenden Sie sich an eine Fachperson oder den Notruf (112).'],
+    },
+  ],
+  it: [
+    {
+      h2: 'Che cos’è Callastral?',
+      paragraphs: ['Callastral è un servizio di astrologia al telefono in cui parli con consulenti virtuali, voci generate dall’IA, che leggono il tuo tema natale.', 'Callastral calcola il tema a partire da data, ora e luogo di nascita, nello zodiaco tropicale. Lo stesso calcolo alimenta lo strumento gratuito dell’ascendente e quello della compatibilità di coppia.'],
+    },
+    {
+      h2: 'Chi c’è dietro Callastral?',
+      paragraphs: ['Callastral è il nome del servizio. Editore, identificativo, indirizzo, direttore della pubblicazione ed e-mail di contatto compaiono nelle note legali quando sono compilati. Callastral non inventa questi dati.', 'Callastral non ha alcun legame con Call Astro (callastro.com). Il sito è disponibile in francese, inglese, spagnolo, tedesco e italiano.'],
+    },
+    {
+      h2: 'Quanto costa?',
+      paragraphs: [priceLine('it')],
+    },
+    {
+      h2: 'Come funziona una chiamata?',
+      paragraphs: [`Callastral apre la chiamata nel browser. Il consulente riceve il riassunto del tema natale e, se ci sono, gli ultimi riassunti delle chiamate. Una chiamata dura al massimo ${WEEKLY_MAX_CALL_MINUTES} minuti. Puoi riagganciare in qualsiasi momento.`],
+    },
+    {
+      h2: 'Il consulente si ricorda di me?',
+      paragraphs: ['Dopo ogni chiamata Callastral salva un breve riassunto: temi, domande e consigli. Il riassunto è visibile nell’account e viene passato allo stesso consulente all’inizio della chiamata successiva. Dall’account puoi leggerlo e cancellarlo.'],
+    },
+    {
+      h2: 'È una persona vera?',
+      paragraphs: [`Callastral non ti mette in contatto con una persona umana. I consulenti sono personaggi virtuali. All’inizio di ogni chiamata il consulente dice: «${AI_ACT_SPOKEN.it}»`],
+    },
+    {
+      h2: 'Limiti',
+      paragraphs: ['Callastral offre intrattenimento e riflessione personale. Non è un parere medico, legale o finanziario, né una previsione certa. Per questioni di salute, diritto, denaro o in caso di disagio, rivolgiti a un professionista qualificato o ai servizi di emergenza (112).'],
+    },
+  ],
 };
 
 function localizedSections(locale: Locale): AboutSection[] {
-  if (locale === 'fr' || locale === 'en') return SECTIONS[locale];
-  return SECTIONS.en.map((section) => ({
-    h2: section.h2,
-    paragraphs: section.paragraphs.map((paragraph) => paragraph),
-  }));
+  return SECTIONS[locale];
 }
 
 const PARAGRAPHS: Record<Locale, string[]> = {
   fr: SECTIONS.fr.flatMap((section) => section.paragraphs),
   en: SECTIONS.en.flatMap((section) => section.paragraphs),
-  es: SECTIONS.en.flatMap((section) => section.paragraphs),
-  de: SECTIONS.en.flatMap((section) => section.paragraphs),
-  it: SECTIONS.en.flatMap((section) => section.paragraphs),
+  es: SECTIONS.es.flatMap((section) => section.paragraphs),
+  de: SECTIONS.de.flatMap((section) => section.paragraphs),
+  it: SECTIONS.it.flatMap((section) => section.paragraphs),
 };
 
 const GLUE: Record<Locale, { label: string; spoken: string; legal: string; topics: string; home: string; updated: string }> = {

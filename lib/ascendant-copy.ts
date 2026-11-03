@@ -154,7 +154,7 @@ const COPY: Record<ToolLocale, AscendantCopy> = {
   fr: {
     keyword: 'calcul ascendant gratuit',
     h1: 'Calcul ascendant gratuit',
-    title: 'Quel est mon ascendant ? Calcul ascendant gratuit et immédiat | Callastral',
+    title: 'Calcul ascendant gratuit et immédiat | Callastral',
     description: 'Quel est mon ascendant ? Calcul ascendant gratuit à partir de la date, l’heure exacte et la ville de naissance, à la minute près. Sans compte ni e-mail.',
     home: 'Accueil',
     ctaFemme: 'Parler à une conseillère IA Callastral',

@@ -19,7 +19,7 @@ export async function generateMetadata(props: { params: Promise<{ locale: string
   return {
     title: { absolute: model.title },
     description: model.description,
-    alternates: { canonical: url },
+    alternates: { canonical: url, languages: { fr: url, 'x-default': url } },
     robots: { index: true, follow: true },
     openGraph: { title: model.title, description: model.description, url, type: 'article', locale: 'fr_FR' },
   };

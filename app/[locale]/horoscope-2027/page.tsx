@@ -11,7 +11,7 @@ export function generateStaticParams() {
   return [{ locale: 'fr' }];
 }
 
-const TITLE = 'Horoscope 2027 : amour, travail, argent mois par mois | Callastral';
+const TITLE = 'Horoscope 2027 : amour, travail, argent | Callastral';
 const H1 = 'Horoscope 2027 : les grandes dates de l’année, signe par signe';
 const DESCRIPTION = 'Horoscope 2027 pour les 12 signes : Jupiter en Vierge le 26 juillet, éclipse totale du 2 août, Saturne et Neptune en Bélier, rétrogrades. Dates calculées.';
 
@@ -22,7 +22,7 @@ export async function generateMetadata(props: { params: Promise<{ locale: string
   return {
     title: { absolute: TITLE },
     description: DESCRIPTION,
-    alternates: { canonical: url },
+    alternates: { canonical: url, languages: { fr: url, 'x-default': url } },
     robots: { index: true, follow: true },
     openGraph: { title: TITLE, description: DESCRIPTION, url, type: 'article', locale: 'fr_FR' },
   };

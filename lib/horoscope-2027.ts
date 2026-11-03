@@ -253,7 +253,7 @@ export function h2027Model(id: H2027Sign): H2027Model {
 
   const cta = `Envie d’aller plus loin que le signe solaire ? Un thème natal tient compte de votre heure et de votre lieu de naissance. Sur Callastral, vous pouvez en parler avec un conseiller vocal (une intelligence artificielle, toujours présentée comme telle) : 3 min offertes, sans carte.`;
 
-  const title = `Horoscope 2027 ${name} : amour, travail, argent mois par mois | Callastral`;
+  const title = `Horoscope 2027 ${name} : amour, travail, argent | Callastral`;
   return {
     id,
     name,

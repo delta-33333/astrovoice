@@ -8,10 +8,10 @@ import { firstWeekMinor, WEEKLY_PLANS, type WeeklyCurrency } from './weekly.ts';
 export const FEATURED_ADVISOR_LIMIT = 12;
 
 export const HOME_TITLE: Record<Locale, string> = {
-  fr: 'Astrologue IA par téléphone, à partir de votre thème natal | Callastral',
+  fr: 'Astrologue IA par téléphone, selon votre thème | Callastral',
   en: 'AI astrologer by phone, from your birth chart | Callastral',
-  es: 'Astrólogo IA por teléfono, a partir de tu carta natal | Callastral',
-  de: 'KI-Astrologe am Telefon, ausgehend von Ihrem Geburtshoroskop | Callastral',
+  es: 'Astrólogo IA por teléfono con tu carta natal | Callastral',
+  de: 'KI-Astrologe am Telefon, nach Ihrem Horoskop | Callastral',
   it: 'Astrologo IA al telefono, a partire dal tema natale | Callastral',
 };
 
@@ -91,8 +91,8 @@ export function homeOfferLine(locale: Locale, currency: WeeklyCurrency): string 
 }
 
 /** Meta description. Le prix vient des constantes, jamais d’un montant écrit en dur. */
-const POSITIONING_FR = 'Callastral, c’est la voix qui lit ton vrai ciel quand ton cœur ou ta vie s’emmêlent : pour comprendre ce qui se joue, sans dates inventées.';
-const POSITIONING_EN = 'Callastral is the voice that reads your real sky when your heart or your life gets tangled: to understand what is at play, with no invented dates.';
+const POSITIONING_FR = 'La voix qui lit ton vrai ciel, sans dates inventées.';
+const POSITIONING_EN = 'The voice that reads your real sky, with no invented dates.';
 
 export function homeDescription(locale: Locale, currency: WeeklyCurrency): string {
   const offer = homeOfferLine(locale, currency);
@@ -100,7 +100,7 @@ export function homeDescription(locale: Locale, currency: WeeklyCurrency): strin
     case 'en':
       return `${POSITIONING_EN} ${offer}`;
     case 'es':
-      return `Habla con un astrólogo IA por teléfono: lectura de tu carta natal y memoria de las llamadas. ${offer}`;
+      return `Astrólogo IA por teléfono: tu carta natal y memoria de las llamadas. ${offer}`;
     case 'de':
       return `Sprechen Sie mit einem KI-Astrologen am Telefon: Geburtshoroskop und Erinnerung an Ihre Anrufe. ${offer}`;
     case 'it':
