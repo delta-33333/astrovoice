@@ -1,0 +1,153 @@
+{
+  "date": "2026-11-04",
+  "sky": {
+    "date": "2026-11-04",
+    "computedAt": "08:00 Europe/Paris",
+    "phase": {
+      "id": "waningCrescent",
+      "illumination": 24,
+      "waxing": false
+    },
+    "bodies": [
+      {
+        "name": "Soleil",
+        "sign": "Scorpion",
+        "degree": 11,
+        "retrograde": false
+      },
+      {
+        "name": "Lune",
+        "sign": "Vierge",
+        "degree": 12,
+        "retrograde": false
+      },
+      {
+        "name": "Mercure",
+        "sign": "Scorpion",
+        "degree": 12,
+        "retrograde": true
+      },
+      {
+        "name": "Vénus",
+        "sign": "Balance",
+        "degree": 24,
+        "retrograde": true
+      },
+      {
+        "name": "Mars",
+        "sign": "Lion",
+        "degree": 20,
+        "retrograde": false
+      },
+      {
+        "name": "Jupiter",
+        "sign": "Lion",
+        "degree": 24,
+        "retrograde": false
+      },
+      {
+        "name": "Saturne",
+        "sign": "Bélier",
+        "degree": 9,
+        "retrograde": true
+      },
+      {
+        "name": "Uranus",
+        "sign": "Gémeaux",
+        "degree": 4,
+        "retrograde": true
+      },
+      {
+        "name": "Neptune",
+        "sign": "Bélier",
+        "degree": 2,
+        "retrograde": true
+      },
+      {
+        "name": "Pluton",
+        "sign": "Verseau",
+        "degree": 3,
+        "retrograde": false
+      },
+      {
+        "name": "Nœud nord",
+        "sign": "Verseau",
+        "degree": 25,
+        "retrograde": true
+      }
+    ],
+    "ingresses": [],
+    "aspects": [
+      {
+        "a": "Lune",
+        "b": "Mercure",
+        "aspect": "sextile",
+        "orb": 0
+      },
+      {
+        "a": "Vénus",
+        "b": "Jupiter",
+        "aspect": "sextile",
+        "orb": 0.1
+      },
+      {
+        "a": "Soleil",
+        "b": "Lune",
+        "aspect": "sextile",
+        "orb": 0.7
+      },
+      {
+        "a": "Soleil",
+        "b": "Mercure",
+        "aspect": "conjunction",
+        "orb": 0.7
+      },
+      {
+        "a": "Vénus",
+        "b": "Nœud nord",
+        "aspect": "trine",
+        "orb": 1.1
+      },
+      {
+        "a": "Mars",
+        "b": "Jupiter",
+        "aspect": "conjunction",
+        "orb": 4.4
+      }
+    ]
+  },
+  "en": {
+    "summary": "Wednesday 4 November 2026: the Moon spends the whole day in Virgo, waning and about 24% lit, a few days before the new Moon. It forms a sextile to the Sun and an exact sextile to Mercury, which is retrograde in Scorpio and almost conjunct the Sun. Venus, retrograde in Libra, makes an exact sextile to Jupiter and a trine to the North Node, while Mars and Jupiter stay together in Leo.",
+    "signs": {
+      "belier": "Aries, today is about getting your daily routine back under control: the Moon stays in Virgo all day, in your sector of work, health and habits, and it rewards patient, practical effort.\n\nThe Moon makes an easy sextile to Mercury and the Sun in Scorpio, your sector of shared money and deep commitments. This is a good moment to sort a joint expense, a loan or a subscription you share with someone. Mercury is retrograde and almost conjunct the Sun, so check the figures twice before you transfer anything.\n\nVenus, retrograde in Libra, forms an exact sextile to Jupiter in Leo: a partner may offer help or a second chance if you speak warmly and without pressure. Mars, your ruler, still travels with Jupiter in Leo, which keeps your creative drive high. With the waning Moon, finish what is half done before you start anything new.",
+      "taureau": "Taurus, the day favours pleasure, romance and creative time: the Moon remains in Virgo, your sector of joy and self-expression, and it invites you to enjoy something simple and well made.\n\nThe Moon's sextile to the Sun and to retrograde Mercury in Scorpio touches your relationship sector. An old conversation with a partner or associate can now be resolved calmly, as long as you listen to the whole story first. Mercury sits almost on the Sun, so the truth tends to come out today, even if it arrives slowly.\n\nVenus, your ruling planet, is retrograde in Libra and makes an exact sextile to Jupiter. At work, reviving a method that served you before, or asking a colleague for advice, can save you real effort. Mars and Jupiter in Leo keep home matters lively. The waning Moon suits finishing a hobby project rather than buying new things for it.",
+      "gemeaux": "Gemini, home and family take the front seat today: the Moon stays in Virgo, your sector of roots and private life, and you may feel the need to tidy, repair or simply rest at home.\n\nThe Moon forms an exact sextile to Mercury, your ruler, which is retrograde in Scorpio in your sector of work and health. A task you put aside can be completed now, and a check-up or routine you dropped deserves to come back. Mercury is almost conjunct the Sun, so an honest look at your workload is useful.\n\nVenus, retrograde in Libra, makes an exact sextile to Jupiter and a trine to the North Node. A past romance or creative project may return in a gentler form. Mars and Jupiter in Leo make conversations fast and lively, so pick your words with care. As the Moon wanes, let go of one household chore that no longer makes sense.",
+      "cancer": "Cancer, today is made for clear conversations and short practical errands: the Moon, your ruler, crosses Virgo all day in your sector of communication, siblings and neighbourhood.\n\nThe Moon's exact sextile to Mercury and its sextile to the Sun in Scorpio light up your sector of love and creativity. A message you write now can carry real feeling without drama. Because Mercury is retrograde and almost conjunct the Sun, an old flame, a past project or a forgotten talent may come back into view.\n\nVenus, retrograde in Libra in your home sector, makes an exact sextile to Jupiter: a family discussion about the house or a shared space goes better if you look for an easy compromise. Mars and Jupiter in Leo push spending upward, so keep an eye on your budget. With the waning Moon, answer pending emails before you open new topics.",
+      "lion": "Leo, money and personal values are today's theme: the Moon stays in Virgo, your sector of income and resources, and it asks you to look at what you earn, spend and truly need.\n\nThe Moon forms a sextile to the Sun, your ruler, and an exact sextile to Mercury in Scorpio, your sector of home and family. Sorting a household budget or a family paper goes smoothly today. Mercury is retrograde and close to the Sun, so a home repair or a family question from the past may need a second look.\n\nMars and Jupiter travel together in your own sign, giving you energy and confidence. Venus, retrograde in Libra, makes an exact sextile to Jupiter, which helps you reconnect with a friend or sibling you have not called in a while. The waning Moon favours cancelling a subscription you no longer use rather than opening a new one.",
+      "vierge": "Virgo, you are the centre of attention today: the Moon spends the whole day in your sign, so your needs, your health and the way you present yourself all matter more than usual.\n\nThe Moon makes an exact sextile to Mercury, your ruler, retrograde in Scorpio in your sector of communication. A message or a short trip you postponed can now go ahead, but reread everything before sending. Mercury is almost conjunct the Sun, which helps you say plainly what you have been thinking for a while.\n\nVenus, retrograde in Libra in your money sector, makes an exact sextile to Jupiter: an old payment, a refund or a past source of income may come back. Mars and Jupiter in Leo, in your sector of rest, ask for more sleep and quiet time. With the Moon waning in your sign, close a personal chapter gently instead of forcing a fresh start.",
+      "balance": "Libra, today calls for rest and quiet reflection: the Moon stays in Virgo, your sector of solitude and inner life, and you may prefer to work behind the scenes rather than in the spotlight.\n\nThe Moon forms a sextile to the Sun and an exact sextile to retrograde Mercury in Scorpio, your sector of money and values. Reviewing your accounts, a quote or a salary question is well supported, as long as you check details twice. Mercury is almost conjunct the Sun, so you can see clearly what something is really worth to you.\n\nVenus, your ruler, is retrograde in your own sign and makes an exact sextile to Jupiter and a trine to the North Node. Old friends, past hopes or an earlier version of a project return in a friendlier light. Mars and Jupiter in Leo keep your social life busy. Let the waning Moon help you rest before the new Moon.",
+      "scorpion": "Scorpio, friends and group plans shape your day: the Moon stays in Virgo, your sector of networks and future goals, and a supportive person can help you move forward.\n\nThe Moon makes a sextile to the Sun and an exact sextile to Mercury, both in your sign. Mercury is retrograde and almost conjunct the Sun, so you see your own situation more clearly than you have in weeks. It is a good day to rethink a personal decision, not to rush it. A conversation with a friend can help you put words on it.\n\nVenus, retrograde in Libra in your sector of rest, makes an exact sextile to Jupiter: kindness toward yourself works better than self-criticism. Mars, one of your rulers, travels with Jupiter in Leo in your career sector, which brings ambition. Use the waning Moon to drop a group commitment that drains you.",
+      "sagittaire": "Sagittarius, your career and public image are in focus today: the Moon spends the day in Virgo, your sector of work goals and reputation, and careful, reliable work gets noticed.\n\nThe Moon forms a sextile to the Sun and an exact sextile to Mercury in Scorpio, your sector of rest and hidden matters. Something you have been thinking about privately can now be organised into a plan. Mercury is retrograde and almost on the Sun, so keep some information to yourself until it is ready.\n\nJupiter, your ruler, sits with Mars in Leo and makes an exact sextile to retrograde Venus in Libra. A friend, a group or a past contact can open a door, especially for travel or study. The trine from Venus to the North Node supports teamwork. As the Moon wanes, finish a professional task before you take on the next one.",
+      "capricorne": "Capricorn, today invites you to widen your horizon: the Moon stays in Virgo, your sector of travel, study and beliefs, and learning something useful brings real satisfaction.\n\nThe Moon makes a sextile to the Sun and an exact sextile to retrograde Mercury in Scorpio, your sector of friends and networks. An old contact can reach out, or you can reconnect with someone who once gave you good advice. Mercury is almost conjunct the Sun, which shows you which group commitments still matter.\n\nVenus, retrograde in Libra in your career sector, makes an exact sextile to Jupiter: an earlier professional project, or a former manager, may come back with a good opportunity. Mars and Jupiter in Leo touch your sector of shared finances, so be prudent with joint spending. Saturn, your ruler, is retrograde in Aries, which favours patience. Use the waning Moon to review your plans for the coming weeks.",
+      "verseau": "Aquarius, today brings deeper matters and shared resources to the surface: the Moon stays in Virgo, your sector of joint finances and intimacy, and a calm, detailed approach helps.\n\nThe Moon forms a sextile to the Sun and an exact sextile to retrograde Mercury in Scorpio, your career sector. A work question you thought was settled may return, and you can now handle it with more clarity. Mercury sits almost on the Sun, so be honest about what you want from your job.\n\nVenus, retrograde in Libra, makes an exact sextile to Jupiter and a trine to the North Node in your sign. Studies, travel plans or a philosophy you had dropped may attract you again. Mars and Jupiter in Leo, your relationship sector, make others direct and enthusiastic. The waning Moon is good for paying a debt or settling a shared bill.",
+      "poissons": "Pisces, relationships are at the heart of your day: the Moon stays in Virgo, your sector of partners and close collaboration, and listening carefully matters more than being right.\n\nThe Moon forms a sextile to the Sun and an exact sextile to retrograde Mercury in Scorpio, your sector of travel and learning. A course, a trip or a project abroad that stalled can be reviewed now. Mercury is almost conjunct the Sun, which helps you understand a belief or a choice from a new angle.\n\nVenus, retrograde in Libra in your sector of shared resources, makes an exact sextile to Jupiter, one of your rulers. A past financial arrangement or a refund may come back in your favour. Mars and Jupiter in Leo, your work sector, increase your energy for daily tasks. With the waning Moon, end one habit that no longer supports your health."
+    }
+  },
+  "fr": {
+    "summary": "Mercredi 4 novembre 2026 : la Lune passe toute la journée en Vierge, décroissante et éclairée à 24 % environ, quelques jours avant la nouvelle Lune. Elle forme un sextile au Soleil et un sextile exact à Mercure, rétrograde en Scorpion et presque conjointe au Soleil. Vénus, rétrograde en Balance, forme un sextile exact à Jupiter et un trigone au Nœud nord, tandis que Mars et Jupiter restent ensemble en Lion.",
+    "signs": {
+      "belier": "Bélier, la journée sert à reprendre en main votre quotidien : la Lune reste en Vierge toute la journée, dans votre secteur du travail, de la santé et des habitudes, et elle récompense l’effort patient et concret.\n\nLa Lune forme un sextile facile à Mercure et au Soleil en Scorpion, votre secteur de l’argent partagé et des engagements profonds. C’est le bon moment pour régler une dépense commune, un prêt ou un abonnement que vous partagez. Mercure est rétrograde et presque conjoint au Soleil, alors vérifiez deux fois les chiffres avant tout virement.\n\nVénus, rétrograde en Balance, forme un sextile exact à Jupiter en Lion : un partenaire peut vous aider ou vous accorder une seconde chance si vous parlez avec chaleur et sans pression. Mars, votre planète, voyage toujours avec Jupiter en Lion et garde votre élan créatif élevé. Avec la Lune décroissante, terminez ce qui est à moitié fait avant de lancer autre chose.",
+      "taureau": "Taureau, la journée favorise le plaisir, l’amour et la créativité : la Lune reste en Vierge, votre secteur de la joie et de l’expression personnelle, et vous invite à profiter de quelque chose de simple et bien fait.\n\nLe sextile de la Lune au Soleil et à Mercure rétrograde en Scorpion touche votre secteur des relations. Une ancienne conversation avec un partenaire ou un associé peut se régler calmement, à condition d’écouter toute l’histoire. Mercure est presque sur le Soleil, donc la vérité finit par sortir aujourd’hui, même lentement.\n\nVénus, votre planète, est rétrograde en Balance et forme un sextile exact à Jupiter. Au travail, reprendre une méthode qui vous a déjà réussi, ou demander conseil à un collègue, vous épargne un vrai effort. Mars et Jupiter en Lion animent la vie à la maison. La Lune décroissante convient pour finir un projet de loisir plutôt que pour acheter du nouveau matériel.",
+      "gemeaux": "Gémeaux, la maison et la famille passent au premier plan : la Lune reste en Vierge, votre secteur des racines et de la vie privée, et vous pourriez avoir envie de ranger, réparer ou simplement vous reposer chez vous.\n\nLa Lune forme un sextile exact à Mercure, votre planète, rétrograde en Scorpion dans votre secteur du travail et de la santé. Une tâche mise de côté peut enfin être terminée, et une habitude ou un rendez-vous médical abandonné mérite de revenir. Mercure est presque conjoint au Soleil, ce qui aide à regarder honnêtement votre charge de travail.\n\nVénus, rétrograde en Balance, forme un sextile exact à Jupiter et un trigone au Nœud nord. Une ancienne histoire de cœur ou un projet créatif peut revenir sous une forme plus douce. Mars et Jupiter en Lion rendent les échanges rapides, alors choisissez bien vos mots. Avec la Lune décroissante, abandonnez une corvée qui n’a plus de sens.",
+      "cancer": "Cancer, la journée est faite pour les échanges clairs et les petites démarches : la Lune, votre planète, traverse la Vierge toute la journée dans votre secteur de la communication, des frères et sœurs et du voisinage.\n\nLe sextile exact de la Lune à Mercure et son sextile au Soleil en Scorpion éclairent votre secteur de l’amour et de la créativité. Un message écrit aujourd’hui peut porter un vrai sentiment sans drame. Comme Mercure est rétrograde et presque conjoint au Soleil, un ancien amour, un projet passé ou un talent oublié peut refaire surface.\n\nVénus, rétrograde en Balance dans votre secteur du foyer, forme un sextile exact à Jupiter : une discussion familiale sur la maison ou un espace commun se passe mieux si vous cherchez un compromis simple. Mars et Jupiter en Lion poussent à dépenser, surveillez votre budget. Avec la Lune décroissante, répondez aux messages en attente avant d’ouvrir de nouveaux sujets.",
+      "lion": "Lion, l’argent et vos valeurs sont au cœur de la journée : la Lune reste en Vierge, votre secteur des revenus et des ressources, et vous demande de regarder ce que vous gagnez, dépensez et ce dont vous avez vraiment besoin.\n\nLa Lune forme un sextile au Soleil, votre astre, et un sextile exact à Mercure en Scorpion, votre secteur du foyer et de la famille. Faire le point sur un budget du ménage ou un papier familial se passe bien aujourd’hui. Mercure est rétrograde et proche du Soleil, alors une réparation ou une vieille question de famille peut demander un second regard.\n\nMars et Jupiter voyagent ensemble dans votre signe et vous donnent énergie et confiance. Vénus, rétrograde en Balance, forme un sextile exact à Jupiter et vous aide à reprendre contact avec un ami ou un proche que vous n’avez pas appelé depuis longtemps. La Lune décroissante favorise la résiliation d’un abonnement inutile plutôt qu’un nouvel achat.",
+      "vierge": "Vierge, vous êtes au centre de la journée : la Lune passe toute la journée dans votre signe, si bien que vos besoins, votre santé et votre façon de vous présenter comptent plus que d’habitude.\n\nLa Lune forme un sextile exact à Mercure, votre planète, rétrograde en Scorpion dans votre secteur de la communication. Un message ou un petit déplacement reporté peut maintenant avancer, mais relisez tout avant d’envoyer. Mercure est presque conjoint au Soleil, ce qui vous aide à dire clairement ce que vous pensez depuis un moment.\n\nVénus, rétrograde en Balance dans votre secteur de l’argent, forme un sextile exact à Jupiter : un ancien paiement, un remboursement ou une source de revenus passée peut revenir. Mars et Jupiter en Lion, dans votre secteur du repos, réclament plus de sommeil et de calme. Avec la Lune décroissante dans votre signe, refermez un chapitre personnel en douceur au lieu de forcer un nouveau départ.",
+      "balance": "Balance, la journée appelle au repos et à la réflexion : la Lune reste en Vierge, votre secteur de la solitude et de la vie intérieure, et vous préférerez peut-être travailler en coulisses plutôt qu’en pleine lumière.\n\nLa Lune forme un sextile au Soleil et un sextile exact à Mercure rétrograde en Scorpion, votre secteur de l’argent et des valeurs. Revoir vos comptes, un devis ou une question de salaire est bien soutenu, à condition de vérifier les détails deux fois. Mercure est presque conjoint au Soleil, ce qui montre clairement ce que les choses valent vraiment pour vous.\n\nVénus, votre planète, est rétrograde dans votre signe et forme un sextile exact à Jupiter ainsi qu’un trigone au Nœud nord. De vieux amis, d’anciens espoirs ou une première version d’un projet reviennent sous un jour plus amical. Mars et Jupiter en Lion animent votre vie sociale. Laissez la Lune décroissante vous aider à vous reposer avant la nouvelle Lune.",
+      "scorpion": "Scorpion, les amis et les projets de groupe guident votre journée : la Lune reste en Vierge, votre secteur des réseaux et des objectifs, et une personne bienveillante peut vous aider à avancer.\n\nLa Lune forme un sextile au Soleil et un sextile exact à Mercure, tous deux dans votre signe. Mercure est rétrograde et presque conjoint au Soleil, donc vous voyez votre situation plus nettement qu’au cours des dernières semaines. C’est un bon jour pour repenser une décision personnelle, pas pour la précipiter. Une conversation avec un ami peut vous aider à mettre des mots dessus.\n\nVénus, rétrograde en Balance dans votre secteur du repos, forme un sextile exact à Jupiter : la bienveillance envers vous-même marche mieux que l’autocritique. Mars, l’une de vos planètes, voyage avec Jupiter en Lion dans votre secteur de carrière et nourrit votre ambition. Profitez de la Lune décroissante pour quitter un engagement de groupe qui vous épuise.",
+      "sagittaire": "Sagittaire, votre carrière et votre image publique sont au premier plan : la Lune passe la journée en Vierge, votre secteur des objectifs professionnels et de la réputation, et un travail soigné et fiable se remarque.\n\nLa Lune forme un sextile au Soleil et un sextile exact à Mercure en Scorpion, votre secteur du repos et des affaires cachées. Une idée que vous mûrissez en privé peut maintenant devenir un plan. Mercure est rétrograde et presque sur le Soleil, alors gardez certaines informations pour vous jusqu’à ce qu’elles soient prêtes.\n\nJupiter, votre planète, se trouve avec Mars en Lion et forme un sextile exact à Vénus rétrograde en Balance. Un ami, un groupe ou un ancien contact peut ouvrir une porte, surtout pour un voyage ou des études. Le trigone de Vénus au Nœud nord soutient le travail d’équipe. Avec la Lune décroissante, terminez une tâche professionnelle avant d’en accepter une autre.",
+      "capricorne": "Capricorne, la journée vous invite à élargir votre horizon : la Lune reste en Vierge, votre secteur des voyages, des études et des convictions, et apprendre quelque chose d’utile vous apporte une vraie satisfaction.\n\nLa Lune forme un sextile au Soleil et un sextile exact à Mercure rétrograde en Scorpion, votre secteur des amis et des réseaux. Un ancien contact peut se manifester, ou vous pouvez renouer avec quelqu’un qui vous a déjà bien conseillé. Mercure est presque conjoint au Soleil, ce qui montre quels engagements collectifs comptent encore.\n\nVénus, rétrograde en Balance dans votre secteur de carrière, forme un sextile exact à Jupiter : un ancien projet professionnel ou un ancien responsable peut revenir avec une bonne occasion. Mars et Jupiter en Lion touchent vos finances partagées, soyez prudent avec les dépenses communes. Saturne, votre planète, est rétrograde en Bélier et favorise la patience. Profitez de la Lune décroissante pour revoir vos plans des semaines à venir.",
+      "verseau": "Verseau, la journée fait remonter les sujets profonds et les ressources partagées : la Lune reste en Vierge, votre secteur des finances communes et de l’intimité, et une approche calme et précise vous aide.\n\nLa Lune forme un sextile au Soleil et un sextile exact à Mercure rétrograde en Scorpion, votre secteur de carrière. Une question de travail que vous pensiez réglée peut revenir, et vous pouvez maintenant la traiter avec plus de clarté. Mercure est presque sur le Soleil, alors soyez honnête sur ce que vous attendez de votre emploi.\n\nVénus, rétrograde en Balance, forme un sextile exact à Jupiter et un trigone au Nœud nord dans votre signe. Des études, un projet de voyage ou une philosophie laissés de côté peuvent vous attirer à nouveau. Mars et Jupiter en Lion, votre secteur des relations, rendent les autres directs et enthousiastes. La Lune décroissante est idéale pour rembourser une dette ou régler une facture commune.",
+      "poissons": "Poissons, les relations sont au cœur de votre journée : la Lune reste en Vierge, votre secteur des partenaires et des collaborations proches, et écouter attentivement compte plus qu’avoir raison.\n\nLa Lune forme un sextile au Soleil et un sextile exact à Mercure rétrograde en Scorpion, votre secteur des voyages et de l’apprentissage. Une formation, un voyage ou un projet à l’étranger qui avait calé peut être revu maintenant. Mercure est presque conjoint au Soleil, ce qui vous aide à comprendre une conviction ou un choix sous un nouvel angle.\n\nVénus, rétrograde en Balance dans votre secteur des ressources partagées, forme un sextile exact à Jupiter, l’une de vos planètes. Un ancien arrangement financier ou un remboursement peut revenir en votre faveur. Mars et Jupiter en Lion, votre secteur du travail, augmentent votre énergie pour les tâches quotidiennes. Avec la Lune décroissante, mettez fin à une habitude qui ne soutient plus votre santé."
+    }
+  }
+}
