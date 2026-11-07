@@ -1,0 +1,159 @@
+{
+  "date": "2026-11-06",
+  "sky": {
+    "date": "2026-11-06",
+    "computedAt": "08:00 Europe/Paris",
+    "phase": {
+      "id": "waningCrescent",
+      "illumination": 9,
+      "waxing": false
+    },
+    "bodies": [
+      {
+        "name": "Soleil",
+        "sign": "Scorpion",
+        "degree": 13,
+        "retrograde": false
+      },
+      {
+        "name": "Lune",
+        "sign": "Balance",
+        "degree": 8,
+        "retrograde": false
+      },
+      {
+        "name": "Mercure",
+        "sign": "Scorpion",
+        "degree": 10,
+        "retrograde": true
+      },
+      {
+        "name": "Vénus",
+        "sign": "Balance",
+        "degree": 24,
+        "retrograde": true
+      },
+      {
+        "name": "Mars",
+        "sign": "Lion",
+        "degree": 21,
+        "retrograde": false
+      },
+      {
+        "name": "Jupiter",
+        "sign": "Lion",
+        "degree": 24,
+        "retrograde": false
+      },
+      {
+        "name": "Saturne",
+        "sign": "Bélier",
+        "degree": 8,
+        "retrograde": true
+      },
+      {
+        "name": "Uranus",
+        "sign": "Gémeaux",
+        "degree": 4,
+        "retrograde": true
+      },
+      {
+        "name": "Neptune",
+        "sign": "Bélier",
+        "degree": 1,
+        "retrograde": true
+      },
+      {
+        "name": "Pluton",
+        "sign": "Verseau",
+        "degree": 3,
+        "retrograde": false
+      },
+      {
+        "name": "Nœud nord",
+        "sign": "Verseau",
+        "degree": 25,
+        "retrograde": true
+      }
+    ],
+    "ingresses": [],
+    "aspects": [
+      {
+        "a": "Lune",
+        "b": "Saturne",
+        "aspect": "opposition",
+        "orb": 0.1
+      },
+      {
+        "a": "Vénus",
+        "b": "Jupiter",
+        "aspect": "sextile",
+        "orb": 0.9
+      },
+      {
+        "a": "Vénus",
+        "b": "Nœud nord",
+        "aspect": "trine",
+        "orb": 1.7
+      },
+      {
+        "a": "Vénus",
+        "b": "Mars",
+        "aspect": "sextile",
+        "orb": 2.8
+      },
+      {
+        "a": "Mars",
+        "b": "Jupiter",
+        "aspect": "conjunction",
+        "orb": 3.7
+      },
+      {
+        "a": "Soleil",
+        "b": "Mercure",
+        "aspect": "conjunction",
+        "orb": 3.9
+      },
+      {
+        "a": "Mars",
+        "b": "Nœud nord",
+        "aspect": "opposition",
+        "orb": 4.6
+      }
+    ]
+  },
+  "en": {
+    "summary": "Friday 6 November 2026: the Moon stays in Libra all day near 8°, waning and about 9% lit, and forms an almost exact opposition to Saturn retrograde in Aries. Venus, retrograde in Libra, makes a sextile to Jupiter and Mars and a trine to the North Node. The Sun remains near Mercury, which is retrograde in Scorpio, while Mars stays conjunct Jupiter in Leo and opposite the North Node.",
+    "signs": {
+      "belier": "Aries, a serious talk with a partner clears the air: the Moon stays in Libra all day in your sector of partnerships, waning and about 9% lit, and it forms an almost exact opposition to Saturn retrograde in Aries in your sector of self and initiative.\n\nThat Moon–Saturn line asks for mature boundaries, patience and fewer empty promises. Venus, still retrograde in Libra, makes a sextile to Jupiter and Mars and a trine to the North Node, so kindness and a revisited approach can ease the seriousness without denying it. The Sun remains near retrograde Mercury in Scorpio, favouring honest but careful speech.\n\nMars, your ruler, still with Jupiter in Leo, gives courage after the hard talk if you stay fair. Mars opposite the North Node warns against forcing a group win. Use the thin waning Moon to finish a duty cleanly rather than launching something flashy.",
+      "taureau": "Taurus, duty at work meets a call for rest: the Moon stays in Libra all day in your sector of work and health, waning and about 9% lit, and it forms an almost exact opposition to Saturn retrograde in Aries in your sector of solitude and rest.\n\nThat Moon–Saturn line asks for mature boundaries, patience and fewer empty promises. Venus, still retrograde in Libra, makes a sextile to Jupiter and Mars and a trine to the North Node, so kindness and a revisited approach can ease the seriousness without denying it. The Sun remains near retrograde Mercury in Scorpio, favouring honest but careful speech.\n\nVenus, your ruler, retrograde in Libra and sextile Mars and Jupiter, softens duty when you revive a kinder method. Mars opposite the North Node warns against forcing a group win. Use the thin waning Moon to finish a duty cleanly rather than launching something flashy.",
+      "gemeaux": "Gemini, fun plans need a reality check: the Moon stays in Libra all day in your sector of joy and creativity, waning and about 9% lit, and it forms an almost exact opposition to Saturn retrograde in Aries in your sector of friends and networks.\n\nThat Moon–Saturn line asks for mature boundaries, patience and fewer empty promises. Venus, still retrograde in Libra, makes a sextile to Jupiter and Mars and a trine to the North Node, so kindness and a revisited approach can ease the seriousness without denying it. The Sun remains near retrograde Mercury in Scorpio, favouring honest but careful speech.\n\nMercury, your ruler, retrograde near the Sun in Scorpio, helps you rewrite plans with fewer illusions. Mars opposite the North Node warns against forcing a group win. Use the thin waning Moon to finish a duty cleanly rather than launching something flashy.",
+      "cancer": "Cancer, home feelings meet a public pressure: the Moon stays in Libra all day in your sector of home and family, waning and about 9% lit, and it forms an almost exact opposition to Saturn retrograde in Aries in your sector of career and status.\n\nThat Moon–Saturn line asks for mature boundaries, patience and fewer empty promises. Venus, still retrograde in Libra, makes a sextile to Jupiter and Mars and a trine to the North Node, so kindness and a revisited approach can ease the seriousness without denying it. The Sun remains near retrograde Mercury in Scorpio, favouring honest but careful speech.\n\nThe Moon, your ruler, opposite Saturn, asks for emotional maturity at home without shutting others out. Mars opposite the North Node warns against forcing a group win. Use the thin waning Moon to finish a duty cleanly rather than launching something flashy.",
+      "lion": "Leo, messages carry weight, so choose them well: the Moon stays in Libra all day in your sector of communication and siblings, waning and about 9% lit, and it forms an almost exact opposition to Saturn retrograde in Aries in your sector of study and beliefs.\n\nThat Moon–Saturn line asks for mature boundaries, patience and fewer empty promises. Venus, still retrograde in Libra, makes a sextile to Jupiter and Mars and a trine to the North Node, so kindness and a revisited approach can ease the seriousness without denying it. The Sun remains near retrograde Mercury in Scorpio, favouring honest but careful speech.\n\nMars and Jupiter in your sign boost confidence; Saturn opposite the Moon says skip the careless remark. Mars opposite the North Node warns against forcing a group win. Use the thin waning Moon to finish a duty cleanly rather than launching something flashy.",
+      "vierge": "Virgo, money talks ask for structure: the Moon stays in Libra all day in your sector of income and values, waning and about 9% lit, and it forms an almost exact opposition to Saturn retrograde in Aries in your sector of shared resources.\n\nThat Moon–Saturn line asks for mature boundaries, patience and fewer empty promises. Venus, still retrograde in Libra, makes a sextile to Jupiter and Mars and a trine to the North Node, so kindness and a revisited approach can ease the seriousness without denying it. The Sun remains near retrograde Mercury in Scorpio, favouring honest but careful speech.\n\nMercury, your ruler, retrograde conjunct the Sun in Scorpio, favours a second pass over accounts and shared papers. Mars opposite the North Node warns against forcing a group win. Use the thin waning Moon to finish a duty cleanly rather than launching something flashy.",
+      "balance": "Libra, personal limits become non-negotiable: the Moon stays in Libra all day in your sector of self and presence, waning and about 9% lit, and it forms an almost exact opposition to Saturn retrograde in Aries in your sector of partnerships.\n\nThat Moon–Saturn line asks for mature boundaries, patience and fewer empty promises. Venus, still retrograde in Libra, makes a sextile to Jupiter and Mars and a trine to the North Node, so kindness and a revisited approach can ease the seriousness without denying it. The Sun remains near retrograde Mercury in Scorpio, favouring honest but careful speech.\n\nVenus, your ruler, retrograde in your sign, helps you redefine fairness toward yourself while Saturn presses a partner topic. Mars opposite the North Node warns against forcing a group win. Use the thin waning Moon to finish a duty cleanly rather than launching something flashy.",
+      "scorpion": "Scorpio, quiet time confronts a daily obligation: the Moon stays in Libra all day in your sector of solitude and rest, waning and about 9% lit, and it forms an almost exact opposition to Saturn retrograde in Aries in your sector of work and habits.\n\nThat Moon–Saturn line asks for mature boundaries, patience and fewer empty promises. Venus, still retrograde in Libra, makes a sextile to Jupiter and Mars and a trine to the North Node, so kindness and a revisited approach can ease the seriousness without denying it. The Sun remains near retrograde Mercury in Scorpio, favouring honest but careful speech.\n\nMercury retrograde in your sign clarifies private priorities while Saturn highlights a work habit to reform. Mars opposite the North Node warns against forcing a group win. Use the thin waning Moon to finish a duty cleanly rather than launching something flashy.",
+      "sagittaire": "Sagittarius, a friend or group asks for mature honesty: the Moon stays in Libra all day in your sector of friends and goals, waning and about 9% lit, and it forms an almost exact opposition to Saturn retrograde in Aries in your sector of joy and creativity.\n\nThat Moon–Saturn line asks for mature boundaries, patience and fewer empty promises. Venus, still retrograde in Libra, makes a sextile to Jupiter and Mars and a trine to the North Node, so kindness and a revisited approach can ease the seriousness without denying it. The Sun remains near retrograde Mercury in Scorpio, favouring honest but careful speech.\n\nJupiter, your ruler, with Mars in Leo and sextile Venus, keeps optimism alive if you accept one sober limit. Mars opposite the North Node warns against forcing a group win. Use the thin waning Moon to finish a duty cleanly rather than launching something flashy.",
+      "capricorne": "Capricorn, career ambition meets emotional honesty: the Moon stays in Libra all day in your sector of career and reputation, waning and about 9% lit, and it forms an almost exact opposition to Saturn retrograde in Aries in your sector of home and family.\n\nThat Moon–Saturn line asks for mature boundaries, patience and fewer empty promises. Venus, still retrograde in Libra, makes a sextile to Jupiter and Mars and a trine to the North Node, so kindness and a revisited approach can ease the seriousness without denying it. The Sun remains near retrograde Mercury in Scorpio, favouring honest but careful speech.\n\nSaturn, your ruler, retrograde in Aries and opposite the Moon, is exact today: patience at home protects your public progress. Mars opposite the North Node warns against forcing a group win. Use the thin waning Moon to finish a duty cleanly rather than launching something flashy.",
+      "verseau": "Aquarius, a study plan faces a practical test: the Moon stays in Libra all day in your sector of study and travel, waning and about 9% lit, and it forms an almost exact opposition to Saturn retrograde in Aries in your sector of communication.\n\nThat Moon–Saturn line asks for mature boundaries, patience and fewer empty promises. Venus, still retrograde in Libra, makes a sextile to Jupiter and Mars and a trine to the North Node, so kindness and a revisited approach can ease the seriousness without denying it. The Sun remains near retrograde Mercury in Scorpio, favouring honest but careful speech.\n\nUranus retrograde in Gemini favours an unusual study fix when Saturn asks you to prove the plan works. Mars opposite the North Node warns against forcing a group win. Use the thin waning Moon to finish a duty cleanly rather than launching something flashy.",
+      "poissons": "Pisces, shared money needs firm boundaries: the Moon stays in Libra all day in your sector of shared resources and intimacy, waning and about 9% lit, and it forms an almost exact opposition to Saturn retrograde in Aries in your sector of income and values.\n\nThat Moon–Saturn line asks for mature boundaries, patience and fewer empty promises. Venus, still retrograde in Libra, makes a sextile to Jupiter and Mars and a trine to the North Node, so kindness and a revisited approach can ease the seriousness without denying it. The Sun remains near retrograde Mercury in Scorpio, favouring honest but careful speech.\n\nNeptune retrograde in Aries asks you to check a dream against Saturn’s sober line on shared money. Mars opposite the North Node warns against forcing a group win. Use the thin waning Moon to finish a duty cleanly rather than launching something flashy."
+    }
+  },
+  "fr": {
+    "summary": "Vendredi 6 novembre 2026 : la Lune reste en Balance toute la journée vers 8°, décroissante et éclairée à 9 % environ, et forme une opposition presque exacte à Saturne rétrograde en Bélier. Vénus, rétrograde en Balance, forme un sextile à Jupiter et à Mars ainsi qu’un trigone au Nœud nord. Le Soleil reste près de Mercure, rétrograde en Scorpion, tandis que Mars reste conjoint à Jupiter en Lion et opposé au Nœud nord.",
+    "signs": {
+      "belier": "Bélier, une discussion sérieuse avec un partenaire clarifie l’air : la Lune reste en Balance toute la journée dans votre secteur de partenariats, décroissante et éclairée à 9 % environ, et elle forme une opposition presque exacte à Saturne rétrograde en Bélier dans votre secteur de soi et l’initiative.\n\nCette ligne Lune–Saturne demande des limites matures, de la patience et moins de promesses vides. Vénus, encore rétrograde en Balance, forme un sextile à Jupiter et à Mars ainsi qu’un trigone au Nœud nord, si bien que la bienveillance et une approche revisitée peuvent adoucir le sérieux sans le nier. Le Soleil reste près de Mercure rétrograde en Scorpion, ce qui favorise une parole honnête mais prudente.\n\nMars, votre planète, encore avec Jupiter en Lion, donne du courage après la discussion difficile si vous restez juste. Mars opposé au Nœud nord met en garde contre une victoire de groupe forcée. Profitez de la Lune fine pour terminer proprement un devoir plutôt que de lancer quelque chose de tape-à-l’œil.",
+      "taureau": "Taureau, le devoir au travail rencontre un appel au repos : la Lune reste en Balance toute la journée dans votre secteur de travail et santé, décroissante et éclairée à 9 % environ, et elle forme une opposition presque exacte à Saturne rétrograde en Bélier dans votre secteur de solitude et repos.\n\nCette ligne Lune–Saturne demande des limites matures, de la patience et moins de promesses vides. Vénus, encore rétrograde en Balance, forme un sextile à Jupiter et à Mars ainsi qu’un trigone au Nœud nord, si bien que la bienveillance et une approche revisitée peuvent adoucir le sérieux sans le nier. Le Soleil reste près de Mercure rétrograde en Scorpion, ce qui favorise une parole honnête mais prudente.\n\nVénus, votre planète, rétrograde en Balance et en sextile à Mars et Jupiter, adoucit le devoir quand vous revivez une méthode plus douce. Mars opposé au Nœud nord met en garde contre une victoire de groupe forcée. Profitez de la Lune fine pour terminer proprement un devoir plutôt que de lancer quelque chose de tape-à-l’œil.",
+      "gemeaux": "Gémeaux, les projets de plaisir demandent un retour au réel : la Lune reste en Balance toute la journée dans votre secteur de joie et créativité, décroissante et éclairée à 9 % environ, et elle forme une opposition presque exacte à Saturne rétrograde en Bélier dans votre secteur de amis et réseaux.\n\nCette ligne Lune–Saturne demande des limites matures, de la patience et moins de promesses vides. Vénus, encore rétrograde en Balance, forme un sextile à Jupiter et à Mars ainsi qu’un trigone au Nœud nord, si bien que la bienveillance et une approche revisitée peuvent adoucir le sérieux sans le nier. Le Soleil reste près de Mercure rétrograde en Scorpion, ce qui favorise une parole honnête mais prudente.\n\nMercure, votre planète, rétrograde près du Soleil en Scorpion, aide à réécrire les plans avec moins d’illusions. Mars opposé au Nœud nord met en garde contre une victoire de groupe forcée. Profitez de la Lune fine pour terminer proprement un devoir plutôt que de lancer quelque chose de tape-à-l’œil.",
+      "cancer": "Cancer, les émotions du foyer rencontrent une pression publique : la Lune reste en Balance toute la journée dans votre secteur de foyer et famille, décroissante et éclairée à 9 % environ, et elle forme une opposition presque exacte à Saturne rétrograde en Bélier dans votre secteur de carrière et statut.\n\nCette ligne Lune–Saturne demande des limites matures, de la patience et moins de promesses vides. Vénus, encore rétrograde en Balance, forme un sextile à Jupiter et à Mars ainsi qu’un trigone au Nœud nord, si bien que la bienveillance et une approche revisitée peuvent adoucir le sérieux sans le nier. Le Soleil reste près de Mercure rétrograde en Scorpion, ce qui favorise une parole honnête mais prudente.\n\nLa Lune, votre planète, opposée à Saturne, demande une maturité émotionnelle à la maison sans fermer la porte aux autres. Mars opposé au Nœud nord met en garde contre une victoire de groupe forcée. Profitez de la Lune fine pour terminer proprement un devoir plutôt que de lancer quelque chose de tape-à-l’œil.",
+      "lion": "Lion, les messages portent du poids, choisissez-les bien : la Lune reste en Balance toute la journée dans votre secteur de communication et fratrie, décroissante et éclairée à 9 % environ, et elle forme une opposition presque exacte à Saturne rétrograde en Bélier dans votre secteur de études et convictions.\n\nCette ligne Lune–Saturne demande des limites matures, de la patience et moins de promesses vides. Vénus, encore rétrograde en Balance, forme un sextile à Jupiter et à Mars ainsi qu’un trigone au Nœud nord, si bien que la bienveillance et une approche revisitée peuvent adoucir le sérieux sans le nier. Le Soleil reste près de Mercure rétrograde en Scorpion, ce qui favorise une parole honnête mais prudente.\n\nMars et Jupiter dans votre signe boostent la confiance ; Saturne opposé à la Lune dit d’éviter la remarque négligente. Mars opposé au Nœud nord met en garde contre une victoire de groupe forcée. Profitez de la Lune fine pour terminer proprement un devoir plutôt que de lancer quelque chose de tape-à-l’œil.",
+      "vierge": "Vierge, les discussions d’argent demandent de la structure : la Lune reste en Balance toute la journée dans votre secteur de revenus et valeurs, décroissante et éclairée à 9 % environ, et elle forme une opposition presque exacte à Saturne rétrograde en Bélier dans votre secteur de ressources partagées.\n\nCette ligne Lune–Saturne demande des limites matures, de la patience et moins de promesses vides. Vénus, encore rétrograde en Balance, forme un sextile à Jupiter et à Mars ainsi qu’un trigone au Nœud nord, si bien que la bienveillance et une approche revisitée peuvent adoucir le sérieux sans le nier. Le Soleil reste près de Mercure rétrograde en Scorpion, ce qui favorise une parole honnête mais prudente.\n\nMercure, votre planète, rétrograde conjoint au Soleil en Scorpion, favorise une seconde passe sur les comptes et papiers partagés. Mars opposé au Nœud nord met en garde contre une victoire de groupe forcée. Profitez de la Lune fine pour terminer proprement un devoir plutôt que de lancer quelque chose de tape-à-l’œil.",
+      "balance": "Balance, les limites personnelles deviennent non négociables : la Lune reste en Balance toute la journée dans votre secteur de soi et présence, décroissante et éclairée à 9 % environ, et elle forme une opposition presque exacte à Saturne rétrograde en Bélier dans votre secteur de partenariats.\n\nCette ligne Lune–Saturne demande des limites matures, de la patience et moins de promesses vides. Vénus, encore rétrograde en Balance, forme un sextile à Jupiter et à Mars ainsi qu’un trigone au Nœud nord, si bien que la bienveillance et une approche revisitée peuvent adoucir le sérieux sans le nier. Le Soleil reste près de Mercure rétrograde en Scorpion, ce qui favorise une parole honnête mais prudente.\n\nVénus, votre planète, rétrograde dans votre signe, aide à redéfinir l’équité envers vous-même tandis que Saturne presse un sujet de partenaire. Mars opposé au Nœud nord met en garde contre une victoire de groupe forcée. Profitez de la Lune fine pour terminer proprement un devoir plutôt que de lancer quelque chose de tape-à-l’œil.",
+      "scorpion": "Scorpion, le calme confronte une obligation quotidienne : la Lune reste en Balance toute la journée dans votre secteur de solitude et repos, décroissante et éclairée à 9 % environ, et elle forme une opposition presque exacte à Saturne rétrograde en Bélier dans votre secteur de travail et habitudes.\n\nCette ligne Lune–Saturne demande des limites matures, de la patience et moins de promesses vides. Vénus, encore rétrograde en Balance, forme un sextile à Jupiter et à Mars ainsi qu’un trigone au Nœud nord, si bien que la bienveillance et une approche revisitée peuvent adoucir le sérieux sans le nier. Le Soleil reste près de Mercure rétrograde en Scorpion, ce qui favorise une parole honnête mais prudente.\n\nMercure rétrograde dans votre signe clarifie les priorités privées tandis que Saturne met en lumière une habitude de travail à réformer. Mars opposé au Nœud nord met en garde contre une victoire de groupe forcée. Profitez de la Lune fine pour terminer proprement un devoir plutôt que de lancer quelque chose de tape-à-l’œil.",
+      "sagittaire": "Sagittaire, un ami ou un groupe demande une honnêteté mature : la Lune reste en Balance toute la journée dans votre secteur de amis et objectifs, décroissante et éclairée à 9 % environ, et elle forme une opposition presque exacte à Saturne rétrograde en Bélier dans votre secteur de joie et créativité.\n\nCette ligne Lune–Saturne demande des limites matures, de la patience et moins de promesses vides. Vénus, encore rétrograde en Balance, forme un sextile à Jupiter et à Mars ainsi qu’un trigone au Nœud nord, si bien que la bienveillance et une approche revisitée peuvent adoucir le sérieux sans le nier. Le Soleil reste près de Mercure rétrograde en Scorpion, ce qui favorise une parole honnête mais prudente.\n\nJupiter, votre planète, avec Mars en Lion et en sextile à Vénus, garde l’optimisme si vous acceptez une limite sobre. Mars opposé au Nœud nord met en garde contre une victoire de groupe forcée. Profitez de la Lune fine pour terminer proprement un devoir plutôt que de lancer quelque chose de tape-à-l’œil.",
+      "capricorne": "Capricorne, l’ambition professionnelle rencontre l’honnêteté émotionnelle : la Lune reste en Balance toute la journée dans votre secteur de carrière et réputation, décroissante et éclairée à 9 % environ, et elle forme une opposition presque exacte à Saturne rétrograde en Bélier dans votre secteur de foyer et famille.\n\nCette ligne Lune–Saturne demande des limites matures, de la patience et moins de promesses vides. Vénus, encore rétrograde en Balance, forme un sextile à Jupiter et à Mars ainsi qu’un trigone au Nœud nord, si bien que la bienveillance et une approche revisitée peuvent adoucir le sérieux sans le nier. Le Soleil reste près de Mercure rétrograde en Scorpion, ce qui favorise une parole honnête mais prudente.\n\nSaturne, votre planète, rétrograde en Bélier et opposé à la Lune, est exact aujourd’hui : la patience à la maison protège vos avancées publiques. Mars opposé au Nœud nord met en garde contre une victoire de groupe forcée. Profitez de la Lune fine pour terminer proprement un devoir plutôt que de lancer quelque chose de tape-à-l’œil.",
+      "verseau": "Verseau, un plan d’études affronte un test pratique : la Lune reste en Balance toute la journée dans votre secteur de études et voyages, décroissante et éclairée à 9 % environ, et elle forme une opposition presque exacte à Saturne rétrograde en Bélier dans votre secteur de communication.\n\nCette ligne Lune–Saturne demande des limites matures, de la patience et moins de promesses vides. Vénus, encore rétrograde en Balance, forme un sextile à Jupiter et à Mars ainsi qu’un trigone au Nœud nord, si bien que la bienveillance et une approche revisitée peuvent adoucir le sérieux sans le nier. Le Soleil reste près de Mercure rétrograde en Scorpion, ce qui favorise une parole honnête mais prudente.\n\nUranus rétrograde en Gémeaux favorise une solution d’études inhabituelle quand Saturne demande de prouver que le plan marche. Mars opposé au Nœud nord met en garde contre une victoire de groupe forcée. Profitez de la Lune fine pour terminer proprement un devoir plutôt que de lancer quelque chose de tape-à-l’œil.",
+      "poissons": "Poissons, l’argent partagé a besoin de limites fermes : la Lune reste en Balance toute la journée dans votre secteur de ressources partagées et intimité, décroissante et éclairée à 9 % environ, et elle forme une opposition presque exacte à Saturne rétrograde en Bélier dans votre secteur de revenus et valeurs.\n\nCette ligne Lune–Saturne demande des limites matures, de la patience et moins de promesses vides. Vénus, encore rétrograde en Balance, forme un sextile à Jupiter et à Mars ainsi qu’un trigone au Nœud nord, si bien que la bienveillance et une approche revisitée peuvent adoucir le sérieux sans le nier. Le Soleil reste près de Mercure rétrograde en Scorpion, ce qui favorise une parole honnête mais prudente.\n\nNeptune rétrograde en Bélier vous demande de vérifier un rêve face à la ligne sobre de Saturne sur l’argent partagé. Mars opposé au Nœud nord met en garde contre une victoire de groupe forcée. Profitez de la Lune fine pour terminer proprement un devoir plutôt que de lancer quelque chose de tape-à-l’œil."
+    }
+  }
+}

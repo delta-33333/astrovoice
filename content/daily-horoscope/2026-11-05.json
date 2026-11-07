@@ -1,0 +1,147 @@
+{
+  "date": "2026-11-05",
+  "sky": {
+    "date": "2026-11-05",
+    "computedAt": "08:00 Europe/Paris",
+    "phase": {
+      "id": "waningCrescent",
+      "illumination": 16,
+      "waxing": false
+    },
+    "bodies": [
+      {
+        "name": "Soleil",
+        "sign": "Scorpion",
+        "degree": 12,
+        "retrograde": false
+      },
+      {
+        "name": "Lune",
+        "sign": "Vierge",
+        "degree": 25,
+        "retrograde": false
+      },
+      {
+        "name": "Mercure",
+        "sign": "Scorpion",
+        "degree": 11,
+        "retrograde": true
+      },
+      {
+        "name": "Vénus",
+        "sign": "Balance",
+        "degree": 24,
+        "retrograde": true
+      },
+      {
+        "name": "Mars",
+        "sign": "Lion",
+        "degree": 20,
+        "retrograde": false
+      },
+      {
+        "name": "Jupiter",
+        "sign": "Lion",
+        "degree": 24,
+        "retrograde": false
+      },
+      {
+        "name": "Saturne",
+        "sign": "Bélier",
+        "degree": 9,
+        "retrograde": true
+      },
+      {
+        "name": "Uranus",
+        "sign": "Gémeaux",
+        "degree": 4,
+        "retrograde": true
+      },
+      {
+        "name": "Neptune",
+        "sign": "Bélier",
+        "degree": 1,
+        "retrograde": true
+      },
+      {
+        "name": "Pluton",
+        "sign": "Verseau",
+        "degree": 3,
+        "retrograde": false
+      },
+      {
+        "name": "Nœud nord",
+        "sign": "Verseau",
+        "degree": 25,
+        "retrograde": true
+      }
+    ],
+    "ingresses": [
+      {
+        "name": "Lune",
+        "from": "Vierge",
+        "to": "Balance"
+      }
+    ],
+    "aspects": [
+      {
+        "a": "Vénus",
+        "b": "Jupiter",
+        "aspect": "sextile",
+        "orb": 0.4
+      },
+      {
+        "a": "Vénus",
+        "b": "Nœud nord",
+        "aspect": "trine",
+        "orb": 1.4
+      },
+      {
+        "a": "Soleil",
+        "b": "Mercure",
+        "aspect": "conjunction",
+        "orb": 1.6
+      },
+      {
+        "a": "Mars",
+        "b": "Jupiter",
+        "aspect": "conjunction",
+        "orb": 4.1
+      }
+    ]
+  },
+  "en": {
+    "summary": "Thursday 5 November 2026: the Moon spends the morning in Virgo near 25°, waning and about 16% lit, then enters Libra later in the day. Venus, retrograde in Libra, makes a near-exact sextile to Jupiter and a trine to the North Node. The Sun and Mercury, which is retrograde in Scorpio, sit almost conjunct, while Mars and Jupiter remain together in Leo.",
+    "signs": {
+      "belier": "Aries, finishing practical tasks brings relief: the Moon is still in Virgo this morning in your sector of work, health and habits, waning and about 16% lit, then enters Libra later and shifts focus toward partnerships.\n\nVenus, retrograde in Libra, makes a near-exact sextile to Jupiter and a trine to the North Node, which helps an old contact, method or hope return in a useful form. The Sun and retrograde Mercury sit almost conjunct in Scorpio, so honesty about a deep or financial matter comes more easily if you speak slowly.\n\nMars, your ruler, still conjunct Jupiter in Leo, keeps creative drive high if you finish before you start. Mars and Jupiter remain together in Leo, keeping enthusiasm high. With the waning Moon, complete what is half done before you open a brand-new file after the Libra ingress.",
+      "taureau": "Taurus, simple creative pleasure steadies you: the Moon is still in Virgo this morning in your sector of joy and self-expression, waning and about 16% lit, then enters Libra later and shifts focus toward work and habits.\n\nVenus, retrograde in Libra, makes a near-exact sextile to Jupiter and a trine to the North Node, which helps an old contact, method or hope return in a useful form. The Sun and retrograde Mercury sit almost conjunct in Scorpio, so honesty about a deep or financial matter comes more easily if you speak slowly.\n\nVenus, your ruler, retrograde in Libra and sextile Jupiter, softens a partnership talk when you reopen an old method. Mars and Jupiter remain together in Leo, keeping enthusiasm high. With the waning Moon, complete what is half done before you open a brand-new file after the Libra ingress.",
+      "gemeaux": "Gemini, home repairs and quiet evenings help: the Moon is still in Virgo this morning in your sector of home and private life, waning and about 16% lit, then enters Libra later and shifts focus toward joy and creativity.\n\nVenus, retrograde in Libra, makes a near-exact sextile to Jupiter and a trine to the North Node, which helps an old contact, method or hope return in a useful form. The Sun and retrograde Mercury sit almost conjunct in Scorpio, so honesty about a deep or financial matter comes more easily if you speak slowly.\n\nMercury, your ruler, retrograde and almost conjunct the Sun in Scorpio, helps you complete a postponed work or health task. Mars and Jupiter remain together in Leo, keeping enthusiasm high. With the waning Moon, complete what is half done before you open a brand-new file after the Libra ingress.",
+      "cancer": "Cancer, clear messages cut through the fog: the Moon is still in Virgo this morning in your sector of communication and neighbourhood, waning and about 16% lit, then enters Libra later and shifts focus toward home and family.\n\nVenus, retrograde in Libra, makes a near-exact sextile to Jupiter and a trine to the North Node, which helps an old contact, method or hope return in a useful form. The Sun and retrograde Mercury sit almost conjunct in Scorpio, so honesty about a deep or financial matter comes more easily if you speak slowly.\n\nThe Moon, your ruler, still in Virgo this morning, favours practical errands and honest short messages. Mars and Jupiter remain together in Leo, keeping enthusiasm high. With the waning Moon, complete what is half done before you open a brand-new file after the Libra ingress.",
+      "lion": "Leo, a careful look at money pays off: the Moon is still in Virgo this morning in your sector of income and resources, waning and about 16% lit, then enters Libra later and shifts focus toward communication.\n\nVenus, retrograde in Libra, makes a near-exact sextile to Jupiter and a trine to the North Node, which helps an old contact, method or hope return in a useful form. The Sun and retrograde Mercury sit almost conjunct in Scorpio, so honesty about a deep or financial matter comes more easily if you speak slowly.\n\nThe Sun's companion Mars travels with Jupiter in your sign, so confidence rises when you trim waste rather than spend more. Mars and Jupiter remain together in Leo, keeping enthusiasm high. With the waning Moon, complete what is half done before you open a brand-new file after the Libra ingress.",
+      "vierge": "Virgo, your needs deserve centre stage: the Moon is still in Virgo this morning in your sector of self and presence, waning and about 16% lit, then enters Libra later and shifts focus toward income and values.\n\nVenus, retrograde in Libra, makes a near-exact sextile to Jupiter and a trine to the North Node, which helps an old contact, method or hope return in a useful form. The Sun and retrograde Mercury sit almost conjunct in Scorpio, so honesty about a deep or financial matter comes more easily if you speak slowly.\n\nMercury, your ruler, retrograde in Scorpio near the Sun, lets you say plainly what you have been thinking for days. Mars and Jupiter remain together in Leo, keeping enthusiasm high. With the waning Moon, complete what is half done before you open a brand-new file after the Libra ingress.",
+      "balance": "Libra, rest behind the scenes restores you: the Moon is still in Virgo this morning in your sector of solitude and inner life, waning and about 16% lit, then enters Libra later and shifts focus toward self and presence.\n\nVenus, retrograde in Libra, makes a near-exact sextile to Jupiter and a trine to the North Node, which helps an old contact, method or hope return in a useful form. The Sun and retrograde Mercury sit almost conjunct in Scorpio, so honesty about a deep or financial matter comes more easily if you speak slowly.\n\nVenus, your ruler, retrograde in your sign and trine the North Node, brings past hopes back in a kinder form. Mars and Jupiter remain together in Leo, keeping enthusiasm high. With the waning Moon, complete what is half done before you open a brand-new file after the Libra ingress.",
+      "scorpion": "Scorpio, a trusted friend clarifies the path: the Moon is still in Virgo this morning in your sector of friends and future goals, waning and about 16% lit, then enters Libra later and shifts focus toward solitude and rest.\n\nVenus, retrograde in Libra, makes a near-exact sextile to Jupiter and a trine to the North Node, which helps an old contact, method or hope return in a useful form. The Sun and retrograde Mercury sit almost conjunct in Scorpio, so honesty about a deep or financial matter comes more easily if you speak slowly.\n\nMercury retrograde in your sign beside the Sun clarifies a personal decision without forcing an instant answer. Mars and Jupiter remain together in Leo, keeping enthusiasm high. With the waning Moon, complete what is half done before you open a brand-new file after the Libra ingress.",
+      "sagittaire": "Sagittarius, reliable work gets noticed: the Moon is still in Virgo this morning in your sector of career and reputation, waning and about 16% lit, then enters Libra later and shifts focus toward friends and networks.\n\nVenus, retrograde in Libra, makes a near-exact sextile to Jupiter and a trine to the North Node, which helps an old contact, method or hope return in a useful form. The Sun and retrograde Mercury sit almost conjunct in Scorpio, so honesty about a deep or financial matter comes more easily if you speak slowly.\n\nJupiter, your ruler, with Mars in Leo and sextile Venus, opens a door through a friend or former contact. Mars and Jupiter remain together in Leo, keeping enthusiasm high. With the waning Moon, complete what is half done before you open a brand-new file after the Libra ingress.",
+      "capricorne": "Capricorn, useful learning widens your view: the Moon is still in Virgo this morning in your sector of travel, study and beliefs, waning and about 16% lit, then enters Libra later and shifts focus toward career and status.\n\nVenus, retrograde in Libra, makes a near-exact sextile to Jupiter and a trine to the North Node, which helps an old contact, method or hope return in a useful form. The Sun and retrograde Mercury sit almost conjunct in Scorpio, so honesty about a deep or financial matter comes more easily if you speak slowly.\n\nSaturn, your ruler, retrograde in Aries, rewards patience with a study or travel plan that needs one more check. Mars and Jupiter remain together in Leo, keeping enthusiasm high. With the waning Moon, complete what is half done before you open a brand-new file after the Libra ingress.",
+      "verseau": "Aquarius, shared money talks need calm detail: the Moon is still in Virgo this morning in your sector of shared finances and intimacy, waning and about 16% lit, then enters Libra later and shifts focus toward study and travel.\n\nVenus, retrograde in Libra, makes a near-exact sextile to Jupiter and a trine to the North Node, which helps an old contact, method or hope return in a useful form. The Sun and retrograde Mercury sit almost conjunct in Scorpio, so honesty about a deep or financial matter comes more easily if you speak slowly.\n\nThe North Node in your sign, trine Venus, supports revisiting a belief or course you once dropped. Mars and Jupiter remain together in Leo, keeping enthusiasm high. With the waning Moon, complete what is half done before you open a brand-new file after the Libra ingress.",
+      "poissons": "Pisces, listening beats winning the argument: the Moon is still in Virgo this morning in your sector of partners and close collaboration, waning and about 16% lit, then enters Libra later and shifts focus toward shared resources.\n\nVenus, retrograde in Libra, makes a near-exact sextile to Jupiter and a trine to the North Node, which helps an old contact, method or hope return in a useful form. The Sun and retrograde Mercury sit almost conjunct in Scorpio, so honesty about a deep or financial matter comes more easily if you speak slowly.\n\nJupiter, one of your rulers, with Mars in Leo, lifts daily work energy when you listen first in partnership. Mars and Jupiter remain together in Leo, keeping enthusiasm high. With the waning Moon, complete what is half done before you open a brand-new file after the Libra ingress."
+    }
+  },
+  "fr": {
+    "summary": "Jeudi 5 novembre 2026 : la Lune passe la matinée en Vierge vers 25°, décroissante et éclairée à 16 % environ, puis entre en Balance plus tard dans la journée. Vénus, rétrograde en Balance, forme un sextile quasi exact à Jupiter et un trigone au Nœud nord. Le Soleil et Mercure, rétrograde en Scorpion, sont presque conjoints, tandis que Mars et Jupiter restent ensemble en Lion.",
+    "signs": {
+      "belier": "Bélier, finir des tâches concrètes apporte du soulagement : la Lune est encore en Vierge ce matin dans votre secteur de travail, santé et habitudes, décroissante et éclairée à 16 % environ, puis entre en Balance plus tard et oriente l’attention vers partenariats.\n\nVénus, rétrograde en Balance, forme un sextile quasi exact à Jupiter et un trigone au Nœud nord, ce qui aide un ancien contact, une méthode ou un espoir à revenir sous une forme utile. Le Soleil et Mercure rétrograde sont presque conjoints en Scorpion, donc l’honnêteté sur un sujet profond ou financier vient plus facilement si vous parlez lentement.\n\nMars, votre planète, encore conjoint à Jupiter en Lion, garde l’élan créatif haut si vous finissez avant de commencer. Mars et Jupiter restent ensemble en Lion et gardent l’enthousiasme haut. Avec la Lune décroissante, terminez ce qui est à moitié fait avant d’ouvrir un tout nouveau dossier après l’entrée en Balance.",
+      "taureau": "Taureau, un plaisir créatif simple vous stabilise : la Lune est encore en Vierge ce matin dans votre secteur de joie et expression personnelle, décroissante et éclairée à 16 % environ, puis entre en Balance plus tard et oriente l’attention vers travail et habitudes.\n\nVénus, rétrograde en Balance, forme un sextile quasi exact à Jupiter et un trigone au Nœud nord, ce qui aide un ancien contact, une méthode ou un espoir à revenir sous une forme utile. Le Soleil et Mercure rétrograde sont presque conjoints en Scorpion, donc l’honnêteté sur un sujet profond ou financier vient plus facilement si vous parlez lentement.\n\nVénus, votre planète, rétrograde en Balance et en sextile à Jupiter, adoucit une discussion de partenariat quand vous rouvrez une ancienne méthode. Mars et Jupiter restent ensemble en Lion et gardent l’enthousiasme haut. Avec la Lune décroissante, terminez ce qui est à moitié fait avant d’ouvrir un tout nouveau dossier après l’entrée en Balance.",
+      "gemeaux": "Gémeaux, les réparations et les soirées calmes aident : la Lune est encore en Vierge ce matin dans votre secteur de foyer et vie privée, décroissante et éclairée à 16 % environ, puis entre en Balance plus tard et oriente l’attention vers joie et créativité.\n\nVénus, rétrograde en Balance, forme un sextile quasi exact à Jupiter et un trigone au Nœud nord, ce qui aide un ancien contact, une méthode ou un espoir à revenir sous une forme utile. Le Soleil et Mercure rétrograde sont presque conjoints en Scorpion, donc l’honnêteté sur un sujet profond ou financier vient plus facilement si vous parlez lentement.\n\nMercure, votre planète, rétrograde et presque conjoint au Soleil en Scorpion, aide à terminer une tâche de travail ou de santé reportée. Mars et Jupiter restent ensemble en Lion et gardent l’enthousiasme haut. Avec la Lune décroissante, terminez ce qui est à moitié fait avant d’ouvrir un tout nouveau dossier après l’entrée en Balance.",
+      "cancer": "Cancer, des messages clairs percent le brouillard : la Lune est encore en Vierge ce matin dans votre secteur de communication et voisinage, décroissante et éclairée à 16 % environ, puis entre en Balance plus tard et oriente l’attention vers foyer et famille.\n\nVénus, rétrograde en Balance, forme un sextile quasi exact à Jupiter et un trigone au Nœud nord, ce qui aide un ancien contact, une méthode ou un espoir à revenir sous une forme utile. Le Soleil et Mercure rétrograde sont presque conjoints en Scorpion, donc l’honnêteté sur un sujet profond ou financier vient plus facilement si vous parlez lentement.\n\nLa Lune, votre planète, encore en Vierge ce matin, favorise les petites démarches et les messages courts et honnêtes. Mars et Jupiter restent ensemble en Lion et gardent l’enthousiasme haut. Avec la Lune décroissante, terminez ce qui est à moitié fait avant d’ouvrir un tout nouveau dossier après l’entrée en Balance.",
+      "lion": "Lion, un regard soigneux sur l’argent paie : la Lune est encore en Vierge ce matin dans votre secteur de revenus et ressources, décroissante et éclairée à 16 % environ, puis entre en Balance plus tard et oriente l’attention vers communication.\n\nVénus, rétrograde en Balance, forme un sextile quasi exact à Jupiter et un trigone au Nœud nord, ce qui aide un ancien contact, une méthode ou un espoir à revenir sous une forme utile. Le Soleil et Mercure rétrograde sont presque conjoints en Scorpion, donc l’honnêteté sur un sujet profond ou financier vient plus facilement si vous parlez lentement.\n\nMars, compagnon du Soleil, voyage avec Jupiter dans votre signe : la confiance monte quand vous coupez le gaspillage plutôt que dépenser plus. Mars et Jupiter restent ensemble en Lion et gardent l’enthousiasme haut. Avec la Lune décroissante, terminez ce qui est à moitié fait avant d’ouvrir un tout nouveau dossier après l’entrée en Balance.",
+      "vierge": "Vierge, vos besoins méritent le centre de la scène : la Lune est encore en Vierge ce matin dans votre secteur de soi et présence, décroissante et éclairée à 16 % environ, puis entre en Balance plus tard et oriente l’attention vers revenus et valeurs.\n\nVénus, rétrograde en Balance, forme un sextile quasi exact à Jupiter et un trigone au Nœud nord, ce qui aide un ancien contact, une méthode ou un espoir à revenir sous une forme utile. Le Soleil et Mercure rétrograde sont presque conjoints en Scorpion, donc l’honnêteté sur un sujet profond ou financier vient plus facilement si vous parlez lentement.\n\nMercure, votre planète, rétrograde en Scorpion près du Soleil, vous laisse dire clairement ce que vous pensez depuis des jours. Mars et Jupiter restent ensemble en Lion et gardent l’enthousiasme haut. Avec la Lune décroissante, terminez ce qui est à moitié fait avant d’ouvrir un tout nouveau dossier après l’entrée en Balance.",
+      "balance": "Balance, le repos en coulisses vous restaure : la Lune est encore en Vierge ce matin dans votre secteur de solitude et vie intérieure, décroissante et éclairée à 16 % environ, puis entre en Balance plus tard et oriente l’attention vers soi et présence.\n\nVénus, rétrograde en Balance, forme un sextile quasi exact à Jupiter et un trigone au Nœud nord, ce qui aide un ancien contact, une méthode ou un espoir à revenir sous une forme utile. Le Soleil et Mercure rétrograde sont presque conjoints en Scorpion, donc l’honnêteté sur un sujet profond ou financier vient plus facilement si vous parlez lentement.\n\nVénus, votre planète, rétrograde dans votre signe et en trigone au Nœud nord, ramène d’anciens espoirs sous une forme plus douce. Mars et Jupiter restent ensemble en Lion et gardent l’enthousiasme haut. Avec la Lune décroissante, terminez ce qui est à moitié fait avant d’ouvrir un tout nouveau dossier après l’entrée en Balance.",
+      "scorpion": "Scorpion, un ami de confiance clarifie le chemin : la Lune est encore en Vierge ce matin dans votre secteur de amis et objectifs, décroissante et éclairée à 16 % environ, puis entre en Balance plus tard et oriente l’attention vers solitude et repos.\n\nVénus, rétrograde en Balance, forme un sextile quasi exact à Jupiter et un trigone au Nœud nord, ce qui aide un ancien contact, une méthode ou un espoir à revenir sous une forme utile. Le Soleil et Mercure rétrograde sont presque conjoints en Scorpion, donc l’honnêteté sur un sujet profond ou financier vient plus facilement si vous parlez lentement.\n\nMercure rétrograde dans votre signe auprès du Soleil clarifie une décision personnelle sans forcer une réponse instantanée. Mars et Jupiter restent ensemble en Lion et gardent l’enthousiasme haut. Avec la Lune décroissante, terminez ce qui est à moitié fait avant d’ouvrir un tout nouveau dossier après l’entrée en Balance.",
+      "sagittaire": "Sagittaire, un travail fiable se remarque : la Lune est encore en Vierge ce matin dans votre secteur de carrière et réputation, décroissante et éclairée à 16 % environ, puis entre en Balance plus tard et oriente l’attention vers amis et réseaux.\n\nVénus, rétrograde en Balance, forme un sextile quasi exact à Jupiter et un trigone au Nœud nord, ce qui aide un ancien contact, une méthode ou un espoir à revenir sous une forme utile. Le Soleil et Mercure rétrograde sont presque conjoints en Scorpion, donc l’honnêteté sur un sujet profond ou financier vient plus facilement si vous parlez lentement.\n\nJupiter, votre planète, avec Mars en Lion et en sextile à Vénus, ouvre une porte via un ami ou un ancien contact. Mars et Jupiter restent ensemble en Lion et gardent l’enthousiasme haut. Avec la Lune décroissante, terminez ce qui est à moitié fait avant d’ouvrir un tout nouveau dossier après l’entrée en Balance.",
+      "capricorne": "Capricorne, un apprentissage utile élargit votre vue : la Lune est encore en Vierge ce matin dans votre secteur de voyages, études et convictions, décroissante et éclairée à 16 % environ, puis entre en Balance plus tard et oriente l’attention vers carrière et statut.\n\nVénus, rétrograde en Balance, forme un sextile quasi exact à Jupiter et un trigone au Nœud nord, ce qui aide un ancien contact, une méthode ou un espoir à revenir sous une forme utile. Le Soleil et Mercure rétrograde sont presque conjoints en Scorpion, donc l’honnêteté sur un sujet profond ou financier vient plus facilement si vous parlez lentement.\n\nSaturne, votre planète, rétrograde en Bélier, récompense la patience face à un projet d’études ou de voyage qui demande encore une vérification. Mars et Jupiter restent ensemble en Lion et gardent l’enthousiasme haut. Avec la Lune décroissante, terminez ce qui est à moitié fait avant d’ouvrir un tout nouveau dossier après l’entrée en Balance.",
+      "verseau": "Verseau, les discussions d’argent partagé demandent du calme : la Lune est encore en Vierge ce matin dans votre secteur de finances partagées et intimité, décroissante et éclairée à 16 % environ, puis entre en Balance plus tard et oriente l’attention vers études et voyages.\n\nVénus, rétrograde en Balance, forme un sextile quasi exact à Jupiter et un trigone au Nœud nord, ce qui aide un ancien contact, une méthode ou un espoir à revenir sous une forme utile. Le Soleil et Mercure rétrograde sont presque conjoints en Scorpion, donc l’honnêteté sur un sujet profond ou financier vient plus facilement si vous parlez lentement.\n\nLe Nœud nord dans votre signe, en trigone à Vénus, soutient le retour à une conviction ou une formation laissée de côté. Mars et Jupiter restent ensemble en Lion et gardent l’enthousiasme haut. Avec la Lune décroissante, terminez ce qui est à moitié fait avant d’ouvrir un tout nouveau dossier après l’entrée en Balance.",
+      "poissons": "Poissons, écouter bat le fait d’avoir raison : la Lune est encore en Vierge ce matin dans votre secteur de partenaires et collaborations, décroissante et éclairée à 16 % environ, puis entre en Balance plus tard et oriente l’attention vers ressources partagées.\n\nVénus, rétrograde en Balance, forme un sextile quasi exact à Jupiter et un trigone au Nœud nord, ce qui aide un ancien contact, une méthode ou un espoir à revenir sous une forme utile. Le Soleil et Mercure rétrograde sont presque conjoints en Scorpion, donc l’honnêteté sur un sujet profond ou financier vient plus facilement si vous parlez lentement.\n\nJupiter, l’une de vos planètes, avec Mars en Lion, relève l’énergie du quotidien quand vous écoutez d’abord en partenariat. Mars et Jupiter restent ensemble en Lion et gardent l’enthousiasme haut. Avec la Lune décroissante, terminez ce qui est à moitié fait avant d’ouvrir un tout nouveau dossier après l’entrée en Balance."
+    }
+  }
+}

@@ -1,0 +1,165 @@
+{
+  "date": "2026-11-07",
+  "sky": {
+    "date": "2026-11-07",
+    "computedAt": "08:00 Europe/Paris",
+    "phase": {
+      "id": "waningCrescent",
+      "illumination": 4,
+      "waxing": false
+    },
+    "bodies": [
+      {
+        "name": "Soleil",
+        "sign": "Scorpion",
+        "degree": 14,
+        "retrograde": false
+      },
+      {
+        "name": "Lune",
+        "sign": "Balance",
+        "degree": 21,
+        "retrograde": false
+      },
+      {
+        "name": "Mercure",
+        "sign": "Scorpion",
+        "degree": 8,
+        "retrograde": true
+      },
+      {
+        "name": "Vénus",
+        "sign": "Balance",
+        "degree": 23,
+        "retrograde": true
+      },
+      {
+        "name": "Mars",
+        "sign": "Lion",
+        "degree": 21,
+        "retrograde": false
+      },
+      {
+        "name": "Jupiter",
+        "sign": "Lion",
+        "degree": 25,
+        "retrograde": false
+      },
+      {
+        "name": "Saturne",
+        "sign": "Bélier",
+        "degree": 8,
+        "retrograde": true
+      },
+      {
+        "name": "Uranus",
+        "sign": "Gémeaux",
+        "degree": 4,
+        "retrograde": true
+      },
+      {
+        "name": "Neptune",
+        "sign": "Bélier",
+        "degree": 1,
+        "retrograde": true
+      },
+      {
+        "name": "Pluton",
+        "sign": "Verseau",
+        "degree": 3,
+        "retrograde": false
+      },
+      {
+        "name": "Nœud nord",
+        "sign": "Verseau",
+        "degree": 25,
+        "retrograde": true
+      }
+    ],
+    "ingresses": [
+      {
+        "name": "Lune",
+        "from": "Balance",
+        "to": "Scorpion"
+      }
+    ],
+    "aspects": [
+      {
+        "a": "Lune",
+        "b": "Mars",
+        "aspect": "sextile",
+        "orb": 0
+      },
+      {
+        "a": "Vénus",
+        "b": "Jupiter",
+        "aspect": "sextile",
+        "orb": 1.3
+      },
+      {
+        "a": "Vénus",
+        "b": "Nœud nord",
+        "aspect": "trine",
+        "orb": 2
+      },
+      {
+        "a": "Lune",
+        "b": "Vénus",
+        "aspect": "conjunction",
+        "orb": 2.1
+      },
+      {
+        "a": "Vénus",
+        "b": "Mars",
+        "aspect": "sextile",
+        "orb": 2.1
+      },
+      {
+        "a": "Mars",
+        "b": "Jupiter",
+        "aspect": "conjunction",
+        "orb": 3.3
+      },
+      {
+        "a": "Mars",
+        "b": "Nœud nord",
+        "aspect": "opposition",
+        "orb": 4
+      }
+    ]
+  },
+  "en": {
+    "summary": "Saturday 7 November 2026: the Moon spends the morning in Libra near 21°, almost new and only about 4% lit, then enters Scorpio later in the day. It sits close to Venus, which is retrograde in Libra, and makes an exact sextile to Mars in Leo. Venus also forms a sextile to Jupiter and a trine to the North Node, while Mars stays conjunct Jupiter. Mercury remains retrograde in Scorpio beside the Sun.",
+    "signs": {
+      "belier": "Aries, relationships ask for honest balance today: the Moon sits in Libra, your sector of partnerships, close to retrograde Venus, and later moves into Scorpio, your sector of shared resources.\n\nThe Moon's exact sextile to Mars in Leo, still conjunct Jupiter, gives you room to act with warmth and courage. Venus retrograde and nearly conjunct the Moon invites you to revisit fairness, beauty and an unfinished bond without forcing a brand-new start. Mercury retrograde in Scorpio beside the Sun asks you to check details twice, especially where money or trust is shared.\n\nMars, your ruler, still sits with Jupiter in Leo and gives you warmth to negotiate without rushing the outcome. Mars opposite the North Node warns against pushing a group outcome for status alone. With the Moon almost new and only about 4% lit, finish one open loop before you open a heavier chapter tonight.",
+      "taureau": "Taurus, your daily rhythm and health need gentle attention today: the Moon sits in Libra, your sector of work and health, close to retrograde Venus, and later moves into Scorpio, your sector of intimacy and joint money.\n\nThe Moon's exact sextile to Mars in Leo, still conjunct Jupiter, gives you room to act with warmth and courage. Venus retrograde and nearly conjunct the Moon invites you to revisit fairness, beauty and an unfinished bond without forcing a brand-new start. Mercury retrograde in Scorpio beside the Sun asks you to check details twice, especially where money or trust is shared.\n\nVenus, your ruler, retrograde near the Moon, softens a work conversation if you lead with listening. Mars opposite the North Node warns against pushing a group outcome for status alone. With the Moon almost new and only about 4% lit, finish one open loop before you open a heavier chapter tonight.",
+      "gemeaux": "Gemini, pleasure and creative expression lead the day today: the Moon sits in Libra, your sector of joy and creativity, close to retrograde Venus, and later moves into Scorpio, your sector of partnerships.\n\nThe Moon's exact sextile to Mars in Leo, still conjunct Jupiter, gives you room to act with warmth and courage. Venus retrograde and nearly conjunct the Moon invites you to revisit fairness, beauty and an unfinished bond without forcing a brand-new start. Mercury retrograde in Scorpio beside the Sun asks you to check details twice, especially where money or trust is shared.\n\nMercury, your ruler, retrograde in Scorpio, rewards a carefully rewritten message more than a quick reply. Mars opposite the North Node warns against pushing a group outcome for status alone. With the Moon almost new and only about 4% lit, finish one open loop before you open a heavier chapter tonight.",
+      "cancer": "Cancer, home and private life set the tone today: the Moon sits in Libra, your sector of home and family, close to retrograde Venus, and later moves into Scorpio, your sector of work and habits.\n\nThe Moon's exact sextile to Mars in Leo, still conjunct Jupiter, gives you room to act with warmth and courage. Venus retrograde and nearly conjunct the Moon invites you to revisit fairness, beauty and an unfinished bond without forcing a brand-new start. Mercury retrograde in Scorpio beside the Sun asks you to check details twice, especially where money or trust is shared.\n\nThe Moon, your ruler, near Venus, helps you soothe a household tension with fairness rather than force. Mars opposite the North Node warns against pushing a group outcome for status alone. With the Moon almost new and only about 4% lit, finish one open loop before you open a heavier chapter tonight.",
+      "lion": "Leo, short trips, messages and siblings matter today: the Moon sits in Libra, your sector of communication and siblings, close to retrograde Venus, and later moves into Scorpio, your sector of love and creativity.\n\nThe Moon's exact sextile to Mars in Leo, still conjunct Jupiter, gives you room to act with warmth and courage. Venus retrograde and nearly conjunct the Moon invites you to revisit fairness, beauty and an unfinished bond without forcing a brand-new start. Mercury retrograde in Scorpio beside the Sun asks you to check details twice, especially where money or trust is shared.\n\nThe Sun's sign-mate Mars travels with Jupiter in Leo, so your voice carries; choose kindness with it. Mars opposite the North Node warns against pushing a group outcome for status alone. With the Moon almost new and only about 4% lit, finish one open loop before you open a heavier chapter tonight.",
+      "vierge": "Virgo, money and self-worth are the theme today: the Moon sits in Libra, your sector of income and values, close to retrograde Venus, and later moves into Scorpio, your sector of home and family.\n\nThe Moon's exact sextile to Mars in Leo, still conjunct Jupiter, gives you room to act with warmth and courage. Venus retrograde and nearly conjunct the Moon invites you to revisit fairness, beauty and an unfinished bond without forcing a brand-new start. Mercury retrograde in Scorpio beside the Sun asks you to check details twice, especially where money or trust is shared.\n\nMercury, your ruler, retrograde beside the Sun in Scorpio, favours a second look at family papers and budgets. Mars opposite the North Node warns against pushing a group outcome for status alone. With the Moon almost new and only about 4% lit, finish one open loop before you open a heavier chapter tonight.",
+      "balance": "Libra, you take centre stage today: the Moon sits in Libra, your sector of self and presence, close to retrograde Venus, and later moves into Scorpio, your sector of communication and errands.\n\nThe Moon's exact sextile to Mars in Leo, still conjunct Jupiter, gives you room to act with warmth and courage. Venus retrograde and nearly conjunct the Moon invites you to revisit fairness, beauty and an unfinished bond without forcing a brand-new start. Mercury retrograde in Scorpio beside the Sun asks you to check details twice, especially where money or trust is shared.\n\nVenus, your ruler, retrograde in your sign and almost on the Moon, invites a gentle personal reset. Mars opposite the North Node warns against pushing a group outcome for status alone. With the Moon almost new and only about 4% lit, finish one open loop before you open a heavier chapter tonight.",
+      "scorpion": "Scorpio, quiet time serves you better than noise today: the Moon sits in Libra, your sector of solitude and rest, close to retrograde Venus, and later moves into Scorpio, your sector of self and identity.\n\nThe Moon's exact sextile to Mars in Leo, still conjunct Jupiter, gives you room to act with warmth and courage. Venus retrograde and nearly conjunct the Moon invites you to revisit fairness, beauty and an unfinished bond without forcing a brand-new start. Mercury retrograde in Scorpio beside the Sun asks you to check details twice, especially where money or trust is shared.\n\nMercury retrograde in your sign next to the Sun clarifies a private decision you have delayed for too long. Mars opposite the North Node warns against pushing a group outcome for status alone. With the Moon almost new and only about 4% lit, finish one open loop before you open a heavier chapter tonight.",
+      "sagittaire": "Sagittarius, friends and future goals lead today: the Moon sits in Libra, your sector of friends and goals, close to retrograde Venus, and later moves into Scorpio, your sector of solitude and rest.\n\nThe Moon's exact sextile to Mars in Leo, still conjunct Jupiter, gives you room to act with warmth and courage. Venus retrograde and nearly conjunct the Moon invites you to revisit fairness, beauty and an unfinished bond without forcing a brand-new start. Mercury retrograde in Scorpio beside the Sun asks you to check details twice, especially where money or trust is shared.\n\nJupiter, your ruler, still with Mars in Leo, lifts team morale if you share credit instead of claiming it. Mars opposite the North Node warns against pushing a group outcome for status alone. With the Moon almost new and only about 4% lit, finish one open loop before you open a heavier chapter tonight.",
+      "capricorne": "Capricorn, career and public image are in focus today: the Moon sits in Libra, your sector of career and reputation, close to retrograde Venus, and later moves into Scorpio, your sector of friends and networks.\n\nThe Moon's exact sextile to Mars in Leo, still conjunct Jupiter, gives you room to act with warmth and courage. Venus retrograde and nearly conjunct the Moon invites you to revisit fairness, beauty and an unfinished bond without forcing a brand-new start. Mercury retrograde in Scorpio beside the Sun asks you to check details twice, especially where money or trust is shared.\n\nSaturn, your ruler, retrograde in Aries, asks for patience with a professional timeline that will not hurry. Mars opposite the North Node warns against pushing a group outcome for status alone. With the Moon almost new and only about 4% lit, finish one open loop before you open a heavier chapter tonight.",
+      "verseau": "Aquarius, study, travel and beliefs widen today: the Moon sits in Libra, your sector of study and travel, close to retrograde Venus, and later moves into Scorpio, your sector of career and status.\n\nThe Moon's exact sextile to Mars in Leo, still conjunct Jupiter, gives you room to act with warmth and courage. Venus retrograde and nearly conjunct the Moon invites you to revisit fairness, beauty and an unfinished bond without forcing a brand-new start. Mercury retrograde in Scorpio beside the Sun asks you to check details twice, especially where money or trust is shared.\n\nUranus, your modern ruler, retrograde in Gemini, favours unusual study paths over the obvious course. Mars opposite the North Node warns against pushing a group outcome for status alone. With the Moon almost new and only about 4% lit, finish one open loop before you open a heavier chapter tonight.",
+      "poissons": "Pisces, shared resources and intimacy need care today: the Moon sits in Libra, your sector of shared resources, close to retrograde Venus, and later moves into Scorpio, your sector of study and beliefs.\n\nThe Moon's exact sextile to Mars in Leo, still conjunct Jupiter, gives you room to act with warmth and courage. Venus retrograde and nearly conjunct the Moon invites you to revisit fairness, beauty and an unfinished bond without forcing a brand-new start. Mercury retrograde in Scorpio beside the Sun asks you to check details twice, especially where money or trust is shared.\n\nNeptune, your modern ruler, retrograde in Aries, asks you to check dreams against a shared budget reality. Mars opposite the North Node warns against pushing a group outcome for status alone. With the Moon almost new and only about 4% lit, finish one open loop before you open a heavier chapter tonight."
+    }
+  },
+  "fr": {
+    "summary": "Samedi 7 novembre 2026 : la Lune passe la matinée en Balance vers 21°, presque nouvelle et éclairée à seulement 4 % environ, puis entre en Scorpion plus tard dans la journée. Elle se trouve près de Vénus, rétrograde en Balance, et forme un sextile exact à Mars en Lion. Vénus forme aussi un sextile à Jupiter et un trigone au Nœud nord, tandis que Mars reste conjoint à Jupiter. Mercure reste rétrograde en Scorpion auprès du Soleil.",
+    "signs": {
+      "belier": "Bélier, les relations demandent un équilibre sincère : la Lune se trouve en Balance, votre secteur de relations / partenaires, près de Vénus rétrograde, puis entre en Scorpion, votre secteur de ressources partagées.\n\nLe sextile exact de la Lune à Mars en Lion, encore conjoint à Jupiter, vous laisse agir avec chaleur et courage. Vénus rétrograde et presque conjointe à la Lune invite à revoir l’équité, la beauté et un lien inachevé sans forcer un tout nouveau départ. Mercure rétrograde en Scorpion auprès du Soleil demande de vérifier les détails deux fois, surtout là où l’argent ou la confiance se partagent.\n\nMars, votre planète, reste avec Jupiter en Lion et vous donne la chaleur pour négocier sans précipiter le résultat. Mars opposé au Nœud nord met en garde contre le fait de pousser un résultat de groupe pour le seul statut. Avec la Lune presque nouvelle et éclairée à seulement 4 % environ, terminez une boucle ouverte avant d’ouvrir un chapitre plus lourd ce soir.",
+      "taureau": "Taureau, votre rythme quotidien et votre santé demandent une attention douce : la Lune se trouve en Balance, votre secteur de travail et santé, près de Vénus rétrograde, puis entre en Scorpion, votre secteur de intimité et argent commun.\n\nLe sextile exact de la Lune à Mars en Lion, encore conjoint à Jupiter, vous laisse agir avec chaleur et courage. Vénus rétrograde et presque conjointe à la Lune invite à revoir l’équité, la beauté et un lien inachevé sans forcer un tout nouveau départ. Mercure rétrograde en Scorpion auprès du Soleil demande de vérifier les détails deux fois, surtout là où l’argent ou la confiance se partagent.\n\nVénus, votre planète, rétrograde près de la Lune, adoucit une conversation de travail si vous commencez par écouter. Mars opposé au Nœud nord met en garde contre le fait de pousser un résultat de groupe pour le seul statut. Avec la Lune presque nouvelle et éclairée à seulement 4 % environ, terminez une boucle ouverte avant d’ouvrir un chapitre plus lourd ce soir.",
+      "gemeaux": "Gémeaux, le plaisir et l’expression créative mènent la journée : la Lune se trouve en Balance, votre secteur de joie et créativité, près de Vénus rétrograde, puis entre en Scorpion, votre secteur de partenariats.\n\nLe sextile exact de la Lune à Mars en Lion, encore conjoint à Jupiter, vous laisse agir avec chaleur et courage. Vénus rétrograde et presque conjointe à la Lune invite à revoir l’équité, la beauté et un lien inachevé sans forcer un tout nouveau départ. Mercure rétrograde en Scorpion auprès du Soleil demande de vérifier les détails deux fois, surtout là où l’argent ou la confiance se partagent.\n\nMercure, votre planète, rétrograde en Scorpion, récompense un message soigneusement réécrit plus qu’une réponse rapide. Mars opposé au Nœud nord met en garde contre le fait de pousser un résultat de groupe pour le seul statut. Avec la Lune presque nouvelle et éclairée à seulement 4 % environ, terminez une boucle ouverte avant d’ouvrir un chapitre plus lourd ce soir.",
+      "cancer": "Cancer, la maison et la vie privée donnent le ton : la Lune se trouve en Balance, votre secteur de foyer et famille, près de Vénus rétrograde, puis entre en Scorpion, votre secteur de travail et habitudes.\n\nLe sextile exact de la Lune à Mars en Lion, encore conjoint à Jupiter, vous laisse agir avec chaleur et courage. Vénus rétrograde et presque conjointe à la Lune invite à revoir l’équité, la beauté et un lien inachevé sans forcer un tout nouveau départ. Mercure rétrograde en Scorpion auprès du Soleil demande de vérifier les détails deux fois, surtout là où l’argent ou la confiance se partagent.\n\nLa Lune, votre planète, près de Vénus, aide à apaiser une tension domestique avec équité plutôt qu’avec force. Mars opposé au Nœud nord met en garde contre le fait de pousser un résultat de groupe pour le seul statut. Avec la Lune presque nouvelle et éclairée à seulement 4 % environ, terminez une boucle ouverte avant d’ouvrir un chapitre plus lourd ce soir.",
+      "lion": "Lion, les courts trajets, les messages et la fratrie comptent : la Lune se trouve en Balance, votre secteur de communication et fratrie, près de Vénus rétrograde, puis entre en Scorpion, votre secteur de amour et créativité.\n\nLe sextile exact de la Lune à Mars en Lion, encore conjoint à Jupiter, vous laisse agir avec chaleur et courage. Vénus rétrograde et presque conjointe à la Lune invite à revoir l’équité, la beauté et un lien inachevé sans forcer un tout nouveau départ. Mercure rétrograde en Scorpion auprès du Soleil demande de vérifier les détails deux fois, surtout là où l’argent ou la confiance se partagent.\n\nMars, compagnon du Soleil, voyage avec Jupiter en Lion, donc votre voix porte ; choisissez la bienveillance. Mars opposé au Nœud nord met en garde contre le fait de pousser un résultat de groupe pour le seul statut. Avec la Lune presque nouvelle et éclairée à seulement 4 % environ, terminez une boucle ouverte avant d’ouvrir un chapitre plus lourd ce soir.",
+      "vierge": "Vierge, l’argent et la valeur personnelle sont le thème : la Lune se trouve en Balance, votre secteur de revenus et valeurs, près de Vénus rétrograde, puis entre en Scorpion, votre secteur de foyer et famille.\n\nLe sextile exact de la Lune à Mars en Lion, encore conjoint à Jupiter, vous laisse agir avec chaleur et courage. Vénus rétrograde et presque conjointe à la Lune invite à revoir l’équité, la beauté et un lien inachevé sans forcer un tout nouveau départ. Mercure rétrograde en Scorpion auprès du Soleil demande de vérifier les détails deux fois, surtout là où l’argent ou la confiance se partagent.\n\nMercure, votre planète, rétrograde auprès du Soleil en Scorpion, favorise un second regard sur les papiers et budgets familiaux. Mars opposé au Nœud nord met en garde contre le fait de pousser un résultat de groupe pour le seul statut. Avec la Lune presque nouvelle et éclairée à seulement 4 % environ, terminez une boucle ouverte avant d’ouvrir un chapitre plus lourd ce soir.",
+      "balance": "Balance, vous êtes au centre de la journée : la Lune se trouve en Balance, votre secteur de soi et présence, près de Vénus rétrograde, puis entre en Scorpion, votre secteur de communication et démarches.\n\nLe sextile exact de la Lune à Mars en Lion, encore conjoint à Jupiter, vous laisse agir avec chaleur et courage. Vénus rétrograde et presque conjointe à la Lune invite à revoir l’équité, la beauté et un lien inachevé sans forcer un tout nouveau départ. Mercure rétrograde en Scorpion auprès du Soleil demande de vérifier les détails deux fois, surtout là où l’argent ou la confiance se partagent.\n\nVénus, votre planète, rétrograde dans votre signe et presque sur la Lune, invite à un reset personnel en douceur. Mars opposé au Nœud nord met en garde contre le fait de pousser un résultat de groupe pour le seul statut. Avec la Lune presque nouvelle et éclairée à seulement 4 % environ, terminez une boucle ouverte avant d’ouvrir un chapitre plus lourd ce soir.",
+      "scorpion": "Scorpion, le calme vous sert mieux que le bruit : la Lune se trouve en Balance, votre secteur de solitude et repos, près de Vénus rétrograde, puis entre en Scorpion, votre secteur de soi et identité.\n\nLe sextile exact de la Lune à Mars en Lion, encore conjoint à Jupiter, vous laisse agir avec chaleur et courage. Vénus rétrograde et presque conjointe à la Lune invite à revoir l’équité, la beauté et un lien inachevé sans forcer un tout nouveau départ. Mercure rétrograde en Scorpion auprès du Soleil demande de vérifier les détails deux fois, surtout là où l’argent ou la confiance se partagent.\n\nMercure rétrograde dans votre signe auprès du Soleil clarifie une décision privée que vous retardez depuis trop longtemps. Mars opposé au Nœud nord met en garde contre le fait de pousser un résultat de groupe pour le seul statut. Avec la Lune presque nouvelle et éclairée à seulement 4 % environ, terminez une boucle ouverte avant d’ouvrir un chapitre plus lourd ce soir.",
+      "sagittaire": "Sagittaire, les amis et les objectifs futurs mènent : la Lune se trouve en Balance, votre secteur de amis et objectifs, près de Vénus rétrograde, puis entre en Scorpion, votre secteur de solitude et repos.\n\nLe sextile exact de la Lune à Mars en Lion, encore conjoint à Jupiter, vous laisse agir avec chaleur et courage. Vénus rétrograde et presque conjointe à la Lune invite à revoir l’équité, la beauté et un lien inachevé sans forcer un tout nouveau départ. Mercure rétrograde en Scorpion auprès du Soleil demande de vérifier les détails deux fois, surtout là où l’argent ou la confiance se partagent.\n\nJupiter, votre planète, encore avec Mars en Lion, relève le moral d’équipe si vous partagez le crédit plutôt que de le réclamer. Mars opposé au Nœud nord met en garde contre le fait de pousser un résultat de groupe pour le seul statut. Avec la Lune presque nouvelle et éclairée à seulement 4 % environ, terminez une boucle ouverte avant d’ouvrir un chapitre plus lourd ce soir.",
+      "capricorne": "Capricorne, la carrière et l’image publique sont au premier plan : la Lune se trouve en Balance, votre secteur de carrière et réputation, près de Vénus rétrograde, puis entre en Scorpion, votre secteur de amis et réseaux.\n\nLe sextile exact de la Lune à Mars en Lion, encore conjoint à Jupiter, vous laisse agir avec chaleur et courage. Vénus rétrograde et presque conjointe à la Lune invite à revoir l’équité, la beauté et un lien inachevé sans forcer un tout nouveau départ. Mercure rétrograde en Scorpion auprès du Soleil demande de vérifier les détails deux fois, surtout là où l’argent ou la confiance se partagent.\n\nSaturne, votre planète, rétrograde en Bélier, demande de la patience face à un délai professionnel qui n’accélère pas. Mars opposé au Nœud nord met en garde contre le fait de pousser un résultat de groupe pour le seul statut. Avec la Lune presque nouvelle et éclairée à seulement 4 % environ, terminez une boucle ouverte avant d’ouvrir un chapitre plus lourd ce soir.",
+      "verseau": "Verseau, les études, les voyages et les convictions s’élargissent : la Lune se trouve en Balance, votre secteur de études et voyages, près de Vénus rétrograde, puis entre en Scorpion, votre secteur de carrière et statut.\n\nLe sextile exact de la Lune à Mars en Lion, encore conjoint à Jupiter, vous laisse agir avec chaleur et courage. Vénus rétrograde et presque conjointe à la Lune invite à revoir l’équité, la beauté et un lien inachevé sans forcer un tout nouveau départ. Mercure rétrograde en Scorpion auprès du Soleil demande de vérifier les détails deux fois, surtout là où l’argent ou la confiance se partagent.\n\nUranus, votre planète moderne, rétrograde en Gémeaux, favorise un parcours d’études inhabituel plutôt que le chemin évident. Mars opposé au Nœud nord met en garde contre le fait de pousser un résultat de groupe pour le seul statut. Avec la Lune presque nouvelle et éclairée à seulement 4 % environ, terminez une boucle ouverte avant d’ouvrir un chapitre plus lourd ce soir.",
+      "poissons": "Poissons, les ressources partagées et l’intimité demandent du soin : la Lune se trouve en Balance, votre secteur de ressources partagées, près de Vénus rétrograde, puis entre en Scorpion, votre secteur de études et convictions.\n\nLe sextile exact de la Lune à Mars en Lion, encore conjoint à Jupiter, vous laisse agir avec chaleur et courage. Vénus rétrograde et presque conjointe à la Lune invite à revoir l’équité, la beauté et un lien inachevé sans forcer un tout nouveau départ. Mercure rétrograde en Scorpion auprès du Soleil demande de vérifier les détails deux fois, surtout là où l’argent ou la confiance se partagent.\n\nNeptune, votre planète moderne, rétrograde en Bélier, vous demande de vérifier les rêves face à la réalité d’un budget partagé. Mars opposé au Nœud nord met en garde contre le fait de pousser un résultat de groupe pour le seul statut. Avec la Lune presque nouvelle et éclairée à seulement 4 % environ, terminez une boucle ouverte avant d’ouvrir un chapitre plus lourd ce soir."
+    }
+  }
+}
