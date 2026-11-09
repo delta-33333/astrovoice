@@ -1,0 +1,159 @@
+{
+  "date": "2026-11-09",
+  "sky": {
+    "date": "2026-11-09",
+    "computedAt": "08:00 Europe/Paris",
+    "phase": {
+      "id": "new",
+      "illumination": 0,
+      "waxing": false
+    },
+    "bodies": [
+      {
+        "name": "Soleil",
+        "sign": "Scorpion",
+        "degree": 16,
+        "retrograde": false
+      },
+      {
+        "name": "Lune",
+        "sign": "Scorpion",
+        "degree": 16,
+        "retrograde": false
+      },
+      {
+        "name": "Mercure",
+        "sign": "Scorpion",
+        "degree": 6,
+        "retrograde": true
+      },
+      {
+        "name": "Vénus",
+        "sign": "Balance",
+        "degree": 23,
+        "retrograde": true
+      },
+      {
+        "name": "Mars",
+        "sign": "Lion",
+        "degree": 22,
+        "retrograde": false
+      },
+      {
+        "name": "Jupiter",
+        "sign": "Lion",
+        "degree": 25,
+        "retrograde": false
+      },
+      {
+        "name": "Saturne",
+        "sign": "Bélier",
+        "degree": 8,
+        "retrograde": true
+      },
+      {
+        "name": "Uranus",
+        "sign": "Gémeaux",
+        "degree": 4,
+        "retrograde": true
+      },
+      {
+        "name": "Neptune",
+        "sign": "Bélier",
+        "degree": 1,
+        "retrograde": true
+      },
+      {
+        "name": "Pluton",
+        "sign": "Verseau",
+        "degree": 3,
+        "retrograde": false
+      },
+      {
+        "name": "Nœud nord",
+        "sign": "Verseau",
+        "degree": 25,
+        "retrograde": true
+      }
+    ],
+    "ingresses": [],
+    "aspects": [
+      {
+        "a": "Soleil",
+        "b": "Lune",
+        "aspect": "conjunction",
+        "orb": 0
+      },
+      {
+        "a": "Vénus",
+        "b": "Mars",
+        "aspect": "sextile",
+        "orb": 0.6
+      },
+      {
+        "a": "Vénus",
+        "b": "Jupiter",
+        "aspect": "sextile",
+        "orb": 1.9
+      },
+      {
+        "a": "Vénus",
+        "b": "Nœud nord",
+        "aspect": "trine",
+        "orb": 2.3
+      },
+      {
+        "a": "Mars",
+        "b": "Jupiter",
+        "aspect": "conjunction",
+        "orb": 2.6
+      },
+      {
+        "a": "Mars",
+        "b": "Nœud nord",
+        "aspect": "opposition",
+        "orb": 3
+      },
+      {
+        "a": "Mercure",
+        "b": "Pluton",
+        "aspect": "square",
+        "orb": 3.7
+      }
+    ]
+  },
+  "en": {
+    "summary": "Monday 9 November 2026: the New Moon is exact in Scorpio, with the Sun and Moon joined near 16° and the Moon staying in Scorpio all day. Mercury is retrograde in Scorpio and squares Pluto in Aquarius. Venus, retrograde in Libra, makes a close sextile to Mars and a sextile to Jupiter in Leo plus a trine to the North Node, while Mars stays conjunct Jupiter and opposite the North Node.",
+    "signs": {
+      "belier": "Aries, today’s New Moon opens a fresh chapter in your sector of shared money, debts and intimacy: the Sun and Moon meet exactly in Scorpio near 16°, and the Moon stays in Scorpio all day.\n\nA New Moon is a seeding moment rather than a result, so use it to set one honest intention about what you share with someone, whether that is a budget, a debt or simply trust. Mercury is retrograde in Scorpio and squares Pluto in Aquarius, which can bring back an old conversation or a hidden detail; reread before you sign or send anything important. Mars, your ruler, sits conjunct Jupiter in Leo and receives a close sextile from Venus retrograde in Libra, which lends courage, but its opposition to the North Node asks you to act for your own reasons, not for applause.\n\nKeep the intention modest and specific. The sky does not decide for you, it only shows where your attention can do the most good over the next four weeks.",
+      "taureau": "Taurus, today’s New Moon opens a fresh chapter in your sector of partnerships and one-to-one bonds: the Sun and Moon meet exactly in Scorpio near 16°, and the Moon stays in Scorpio all day.\n\nA New Moon is a seeding moment rather than a result, so use it to name what you actually want from an important relationship, instead of waiting for the other person to guess. Mercury is retrograde in Scorpio and squares Pluto in Aquarius, which can bring back an old conversation or a hidden detail; reread before you sign or send anything important. Venus, your ruler, is retrograde in Libra, so revisit an old promise or price before making a new one; its close sextile to Mars and its sextile to Jupiter in Leo still give you the warmth to reopen the subject kindly.\n\nKeep the intention modest and specific. The sky does not decide for you, it only shows where your attention can do the most good over the next four weeks.",
+      "gemeaux": "Gemini, today’s New Moon opens a fresh chapter in your sector of daily routine, work and health habits: the Sun and Moon meet exactly in Scorpio near 16°, and the Moon stays in Scorpio all day.\n\nA New Moon is a seeding moment rather than a result, so use it to pick one habit to drop and one to start, small enough that you can actually keep it this week. Mercury is retrograde in Scorpio and squares Pluto in Aquarius, which can bring back an old conversation or a hidden detail; reread before you sign or send anything important. Venus, retrograde in Libra, makes a close sextile to Mars and a sextile to Jupiter in Leo plus a trine to the North Node, which favours repairing a bond over starting a new one. Mars conjunct Jupiter opposite the North Node warns against promising more than you can deliver.\n\nKeep the intention modest and specific. The sky does not decide for you, it only shows where your attention can do the most good over the next four weeks.",
+      "cancer": "Cancer, today’s New Moon opens a fresh chapter in your sector of pleasure, creativity and romance: the Sun and Moon meet exactly in Scorpio near 16°, and the Moon stays in Scorpio all day.\n\nA New Moon is a seeding moment rather than a result, so use it to give yourself permission to want something joyful again, even if it starts as a private wish. Mercury is retrograde in Scorpio and squares Pluto in Aquarius, which can bring back an old conversation or a hidden detail; reread before you sign or send anything important. Venus, retrograde in Libra, makes a close sextile to Mars and a sextile to Jupiter in Leo plus a trine to the North Node, which favours repairing a bond over starting a new one. Mars conjunct Jupiter opposite the North Node warns against promising more than you can deliver.\n\nKeep the intention modest and specific. The sky does not decide for you, it only shows where your attention can do the most good over the next four weeks.",
+      "lion": "Leo, today’s New Moon opens a fresh chapter in your sector of home, family and inner foundations: the Sun and Moon meet exactly in Scorpio near 16°, and the Moon stays in Scorpio all day.\n\nA New Moon is a seeding moment rather than a result, so use it to tend to what makes you feel safe at home before you spend energy proving yourself outside. Mercury is retrograde in Scorpio and squares Pluto in Aquarius, which can bring back an old conversation or a hidden detail; reread before you sign or send anything important. Venus, retrograde in Libra, makes a close sextile to Mars and a sextile to Jupiter in Leo plus a trine to the North Node, which favours repairing a bond over starting a new one. Mars conjunct Jupiter opposite the North Node warns against promising more than you can deliver.\n\nKeep the intention modest and specific. The sky does not decide for you, it only shows where your attention can do the most good over the next four weeks.",
+      "vierge": "Virgo, today’s New Moon opens a fresh chapter in your sector of conversations, siblings and short trips: the Sun and Moon meet exactly in Scorpio near 16°, and the Moon stays in Scorpio all day.\n\nA New Moon is a seeding moment rather than a result, so use it to say the sentence you have been rehearsing, calmly and once, rather than writing ten drafts of it. Mercury is retrograde in Scorpio and squares Pluto in Aquarius, which can bring back an old conversation or a hidden detail; reread before you sign or send anything important. Venus, retrograde in Libra, makes a close sextile to Mars and a sextile to Jupiter in Leo plus a trine to the North Node, which favours repairing a bond over starting a new one. Mars conjunct Jupiter opposite the North Node warns against promising more than you can deliver.\n\nKeep the intention modest and specific. The sky does not decide for you, it only shows where your attention can do the most good over the next four weeks.",
+      "balance": "Libra, today’s New Moon opens a fresh chapter in your sector of money, self-worth and resources: the Sun and Moon meet exactly in Scorpio near 16°, and the Moon stays in Scorpio all day.\n\nA New Moon is a seeding moment rather than a result, so use it to decide what you are worth in one concrete area, a price, a salary or the time you give away for free. Mercury is retrograde in Scorpio and squares Pluto in Aquarius, which can bring back an old conversation or a hidden detail; reread before you sign or send anything important. Venus, your ruler, is retrograde in Libra, so revisit an old promise or price before making a new one; its close sextile to Mars and its sextile to Jupiter in Leo still give you the warmth to reopen the subject kindly.\n\nKeep the intention modest and specific. The sky does not decide for you, it only shows where your attention can do the most good over the next four weeks.",
+      "scorpion": "Scorpio, today’s New Moon opens a fresh chapter in your sector of identity and fresh personal start: the Sun and Moon meet exactly in Scorpio near 16°, and the Moon stays in Scorpio all day.\n\nA New Moon is a seeding moment rather than a result, so use it to write down who you want to become over the next twelve months, in one line you could read aloud. Mercury is retrograde in Scorpio and squares Pluto in Aquarius, which can bring back an old conversation or a hidden detail; reread before you sign or send anything important. Mars, your ruler, sits conjunct Jupiter in Leo and receives a close sextile from Venus retrograde in Libra, which lends courage, but its opposition to the North Node asks you to act for your own reasons, not for applause.\n\nKeep the intention modest and specific. The sky does not decide for you, it only shows where your attention can do the most good over the next four weeks.",
+      "sagittaire": "Sagittarius, today’s New Moon opens a fresh chapter in your sector of rest, solitude and the unconscious: the Sun and Moon meet exactly in Scorpio near 16°, and the Moon stays in Scorpio all day.\n\nA New Moon is a seeding moment rather than a result, so use it to let yourself slow down and notice which worry keeps returning at night, without needing to solve it today. Mercury is retrograde in Scorpio and squares Pluto in Aquarius, which can bring back an old conversation or a hidden detail; reread before you sign or send anything important. Venus, retrograde in Libra, makes a close sextile to Mars and a sextile to Jupiter in Leo plus a trine to the North Node, which favours repairing a bond over starting a new one. Mars conjunct Jupiter opposite the North Node warns against promising more than you can deliver.\n\nKeep the intention modest and specific. The sky does not decide for you, it only shows where your attention can do the most good over the next four weeks.",
+      "capricorne": "Capricorn, today’s New Moon opens a fresh chapter in your sector of friends, networks and long-term hopes: the Sun and Moon meet exactly in Scorpio near 16°, and the Moon stays in Scorpio all day.\n\nA New Moon is a seeding moment rather than a result, so use it to check whether the people around you still match the future you are building, and reach out to one who does. Mercury is retrograde in Scorpio and squares Pluto in Aquarius, which can bring back an old conversation or a hidden detail; reread before you sign or send anything important. Venus, retrograde in Libra, makes a close sextile to Mars and a sextile to Jupiter in Leo plus a trine to the North Node, which favours repairing a bond over starting a new one. Mars conjunct Jupiter opposite the North Node warns against promising more than you can deliver.\n\nKeep the intention modest and specific. The sky does not decide for you, it only shows where your attention can do the most good over the next four weeks.",
+      "verseau": "Aquarius, today’s New Moon opens a fresh chapter in your sector of career, reputation and public goals: the Sun and Moon meet exactly in Scorpio near 16°, and the Moon stays in Scorpio all day.\n\nA New Moon is a seeding moment rather than a result, so use it to choose one professional goal for the coming month and tell it to yourself plainly, without hedging. Mercury is retrograde in Scorpio and squares Pluto in Aquarius, which can bring back an old conversation or a hidden detail; reread before you sign or send anything important. Venus, retrograde in Libra, makes a close sextile to Mars and a sextile to Jupiter in Leo plus a trine to the North Node, which favours repairing a bond over starting a new one. Mars conjunct Jupiter opposite the North Node warns against promising more than you can deliver.\n\nKeep the intention modest and specific. The sky does not decide for you, it only shows where your attention can do the most good over the next four weeks.",
+      "poissons": "Pisces, today’s New Moon opens a fresh chapter in your sector of beliefs, study and distant horizons: the Sun and Moon meet exactly in Scorpio near 16°, and the Moon stays in Scorpio all day.\n\nA New Moon is a seeding moment rather than a result, so use it to commit to learning one thing that widens your view, a course, a book or a trip you keep postponing. Mercury is retrograde in Scorpio and squares Pluto in Aquarius, which can bring back an old conversation or a hidden detail; reread before you sign or send anything important. Venus, retrograde in Libra, makes a close sextile to Mars and a sextile to Jupiter in Leo plus a trine to the North Node, which favours repairing a bond over starting a new one. Mars conjunct Jupiter opposite the North Node warns against promising more than you can deliver.\n\nKeep the intention modest and specific. The sky does not decide for you, it only shows where your attention can do the most good over the next four weeks."
+    }
+  },
+  "fr": {
+    "summary": "Lundi 9 novembre 2026 : la Nouvelle Lune est exacte en Scorpion, le Soleil et la Lune réunis vers 16°, et la Lune reste en Scorpion toute la journée. Mercure est rétrograde en Scorpion et forme un carré à Pluton en Verseau. Vénus, rétrograde en Balance, forme un sextile serré à Mars et un sextile à Jupiter en Lion ainsi qu’un trigone au Nœud nord, tandis que Mars reste conjoint à Jupiter et opposé au Nœud nord.",
+    "signs": {
+      "belier": "Bélier, la Nouvelle Lune du jour ouvre un nouveau chapitre dans votre secteur de l’argent partagé, des dettes et de l’intimité : le Soleil et la Lune se rejoignent exactement en Scorpion vers 16°, et la Lune reste en Scorpion toute la journée.\n\nUne Nouvelle Lune est un moment de semence plutôt qu’un résultat : profitez-en pour posez une intention honnête sur ce que vous partagez avec quelqu’un, qu’il s’agisse d’un budget, d’une dette ou simplement de confiance. Mercure est rétrograde en Scorpion et forme un carré à Pluton en Verseau, ce qui peut faire revenir une ancienne conversation ou un détail caché ; relisez avant de signer ou d’envoyer quoi que ce soit d’important. Mars, votre planète, est conjoint à Jupiter en Lion et reçoit un sextile serré de Vénus rétrograde en Balance, ce qui donne du courage, mais son opposition au Nœud nord vous demande d’agir pour vos propres raisons, pas pour être applaudi.\n\nGardez une intention modeste et précise. Le ciel ne décide pas à votre place, il montre seulement où votre attention peut être la plus utile pendant les quatre prochaines semaines.",
+      "taureau": "Taureau, la Nouvelle Lune du jour ouvre un nouveau chapitre dans votre secteur des partenariats et des liens en face à face : le Soleil et la Lune se rejoignent exactement en Scorpion vers 16°, et la Lune reste en Scorpion toute la journée.\n\nUne Nouvelle Lune est un moment de semence plutôt qu’un résultat : profitez-en pour nommez ce que vous attendez vraiment d’une relation importante, au lieu d’attendre que l’autre le devine. Mercure est rétrograde en Scorpion et forme un carré à Pluton en Verseau, ce qui peut faire revenir une ancienne conversation ou un détail caché ; relisez avant de signer ou d’envoyer quoi que ce soit d’important. Vénus, votre planète, est rétrograde en Balance : revoyez une ancienne promesse ou un ancien tarif avant d’en fixer un nouveau. Son sextile serré à Mars et son sextile à Jupiter en Lion vous donnent la chaleur nécessaire pour rouvrir le sujet avec douceur.\n\nGardez une intention modeste et précise. Le ciel ne décide pas à votre place, il montre seulement où votre attention peut être la plus utile pendant les quatre prochaines semaines.",
+      "gemeaux": "Gémeaux, la Nouvelle Lune du jour ouvre un nouveau chapitre dans votre secteur du quotidien, du travail et des habitudes de santé : le Soleil et la Lune se rejoignent exactement en Scorpion vers 16°, et la Lune reste en Scorpion toute la journée.\n\nUne Nouvelle Lune est un moment de semence plutôt qu’un résultat : profitez-en pour choisissez une habitude à lâcher et une à commencer, assez petites pour tenir vraiment cette semaine. Mercure est rétrograde en Scorpion et forme un carré à Pluton en Verseau, ce qui peut faire revenir une ancienne conversation ou un détail caché ; relisez avant de signer ou d’envoyer quoi que ce soit d’important. Vénus, rétrograde en Balance, forme un sextile serré à Mars et un sextile à Jupiter en Lion ainsi qu’un trigone au Nœud nord, ce qui favorise la réparation d’un lien plutôt qu’un nouveau départ. Mars conjoint à Jupiter et opposé au Nœud nord met en garde contre les promesses trop grandes.\n\nGardez une intention modeste et précise. Le ciel ne décide pas à votre place, il montre seulement où votre attention peut être la plus utile pendant les quatre prochaines semaines.",
+      "cancer": "Cancer, la Nouvelle Lune du jour ouvre un nouveau chapitre dans votre secteur du plaisir, de la créativité et des amours : le Soleil et la Lune se rejoignent exactement en Scorpion vers 16°, et la Lune reste en Scorpion toute la journée.\n\nUne Nouvelle Lune est un moment de semence plutôt qu’un résultat : profitez-en pour autorisez-vous à désirer à nouveau quelque chose de joyeux, même si cela commence par un souhait secret. Mercure est rétrograde en Scorpion et forme un carré à Pluton en Verseau, ce qui peut faire revenir une ancienne conversation ou un détail caché ; relisez avant de signer ou d’envoyer quoi que ce soit d’important. Vénus, rétrograde en Balance, forme un sextile serré à Mars et un sextile à Jupiter en Lion ainsi qu’un trigone au Nœud nord, ce qui favorise la réparation d’un lien plutôt qu’un nouveau départ. Mars conjoint à Jupiter et opposé au Nœud nord met en garde contre les promesses trop grandes.\n\nGardez une intention modeste et précise. Le ciel ne décide pas à votre place, il montre seulement où votre attention peut être la plus utile pendant les quatre prochaines semaines.",
+      "lion": "Lion, la Nouvelle Lune du jour ouvre un nouveau chapitre dans votre secteur du foyer, de la famille et des fondations intérieures : le Soleil et la Lune se rejoignent exactement en Scorpion vers 16°, et la Lune reste en Scorpion toute la journée.\n\nUne Nouvelle Lune est un moment de semence plutôt qu’un résultat : profitez-en pour prenez soin de ce qui vous sécurise chez vous avant de dépenser votre énergie à vous prouver dehors. Mercure est rétrograde en Scorpion et forme un carré à Pluton en Verseau, ce qui peut faire revenir une ancienne conversation ou un détail caché ; relisez avant de signer ou d’envoyer quoi que ce soit d’important. Vénus, rétrograde en Balance, forme un sextile serré à Mars et un sextile à Jupiter en Lion ainsi qu’un trigone au Nœud nord, ce qui favorise la réparation d’un lien plutôt qu’un nouveau départ. Mars conjoint à Jupiter et opposé au Nœud nord met en garde contre les promesses trop grandes.\n\nGardez une intention modeste et précise. Le ciel ne décide pas à votre place, il montre seulement où votre attention peut être la plus utile pendant les quatre prochaines semaines.",
+      "vierge": "Vierge, la Nouvelle Lune du jour ouvre un nouveau chapitre dans votre secteur des échanges, de la fratrie et des petits déplacements : le Soleil et la Lune se rejoignent exactement en Scorpion vers 16°, et la Lune reste en Scorpion toute la journée.\n\nUne Nouvelle Lune est un moment de semence plutôt qu’un résultat : profitez-en pour dites la phrase que vous répétez dans votre tête, calmement et une seule fois, plutôt que d’en écrire dix brouillons. Mercure est rétrograde en Scorpion et forme un carré à Pluton en Verseau, ce qui peut faire revenir une ancienne conversation ou un détail caché ; relisez avant de signer ou d’envoyer quoi que ce soit d’important. Vénus, rétrograde en Balance, forme un sextile serré à Mars et un sextile à Jupiter en Lion ainsi qu’un trigone au Nœud nord, ce qui favorise la réparation d’un lien plutôt qu’un nouveau départ. Mars conjoint à Jupiter et opposé au Nœud nord met en garde contre les promesses trop grandes.\n\nGardez une intention modeste et précise. Le ciel ne décide pas à votre place, il montre seulement où votre attention peut être la plus utile pendant les quatre prochaines semaines.",
+      "balance": "Balance, la Nouvelle Lune du jour ouvre un nouveau chapitre dans votre secteur de l’argent, de l’estime de soi et des ressources : le Soleil et la Lune se rejoignent exactement en Scorpion vers 16°, et la Lune reste en Scorpion toute la journée.\n\nUne Nouvelle Lune est un moment de semence plutôt qu’un résultat : profitez-en pour décidez de ce que vous valez dans un domaine concret, un tarif, un salaire ou le temps que vous donnez gratuitement. Mercure est rétrograde en Scorpion et forme un carré à Pluton en Verseau, ce qui peut faire revenir une ancienne conversation ou un détail caché ; relisez avant de signer ou d’envoyer quoi que ce soit d’important. Vénus, votre planète, est rétrograde en Balance : revoyez une ancienne promesse ou un ancien tarif avant d’en fixer un nouveau. Son sextile serré à Mars et son sextile à Jupiter en Lion vous donnent la chaleur nécessaire pour rouvrir le sujet avec douceur.\n\nGardez une intention modeste et précise. Le ciel ne décide pas à votre place, il montre seulement où votre attention peut être la plus utile pendant les quatre prochaines semaines.",
+      "scorpion": "Scorpion, la Nouvelle Lune du jour ouvre un nouveau chapitre dans votre secteur de l’identité et du nouveau départ personnel : le Soleil et la Lune se rejoignent exactement en Scorpion vers 16°, et la Lune reste en Scorpion toute la journée.\n\nUne Nouvelle Lune est un moment de semence plutôt qu’un résultat : profitez-en pour écrivez qui vous voulez devenir dans les douze prochains mois, en une ligne que vous pourriez lire à voix haute. Mercure est rétrograde en Scorpion et forme un carré à Pluton en Verseau, ce qui peut faire revenir une ancienne conversation ou un détail caché ; relisez avant de signer ou d’envoyer quoi que ce soit d’important. Mars, votre planète, est conjoint à Jupiter en Lion et reçoit un sextile serré de Vénus rétrograde en Balance, ce qui donne du courage, mais son opposition au Nœud nord vous demande d’agir pour vos propres raisons, pas pour être applaudi.\n\nGardez une intention modeste et précise. Le ciel ne décide pas à votre place, il montre seulement où votre attention peut être la plus utile pendant les quatre prochaines semaines.",
+      "sagittaire": "Sagittaire, la Nouvelle Lune du jour ouvre un nouveau chapitre dans votre secteur du repos, de la solitude et de l’inconscient : le Soleil et la Lune se rejoignent exactement en Scorpion vers 16°, et la Lune reste en Scorpion toute la journée.\n\nUne Nouvelle Lune est un moment de semence plutôt qu’un résultat : profitez-en pour acceptez de ralentir et observez quelle inquiétude revient la nuit, sans avoir besoin de la résoudre aujourd’hui. Mercure est rétrograde en Scorpion et forme un carré à Pluton en Verseau, ce qui peut faire revenir une ancienne conversation ou un détail caché ; relisez avant de signer ou d’envoyer quoi que ce soit d’important. Vénus, rétrograde en Balance, forme un sextile serré à Mars et un sextile à Jupiter en Lion ainsi qu’un trigone au Nœud nord, ce qui favorise la réparation d’un lien plutôt qu’un nouveau départ. Mars conjoint à Jupiter et opposé au Nœud nord met en garde contre les promesses trop grandes.\n\nGardez une intention modeste et précise. Le ciel ne décide pas à votre place, il montre seulement où votre attention peut être la plus utile pendant les quatre prochaines semaines.",
+      "capricorne": "Capricorne, la Nouvelle Lune du jour ouvre un nouveau chapitre dans votre secteur des amis, des réseaux et des projets à long terme : le Soleil et la Lune se rejoignent exactement en Scorpion vers 16°, et la Lune reste en Scorpion toute la journée.\n\nUne Nouvelle Lune est un moment de semence plutôt qu’un résultat : profitez-en pour vérifiez si votre entourage correspond encore à l’avenir que vous construisez, et recontactez une personne qui y a sa place. Mercure est rétrograde en Scorpion et forme un carré à Pluton en Verseau, ce qui peut faire revenir une ancienne conversation ou un détail caché ; relisez avant de signer ou d’envoyer quoi que ce soit d’important. Vénus, rétrograde en Balance, forme un sextile serré à Mars et un sextile à Jupiter en Lion ainsi qu’un trigone au Nœud nord, ce qui favorise la réparation d’un lien plutôt qu’un nouveau départ. Mars conjoint à Jupiter et opposé au Nœud nord met en garde contre les promesses trop grandes.\n\nGardez une intention modeste et précise. Le ciel ne décide pas à votre place, il montre seulement où votre attention peut être la plus utile pendant les quatre prochaines semaines.",
+      "verseau": "Verseau, la Nouvelle Lune du jour ouvre un nouveau chapitre dans votre secteur de la carrière, de la réputation et des objectifs publics : le Soleil et la Lune se rejoignent exactement en Scorpion vers 16°, et la Lune reste en Scorpion toute la journée.\n\nUne Nouvelle Lune est un moment de semence plutôt qu’un résultat : profitez-en pour choisissez un objectif professionnel pour le mois qui vient et formulez-le clairement, sans détour. Mercure est rétrograde en Scorpion et forme un carré à Pluton en Verseau, ce qui peut faire revenir une ancienne conversation ou un détail caché ; relisez avant de signer ou d’envoyer quoi que ce soit d’important. Vénus, rétrograde en Balance, forme un sextile serré à Mars et un sextile à Jupiter en Lion ainsi qu’un trigone au Nœud nord, ce qui favorise la réparation d’un lien plutôt qu’un nouveau départ. Mars conjoint à Jupiter et opposé au Nœud nord met en garde contre les promesses trop grandes.\n\nGardez une intention modeste et précise. Le ciel ne décide pas à votre place, il montre seulement où votre attention peut être la plus utile pendant les quatre prochaines semaines.",
+      "poissons": "Poissons, la Nouvelle Lune du jour ouvre un nouveau chapitre dans votre secteur des croyances, des études et des horizons lointains : le Soleil et la Lune se rejoignent exactement en Scorpion vers 16°, et la Lune reste en Scorpion toute la journée.\n\nUne Nouvelle Lune est un moment de semence plutôt qu’un résultat : profitez-en pour engagez-vous à apprendre une chose qui élargit votre regard, une formation, un livre ou un voyage sans cesse reporté. Mercure est rétrograde en Scorpion et forme un carré à Pluton en Verseau, ce qui peut faire revenir une ancienne conversation ou un détail caché ; relisez avant de signer ou d’envoyer quoi que ce soit d’important. Vénus, rétrograde en Balance, forme un sextile serré à Mars et un sextile à Jupiter en Lion ainsi qu’un trigone au Nœud nord, ce qui favorise la réparation d’un lien plutôt qu’un nouveau départ. Mars conjoint à Jupiter et opposé au Nœud nord met en garde contre les promesses trop grandes.\n\nGardez une intention modeste et précise. Le ciel ne décide pas à votre place, il montre seulement où votre attention peut être la plus utile pendant les quatre prochaines semaines."
+    }
+  }
+}
