@@ -83,10 +83,14 @@ export async function POST(request: NextRequest) {
   const bodyVisitor = validVisitorId(typeof body.visitorId === 'string' ? body.visitorId : null);
   const path = cleanPath(str(body.path, 300));
   let utm: Utm = {};
+  let utmContent: string | undefined;
   const search = str(body.search, 600);
   if (search) {
     try {
-      utm = utmFrom(new URLSearchParams(search));
+      const params = new URLSearchParams(search);
+      utm = utmFrom(params);
+      // Variante de post (ex. kepler1604_story_1109) : mesure par publication.
+      utmContent = (params.get('utm_content') || '').trim().replace(/[^A-Za-z0-9_.:-]/g, '').slice(0, 80) || undefined;
     } catch {
       utm = {};
     }
@@ -106,6 +110,7 @@ export async function POST(request: NextRequest) {
     const value = str(raw[key], 80);
     if (value) metadata[key] = value;
   }
+  if (utmContent) metadata.utm_content = utmContent;
   let advisorId = typeof body.advisorId === 'string' && UUID_RE.test(body.advisorId) ? body.advisorId : null;
 
   let eventName: EventName;
