@@ -3,6 +3,7 @@ import Link from 'next/link';
 import ChatCta from '@/components/ChatCta';
 import { notFound } from 'next/navigation';
 import { Chrome, Disclaimer, SignChips, SkyTable, TrialCta } from '@/components/Horoscope2027View';
+import { SKY_EVENT_PATHS } from '@/lib/sky-events';
 import { H2027_BASE, H2027_ORIGIN, h2027JsonLd } from '@/lib/horoscope-2027';
 
 export const dynamicParams = false;
@@ -61,6 +62,14 @@ export default async function Page(props: { params: Promise<{ locale: string }> 
             <p className="mt-2 text-white/80 leading-relaxed">{item.text}</p>
           </div>
         ))}
+      </section>
+      <section className="mt-10">
+        <h2 className="font-[family-name:var(--font-cinzel)] text-2xl">Le détail des dates, page par page</h2>
+        <ul className="mt-4 list-disc pl-5 space-y-2 text-white/80">
+          <li><Link href={SKY_EVENT_PATHS.mercuryRetrograde2027.fr} className="underline text-celestial-gold">Mercure rétrograde 2027</Link> : les trois périodes, les ombres et l’effet par signe.</li>
+          <li><Link href={SKY_EVENT_PATHS.eclipses2027.fr} className="underline text-celestial-gold">Calendrier des éclipses 2027</Link> : annulaire du 6 février, totale du 2 août, éclipses de Lune.</li>
+          <li><Link href="/fr/horoscope-du-jour" className="underline text-celestial-gold">Horoscope du jour</Link> et <Link href="/fr/lune-aujourdhui" className="underline text-celestial-gold">la Lune aujourd’hui</Link> pour suivre le ciel au quotidien.</li>
+        </ul>
       </section>
       <section className="mt-10">
         <h2 className="font-[family-name:var(--font-cinzel)] text-2xl">Calendrier astrologique 2027</h2>

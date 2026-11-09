@@ -417,6 +417,8 @@ export function footerLinks(locale: Locale): TextLink[] {
     { href: moonPath(locale), label: TOOL_COMMON[locale].moonTool },
     { href: affiliatePath(locale), label: TOOL_COMMON[locale].affiliateLink },
     ...(locale === 'fr' ? [{ href: '/fr/horoscope-2027', label: 'Horoscope 2027' }] : []),
+    ...(locale === 'fr' ? [{ href: '/fr/calendrier-eclipses-2027', label: 'Éclipses 2027' }, { href: '/fr/mercure-retrograde-2027', label: 'Mercure rétrograde 2027' }] : []),
+    ...(locale === 'en' ? [{ href: '/en/eclipses-2027-calendar', label: 'Eclipses 2027' }, { href: '/en/mercury-retrograde-2027', label: 'Mercury retrograde 2027' }] : []),
     { href: '/faq', label: 'FAQ' },
     { href: VIDEOS_PATH, label: copy.videos },
     { href: aboutPath(locale), label: copy.about },

@@ -7,9 +7,9 @@ import { SIGN_IDS, signPath, weekPath, type SignId } from './zodiac/signs.ts';
  * positions géocentriques apparentes), recoupées avec des tables publiées (astro-seek, otldr).
  */
 export type SkyLocale = 'fr' | 'en';
-export type SkyEventId = 'mercuryVenusDirect' | 'newMoonScorpio' | 'fullMoonGemini' | 'sagittariusSeason';
+export type SkyEventId = 'mercuryVenusDirect' | 'newMoonScorpio' | 'fullMoonGemini' | 'sagittariusSeason' | 'mercuryRetrograde2027' | 'eclipses2027';
 
-export const SKY_EVENT_IDS: SkyEventId[] = ['mercuryVenusDirect', 'newMoonScorpio', 'fullMoonGemini', 'sagittariusSeason'];
+export const SKY_EVENT_IDS: SkyEventId[] = ['mercuryVenusDirect', 'newMoonScorpio', 'fullMoonGemini', 'sagittariusSeason', 'mercuryRetrograde2027', 'eclipses2027'];
 export const SKY_EVENTS_ORIGIN = 'https://callastral.com';
 export const SKY_EVENTS_PUBLISHED = '2026-10-30';
 
@@ -19,6 +19,8 @@ export const SKY_EVENT_PUBLISHED: Record<SkyEventId, string> = {
   newMoonScorpio: '2026-10-30',
   fullMoonGemini: '2026-11-02',
   sagittariusSeason: '2026-11-02',
+  mercuryRetrograde2027: '2026-11-09',
+  eclipses2027: '2026-11-09',
 };
 
 /** Dernière modification (titres et maillage revus le 02/11/2026). */
@@ -27,6 +29,8 @@ export const SKY_EVENT_MODIFIED: Record<SkyEventId, string> = {
   newMoonScorpio: '2026-11-02',
   fullMoonGemini: '2026-11-02',
   sagittariusSeason: '2026-11-02',
+  mercuryRetrograde2027: '2026-11-09',
+  eclipses2027: '2026-11-09',
 };
 
 export const SKY_EVENT_PATHS: Record<SkyEventId, Record<SkyLocale, string>> = {
@@ -34,6 +38,8 @@ export const SKY_EVENT_PATHS: Record<SkyEventId, Record<SkyLocale, string>> = {
   newMoonScorpio: { en: '/en/new-moon-scorpio-november-2026', fr: '/fr/nouvelle-lune-scorpion-novembre-2026' },
   fullMoonGemini: { en: '/en/full-moon-gemini-november-2026', fr: '/fr/pleine-lune-gemeaux-novembre-2026' },
   sagittariusSeason: { en: '/en/sagittarius-season-2026', fr: '/fr/saison-sagittaire-2026' },
+  mercuryRetrograde2027: { en: '/en/mercury-retrograde-2027', fr: '/fr/mercure-retrograde-2027' },
+  eclipses2027: { en: '/en/eclipses-2027-calendar', fr: '/fr/calendrier-eclipses-2027' },
 };
 
 /** Même convention que les pages GEO : x-default = FR. */
@@ -369,7 +375,9 @@ export function signRows(event: SkyEventId, locale: SkyLocale): SkySignRow[] {
   return SIGN_IDS.map((id, index) => {
     const name = SIGN_NAMES[locale][index];
     let text: string;
-    if (event === 'mercuryVenusDirect') {
+    if (event === 'mercuryRetrograde2027' || event === 'eclipses2027') {
+      text = signRows2027(event, locale, index);
+    } else if (event === 'mercuryVenusDirect') {
       const hm = solarHouse(index, SCORPIO);
       const hv = solarHouse(index, LIBRA);
       const extra = MERCURY_RULED[locale][index];
@@ -805,6 +813,8 @@ export const SKY_EVENT_LABELS: Record<SkyEventId, Record<SkyLocale, string>> = {
   newMoonScorpio: { en: 'New Moon in Scorpio on 9 November 2026', fr: 'Nouvelle Lune en Scorpion du 9 novembre 2026' },
   fullMoonGemini: { en: 'Full Moon in Gemini (Beaver supermoon) on 24 November 2026', fr: 'Pleine Lune en Gémeaux (super Lune) du 24 novembre 2026' },
   sagittariusSeason: { en: 'Sagittarius season 2026: 22 November to 21 December', fr: 'Saison du Sagittaire 2026 : du 22 novembre au 21 décembre' },
+  mercuryRetrograde2027: { en: 'Mercury retrograde 2027: dates and times of the 3 periods', fr: 'Mercure rétrograde 2027 : dates et heures des 3 périodes' },
+  eclipses2027: { en: 'Eclipses 2027: dates, times and effects by sign', fr: 'Éclipses 2027 : dates, heures et effets par signe' },
 };
 
 function fullMoonCopy(locale: SkyLocale): SkyEventCopy {
@@ -1137,11 +1147,560 @@ function sagittariusSeasonCopy(locale: SkyLocale): SkyEventCopy {
   };
 }
 
+
+/* ------------------------------------------------------------------ */
+/* Pages 2027 : Mercure rétrograde et éclipses (publiées le 09/11/2026) */
+/* Positions calculées avec l’éphéméride NASA JPL DE440 (Skyfield) ; heures et trajets */
+/* des éclipses recoupés avec le catalogue NASA (eclipse.gsfc.nasa.gov/OH/OH2027.html). */
+/* ------------------------------------------------------------------ */
+
+export const T2027 = {
+  m1Pre: '2027-01-25T19:12:00Z',
+  m1Retro: '2027-02-09T17:36:00Z',
+  m1Back: '2027-02-18T12:16:00Z',
+  m1Direct: '2027-03-03T12:32:00Z',
+  m1End: '2027-03-23T15:25:00Z',
+  m2Pre: '2027-05-26T06:14:00Z',
+  m2Retro: '2027-06-10T18:15:00Z',
+  m2Back: '2027-06-26T07:19:00Z',
+  m2Direct: '2027-07-04T19:39:00Z',
+  m2End: '2027-07-19T09:05:00Z',
+  m3Pre: '2027-09-17T07:41:00Z',
+  m3Retro: '2027-10-07T14:37:00Z',
+  m3Back: '2027-10-16T07:36:00Z',
+  m3Direct: '2027-10-28T14:11:00Z',
+  m3End: '2027-11-13T10:21:00Z',
+  m4Retro: '2028-01-24T11:02:00Z',
+  annular: '2027-02-06T16:00:00Z',
+  lunarFeb: '2027-02-20T23:13:00Z',
+  lunarJul: '2027-07-18T16:03:00Z',
+  total: '2027-08-02T10:07:00Z',
+  lunarAug: '2027-08-17T07:14:00Z',
+} as const;
+
+/** Format compact : « 9 février à 18 h 36, heure de Paris (17 h 36 UTC) ». */
+function bothIso(iso: string, locale: SkyLocale): string {
+  const d = new Date(iso);
+  const loc = locale === 'fr' ? 'fr-FR' : 'en-GB';
+  const dm = (tz: string) => new Intl.DateTimeFormat(loc, { day: 'numeric', month: 'long', timeZone: tz }).format(d);
+  const hm = (tz: string) => {
+    const x = new Intl.DateTimeFormat('en-GB', { hour: '2-digit', minute: '2-digit', hour12: false, timeZone: tz }).format(d);
+    return locale === 'fr' ? x.replace(':', ' h ').replace(/^0(\d)/, '$1') : x;
+  };
+  const pd = dm('Europe/Paris');
+  const ud = dm('UTC');
+  const utcPart = pd === ud ? `${hm('UTC')} UTC` : `${ud}, ${hm('UTC')} UTC`;
+  return locale === 'fr' ? `${pd}, ${hm('Europe/Paris')} Paris (${utcPart})`.replace(/ h 00/g, ' h') : `${pd}, ${hm('Europe/Paris')} Paris (${utcPart})`;
+}
+
+function rowIso(iso: string, locale: SkyLocale, label: string, detail: string): SkyRow {
+  return { label, paris: formatParis(iso, locale), utc: formatUtc(iso, locale), detail };
+}
+
+const HOUSE_TOPIC: Record<SkyLocale, string[]> = {
+  en: [
+    'yourself and your image',
+    'money and self-worth',
+    'messages, siblings and short trips',
+    'home and family',
+    'romance, creativity and children',
+    'work routines and health',
+    'partners and contracts',
+    'shared money, debts and intimacy',
+    'travel, study and beliefs',
+    'career and reputation',
+    'friends and group projects',
+    'rest, solitude and what you keep private',
+  ],
+  fr: [
+    'vous-même et votre image',
+    'l’argent et l’estime de soi',
+    'les messages, la fratrie et les petits trajets',
+    'le foyer et la famille',
+    'l’amour, la créativité et les enfants',
+    'le travail quotidien et la santé',
+    'le couple et les contrats',
+    'l’argent partagé, les dettes et l’intimité',
+    'les voyages, les études et les convictions',
+    'la carrière et la réputation',
+    'les amis et les projets collectifs',
+    'le repos, la solitude et ce que vous gardez pour vous',
+  ],
+};
+
+const SIGN_PISCES = 11;
+const SIGN_AQUARIUS = 10;
+const SIGN_CANCER = 3;
+const SIGN_GEMINI = 2;
+const SIGN_LIBRA = 6;
+const SIGN_SCORPIO = 7;
+const SIGN_LEO = 4;
+const SIGN_VIRGO = 5;
+
+const MERCURY_2027_EXTRA: Record<SkyLocale, Partial<Record<number, string>>> = {
+  en: {
+    11: 'Mercury turns retrograde inside your sign on 9 February, at 5°59′ Pisces, so the first period concerns you directly.',
+    10: 'Mercury turns direct inside your sign on 3 March, at 20°55′ Aquarius.',
+    3: 'Mercury turns retrograde inside your sign on 10 June, at 6°22′ Cancer, so the second period concerns you directly.',
+    2: 'Mercury is your ruling planet and turns direct in your sign on 4 July, at 27°28′ Gemini: all three retrogrades touch your everyday decisions.',
+    5: 'Mercury is your ruling planet, so every retrograde is felt in your habits, your lists and your health routines.',
+    6: 'Mercury turns direct inside your sign on 28 October, at 19°19′ Libra.',
+    7: 'Mercury turns retrograde inside your sign on 7 October, at 4°56′ Scorpio, so the third period concerns you directly.',
+  },
+  fr: {
+    11: 'Mercure devient rétrograde dans votre signe le 9 février, à 5°59′ Poissons : la première période vous concerne directement.',
+    10: 'Mercure redevient direct dans votre signe le 3 mars, à 20°55′ Verseau.',
+    3: 'Mercure devient rétrograde dans votre signe le 10 juin, à 6°22′ Cancer : la deuxième période vous concerne directement.',
+    2: 'Mercure gouverne votre signe et redevient direct chez vous le 4 juillet, à 27°28′ Gémeaux : les trois rétrogradations touchent vos décisions de tous les jours.',
+    5: 'Mercure gouverne votre signe : chaque rétrogradation se ressent dans vos habitudes, vos listes et vos routines de santé.',
+    6: 'Mercure redevient direct dans votre signe le 28 octobre, à 19°19′ Balance.',
+    7: 'Mercure devient rétrograde dans votre signe le 7 octobre, à 4°56′ Scorpion : la troisième période vous concerne directement.',
+  },
+};
+
+const ECLIPSE_2027_EXTRA: Record<SkyLocale, Partial<Record<number, string>>> = {
+  en: {
+    10: 'The 6 February eclipse is in your sign, at 17°38′ Aquarius, and the 17 August lunar eclipse is in your sign too: this is your eclipse year.',
+    4: 'The 2 August total eclipse is in your sign, at 9°55′ Leo, the biggest eclipse of the year: this is your eclipse year.',
+    1: 'Taurus is square to both solar eclipses (Aquarius and Leo), so you may feel pulled between two priorities in February and August.',
+    7: 'Scorpio is square to both solar eclipses (Aquarius and Leo), so you may feel pulled between two priorities in February and August.',
+    5: 'The 20 February lunar eclipse falls in your sign, at 1°59′ Virgo, a quiet penumbral one.',
+    11: 'The 20 February lunar eclipse has the Sun in your sign, at 2°05′ Pisces.',
+    9: 'The 18 July lunar eclipse falls in your sign, at 25°58′ Capricorn, a penumbral eclipse that is barely noticeable.',
+    3: 'The 18 July lunar eclipse has the Sun in your sign, at 25°49′ Cancer.',
+  },
+  fr: {
+    10: 'L’éclipse du 6 février est dans votre signe, à 17°38′ Verseau, et l’éclipse de Lune du 17 août l’est aussi : c’est votre année d’éclipses.',
+    4: 'L’éclipse totale du 2 août est dans votre signe, à 9°55′ Lion, la plus grande éclipse de l’année : c’est votre année d’éclipses.',
+    1: 'Le Taureau est au carré des deux éclipses de Soleil (Verseau et Lion) : vous pouvez vous sentir tiraillé entre deux priorités en février et en août.',
+    7: 'Le Scorpion est au carré des deux éclipses de Soleil (Verseau et Lion) : vous pouvez vous sentir tiraillé entre deux priorités en février et en août.',
+    5: 'L’éclipse de Lune du 20 février tombe dans votre signe, à 1°59′ Vierge, une éclipse pénombrale discrète.',
+    11: 'Lors de l’éclipse de Lune du 20 février, le Soleil est dans votre signe, à 2°05′ Poissons.',
+    9: 'L’éclipse de Lune du 18 juillet tombe dans votre signe, à 25°58′ Capricorne, une éclipse pénombrale presque imperceptible.',
+    3: 'Lors de l’éclipse de Lune du 18 juillet, le Soleil est dans votre signe, à 25°49′ Cancer.',
+  },
+};
+
+export function signRows2027(event: 'mercuryRetrograde2027' | 'eclipses2027', locale: SkyLocale, index: number): string {
+  const name = SIGN_NAMES[locale][index];
+  const topic = (h: number) => HOUSE_TOPIC[locale][h - 1];
+  const o = (h: number) => ordinal(h, locale);
+  if (event === 'mercuryRetrograde2027') {
+    const p1a = solarHouse(index, SIGN_PISCES);
+    const p1b = solarHouse(index, SIGN_AQUARIUS);
+    const p2a = solarHouse(index, SIGN_CANCER);
+    const p2b = solarHouse(index, SIGN_GEMINI);
+    const p3a = solarHouse(index, SIGN_SCORPIO);
+    const p3b = solarHouse(index, SIGN_LIBRA);
+    const extra = MERCURY_2027_EXTRA[locale][index];
+    return locale === 'fr'
+      ? `Pour ${FR_ARTICLE[index]}${name}, du 9 février au 3 mars, Mercure recule de votre maison solaire ${p1a} (${topic(p1a)}) vers la ${p1b} (${topic(p1b)}). Du 10 juin au 4 juillet, il recule de la ${p2a} (${topic(p2a)}) vers la ${p2b} (${topic(p2b)}). Du 7 au 28 octobre, il recule de la ${p3a} (${topic(p3a)}) vers la ${p3b} (${topic(p3b)}).${extra ? ` ${extra}` : ''}`
+      : `For ${name}, from 9 February to 3 March Mercury moves back from your ${o(p1a)} solar house (${topic(p1a)}) into your ${o(p1b)} (${topic(p1b)}). From 10 June to 4 July it moves back from your ${o(p2a)} (${topic(p2a)}) into your ${o(p2b)} (${topic(p2b)}). From 7 to 28 October it moves back from your ${o(p3a)} (${topic(p3a)}) into your ${o(p3b)} (${topic(p3b)}).${extra ? ` ${extra}` : ''}`;
+  }
+  const hs = solarHouse(index, SIGN_AQUARIUS);
+  const ht = solarHouse(index, SIGN_LEO);
+  const extra = ECLIPSE_2027_EXTRA[locale][index];
+  return locale === 'fr'
+    ? `Pour ${FR_ARTICLE[index]}${name}, l’éclipse de Soleil du 6 février tombe dans votre maison solaire ${hs} (${topic(hs)}) et l’éclipse totale du 2 août dans votre maison ${ht} (${topic(ht)}). Février ouvre un chapitre sur le premier thème et août en ouvre un sur le second, avec des effets qui se déploient sur plusieurs mois.${extra ? ` ${extra}` : ''}`
+    : `For ${name}, the 6 February solar eclipse falls in your ${o(hs)} solar house (${topic(hs)}) and the 2 August total eclipse in your ${o(ht)} house (${topic(ht)}). February opens a chapter on the first theme and August opens one on the second, with effects that unfold over several months.${extra ? ` ${extra}` : ''}`;
+}
+
+const METHOD_2027: Record<SkyLocale, string> = {
+  en: 'Method: planetary dates, times and degrees were computed by Callastral with the NASA JPL DE440 ephemeris (geocentric, apparent positions, tropical zodiac). Eclipse times, magnitudes and paths were cross-checked against the NASA eclipse catalogue (greatest eclipse in UT). Station times can differ by a few minutes between ephemerides. Paris time is UTC+1 until 28 March 2027, then UTC+2 until 31 October 2027.',
+  fr: 'Méthode : dates, heures et degrés des planètes calculés par Callastral avec l’éphéméride NASA JPL DE440 (positions géocentriques apparentes, zodiaque tropical). Heures, magnitudes et trajets des éclipses recoupés avec le catalogue d’éclipses de la NASA (instant de l’éclipse maximale, en temps universel). L’heure d’une station peut varier de quelques minutes selon l’éphéméride. L’heure de Paris est UTC+1 jusqu’au 28 mars 2027, puis UTC+2 jusqu’au 31 octobre 2027.',
+};
+
+function link2027(locale: SkyLocale): { href: string; label: string } {
+  return locale === 'fr'
+    ? { href: '/fr/horoscope-2027', label: 'Lire l’horoscope 2027 pour les 12 signes (amour, travail, argent)' }
+    : { href: '/fr/horoscope-2027', label: 'Horoscope 2027 for the 12 signs: love, work and money (in French)' };
+}
+
+function mercuryRetro2027Copy(locale: SkyLocale): SkyEventCopy {
+  const t = (iso: string) => bothIso(iso, locale);
+  const path = SKY_EVENT_PATHS.mercuryRetrograde2027[locale];
+  const links = [link2027(locale), ...commonLinks(locale)];
+  if (locale === 'fr') {
+    return {
+      id: 'mercuryRetrograde2027',
+      locale,
+      path,
+      title: 'Mercure rétrograde 2027 : dates et heures des 3 périodes',
+      description: 'Mercure rétrograde 2027 : du 9/02 au 3/03, du 10/06 au 4/07 et du 7 au 28/10. Heures de Paris et UTC, ombres et effets pour les 12 signes.',
+      h1: 'Mercure rétrograde 2027 : les trois périodes, avec les heures',
+      breadcrumb: 'Mercure rétrograde 2027',
+      answer: [
+        `Mercure est rétrograde trois fois en 2027 : du ${t(T2027.m1Retro)} au ${t(T2027.m1Direct)}, du ${t(T2027.m2Retro)} au ${t(T2027.m2Direct)}, puis du ${t(T2027.m3Retro)} au ${t(T2027.m3Direct)}.`,
+        'Avec les périodes d’ombre avant et après, la zone de vigilance court du 25 janvier au 23 mars, du 26 mai au 19 juillet et du 17 septembre au 13 novembre 2027, avec une rétrogradation en Poissons et Verseau, puis en Cancer et Gémeaux, puis en Scorpion et Balance.',
+      ],
+      updated: 'Publié le 9 novembre 2026',
+      tableTitle: 'Le calendrier de Mercure rétrograde en 2027',
+      tableCaption: 'Calculé avec l’éphéméride NASA JPL DE440',
+      cols: ['Événement', 'Heure de Paris', 'UTC', 'Position'],
+      rows: [
+        rowIso(T2027.m1Pre, 'fr', 'Début de l’ombre (1re période)', '20°55′ Verseau'),
+        rowIso(T2027.m1Retro, 'fr', 'Mercure devient rétrograde', '5°59′ Poissons'),
+        rowIso(T2027.m1Direct, 'fr', 'Mercure redevient direct', '20°55′ Verseau'),
+        rowIso(T2027.m1End, 'fr', 'Fin de l’ombre', '5°59′ Poissons'),
+        rowIso(T2027.m2Pre, 'fr', 'Début de l’ombre (2e période)', '27°28′ Gémeaux'),
+        rowIso(T2027.m2Retro, 'fr', 'Mercure devient rétrograde', '6°22′ Cancer'),
+        rowIso(T2027.m2Direct, 'fr', 'Mercure redevient direct', '27°28′ Gémeaux'),
+        rowIso(T2027.m2End, 'fr', 'Fin de l’ombre', '6°22′ Cancer'),
+        rowIso(T2027.m3Pre, 'fr', 'Début de l’ombre (3e période)', '19°19′ Balance'),
+        rowIso(T2027.m3Retro, 'fr', 'Mercure devient rétrograde', '4°56′ Scorpion'),
+        rowIso(T2027.m3Direct, 'fr', 'Mercure redevient direct', '19°19′ Balance'),
+        rowIso(T2027.m3End, 'fr', 'Fin de l’ombre', '4°56′ Scorpion'),
+      ],
+      sections: [
+        {
+          h2: 'Les dates de Mercure rétrograde 2027 en un coup d’œil',
+          paragraphs: [
+            'La première période dure environ 22 jours (9 février au 3 mars), la deuxième environ 24 jours (10 juin au 4 juillet) et la troisième environ 21 jours (7 au 28 octobre). La rétrogradation suivante commence le 24 janvier 2028 à 11 h 02 UTC, à 19°42′ Verseau.',
+            'Mercure est direct du 13 novembre 2026 au 9 février 2027, puis du 3 mars au 10 juin, puis du 4 juillet au 7 octobre, puis du 28 octobre jusqu’à la fin de l’année.',
+          ],
+        },
+        {
+          h2: 'Ce que signifie Mercure rétrograde',
+          paragraphs: [
+            'Mercure rétrograde est un mouvement apparent : vu de la Terre, la planète semble reculer quelques semaines, comme une voiture que l’on dépasse sur l’autoroute. Cela se produit environ trois à quatre fois par an et ne change rien au fonctionnement réel des téléphones ou des trains.',
+            'En astrologie, Mercure gouverne la communication, les déplacements, les contrats et la pensée. Sa rétrogradation est lue comme une période pour relire, revoir, reprendre contact et finir ce qui traîne, plutôt que pour lancer des projets neufs.',
+          ],
+        },
+        {
+          h2: 'Du 9 février au 3 mars 2027 : Poissons puis Verseau',
+          paragraphs: [
+            `La première rétrogradation commence trois jours après l’éclipse solaire annulaire du 6 février à 17°38′ Verseau. Mercure recule en Verseau le ${t(T2027.m1Back)}, redevient direct à 20°55′ Verseau le ${t(T2027.m1Direct)} et sort de son ombre à 5°59′ Poissons le ${t(T2027.m1End)}.`,
+            'Mars est lui aussi rétrograde du 10 janvier au 1er avril 2027 : pendant trois semaines, deux planètes qui reculent en même temps invitent à ralentir les décisions pressées, en particulier sur le travail et les échanges. Une éclipse de Lune pénombrale a lieu le 20 février, au milieu de la période.',
+          ],
+        },
+        {
+          h2: 'Du 10 juin au 4 juillet 2027 : Cancer puis Gémeaux',
+          paragraphs: [
+            `Mercure recule de 6°22′ Cancer et revient en Gémeaux le ${t(T2027.m2Back)}. Il redevient direct à 27°28′ Gémeaux le ${t(T2027.m2Direct)}, puis sort de son ombre le ${t(T2027.m2End)}.`,
+            'Cette période touche la famille, la maison et les paroles échangées avec les proches (Cancer), puis les messages, les contrats et les déplacements (Gémeaux). Jupiter entre en Vierge le 26 juillet, une semaine après la fin de l’ombre.',
+          ],
+        },
+        {
+          h2: 'Du 7 au 28 octobre 2027 : Scorpion puis Balance',
+          paragraphs: [
+            `Mercure recule de 4°56′ Scorpion, retrouve la Balance le ${t(T2027.m3Back)} et redevient direct à 19°19′ Balance le ${t(T2027.m3Direct)}. L’ombre se termine le ${t(T2027.m3End)}.`,
+            'Ce dernier passage parle d’argent partagé, de confiance et de non-dits (Scorpion), puis de couple et d’accords (Balance). Uranus est rétrograde en Gémeaux depuis le 15 septembre, ce qui ajoute un parfum d’imprévu aux plans de fin d’année.',
+          ],
+        },
+      ],
+      signsTitle: 'Mercure rétrograde 2027 pour chaque signe',
+      signsIntro: 'Lecture par maisons solaires, à partir de votre signe solaire. Avec votre ascendant, calculé par notre thème astral gratuit, la lecture est plus précise.',
+      adviceTitle: 'Conseils pratiques pour chaque période',
+      advice: [
+        'Relisez les contrats, devis, adresses et horaires avant de signer ou d’envoyer, surtout entre la station rétrograde et la station directe.',
+        'Sauvegardez vos fichiers et confirmez vos réservations par écrit : le but est d’éviter les malentendus, pas de tout arrêter.',
+        'Profitez de la rétrogradation pour reprendre contact avec quelqu’un, terminer un projet ou trier un dossier plutôt que pour démarrer quelque chose de neuf.',
+        'Si une grosse décision peut attendre l’ombre de fin, laissez-lui quelques semaines : vous la prendrez avec plus de recul.',
+      ],
+      method: METHOD_2027.fr,
+      faqTitle: 'Questions fréquentes',
+      faqs: [
+        { question: 'Quand Mercure est-il rétrograde en 2027 ?', answer: 'Du 9 février 2027 (18 h 36, heure de Paris) au 3 mars 2027 (13 h 32), du 10 juin (20 h 15) au 4 juillet (21 h 39) et du 7 octobre (16 h 37) au 28 octobre 2027 (16 h 11).' },
+        { question: 'Combien de rétrogradations de Mercure y a-t-il en 2027 ?', answer: 'Trois, de 21 à 24 jours chacune. La suivante commence le 24 janvier 2028.' },
+        { question: 'Qu’est-ce que l’ombre de Mercure rétrograde ?', answer: 'C’est la période, d’environ deux à trois semaines avant et après, où Mercure traverse les degrés qu’il parcourra deux fois. Les astrologues l’interprètent comme une phase de préparation puis de digestion.' },
+        { question: 'Peut-on signer un contrat pendant Mercure rétrograde ?', answer: 'Oui. La tradition conseille surtout de relire chaque clause et de garder une trace écrite. Il n’existe pas de preuve scientifique qu’une signature soit moins valable pendant une rétrogradation.' },
+        { question: 'Mercure rétrograde existe-t-il vraiment ?', answer: 'Le mouvement est une illusion d’optique causée par la vitesse relative de la Terre et de Mercure, mais ses dates sont des faits astronomiques. L’interprétation, elle, est symbolique.' },
+        { question: 'La première rétrogradation de 2027 est-elle liée à une éclipse ?', answer: 'Elle commence trois jours après l’éclipse solaire annulaire du 6 février 2027 et se termine avant la fin de l’ombre le 23 mars. Une éclipse de Lune pénombrale a lieu le 20 février, pendant la période.' },
+      ],
+      ctaText: 'Un contrat à relire, une conversation à reprendre, un choix à poser ? Parlez-en à voix haute avec une Conseillère ou un Conseiller Callastral, à partir de votre vrai thème. Aucune date inventée. Aucun compteur caché. Ton vrai ciel.',
+      ctaButton: '3 min offertes, sans carte',
+      linksTitle: 'Aller plus loin',
+      links,
+      related: { href: SKY_EVENT_PATHS.eclipses2027.fr, label: SKY_EVENT_LABELS.eclipses2027.fr },
+      home: 'Accueil',
+      disclaimer: DISCLAIMER.fr,
+    };
+  }
+  return {
+    id: 'mercuryRetrograde2027',
+    locale,
+    path,
+    title: 'Mercury Retrograde 2027: Dates and Times (3 Periods)',
+    description: 'Mercury retrograde 2027: 9 Feb to 3 Mar, 10 Jun to 4 Jul and 7 to 28 Oct. Paris and UTC times, shadow dates and what each period means for 12 signs.',
+    h1: 'Mercury retrograde 2027: the three periods, with times',
+    breadcrumb: 'Mercury retrograde 2027',
+    answer: [
+      `Mercury is retrograde three times in 2027: from ${t(T2027.m1Retro)} to ${t(T2027.m1Direct)}, from ${t(T2027.m2Retro)} to ${t(T2027.m2Direct)}, and from ${t(T2027.m3Retro)} to ${t(T2027.m3Direct)}.`,
+      'With the shadow periods before and after, the zone of caution runs from 25 January to 23 March, from 26 May to 19 July and from 17 September to 13 November 2027, with retrogrades in Pisces and Aquarius, then Cancer and Gemini, then Scorpio and Libra.',
+    ],
+    updated: 'Published on 9 November 2026',
+    tableTitle: 'Mercury retrograde 2027 calendar',
+    tableCaption: 'Calculated with the NASA JPL DE440 ephemeris',
+    cols: ['Event', 'Paris time', 'UTC', 'Position'],
+    rows: [
+      rowIso(T2027.m1Pre, 'en', 'Shadow begins (1st period)', '20°55′ Aquarius'),
+      rowIso(T2027.m1Retro, 'en', 'Mercury stations retrograde', '5°59′ Pisces'),
+      rowIso(T2027.m1Direct, 'en', 'Mercury stations direct', '20°55′ Aquarius'),
+      rowIso(T2027.m1End, 'en', 'Shadow ends', '5°59′ Pisces'),
+      rowIso(T2027.m2Pre, 'en', 'Shadow begins (2nd period)', '27°28′ Gemini'),
+      rowIso(T2027.m2Retro, 'en', 'Mercury stations retrograde', '6°22′ Cancer'),
+      rowIso(T2027.m2Direct, 'en', 'Mercury stations direct', '27°28′ Gemini'),
+      rowIso(T2027.m2End, 'en', 'Shadow ends', '6°22′ Cancer'),
+      rowIso(T2027.m3Pre, 'en', 'Shadow begins (3rd period)', '19°19′ Libra'),
+      rowIso(T2027.m3Retro, 'en', 'Mercury stations retrograde', '4°56′ Scorpio'),
+      rowIso(T2027.m3Direct, 'en', 'Mercury stations direct', '19°19′ Libra'),
+      rowIso(T2027.m3End, 'en', 'Shadow ends', '4°56′ Scorpio'),
+    ],
+    sections: [
+      {
+        h2: 'Mercury retrograde 2027 dates at a glance',
+        paragraphs: [
+          'The first period lasts about 22 days (9 February to 3 March), the second about 24 days (10 June to 4 July) and the third about 21 days (7 to 28 October). The next retrograde begins on 24 January 2028 at 11:02 UTC, at 19°42′ Aquarius.',
+          'Mercury is direct from 13 November 2026 to 9 February 2027, then from 3 March to 10 June, then from 4 July to 7 October, then from 28 October to the end of the year.',
+        ],
+      },
+      {
+        h2: 'What Mercury retrograde means',
+        paragraphs: [
+          'Mercury retrograde is an apparent motion: seen from Earth, the planet seems to move backwards for a few weeks, like a car you overtake on a motorway. It happens about three to four times a year and does not change how phones or trains actually work.',
+          'In astrology Mercury rules communication, travel, contracts and thinking. Its retrograde is read as a time to reread, review, reconnect and finish what is dragging, rather than to launch brand new projects.',
+        ],
+      },
+      {
+        h2: '9 February to 3 March 2027: Pisces, then Aquarius',
+        paragraphs: [
+          `The first retrograde begins three days after the annular solar eclipse of 6 February at 17°38′ Aquarius. Mercury moves back into Aquarius on ${t(T2027.m1Back)}, turns direct at 20°55′ Aquarius on ${t(T2027.m1Direct)} and leaves its shadow at 5°59′ Pisces on ${t(T2027.m1End)}.`,
+          'Mars is also retrograde from 10 January to 1 April 2027: for three weeks, two planets moving backwards at the same time invite you to slow down hasty decisions, especially about work and conversations. A penumbral lunar eclipse falls on 20 February, in the middle of the period.',
+        ],
+      },
+      {
+        h2: '10 June to 4 July 2027: Cancer, then Gemini',
+        paragraphs: [
+          `Mercury moves back from 6°22′ Cancer into Gemini on ${t(T2027.m2Back)}. It turns direct at 27°28′ Gemini on ${t(T2027.m2Direct)} and leaves its shadow on ${t(T2027.m2End)}.`,
+          'This period touches family, home and the words exchanged with close ones (Cancer), then messages, contracts and travel (Gemini). Jupiter enters Virgo on 26 July, a week after the shadow ends.',
+        ],
+      },
+      {
+        h2: '7 to 28 October 2027: Scorpio, then Libra',
+        paragraphs: [
+          `Mercury moves back from 4°56′ Scorpio, returns to Libra on ${t(T2027.m3Back)} and turns direct at 19°19′ Libra on ${t(T2027.m3Direct)}. The shadow ends on ${t(T2027.m3End)}.`,
+          'This last passage is about shared money, trust and things left unsaid (Scorpio), then partnerships and agreements (Libra). Uranus has been retrograde in Gemini since 15 September, which adds a note of the unexpected to year-end plans.',
+        ],
+      },
+    ],
+    signsTitle: 'Mercury retrograde 2027 for each sign',
+    signsIntro: 'Reading by solar houses, from your Sun sign. With your rising sign, calculated by our free birth chart, the reading is more precise.',
+    adviceTitle: 'Practical tips for each period',
+    advice: [
+      'Reread contracts, quotes, addresses and schedules before you sign or send, especially between the retrograde station and the direct station.',
+      'Back up your files and confirm bookings in writing: the aim is to avoid misunderstandings, not to stop everything.',
+      'Use the retrograde to reconnect with someone, finish a project or sort a file rather than to start something new.',
+      'If a big decision can wait until the shadow ends, give it a few weeks and you will take it with more perspective.',
+    ],
+    method: METHOD_2027.en,
+    faqTitle: 'Frequently asked questions',
+    faqs: [
+      { question: 'When is Mercury retrograde in 2027?', answer: 'From 9 February 2027 (17:36 UTC, 18:36 Paris time) to 3 March (12:32 UTC), from 10 June (18:15 UTC) to 4 July (19:39 UTC), and from 7 October (14:37 UTC) to 28 October 2027 (14:11 UTC).' },
+      { question: 'How many Mercury retrogrades are there in 2027?', answer: 'Three, each lasting 21 to 24 days. The next one begins on 24 January 2028.' },
+      { question: 'What is the Mercury retrograde shadow?', answer: 'It is the period of roughly two to three weeks before and after, when Mercury crosses degrees it will travel twice. Astrologers read it as a phase of preparation and then of digestion.' },
+      { question: 'Can I sign a contract during Mercury retrograde?', answer: 'Yes. Tradition mainly advises you to reread every clause and keep a written record. There is no scientific evidence that a signature is less valid during a retrograde.' },
+      { question: 'Is Mercury retrograde real?', answer: 'The backward motion is an optical illusion caused by the relative speeds of Earth and Mercury, but the dates are astronomical facts. The interpretation is symbolic.' },
+      { question: 'Is the first 2027 retrograde linked to an eclipse?', answer: 'It begins three days after the annular solar eclipse of 6 February 2027 and ends before the shadow ends on 23 March. A penumbral lunar eclipse falls on 20 February, during the period.' },
+    ],
+    ctaText: 'A contract to reread, a conversation to reopen, a choice to make? Talk it through out loud with a Callastral advisor, from your real birth chart. No invented dates. No hidden meter. Your real sky.',
+    ctaButton: '3 free minutes, no card',
+    linksTitle: 'Go further',
+    links,
+    related: { href: SKY_EVENT_PATHS.eclipses2027.en, label: SKY_EVENT_LABELS.eclipses2027.en },
+    home: 'Home',
+    disclaimer: DISCLAIMER.en,
+  };
+}
+
+function eclipses2027Copy(locale: SkyLocale): SkyEventCopy {
+  const t = (iso: string) => bothIso(iso, locale);
+  const path = SKY_EVENT_PATHS.eclipses2027[locale];
+  const links = [link2027(locale), ...commonLinks(locale)];
+  if (locale === 'fr') {
+    return {
+      id: 'eclipses2027',
+      locale,
+      path,
+      title: 'Éclipses 2027 : dates, heures et où les voir',
+      description: 'Éclipses 2027 : annulaire le 6/02, totale le 2/08 (6 min 23 s, Espagne) et 3 éclipses de Lune pénombrales. Heures de Paris et UTC, effets par signe.',
+      h1: 'Éclipses 2027 : calendrier, heures et effets par signe',
+      breadcrumb: 'Éclipses 2027',
+      answer: [
+        `Il y a cinq éclipses en 2027 : une éclipse de Soleil annulaire le ${t(T2027.annular)}, une éclipse de Soleil totale le ${t(T2027.total)}, et trois éclipses de Lune pénombrales le ${t(T2027.lunarFeb)}, le ${t(T2027.lunarJul)} et le ${t(T2027.lunarAug)}.`,
+        'L’éclipse totale du 2 août 2027 est l’événement de l’année : la totalité dure jusqu’à 6 min 23 s, traverse dix pays de l’Espagne à la Somalie, et une éclipse partielle est visible depuis la France.',
+      ],
+      updated: 'Publié le 9 novembre 2026',
+      tableTitle: 'Le calendrier des éclipses 2027',
+      tableCaption: 'Instant de l’éclipse maximale, recoupé avec le catalogue NASA',
+      cols: ['Éclipse', 'Heure de Paris', 'UTC', 'Position'],
+      rows: [
+        rowIso(T2027.annular, 'fr', 'Éclipse de Soleil annulaire', '17°38′ Verseau'),
+        rowIso(T2027.lunarFeb, 'fr', 'Éclipse de Lune pénombrale', '1°59′ Vierge'),
+        rowIso(T2027.lunarJul, 'fr', 'Éclipse de Lune pénombrale', '25°58′ Capricorne'),
+        rowIso(T2027.total, 'fr', 'Éclipse de Soleil totale', '9°55′ Lion'),
+        rowIso(T2027.lunarAug, 'fr', 'Éclipse de Lune pénombrale', '24°05′ Verseau'),
+      ],
+      sections: [
+        {
+          h2: 'Le calendrier des éclipses 2027 en un coup d’œil',
+          paragraphs: [
+            'Les éclipses de 2027 forment deux saisons : février (une éclipse de Soleil, puis une éclipse de Lune deux semaines plus tard) et juillet-août (une éclipse de Lune le 18 juillet, l’éclipse de Soleil totale le 2 août, puis une éclipse de Lune le 17 août).',
+            'Les deux éclipses de Soleil tombent sur l’axe Verseau-Lion, ce qui en fait le fil conducteur de l’année en astrologie. Pour la vue d’ensemble de l’année, voyez notre horoscope 2027.',
+          ],
+        },
+        {
+          h2: 'Éclipse de Soleil annulaire du 6 février 2027',
+          paragraphs: [
+            'Au maximum, vers 16 h UTC, la Lune cache 92,8 % du diamètre du Soleil et laisse un anneau de lumière pendant jusqu’à 7 min 51 s. La bande d’annularité traverse le Chili, l’Argentine, l’Uruguay et le Brésil, puis la Côte d’Ivoire, le Ghana, le Togo, le Bénin et le Nigeria. Elle n’est pas visible depuis la France.',
+            'La Nouvelle Lune a lieu à 17°38′ Verseau : en astrologie, c’est un nouveau départ autour des projets collectifs, de l’indépendance et de la technologie, qui se déploie sur les mois suivants. Mercure devient rétrograde trois jours plus tard.',
+          ],
+        },
+        {
+          h2: 'Éclipse de Soleil totale du 2 août 2027',
+          paragraphs: [
+            'La totalité traverse l’Espagne, le Maroc, l’Algérie, la Tunisie, la Libye, l’Égypte, le Soudan, l’Arabie saoudite, le Yémen et la Somalie, avec un maximum de 6 min 23 s en Égypte. Depuis la France, l’éclipse est partielle : la Lune ne cache qu’une partie du Soleil, selon votre ville.',
+            'Ne regardez jamais le Soleil sans lunettes d’éclipse certifiées, même lors d’une éclipse partielle. En astrologie, l’éclipse tombe à 9°55′ Lion, signe du Soleil, et ouvre un chapitre sur la visibilité, la créativité et le cœur ; Jupiter est entré en Vierge une semaine plus tôt, le 26 juillet.',
+          ],
+        },
+        {
+          h2: 'Les trois éclipses de Lune pénombrales',
+          paragraphs: [
+            'Lors d’une éclipse pénombrale, la Lune traverse seulement la zone d’ombre légère de la Terre : elle s’assombrit un peu, sans la morsure sombre d’une éclipse partielle ou totale. Celle du 20 février (00 h 13 à Paris, le 21) est la plus visible. Celle du 18 juillet est à peine pénombrale et pratiquement imperceptible, et celle du 17 août se voit surtout depuis l’Amérique, l’Océanie et certaines régions de l’ouest de l’Europe.',
+            'Les astrologues leur donnent un poids plus léger : des moments de bilan, de tri et de lâcher-prise plutôt que de grands bouleversements.',
+          ],
+        },
+        {
+          h2: 'Ce que les éclipses signifient en astrologie',
+          paragraphs: [
+            'Une éclipse de Soleil est lue comme une Nouvelle Lune renforcée, un point de départ dont les effets se déploient sur plusieurs mois. Une éclipse de Lune est lue comme une Pleine Lune renforcée, un point d’aboutissement ou de fin de cycle.',
+            'Ce sont des lectures symboliques, sans preuve scientifique d’un effet sur nos vies. Elles servent surtout à se poser des questions : qu’est-ce que je commence, qu’est-ce que je clos ?',
+          ],
+        },
+      ],
+      signsTitle: 'Les éclipses 2027 pour chaque signe',
+      signsIntro: 'Lecture par maisons solaires, à partir de votre signe solaire. Avec votre ascendant, calculé par notre thème astral gratuit, la lecture est plus précise.',
+      adviceTitle: 'Conseils pour la saison des éclipses',
+      advice: [
+        'Évitez de prendre une décision irréversible le jour exact d’une éclipse : laissez passer quelques jours.',
+        'Notez, la veille, ce que vous voulez commencer (éclipse de Soleil) ou clore (éclipse de Lune) : l’écrire aide à y voir clair.',
+        'Pour l’éclipse du 2 août, vérifiez que vos lunettes portent la norme ISO 12312-2 avant de lever les yeux.',
+        'Réservez un voyage vers la bande de totalité dès que possible : hébergements et transports se remplissent des mois à l’avance.',
+      ],
+      method: METHOD_2027.fr,
+      faqTitle: 'Questions fréquentes',
+      faqs: [
+        { question: 'Combien y a-t-il d’éclipses en 2027 ?', answer: 'Cinq : deux éclipses de Soleil (annulaire le 6 février, totale le 2 août) et trois éclipses de Lune pénombrales (20 février, 18 juillet, 17 août).' },
+        { question: 'L’éclipse du 2 août 2027 est-elle visible en France ?', answer: 'Partiellement. La totalité passe par le sud de l’Espagne et l’Afrique du Nord, et la Lune cache seulement une partie du Soleil depuis la France. Il faut des lunettes d’éclipse certifiées.' },
+        { question: 'Combien de temps dure l’éclipse totale du 2 août 2027 ?', answer: 'Jusqu’à 6 minutes et 23 secondes au point de durée maximale, en Égypte. Elle est plus courte ailleurs sur la bande de totalité.' },
+        { question: 'À quelle heure a lieu l’éclipse du 2 août 2027 ?', answer: 'Le maximum est à 10 h 07 UTC, soit 12 h 07 à Paris. La Nouvelle Lune exacte tombe à 9°55′ Lion.' },
+        { question: 'Dans quels signes tombent les éclipses 2027 ?', answer: 'Éclipse de Soleil en Verseau (6 février) et en Lion (2 août) ; éclipses de Lune en Vierge (20 février), Capricorne (18 juillet) et Verseau (17 août).' },
+        { question: 'Les éclipses de Lune pénombrales sont-elles spectaculaires ?', answer: 'Non. La Lune s’assombrit à peine, et celle du 18 juillet 2027 est presque imperceptible. Elles ont surtout un intérêt astrologique.' },
+      ],
+      ctaText: 'Un chapitre qui s’ouvre ou se ferme ? Parlez-en à voix haute avec une Conseillère ou un Conseiller Callastral, à partir de votre vrai thème. Aucune date inventée. Aucun compteur caché. Ton vrai ciel.',
+      ctaButton: '3 min offertes, sans carte',
+      linksTitle: 'Aller plus loin',
+      links,
+      related: { href: SKY_EVENT_PATHS.mercuryRetrograde2027.fr, label: SKY_EVENT_LABELS.mercuryRetrograde2027.fr },
+      home: 'Accueil',
+      disclaimer: DISCLAIMER.fr,
+    };
+  }
+  return {
+    id: 'eclipses2027',
+    locale,
+    path,
+    title: 'Eclipses 2027: Dates, Times and Where to See Them',
+    description: 'Eclipses 2027: annular solar 6 Feb, total solar 2 Aug (6 min 23 s, Spain) and 3 penumbral lunar eclipses. Paris and UTC times, effects by sign.',
+    h1: 'Eclipses 2027: calendar, times and effects by sign',
+    breadcrumb: 'Eclipses 2027',
+    answer: [
+      `There are five eclipses in 2027: an annular solar eclipse on ${t(T2027.annular)}, a total solar eclipse on ${t(T2027.total)}, and three penumbral lunar eclipses on ${t(T2027.lunarFeb)}, ${t(T2027.lunarJul)} and ${t(T2027.lunarAug)}.`,
+      'The total solar eclipse of 2 August 2027 is the event of the year: totality lasts up to 6 min 23 s, crosses ten countries from Spain to Somalia, and a partial eclipse is visible from France.',
+    ],
+    updated: 'Published on 9 November 2026',
+    tableTitle: 'Eclipse calendar 2027',
+    tableCaption: 'Time of greatest eclipse, cross-checked with the NASA catalogue',
+    cols: ['Eclipse', 'Paris time', 'UTC', 'Position'],
+    rows: [
+      rowIso(T2027.annular, 'en', 'Annular solar eclipse', '17°38′ Aquarius'),
+      rowIso(T2027.lunarFeb, 'en', 'Penumbral lunar eclipse', '1°59′ Virgo'),
+      rowIso(T2027.lunarJul, 'en', 'Penumbral lunar eclipse', '25°58′ Capricorn'),
+      rowIso(T2027.total, 'en', 'Total solar eclipse', '9°55′ Leo'),
+      rowIso(T2027.lunarAug, 'en', 'Penumbral lunar eclipse', '24°05′ Aquarius'),
+    ],
+    sections: [
+      {
+        h2: 'The 2027 eclipse calendar at a glance',
+        paragraphs: [
+          'The 2027 eclipses form two seasons: February (a solar eclipse, then a lunar eclipse two weeks later) and July to August (a lunar eclipse on 18 July, the total solar eclipse on 2 August, then a lunar eclipse on 17 August).',
+          'Both solar eclipses fall on the Aquarius and Leo axis, which makes it the theme of the year in astrology. For the full-year overview, see our 2027 horoscope.',
+        ],
+      },
+      {
+        h2: 'Annular solar eclipse of 6 February 2027',
+        paragraphs: [
+          'At its maximum, around 16:00 UTC, the Moon covers 92.8% of the Sun’s diameter and leaves a ring of light for up to 7 min 51 s. The annular path crosses Chile, Argentina, Uruguay and Brazil, then Ivory Coast, Ghana, Togo, Benin and Nigeria. It is not visible from France.',
+          'The New Moon is at 17°38′ Aquarius: in astrology it is a fresh start around group projects, independence and technology, unfolding over the following months. Mercury turns retrograde three days later.',
+        ],
+      },
+      {
+        h2: 'Total solar eclipse of 2 August 2027',
+        paragraphs: [
+          'Totality crosses Spain, Morocco, Algeria, Tunisia, Libya, Egypt, Sudan, Saudi Arabia, Yemen and Somalia, with a maximum of 6 min 23 s in Egypt. From France the eclipse is partial: the Moon covers only part of the Sun, depending on your city.',
+          'Never look at the Sun without certified eclipse glasses, even during a partial eclipse. In astrology the eclipse falls at 9°55′ Leo, the Sun’s own sign, and opens a chapter about visibility, creativity and the heart; Jupiter entered Virgo a week earlier, on 26 July.',
+        ],
+      },
+      {
+        h2: 'The three penumbral lunar eclipses',
+        paragraphs: [
+          'In a penumbral eclipse the Moon crosses only the Earth’s faint outer shadow: it dims slightly, without the dark bite of a partial or total eclipse. The one on 20 February (00:13 Paris time on the 21st) is the most visible. The one on 18 July is barely penumbral and almost impossible to notice, and the one on 17 August is best seen from the Americas, Oceania and parts of western Europe.',
+          'Astrologers give them a lighter weight: moments for review, sorting and letting go rather than big upheavals.',
+        ],
+      },
+      {
+        h2: 'What eclipses mean in astrology',
+        paragraphs: [
+          'A solar eclipse is read as a boosted New Moon, a starting point whose effects unfold over several months. A lunar eclipse is read as a boosted Full Moon, a point of completion or the end of a cycle.',
+          'These are symbolic readings, with no scientific evidence of an effect on our lives. They mostly help you ask questions: what am I starting, and what am I closing?',
+        ],
+      },
+    ],
+    signsTitle: 'The 2027 eclipses for each sign',
+    signsIntro: 'Reading by solar houses, from your Sun sign. With your rising sign, calculated by our free birth chart, the reading is more precise.',
+    adviceTitle: 'Tips for eclipse season',
+    advice: [
+      'Avoid an irreversible decision on the exact day of an eclipse: let a few days pass.',
+      'The day before, write down what you want to start (solar eclipse) or close (lunar eclipse): putting it on paper brings clarity.',
+      'For the 2 August eclipse, check that your glasses carry the ISO 12312-2 standard before you look up.',
+      'Book a trip to the totality path as early as you can: hotels and transport fill up months ahead.',
+    ],
+    method: METHOD_2027.en,
+    faqTitle: 'Frequently asked questions',
+    faqs: [
+      { question: 'How many eclipses are there in 2027?', answer: 'Five: two solar eclipses (annular on 6 February, total on 2 August) and three penumbral lunar eclipses (20 February, 18 July, 17 August).' },
+      { question: 'Can I see the 2 August 2027 eclipse from France?', answer: 'Partially. Totality passes over southern Spain and North Africa, and from France the Moon covers only part of the Sun. You need certified eclipse glasses.' },
+      { question: 'How long does the 2 August 2027 total eclipse last?', answer: 'Up to 6 minutes and 23 seconds at the point of longest duration, in Egypt. It is shorter elsewhere along the totality path.' },
+      { question: 'What time is the 2 August 2027 eclipse?', answer: 'Greatest eclipse is at 10:07 UTC, which is 12:07 Paris time. The exact New Moon is at 9°55′ Leo.' },
+      { question: 'Which signs do the 2027 eclipses fall in?', answer: 'Solar eclipses in Aquarius (6 February) and Leo (2 August); lunar eclipses in Virgo (20 February), Capricorn (18 July) and Aquarius (17 August).' },
+      { question: 'Are penumbral lunar eclipses spectacular?', answer: 'No. The Moon barely darkens, and the one on 18 July 2027 is almost imperceptible. Their interest is mostly astrological.' },
+    ],
+    ctaText: 'A chapter opening or closing? Talk it through out loud with a Callastral advisor, from your real birth chart. No invented dates. No hidden meter. Your real sky.',
+    ctaButton: '3 free minutes, no card',
+    linksTitle: 'Go further',
+    links,
+    related: { href: SKY_EVENT_PATHS.mercuryRetrograde2027.en, label: SKY_EVENT_LABELS.mercuryRetrograde2027.en },
+    home: 'Home',
+    disclaimer: DISCLAIMER.en,
+  };
+}
+
 export function skyEventCopy(id: SkyEventId, locale: SkyLocale): SkyEventCopy {
   let copy: SkyEventCopy;
   if (id === 'mercuryVenusDirect') copy = mercuryVenusCopy(locale);
   else if (id === 'newMoonScorpio') copy = newMoonCopy(locale);
   else if (id === 'fullMoonGemini') copy = fullMoonCopy(locale);
+  else if (id === 'mercuryRetrograde2027') copy = mercuryRetro2027Copy(locale);
+  else if (id === 'eclipses2027') copy = eclipses2027Copy(locale);
   else copy = sagittariusSeasonCopy(locale);
   // Maillage : chaque page événement renvoie vers les autres pages du ciel de la saison.
   const others = SKY_EVENT_IDS.filter((other) => other !== id && SKY_EVENT_PATHS[other][locale] !== copy.related.href);
