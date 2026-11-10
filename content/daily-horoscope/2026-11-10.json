@@ -1,0 +1,177 @@
+{
+  "date": "2026-11-10",
+  "sky": {
+    "date": "2026-11-10",
+    "computedAt": "08:00 Europe/Paris",
+    "phase": {
+      "id": "new",
+      "illumination": 1,
+      "waxing": true
+    },
+    "bodies": [
+      {
+        "name": "Soleil",
+        "sign": "Scorpion",
+        "degree": 17,
+        "retrograde": false
+      },
+      {
+        "name": "Lune",
+        "sign": "Scorpion",
+        "degree": 29,
+        "retrograde": false
+      },
+      {
+        "name": "Mercure",
+        "sign": "Scorpion",
+        "degree": 6,
+        "retrograde": true
+      },
+      {
+        "name": "Vénus",
+        "sign": "Balance",
+        "degree": 23,
+        "retrograde": true
+      },
+      {
+        "name": "Mars",
+        "sign": "Lion",
+        "degree": 23,
+        "retrograde": false
+      },
+      {
+        "name": "Jupiter",
+        "sign": "Lion",
+        "degree": 25,
+        "retrograde": false
+      },
+      {
+        "name": "Saturne",
+        "sign": "Bélier",
+        "degree": 8,
+        "retrograde": true
+      },
+      {
+        "name": "Uranus",
+        "sign": "Gémeaux",
+        "degree": 4,
+        "retrograde": true
+      },
+      {
+        "name": "Neptune",
+        "sign": "Bélier",
+        "degree": 1,
+        "retrograde": true
+      },
+      {
+        "name": "Pluton",
+        "sign": "Verseau",
+        "degree": 3,
+        "retrograde": false
+      },
+      {
+        "name": "Nœud nord",
+        "sign": "Verseau",
+        "degree": 25,
+        "retrograde": true
+      }
+    ],
+    "ingresses": [
+      {
+        "name": "Lune",
+        "from": "Scorpion",
+        "to": "Sagittaire"
+      }
+    ],
+    "aspects": [
+      {
+        "a": "Vénus",
+        "b": "Mars",
+        "aspect": "sextile",
+        "orb": 0
+      },
+      {
+        "a": "Vénus",
+        "b": "Jupiter",
+        "aspect": "sextile",
+        "orb": 2.2
+      },
+      {
+        "a": "Mars",
+        "b": "Jupiter",
+        "aspect": "conjunction",
+        "orb": 2.2
+      },
+      {
+        "a": "Vénus",
+        "b": "Nœud nord",
+        "aspect": "trine",
+        "orb": 2.4
+      },
+      {
+        "a": "Mars",
+        "b": "Nœud nord",
+        "aspect": "opposition",
+        "orb": 2.4
+      },
+      {
+        "a": "Lune",
+        "b": "Neptune",
+        "aspect": "trine",
+        "orb": 2.7
+      },
+      {
+        "a": "Mercure",
+        "b": "Pluton",
+        "aspect": "square",
+        "orb": 2.9
+      },
+      {
+        "a": "Lune",
+        "b": "Nœud nord",
+        "aspect": "square",
+        "orb": 3.6
+      },
+      {
+        "a": "Lune",
+        "b": "Jupiter",
+        "aspect": "square",
+        "orb": 3.8
+      }
+    ]
+  },
+  "en": {
+    "summary": "Tuesday 10 November 2026: the day after the New Moon in Scorpio, the Moon leaves Scorpio for Sagittarius during the morning and trines Neptune in Aries. Mercury is retrograde in Scorpio and squares Pluto in Aquarius. Venus, retrograde in Libra, makes an exact sextile to Mars, which stays conjunct Jupiter in Leo and opposite the North Node in Aquarius.",
+    "signs": {
+      "belier": "Aries, today the focus shifts toward love, pleasure and creativity: the Moon leaves Scorpio for Sagittarius during the morning, the day after the New Moon. You may feel a pull to plan a trip, sign up for a course or simply widen your horizon after several intense days.\n\nMercury is still retrograde in Scorpio, in your sector of daily work, health and routines, and squares Pluto in Aquarius, so double-check facts and avoid reading too much into one silence. Venus, retrograde in Libra in your area of partnerships and one-to-one relationships, makes an exact sextile to Mars, while Mars travels with Jupiter in Leo through your sector of travel, study and the beliefs that guide you; this supports repairing and finishing rather than starting from zero.\n\nPick one idea that excites you and write down the first concrete step, then let it wait a few days before committing money. The sky describes a climate, not a fixed outcome.",
+      "taureau": "Taurus, today the focus shifts toward daily work, health and routines: the Moon leaves Scorpio for Sagittarius during the morning, the day after the New Moon. Questions of trust and what you owe or are owed come to the surface, and they are easier to discuss calmly than they were yesterday.\n\nMercury is still retrograde in Scorpio, in your sector of partnerships and one-to-one relationships, and squares Pluto in Aquarius, so double-check facts and avoid reading too much into one silence. Venus, retrograde in Libra in your area of shared money, debts and intimacy, makes an exact sextile to Mars, while Mars travels with Jupiter in Leo through your sector of career, reputation and public direction; this supports repairing and finishing rather than starting from zero.\n\nClarify one shared expense or one unspoken expectation, kindly and with numbers on the table. The sky describes a climate, not a fixed outcome.",
+      "gemeaux": "Gemini, today the focus shifts toward partnerships and one-to-one relationships: the Moon leaves Scorpio for Sagittarius during the morning, the day after the New Moon. The people closest to you become the mirror of the day, and a frank, light conversation can clear the air.\n\nMercury is still retrograde in Scorpio, in your sector of shared money, debts and intimacy, and squares Pluto in Aquarius, so double-check facts and avoid reading too much into one silence. Venus, retrograde in Libra in your area of travel, study and the beliefs that guide you, makes an exact sextile to Mars, while Mars travels with Jupiter in Leo through your sector of friends, groups and long-term projects; this supports repairing and finishing rather than starting from zero.\n\nListen to the whole sentence before you answer; the other person may be saying something warmer than you expect. The sky describes a climate, not a fixed outcome.",
+      "cancer": "Cancer, today the focus shifts toward shared money, debts and intimacy: the Moon leaves Scorpio for Sagittarius during the morning, the day after the New Moon. Your energy wants movement and order, so tidy one corner of your schedule and give your body a real break.\n\nMercury is still retrograde in Scorpio, in your sector of travel, study and the beliefs that guide you, and squares Pluto in Aquarius, so double-check facts and avoid reading too much into one silence. Venus, retrograde in Libra in your area of career, reputation and public direction, makes an exact sextile to Mars, while Mars travels with Jupiter in Leo through your sector of rest, solitude and your inner life; this supports repairing and finishing rather than starting from zero.\n\nSmall, steady habits will serve you better this week than a dramatic resolution. The sky describes a climate, not a fixed outcome.",
+      "lion": "Leo, today the focus shifts toward travel, study and the beliefs that guide you: the Moon leaves Scorpio for Sagittarius during the morning, the day after the New Moon. Joy, play and romance ask for room again, and you can let yourself enjoy something without justifying it.\n\nMercury is still retrograde in Scorpio, in your sector of career, reputation and public direction, and squares Pluto in Aquarius, so double-check facts and avoid reading too much into one silence. Venus, retrograde in Libra in your area of friends, groups and long-term projects, makes an exact sextile to Mars, while Mars travels with Jupiter in Leo through your sector of yourself, your body and the way you start things; this supports repairing and finishing rather than starting from zero.\n\nShare your enthusiasm, but keep your promises at the size you can actually keep. The sky describes a climate, not a fixed outcome.",
+      "vierge": "Virgo, today the focus shifts toward career, reputation and public direction: the Moon leaves Scorpio for Sagittarius during the morning, the day after the New Moon. Home and family matters come forward, and a simple gesture at home can do more than a long explanation.\n\nMercury is still retrograde in Scorpio, in your sector of friends, groups and long-term projects, and squares Pluto in Aquarius, so double-check facts and avoid reading too much into one silence. Venus, retrograde in Libra in your area of rest, solitude and your inner life, makes an exact sextile to Mars, while Mars travels with Jupiter in Leo through your sector of money, resources and self-worth; this supports repairing and finishing rather than starting from zero.\n\nProtect a quiet evening; your mind sorts things best when your surroundings feel safe. The sky describes a climate, not a fixed outcome.",
+      "balance": "Libra, today the focus shifts toward friends, groups and long-term projects: the Moon leaves Scorpio for Sagittarius during the morning, the day after the New Moon. Messages, calls and quick errands multiply, and your curiosity returns after a heavier stretch.\n\nMercury is still retrograde in Scorpio, in your sector of rest, solitude and your inner life, and squares Pluto in Aquarius, so double-check facts and avoid reading too much into one silence. Venus, retrograde in Libra in your area of yourself, your body and the way you start things, makes an exact sextile to Mars, while Mars travels with Jupiter in Leo through your sector of conversations, neighbours and short trips; this supports repairing and finishing rather than starting from zero.\n\nVenus, your ruler, is retrograde in your own sign, so favour reconnecting with someone you already know over chasing something new. The sky describes a climate, not a fixed outcome.",
+      "scorpion": "Scorpio, today the focus shifts toward rest, solitude and your inner life: the Moon leaves Scorpio for Sagittarius during the morning, the day after the New Moon. After the New Moon in your sign, attention turns to what you earn, what you spend and what you believe you are worth.\n\nMercury is still retrograde in Scorpio, in your sector of yourself, your body and the way you start things, and squares Pluto in Aquarius, so double-check facts and avoid reading too much into one silence. Venus, retrograde in Libra in your area of money, resources and self-worth, makes an exact sextile to Mars, while Mars travels with Jupiter in Leo through your sector of home, family and your inner foundations; this supports repairing and finishing rather than starting from zero.\n\nWrite down the intention you set yesterday and attach a modest budget or time limit to it. The sky describes a climate, not a fixed outcome.",
+      "sagittaire": "Sagittarius, today the focus shifts toward yourself, your body and the way you start things: the Moon leaves Scorpio for Sagittarius during the morning, the day after the New Moon. The Moon enters your sign and brings back a lighter mood, more spontaneity and the desire to say what you think.\n\nMercury is still retrograde in Scorpio, in your sector of money, resources and self-worth, and squares Pluto in Aquarius, so double-check facts and avoid reading too much into one silence. Venus, retrograde in Libra in your area of conversations, neighbours and short trips, makes an exact sextile to Mars, while Mars travels with Jupiter in Leo through your sector of love, pleasure and creativity; this supports repairing and finishing rather than starting from zero.\n\nSpeak frankly, but give others time to catch up with your pace. The sky describes a climate, not a fixed outcome.",
+      "capricorne": "Capricorn, today the focus shifts toward money, resources and self-worth: the Moon leaves Scorpio for Sagittarius during the morning, the day after the New Moon. Your energy turns inward, and a slower day is not wasted if it lets you rest and think.\n\nMercury is still retrograde in Scorpio, in your sector of conversations, neighbours and short trips, and squares Pluto in Aquarius, so double-check facts and avoid reading too much into one silence. Venus, retrograde in Libra in your area of home, family and your inner foundations, makes an exact sextile to Mars, while Mars travels with Jupiter in Leo through your sector of daily work, health and routines; this supports repairing and finishing rather than starting from zero.\n\nGo to bed a little earlier; a clearer head tomorrow is worth more than one more task tonight. The sky describes a climate, not a fixed outcome.",
+      "verseau": "Aquarius, today the focus shifts toward conversations, neighbours and short trips: the Moon leaves Scorpio for Sagittarius during the morning, the day after the New Moon. Friends and group projects become lively again, and someone in your circle may bring a useful idea.\n\nMercury is still retrograde in Scorpio, in your sector of home, family and your inner foundations, and squares Pluto in Aquarius, so double-check facts and avoid reading too much into one silence. Venus, retrograde in Libra in your area of love, pleasure and creativity, makes an exact sextile to Mars, while Mars travels with Jupiter in Leo through your sector of partnerships and one-to-one relationships; this supports repairing and finishing rather than starting from zero.\n\nSay yes to one invitation, and no to the meeting that only drains you. The sky describes a climate, not a fixed outcome.",
+      "poissons": "Pisces, today the focus shifts toward home, family and your inner foundations: the Moon leaves Scorpio for Sagittarius during the morning, the day after the New Moon. Career and public goals come into focus, and you can take a visible step without forcing anything.\n\nMercury is still retrograde in Scorpio, in your sector of love, pleasure and creativity, and squares Pluto in Aquarius, so double-check facts and avoid reading too much into one silence. Venus, retrograde in Libra in your area of daily work, health and routines, makes an exact sextile to Mars, while Mars travels with Jupiter in Leo through your sector of shared money, debts and intimacy; this supports repairing and finishing rather than starting from zero.\n\nName one professional goal out loud to someone you trust; saying it makes it real. The sky describes a climate, not a fixed outcome."
+    }
+  },
+  "fr": {
+    "summary": "Mardi 10 novembre 2026 : au lendemain de la Nouvelle Lune en Scorpion, la Lune quitte le Scorpion pour le Sagittaire dans la matinée et forme un trigone à Neptune en Bélier. Mercure est rétrograde en Scorpion et forme un carré à Pluton en Verseau. Vénus, rétrograde en Balance, forme un sextile exact à Mars, qui reste conjoint à Jupiter en Lion et opposé au Nœud nord en Verseau.",
+    "signs": {
+      "belier": "Bélier, aujourd’hui l’attention se déplace vers le domaine de l’amour, du plaisir et de la créativité : la Lune quitte le Scorpion pour le Sagittaire dans la matinée, au lendemain de la Nouvelle Lune. Vous pouvez avoir envie de prévoir un voyage, de vous inscrire à une formation ou simplement d’élargir votre horizon après plusieurs journées intenses.\n\nMercure est toujours rétrograde en Scorpion, dans votre secteur du travail quotidien, de la santé et des routines, et forme un carré à Pluton en Verseau : vérifiez les faits et n’interprétez pas trop vite un silence. Vénus, rétrograde en Balance dans votre domaine du couple et des relations en face à face, forme un sextile exact à Mars, tandis que Mars avance avec Jupiter en Lion dans votre secteur des voyages, des études et des convictions ; le moment favorise la réparation et l’achèvement plutôt qu’un départ de zéro.\n\nChoisissez une idée qui vous enthousiasme et notez la première étape concrète, puis laissez-la mûrir quelques jours avant d’engager de l’argent. Le ciel décrit un climat, pas un résultat écrit d’avance.",
+      "taureau": "Taureau, aujourd’hui l’attention se déplace vers le domaine du travail quotidien, de la santé et des routines : la Lune quitte le Scorpion pour le Sagittaire dans la matinée, au lendemain de la Nouvelle Lune. Les questions de confiance, de ce que vous devez ou de ce qu’on vous doit remontent, et elles se discutent plus calmement qu’hier.\n\nMercure est toujours rétrograde en Scorpion, dans votre secteur du couple et des relations en face à face, et forme un carré à Pluton en Verseau : vérifiez les faits et n’interprétez pas trop vite un silence. Vénus, rétrograde en Balance dans votre domaine de l’argent partagé, des dettes et de l’intimité, forme un sextile exact à Mars, tandis que Mars avance avec Jupiter en Lion dans votre secteur de la carrière, de la réputation et de la direction publique ; le moment favorise la réparation et l’achèvement plutôt qu’un départ de zéro.\n\nClarifiez une dépense commune ou une attente non dite, avec douceur et avec les chiffres sur la table. Le ciel décrit un climat, pas un résultat écrit d’avance.",
+      "gemeaux": "Gémeaux, aujourd’hui l’attention se déplace vers le domaine du couple et des relations en face à face : la Lune quitte le Scorpion pour le Sagittaire dans la matinée, au lendemain de la Nouvelle Lune. Les personnes les plus proches deviennent le miroir de la journée, et une conversation franche et légère peut détendre l’atmosphère.\n\nMercure est toujours rétrograde en Scorpion, dans votre secteur de l’argent partagé, des dettes et de l’intimité, et forme un carré à Pluton en Verseau : vérifiez les faits et n’interprétez pas trop vite un silence. Vénus, rétrograde en Balance dans votre domaine des voyages, des études et des convictions, forme un sextile exact à Mars, tandis que Mars avance avec Jupiter en Lion dans votre secteur des amis, des collectifs et des projets à long terme ; le moment favorise la réparation et l’achèvement plutôt qu’un départ de zéro.\n\nÉcoutez la phrase jusqu’au bout avant de répondre : l’autre dit peut-être quelque chose de plus chaleureux que prévu. Le ciel décrit un climat, pas un résultat écrit d’avance.",
+      "cancer": "Cancer, aujourd’hui l’attention se déplace vers le domaine de l’argent partagé, des dettes et de l’intimité : la Lune quitte le Scorpion pour le Sagittaire dans la matinée, au lendemain de la Nouvelle Lune. Votre énergie réclame du mouvement et de l’ordre : rangez un coin de votre agenda et accordez à votre corps une vraie pause.\n\nMercure est toujours rétrograde en Scorpion, dans votre secteur des voyages, des études et des convictions, et forme un carré à Pluton en Verseau : vérifiez les faits et n’interprétez pas trop vite un silence. Vénus, rétrograde en Balance dans votre domaine de la carrière, de la réputation et de la direction publique, forme un sextile exact à Mars, tandis que Mars avance avec Jupiter en Lion dans votre secteur du repos, de la solitude et de la vie intérieure ; le moment favorise la réparation et l’achèvement plutôt qu’un départ de zéro.\n\nDe petites habitudes régulières vous serviront mieux cette semaine qu’une grande résolution. Le ciel décrit un climat, pas un résultat écrit d’avance.",
+      "lion": "Lion, aujourd’hui l’attention se déplace vers le domaine des voyages, des études et des convictions : la Lune quitte le Scorpion pour le Sagittaire dans la matinée, au lendemain de la Nouvelle Lune. La joie, le jeu et la romance demandent à nouveau de la place, et vous pouvez vous accorder un plaisir sans vous justifier.\n\nMercure est toujours rétrograde en Scorpion, dans votre secteur de la carrière, de la réputation et de la direction publique, et forme un carré à Pluton en Verseau : vérifiez les faits et n’interprétez pas trop vite un silence. Vénus, rétrograde en Balance dans votre domaine des amis, des collectifs et des projets à long terme, forme un sextile exact à Mars, tandis que Mars avance avec Jupiter en Lion dans votre secteur de vous-même, du corps et de votre façon de vous lancer ; le moment favorise la réparation et l’achèvement plutôt qu’un départ de zéro.\n\nPartagez votre enthousiasme, mais gardez vos promesses à la taille de ce que vous pouvez tenir. Le ciel décrit un climat, pas un résultat écrit d’avance.",
+      "vierge": "Vierge, aujourd’hui l’attention se déplace vers le domaine de la carrière, de la réputation et de la direction publique : la Lune quitte le Scorpion pour le Sagittaire dans la matinée, au lendemain de la Nouvelle Lune. Les sujets du foyer et de la famille reviennent au premier plan, et un geste simple à la maison peut valoir plus qu’une longue explication.\n\nMercure est toujours rétrograde en Scorpion, dans votre secteur des amis, des collectifs et des projets à long terme, et forme un carré à Pluton en Verseau : vérifiez les faits et n’interprétez pas trop vite un silence. Vénus, rétrograde en Balance dans votre domaine du repos, de la solitude et de la vie intérieure, forme un sextile exact à Mars, tandis que Mars avance avec Jupiter en Lion dans votre secteur de l’argent, des ressources et de l’estime de soi ; le moment favorise la réparation et l’achèvement plutôt qu’un départ de zéro.\n\nProtégez une soirée tranquille : votre esprit trie mieux quand votre environnement vous rassure. Le ciel décrit un climat, pas un résultat écrit d’avance.",
+      "balance": "Balance, aujourd’hui l’attention se déplace vers le domaine des amis, des collectifs et des projets à long terme : la Lune quitte le Scorpion pour le Sagittaire dans la matinée, au lendemain de la Nouvelle Lune. Les messages, les appels et les petites courses se multiplient, et votre curiosité revient après une période plus lourde.\n\nMercure est toujours rétrograde en Scorpion, dans votre secteur du repos, de la solitude et de la vie intérieure, et forme un carré à Pluton en Verseau : vérifiez les faits et n’interprétez pas trop vite un silence. Vénus, rétrograde en Balance dans votre domaine de vous-même, du corps et de votre façon de vous lancer, forme un sextile exact à Mars, tandis que Mars avance avec Jupiter en Lion dans votre secteur des échanges, des proches et des petits déplacements ; le moment favorise la réparation et l’achèvement plutôt qu’un départ de zéro.\n\nVénus, votre planète, est rétrograde dans votre signe : privilégiez les retrouvailles avec quelqu’un que vous connaissez déjà plutôt qu’une nouveauté. Le ciel décrit un climat, pas un résultat écrit d’avance.",
+      "scorpion": "Scorpion, aujourd’hui l’attention se déplace vers le domaine du repos, de la solitude et de la vie intérieure : la Lune quitte le Scorpion pour le Sagittaire dans la matinée, au lendemain de la Nouvelle Lune. Après la Nouvelle Lune dans votre signe, l’attention se tourne vers ce que vous gagnez, ce que vous dépensez et la valeur que vous vous accordez.\n\nMercure est toujours rétrograde en Scorpion, dans votre secteur de vous-même, du corps et de votre façon de vous lancer, et forme un carré à Pluton en Verseau : vérifiez les faits et n’interprétez pas trop vite un silence. Vénus, rétrograde en Balance dans votre domaine de l’argent, des ressources et de l’estime de soi, forme un sextile exact à Mars, tandis que Mars avance avec Jupiter en Lion dans votre secteur du foyer, de la famille et de vos fondations intérieures ; le moment favorise la réparation et l’achèvement plutôt qu’un départ de zéro.\n\nNotez l’intention posée hier et associez-lui un budget ou un délai modeste. Le ciel décrit un climat, pas un résultat écrit d’avance.",
+      "sagittaire": "Sagittaire, aujourd’hui l’attention se déplace vers le domaine de vous-même, du corps et de votre façon de vous lancer : la Lune quitte le Scorpion pour le Sagittaire dans la matinée, au lendemain de la Nouvelle Lune. La Lune entre dans votre signe et ramène une humeur plus légère, plus de spontanéité et l’envie de dire ce que vous pensez.\n\nMercure est toujours rétrograde en Scorpion, dans votre secteur de l’argent, des ressources et de l’estime de soi, et forme un carré à Pluton en Verseau : vérifiez les faits et n’interprétez pas trop vite un silence. Vénus, rétrograde en Balance dans votre domaine des échanges, des proches et des petits déplacements, forme un sextile exact à Mars, tandis que Mars avance avec Jupiter en Lion dans votre secteur de l’amour, du plaisir et de la créativité ; le moment favorise la réparation et l’achèvement plutôt qu’un départ de zéro.\n\nParlez franchement, mais laissez aux autres le temps de suivre votre rythme. Le ciel décrit un climat, pas un résultat écrit d’avance.",
+      "capricorne": "Capricorne, aujourd’hui l’attention se déplace vers le domaine de l’argent, des ressources et de l’estime de soi : la Lune quitte le Scorpion pour le Sagittaire dans la matinée, au lendemain de la Nouvelle Lune. Votre énergie se tourne vers l’intérieur, et une journée plus lente n’est pas perdue si elle vous permet de vous reposer et de réfléchir.\n\nMercure est toujours rétrograde en Scorpion, dans votre secteur des échanges, des proches et des petits déplacements, et forme un carré à Pluton en Verseau : vérifiez les faits et n’interprétez pas trop vite un silence. Vénus, rétrograde en Balance dans votre domaine du foyer, de la famille et de vos fondations intérieures, forme un sextile exact à Mars, tandis que Mars avance avec Jupiter en Lion dans votre secteur du travail quotidien, de la santé et des routines ; le moment favorise la réparation et l’achèvement plutôt qu’un départ de zéro.\n\nCouchez-vous un peu plus tôt : une tête claire demain vaut mieux qu’une tâche de plus ce soir. Le ciel décrit un climat, pas un résultat écrit d’avance.",
+      "verseau": "Verseau, aujourd’hui l’attention se déplace vers le domaine des échanges, des proches et des petits déplacements : la Lune quitte le Scorpion pour le Sagittaire dans la matinée, au lendemain de la Nouvelle Lune. Les amis et les projets collectifs reprennent vie, et quelqu’un de votre entourage peut apporter une idée utile.\n\nMercure est toujours rétrograde en Scorpion, dans votre secteur du foyer, de la famille et de vos fondations intérieures, et forme un carré à Pluton en Verseau : vérifiez les faits et n’interprétez pas trop vite un silence. Vénus, rétrograde en Balance dans votre domaine de l’amour, du plaisir et de la créativité, forme un sextile exact à Mars, tandis que Mars avance avec Jupiter en Lion dans votre secteur du couple et des relations en face à face ; le moment favorise la réparation et l’achèvement plutôt qu’un départ de zéro.\n\nDites oui à une invitation, et non à la réunion qui ne fait que vous épuiser. Le ciel décrit un climat, pas un résultat écrit d’avance.",
+      "poissons": "Poissons, aujourd’hui l’attention se déplace vers le domaine du foyer, de la famille et de vos fondations intérieures : la Lune quitte le Scorpion pour le Sagittaire dans la matinée, au lendemain de la Nouvelle Lune. La carrière et les objectifs publics deviennent plus nets, et vous pouvez faire un pas visible sans rien forcer.\n\nMercure est toujours rétrograde en Scorpion, dans votre secteur de l’amour, du plaisir et de la créativité, et forme un carré à Pluton en Verseau : vérifiez les faits et n’interprétez pas trop vite un silence. Vénus, rétrograde en Balance dans votre domaine du travail quotidien, de la santé et des routines, forme un sextile exact à Mars, tandis que Mars avance avec Jupiter en Lion dans votre secteur de l’argent partagé, des dettes et de l’intimité ; le moment favorise la réparation et l’achèvement plutôt qu’un départ de zéro.\n\nFormulez à voix haute un objectif professionnel devant quelqu’un de confiance : le dire le rend réel. Le ciel décrit un climat, pas un résultat écrit d’avance."
+    }
+  }
+}
