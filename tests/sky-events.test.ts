@@ -82,3 +82,12 @@ test('Pleine Lune en Gémeaux et saison du Sagittaire : heures calculées, liens
     }
   }
 });
+
+test('Mars rétrograde 2027 et Pleines Lunes 2027 : heures calculées DE440', () => {
+  assert.match(skyEventCopy('marsRetrograde2027', 'fr').answer[0], /13 h 59/);
+  assert.match(skyEventCopy('marsRetrograde2027', 'en').answer[0], /16:08 Paris/);
+  const fm = skyEventCopy('fullMoons2027', 'en');
+  assert.equal(fm.rows.length, 12);
+  assert.equal(fm.rows[0].utc, '22 January 2027, 12:17 UTC');
+  assert.equal(skyEventCopy('fullMoons2027', 'fr').rows[8].paris, '16 septembre 2027 à 1 h 04 (heure de Paris)');
+});

@@ -7,9 +7,9 @@ import { SIGN_IDS, signPath, weekPath, type SignId } from './zodiac/signs.ts';
  * positions géocentriques apparentes), recoupées avec des tables publiées (astro-seek, otldr).
  */
 export type SkyLocale = 'fr' | 'en';
-export type SkyEventId = 'mercuryVenusDirect' | 'newMoonScorpio' | 'fullMoonGemini' | 'sagittariusSeason' | 'mercuryRetrograde2027' | 'eclipses2027';
+export type SkyEventId = 'mercuryVenusDirect' | 'newMoonScorpio' | 'fullMoonGemini' | 'sagittariusSeason' | 'mercuryRetrograde2027' | 'eclipses2027' | 'marsRetrograde2027' | 'fullMoons2027';
 
-export const SKY_EVENT_IDS: SkyEventId[] = ['mercuryVenusDirect', 'newMoonScorpio', 'fullMoonGemini', 'sagittariusSeason', 'mercuryRetrograde2027', 'eclipses2027'];
+export const SKY_EVENT_IDS: SkyEventId[] = ['mercuryVenusDirect', 'newMoonScorpio', 'fullMoonGemini', 'sagittariusSeason', 'mercuryRetrograde2027', 'eclipses2027', 'marsRetrograde2027', 'fullMoons2027'];
 export const SKY_EVENTS_ORIGIN = 'https://callastral.com';
 export const SKY_EVENTS_PUBLISHED = '2026-10-30';
 
@@ -21,6 +21,8 @@ export const SKY_EVENT_PUBLISHED: Record<SkyEventId, string> = {
   sagittariusSeason: '2026-11-02',
   mercuryRetrograde2027: '2026-11-09',
   eclipses2027: '2026-11-09',
+  marsRetrograde2027: '2026-11-11',
+  fullMoons2027: '2026-11-11',
 };
 
 /** Dernière modification (titres et maillage revus le 02/11/2026). */
@@ -31,6 +33,8 @@ export const SKY_EVENT_MODIFIED: Record<SkyEventId, string> = {
   sagittariusSeason: '2026-11-02',
   mercuryRetrograde2027: '2026-11-09',
   eclipses2027: '2026-11-09',
+  marsRetrograde2027: '2026-11-11',
+  fullMoons2027: '2026-11-11',
 };
 
 export const SKY_EVENT_PATHS: Record<SkyEventId, Record<SkyLocale, string>> = {
@@ -40,6 +44,8 @@ export const SKY_EVENT_PATHS: Record<SkyEventId, Record<SkyLocale, string>> = {
   sagittariusSeason: { en: '/en/sagittarius-season-2026', fr: '/fr/saison-sagittaire-2026' },
   mercuryRetrograde2027: { en: '/en/mercury-retrograde-2027', fr: '/fr/mercure-retrograde-2027' },
   eclipses2027: { en: '/en/eclipses-2027-calendar', fr: '/fr/calendrier-eclipses-2027' },
+  marsRetrograde2027: { en: '/en/mars-retrograde-2027', fr: '/fr/mars-retrograde-2027' },
+  fullMoons2027: { en: '/en/full-moon-calendar-2027', fr: '/fr/calendrier-pleines-lunes-2027' },
 };
 
 /** Même convention que les pages GEO : x-default = FR. */
@@ -377,6 +383,8 @@ export function signRows(event: SkyEventId, locale: SkyLocale): SkySignRow[] {
     let text: string;
     if (event === 'mercuryRetrograde2027' || event === 'eclipses2027') {
       text = signRows2027(event, locale, index);
+    } else if (event === 'marsRetrograde2027' || event === 'fullMoons2027') {
+      text = signRows2027b(event, locale, index);
     } else if (event === 'mercuryVenusDirect') {
       const hm = solarHouse(index, SCORPIO);
       const hv = solarHouse(index, LIBRA);
@@ -815,6 +823,8 @@ export const SKY_EVENT_LABELS: Record<SkyEventId, Record<SkyLocale, string>> = {
   sagittariusSeason: { en: 'Sagittarius season 2026: 22 November to 21 December', fr: 'Saison du Sagittaire 2026 : du 22 novembre au 21 décembre' },
   mercuryRetrograde2027: { en: 'Mercury retrograde 2027: dates and times of the 3 periods', fr: 'Mercure rétrograde 2027 : dates et heures des 3 périodes' },
   eclipses2027: { en: 'Eclipses 2027: dates, times and effects by sign', fr: 'Éclipses 2027 : dates, heures et effets par signe' },
+  marsRetrograde2027: { en: 'Mars retrograde 2027: 10 January to 1 April', fr: 'Mars rétrograde 2027 : du 10 janvier au 1er avril' },
+  fullMoons2027: { en: 'Full Moon calendar 2027: the 12 Full Moons', fr: 'Calendrier des Pleines Lunes 2027 : les 12 dates' },
 };
 
 function fullMoonCopy(locale: SkyLocale): SkyEventCopy {
@@ -1187,8 +1197,9 @@ function bothIso(iso: string, locale: SkyLocale): string {
     const x = new Intl.DateTimeFormat('en-GB', { hour: '2-digit', minute: '2-digit', hour12: false, timeZone: tz }).format(d);
     return locale === 'fr' ? x.replace(':', ' h ').replace(/^0(\d)/, '$1') : x;
   };
-  const pd = dm('Europe/Paris');
-  const ud = dm('UTC');
+  const first = (x: string) => (locale === 'fr' ? x.replace(/^1 /, '1er ') : x);
+  const pd = first(dm('Europe/Paris'));
+  const ud = first(dm('UTC'));
   const utcPart = pd === ud ? `${hm('UTC')} UTC` : `${ud}, ${hm('UTC')} UTC`;
   return locale === 'fr' ? `${pd}, ${hm('Europe/Paris')} Paris (${utcPart})`.replace(/ h 00/g, ' h') : `${pd}, ${hm('Europe/Paris')} Paris (${utcPart})`;
 }
@@ -1694,6 +1705,470 @@ function eclipses2027Copy(locale: SkyLocale): SkyEventCopy {
   };
 }
 
+/* ------------------------------------------------------------------ */
+/* Pages 2027 : Mars rétrograde et calendrier des Pleines Lunes (publiées le 11/11/2026) */
+/* Calculées avec l’éphéméride NASA JPL DE440 (Skyfield), positions géocentriques apparentes. */
+/* ------------------------------------------------------------------ */
+
+export const M2027 = {
+  preShadow: '2026-11-05T15:34:00Z',
+  retro: '2027-01-10T12:59:00Z',
+  opposition: '2027-02-19T15:51:00Z',
+  closest: '2027-02-20T00:14:00Z',
+  intoLeo: '2027-02-21T14:13:00Z',
+  direct: '2027-04-01T14:08:00Z',
+  intoVirgo: '2027-05-14T14:47:00Z',
+  postShadow: '2027-06-08T01:58:00Z',
+  intoLibra: '2027-07-15T05:40:00Z',
+  nextRetro: '2029-02-14T08:16:00Z',
+  venusNextRetro: '2028-05-10T23:03:00Z',
+} as const;
+
+/** Pleines Lunes 2027 : instant UTC, degré, index du signe, distance Terre-Lune (km). */
+export const FULL_MOONS_2027 = [
+  { utc: '2027-01-22T12:17:00Z', deg: '2°14′', sign: 4, km: 357644 },
+  { utc: '2027-02-20T23:24:00Z', deg: '2°06′', sign: 5, km: 363305 },
+  { utc: '2027-03-22T10:44:00Z', deg: '1°35′', sign: 6, km: 372526 },
+  { utc: '2027-04-20T22:27:00Z', deg: '0°37′', sign: 7, km: 383429 },
+  { utc: '2027-05-20T10:59:00Z', deg: '29°14′', sign: 7, km: 393901 },
+  { utc: '2027-06-19T00:44:00Z', deg: '27°33′', sign: 8, km: 401951 },
+  { utc: '2027-07-18T15:45:00Z', deg: '25°49′', sign: 9, km: 405978 },
+  { utc: '2027-08-17T07:29:00Z', deg: '24°12′', sign: 10, km: 405080 },
+  { utc: '2027-09-15T23:04:00Z', deg: '22°53′', sign: 11, km: 399353 },
+  { utc: '2027-10-15T13:47:00Z', deg: '21°59′', sign: 0, km: 389938 },
+  { utc: '2027-11-14T03:26:00Z', deg: '21°31′', sign: 1, km: 378766 },
+  { utc: '2027-12-13T16:09:00Z', deg: '21°25′', sign: 2, km: 368141 },
+] as const;
+
+const MOON_NAMES: Record<SkyLocale, string[]> = {
+  en: ['Wolf Moon', 'Snow Moon', 'Worm Moon', 'Pink Moon', 'Flower Moon', 'Strawberry Moon', 'Buck Moon', 'Sturgeon Moon', 'Harvest Moon', 'Hunter’s Moon', 'Beaver Moon', 'Cold Moon'],
+  fr: ['Lune du loup', 'Lune des neiges', 'Lune des vers', 'Lune rose', 'Lune des fleurs', 'Lune des fraises', 'Lune du cerf', 'Lune de l’esturgeon', 'Lune des moissons', 'Lune du chasseur', 'Lune du castor', 'Lune froide'],
+};
+
+const FM_NOTE: Record<SkyLocale, Partial<Record<number, string>>> = {
+  en: { 0: 'supermoon, closest of the year', 1: 'penumbral lunar eclipse', 6: 'penumbral eclipse, farthest of the year', 7: 'penumbral lunar eclipse' },
+  fr: { 0: 'super Lune, la plus proche de l’année', 1: 'éclipse de Lune pénombrale', 6: 'éclipse pénombrale, la plus lointaine de l’année', 7: 'éclipse de Lune pénombrale' },
+};
+
+const MARS_2027_EXTRA: Record<SkyLocale, Partial<Record<number, string>>> = {
+  en: {
+    5: 'Mars turns retrograde inside your sign on 10 January, at 10°26′ Virgo, and comes back to your sign from 14 May to 15 July: your energy and your body ask for pacing, not pushing.',
+    4: 'Mars backs into your sign on 21 February and turns direct there on 1 April, at 20°56′ Leo: an old ambition or an old anger comes back to be handled more calmly.',
+    0: 'Mars rules your sign, so the whole retrograde is felt in your drive: restart, repair and finish rather than charge ahead.',
+    7: 'Mars is your traditional ruler, so the retrograde touches how you defend yourself and what you want: choose your battles.',
+    11: 'On 19 February Mars is exactly opposite the Sun in Pisces, at 0°46′: a peak of tension or clarity in your relationships.',
+  },
+  fr: {
+    5: 'Mars devient rétrograde dans votre signe le 10 janvier, à 10°26′ Vierge, et y revient du 14 mai au 15 juillet : votre énergie et votre corps demandent du rythme, pas de la force.',
+    4: 'Mars recule dans votre signe le 21 février et y redevient direct le 1er avril, à 20°56′ Lion : une ambition ou une colère ancienne revient pour être reprise plus calmement.',
+    0: 'Mars gouverne votre signe : toute la rétrogradation se ressent dans votre élan. Reprenez, réparez et terminez plutôt que de foncer.',
+    7: 'Mars est votre maître traditionnel : la rétrogradation touche votre façon de vous défendre et ce que vous désirez. Choisissez vos combats.',
+    11: 'Le 19 février, Mars est exactement opposé au Soleil en Poissons, à 0°46′ : un pic de tension ou de clarté dans vos relations.',
+  },
+};
+
+export function signRows2027b(event: 'marsRetrograde2027' | 'fullMoons2027', locale: SkyLocale, index: number): string {
+  const name = SIGN_NAMES[locale][index];
+  const topic = (h: number) => HOUSE_TOPIC[locale][h - 1];
+  const o = (h: number) => ordinal(h, locale);
+  if (event === 'marsRetrograde2027') {
+    const hv = solarHouse(index, SIGN_VIRGO);
+    const hl = solarHouse(index, SIGN_LEO);
+    const extra = MARS_2027_EXTRA[locale][index];
+    return locale === 'fr'
+      ? `Pour ${FR_ARTICLE[index]}${name}, Mars recule d’abord dans votre maison solaire ${hv} (${topic(hv)}) du 10 janvier au 21 février, puis dans votre maison ${hl} (${topic(hl)}) jusqu’au 1er avril. C’est là que les efforts demandent à être repris plutôt que forcés.${extra ? ` ${extra}` : ''}`
+      : `For ${name}, Mars moves back first through your ${o(hv)} solar house (${topic(hv)}) from 10 January to 21 February, then through your ${o(hl)} house (${topic(hl)}) until 1 April. That is where efforts ask to be resumed rather than forced.${extra ? ` ${extra}` : ''}`;
+  }
+  const own = FULL_MOONS_2027.map((fm, i) => ({ fm, i })).filter((x) => x.fm.sign === index);
+  const dateOf = (iso: string) => new Intl.DateTimeFormat(locale === 'fr' ? 'fr-FR' : 'en-GB', { day: 'numeric', month: 'long', timeZone: locale === 'fr' ? 'Europe/Paris' : 'UTC' }).format(new Date(iso));
+  const opposite = (index + 6) % 12;
+  const opp = FULL_MOONS_2027.filter((fm) => fm.sign === opposite).map((fm) => dateOf(fm.utc));
+  let base: string;
+  if (own.length === 0) {
+    base = locale === 'fr'
+      ? `Pour ${FR_ARTICLE[index]}${name}, aucune Pleine Lune de 2027 ne tombe dans votre signe : la précédente a lieu le 24 décembre 2026 et la suivante en janvier 2028.`
+      : `For ${name}, no 2027 Full Moon falls in your sign: the previous one is on 24 December 2026 and the next one in January 2028.`;
+  } else if (own.length === 2) {
+    base = locale === 'fr'
+      ? `Pour ${FR_ARTICLE[index]}${name}, deux Pleines Lunes tombent dans votre signe en 2027, le ${dateOf(own[0].fm.utc)} (${own[0].fm.deg}) et le ${dateOf(own[1].fm.utc)} (${own[1].fm.deg}) : deux moments de bilan personnel à un mois d’écart.`
+      : `For ${name}, two 2027 Full Moons fall in your sign, on ${dateOf(own[0].fm.utc)} (${own[0].fm.deg}) and ${dateOf(own[1].fm.utc)} (${own[1].fm.deg}): two moments of personal review one month apart.`;
+  } else {
+    const x = own[0];
+    base = locale === 'fr'
+      ? `Pour ${FR_ARTICLE[index]}${name}, votre Pleine Lune de l’année est celle du ${dateOf(x.fm.utc)}, à ${x.fm.deg} ${name} (${MOON_NAMES.fr[x.i]}) : un moment pour voir où vous en êtes et ce qui est arrivé à maturité.`
+      : `For ${name}, your Full Moon of the year is on ${dateOf(x.fm.utc)}, at ${x.fm.deg} ${name} (the ${MOON_NAMES.en[x.i]}): a moment to see where you stand and what has ripened.`;
+  }
+  const oppText = opp.length
+    ? locale === 'fr'
+      ? ` La Pleine Lune dans le signe opposé (${opp.join(' et ')}) met en lumière votre maison 7, celle du couple et des contrats.`
+      : ` The Full Moon in your opposite sign (${opp.join(' and ')}) lights up your 7th house, partners and contracts.`
+    : '';
+  return `${base}${oppText}`;
+}
+
+function marsRetro2027Copy(locale: SkyLocale): SkyEventCopy {
+  const t = (iso: string) => bothIso(iso, locale);
+  const path = SKY_EVENT_PATHS.marsRetrograde2027[locale];
+  const links = [link2027(locale), ...commonLinks(locale)];
+  if (locale === 'fr') {
+    return {
+      id: 'marsRetrograde2027',
+      locale,
+      path,
+      title: 'Mars rétrograde 2027 : dates, heures et ombre',
+      description: 'Mars rétrograde du 10 janvier au 1er avril 2027, de 10°26′ Vierge à 20°56′ Lion. Heures de Paris et UTC, ombre, opposition du 19/02 et 12 signes.',
+      h1: 'Mars rétrograde 2027 : dates, heures et effets par signe',
+      breadcrumb: 'Mars rétrograde 2027',
+      answer: [
+        `Mars est rétrograde une seule fois en 2027, du ${t(M2027.retro)} au ${t(M2027.direct)}, en reculant de 10°26′ Vierge à 20°56′ Lion.`,
+        'Avec l’ombre, la période complète court du 5 novembre 2026 au 8 juin 2027, et Vénus n’est pas rétrograde du tout en 2027 : sa prochaine rétrogradation commence le 10 mai 2028.',
+      ],
+      updated: 'Publié le 11 novembre 2026',
+      tableTitle: 'Le calendrier de Mars rétrograde 2026-2027',
+      tableCaption: 'Calculé avec l’éphéméride NASA JPL DE440',
+      cols: ['Événement', 'Heure de Paris', 'UTC', 'Position'],
+      rows: [
+        rowIso(M2027.preShadow, 'fr', 'Début de l’ombre', '20°56′ Lion'),
+        rowIso(M2027.retro, 'fr', 'Mars devient rétrograde', '10°26′ Vierge'),
+        rowIso(M2027.opposition, 'fr', 'Opposition au Soleil', '0°46′ Vierge'),
+        rowIso(M2027.intoLeo, 'fr', 'Mars rétrograde regagne le Lion', '0° Lion'),
+        rowIso(M2027.direct, 'fr', 'Mars redevient direct', '20°56′ Lion'),
+        rowIso(M2027.intoVirgo, 'fr', 'Mars revient en Vierge', '0° Vierge'),
+        rowIso(M2027.postShadow, 'fr', 'Fin de l’ombre', '10°26′ Vierge'),
+        rowIso(M2027.intoLibra, 'fr', 'Mars entre en Balance', '0° Balance'),
+      ],
+      sections: [
+        {
+          h2: 'Les dates de Mars rétrograde 2027 en un coup d’œil',
+          paragraphs: [
+            'La rétrogradation dure 81 jours, du 10 janvier au 1er avril 2027. Mars recule d’abord en Vierge, regagne le Lion le 21 février, redevient direct à 20°56′ Lion, puis revient en Vierge le 14 mai et sort de son ombre le 8 juin.',
+            'L’ombre d’avant a déjà commencé : depuis le 5 novembre 2026, Mars parcourt les degrés (20°56′ Lion à 10°26′ Vierge) qu’il traversera trois fois. La rétrogradation suivante commence le 14 février 2029, à 13°55′ Balance.',
+          ],
+        },
+        {
+          h2: 'Ce que signifie Mars rétrograde',
+          paragraphs: [
+            'Vue de la Terre, Mars semble reculer environ tous les deux ans, quand la Terre la dépasse sur son orbite. C’est un mouvement apparent, et c’est aussi le moment où la planète est la plus brillante dans le ciel de la nuit.',
+            'En astrologie, Mars gouverne l’énergie, le désir, le courage et la colère. Sa rétrogradation est lue comme une période pour reprendre un effort interrompu, réparer, s’entraîner et régler une tension ancienne, plutôt que pour déclencher un conflit ou lancer une offensive.',
+          ],
+        },
+        {
+          h2: 'Du 10 janvier au 21 février 2027 : Mars rétrograde en Vierge',
+          paragraphs: [
+            `Mars s’arrête à 10°26′ Vierge le ${t(M2027.retro)}. La Vierge parle de travail quotidien, de santé et de méthode : c’est le moment de revoir une routine, un planning ou une façon de travailler qui épuise.`,
+            `Le ${t(M2027.opposition)}, Mars est à l’opposition du Soleil : la Terre passe entre les deux. La planète est alors au plus près de nous (environ 101 millions de km la nuit du 19 au 20 février) et visible toute la nuit. Mercure devient lui aussi rétrograde du 9 février au 3 mars.`,
+          ],
+        },
+        {
+          h2: 'Du 21 février au 1er avril 2027 : Mars rétrograde en Lion',
+          paragraphs: [
+            `Mars regagne le Lion le ${t(M2027.intoLeo)} et y redevient direct le ${t(M2027.direct)}. Le Lion parle de fierté, de créativité, d’amour et de visibilité : un projet personnel ou une histoire de cœur mise en pause peut revenir sur la table.`,
+            'Après la station directe, Mars repasse en Vierge le 14 mai et sort de l’ombre le 8 juin : c’est à partir de là que les projets relancés gagnent vraiment de la vitesse.',
+          ],
+        },
+        {
+          h2: 'Et Vénus rétrograde en 2027 ?',
+          paragraphs: [
+            'Il n’y a pas de Vénus rétrograde en 2027. La dernière a eu lieu du 3 octobre au 14 novembre 2026 en Scorpion et Balance, et la prochaine commence le 10 mai 2028 à 19°41′ Gémeaux.',
+            'En 2027, les planètes personnelles qui reculent sont donc Mars (une fois) et Mercure (trois fois). Les dates de Mercure sont sur notre page Mercure rétrograde 2027.',
+          ],
+        },
+      ],
+      signsTitle: 'Mars rétrograde 2027 pour chaque signe',
+      signsIntro: 'Lecture par maisons solaires, à partir de votre signe solaire. Avec votre ascendant, calculé par notre thème astral gratuit, la lecture est plus précise.',
+      adviceTitle: 'Conseils pratiques pendant Mars rétrograde',
+      advice: [
+        'Reprenez un sport, un chantier ou un projet abandonné plutôt que d’en commencer un nouveau.',
+        'Avant une dispute, attendez le lendemain : Mars rétrograde est lu comme une période où la colère part vite et se regrette.',
+        'Faites réviser votre voiture et vos outils, et prenez votre temps pour les travaux manuels : c’est du bon sens, pas une prédiction.',
+        'Si un lancement peut attendre, visez après le 1er avril, et idéalement après le 8 juin, fin de l’ombre.',
+      ],
+      method: METHOD_2027.fr,
+      faqTitle: 'Questions fréquentes',
+      faqs: [
+        { question: 'Quand Mars est-il rétrograde en 2027 ?', answer: 'Du 10 janvier 2027 à 13 h 59 (heure de Paris) au 1er avril 2027 à 16 h 08, soit de 12 h 59 UTC à 14 h 08 UTC.' },
+        { question: 'Dans quel signe Mars est-il rétrograde en 2027 ?', answer: 'En Vierge du 10 janvier au 21 février, puis en Lion jusqu’au 1er avril. La station rétrograde est à 10°26′ Vierge et la station directe à 20°56′ Lion.' },
+        { question: 'Quand se termine l’ombre de Mars rétrograde ?', answer: 'Le 8 juin 2027, quand Mars repasse à 10°26′ Vierge. L’ombre d’avant a commencé le 5 novembre 2026.' },
+        { question: 'Vénus est-elle rétrograde en 2027 ?', answer: 'Non. Aucune rétrogradation de Vénus en 2027 ; la prochaine commence le 10 mai 2028 en Gémeaux.' },
+        { question: 'Quand voir Mars au mieux en 2027 ?', answer: 'Autour de l’opposition du 19 février 2027 : Mars est alors visible toute la nuit et à son plus brillant de l’année, à environ 101 millions de km de la Terre.' },
+        { question: 'Mars rétrograde est-il dangereux ?', answer: 'Non. C’est un mouvement apparent sans effet physique prouvé. En astrologie, on y voit surtout une invitation à ralentir et à reprendre ce qui a été interrompu.' },
+      ],
+      ctaText: 'Une colère qui revient, un projet à relancer, une histoire à reprendre ? Parlez-en à voix haute avec une Conseillère ou un Conseiller Callastral, à partir de votre vrai thème. Aucune date inventée. Aucun compteur caché. Ton vrai ciel.',
+      ctaButton: '3 min offertes, sans carte',
+      linksTitle: 'Aller plus loin',
+      links,
+      related: { href: SKY_EVENT_PATHS.mercuryRetrograde2027.fr, label: SKY_EVENT_LABELS.mercuryRetrograde2027.fr },
+      home: 'Accueil',
+      disclaimer: DISCLAIMER.fr,
+    };
+  }
+  return {
+    id: 'marsRetrograde2027',
+    locale,
+    path,
+    title: 'Mars Retrograde 2027: Dates, Times and Shadow',
+    description: 'Mars retrograde runs 10 January to 1 April 2027, from 10°26′ Virgo to 20°56′ Leo. Paris and UTC times, shadow dates, 19 Feb opposition and 12 signs.',
+    h1: 'Mars retrograde 2027: dates, times and effects by sign',
+    breadcrumb: 'Mars retrograde 2027',
+    answer: [
+      `Mars is retrograde once in 2027, from ${t(M2027.retro)} to ${t(M2027.direct)}, moving back from 10°26′ Virgo to 20°56′ Leo.`,
+      'With its shadow the full cycle runs from 5 November 2026 to 8 June 2027, and Venus is not retrograde at all in 2027: its next retrograde begins on 10 May 2028.',
+    ],
+    updated: 'Published on 11 November 2026',
+    tableTitle: 'Mars retrograde 2026–2027 calendar',
+    tableCaption: 'Calculated with the NASA JPL DE440 ephemeris',
+    cols: ['Event', 'Paris time', 'UTC', 'Position'],
+    rows: [
+      rowIso(M2027.preShadow, 'en', 'Shadow begins', '20°56′ Leo'),
+      rowIso(M2027.retro, 'en', 'Mars stations retrograde', '10°26′ Virgo'),
+      rowIso(M2027.opposition, 'en', 'Opposition to the Sun', '0°46′ Virgo'),
+      rowIso(M2027.intoLeo, 'en', 'Retrograde Mars re-enters Leo', '0° Leo'),
+      rowIso(M2027.direct, 'en', 'Mars stations direct', '20°56′ Leo'),
+      rowIso(M2027.intoVirgo, 'en', 'Mars returns to Virgo', '0° Virgo'),
+      rowIso(M2027.postShadow, 'en', 'Shadow ends', '10°26′ Virgo'),
+      rowIso(M2027.intoLibra, 'en', 'Mars enters Libra', '0° Libra'),
+    ],
+    sections: [
+      {
+        h2: 'Mars retrograde 2027 dates at a glance',
+        paragraphs: [
+          'The retrograde lasts 81 days, from 10 January to 1 April 2027. Mars first moves back through Virgo, re-enters Leo on 21 February, turns direct at 20°56′ Leo, then returns to Virgo on 14 May and leaves its shadow on 8 June.',
+          'The pre-shadow has already begun: since 5 November 2026 Mars has been crossing the degrees (20°56′ Leo to 10°26′ Virgo) it will travel three times. The next Mars retrograde begins on 14 February 2029, at 13°55′ Libra.',
+        ],
+      },
+      {
+        h2: 'What Mars retrograde means',
+        paragraphs: [
+          'Seen from Earth, Mars appears to move backwards about every two years, when Earth overtakes it on its orbit. It is an apparent motion, and it is also when the planet shines brightest in the night sky.',
+          'In astrology Mars rules energy, desire, courage and anger. Its retrograde is read as a time to resume an interrupted effort, repair, train and settle an old tension, rather than to start a fight or launch an offensive.',
+        ],
+      },
+      {
+        h2: '10 January to 21 February 2027: Mars retrograde in Virgo',
+        paragraphs: [
+          `Mars stations at 10°26′ Virgo on ${t(M2027.retro)}. Virgo is about daily work, health and method: a good time to review a routine, a schedule or a way of working that drains you.`,
+          `On ${t(M2027.opposition)} Mars is opposite the Sun, with Earth passing between them. The planet is then at its closest to us (about 101 million km on the night of 19 to 20 February) and visible all night. Mercury is also retrograde from 9 February to 3 March.`,
+        ],
+      },
+      {
+        h2: '21 February to 1 April 2027: Mars retrograde in Leo',
+        paragraphs: [
+          `Mars re-enters Leo on ${t(M2027.intoLeo)} and turns direct there on ${t(M2027.direct)}. Leo is about pride, creativity, love and visibility: a personal project or a romance put on hold can come back on the table.`,
+          'After the direct station, Mars moves back into Virgo on 14 May and leaves its shadow on 8 June: from then on, the projects you restarted really pick up speed.',
+        ],
+      },
+      {
+        h2: 'Is Venus retrograde in 2027?',
+        paragraphs: [
+          'There is no Venus retrograde in 2027. The last one ran from 3 October to 14 November 2026 in Scorpio and Libra, and the next one begins on 10 May 2028 at 19°41′ Gemini.',
+          'So in 2027 the personal planets that turn retrograde are Mars (once) and Mercury (three times). The Mercury dates are on our Mercury retrograde 2027 page.',
+        ],
+      },
+    ],
+    signsTitle: 'Mars retrograde 2027 for each sign',
+    signsIntro: 'Reading by solar houses, from your Sun sign. With your rising sign, calculated by our free birth chart, the reading is more precise.',
+    adviceTitle: 'Practical tips during Mars retrograde',
+    advice: [
+      'Pick up a sport, a renovation or a dropped project rather than starting a new one.',
+      'Before an argument, wait until the next day: Mars retrograde is read as a time when anger flares fast and is regretted.',
+      'Get your car and tools checked and take your time with manual jobs: common sense, not a prediction.',
+      'If a launch can wait, aim for after 1 April, ideally after 8 June when the shadow ends.',
+    ],
+    method: METHOD_2027.en,
+    faqTitle: 'Frequently asked questions',
+    faqs: [
+      { question: 'When is Mars retrograde in 2027?', answer: 'From 10 January 2027 at 12:59 UTC (13:59 Paris time) to 1 April 2027 at 14:08 UTC (16:08 Paris time).' },
+      { question: 'What sign is Mars retrograde in during 2027?', answer: 'Virgo from 10 January to 21 February, then Leo until 1 April. The retrograde station is at 10°26′ Virgo and the direct station at 20°56′ Leo.' },
+      { question: 'When does the Mars retrograde shadow end?', answer: 'On 8 June 2027, when Mars returns to 10°26′ Virgo. The pre-shadow began on 5 November 2026.' },
+      { question: 'Is Venus retrograde in 2027?', answer: 'No. There is no Venus retrograde in 2027; the next one begins on 10 May 2028 in Gemini.' },
+      { question: 'When is the best time to see Mars in 2027?', answer: 'Around the opposition of 19 February 2027, when Mars is visible all night and at its brightest of the year, about 101 million km from Earth.' },
+      { question: 'Is Mars retrograde dangerous?', answer: 'No. It is an apparent motion with no proven physical effect. In astrology it is mostly read as an invitation to slow down and resume what was interrupted.' },
+    ],
+    ctaText: 'An anger coming back, a project to restart, a story to pick up again? Talk it through out loud with a Callastral advisor, from your real birth chart. No invented dates. No hidden meter. Your real sky.',
+    ctaButton: '3 free minutes, no card',
+    linksTitle: 'Go further',
+    links,
+    related: { href: SKY_EVENT_PATHS.mercuryRetrograde2027.en, label: SKY_EVENT_LABELS.mercuryRetrograde2027.en },
+    home: 'Home',
+    disclaimer: DISCLAIMER.en,
+  };
+}
+
+function fullMoons2027Copy(locale: SkyLocale): SkyEventCopy {
+  const path = SKY_EVENT_PATHS.fullMoons2027[locale];
+  const links = [link2027(locale), ...commonLinks(locale)];
+  const signs = SIGN_NAMES[locale];
+  const rows = FULL_MOONS_2027.map((fm, i) => {
+    const note = FM_NOTE[locale][i];
+    const km = new Intl.NumberFormat(locale === 'fr' ? 'fr-FR' : 'en-GB').format(fm.km);
+    return rowIso(fm.utc, locale, MOON_NAMES[locale][i], `${fm.deg} ${signs[fm.sign]}, ${km} km${note ? ` (${note})` : ''}`);
+  });
+  if (locale === 'fr') {
+    return {
+      id: 'fullMoons2027',
+      locale,
+      path,
+      title: 'Pleines Lunes 2027 : calendrier, heures et signes',
+      description: 'Les 12 Pleines Lunes de 2027 : du 22 janvier (super Lune en Lion) au 13 décembre (Gémeaux). Heures de Paris et UTC, signes, éclipses et effets par signe.',
+      h1: 'Calendrier des Pleines Lunes 2027 : dates, heures et signes',
+      breadcrumb: 'Pleines Lunes 2027',
+      answer: [
+        'Il y a 12 Pleines Lunes en 2027, une par mois : la première le 22 janvier à 13 h 17 (heure de Paris) en Lion, la dernière le 13 décembre à 17 h 09 en Gémeaux.',
+        'La super Lune de l’année est celle du 22 janvier (357 644 km), trois Pleines Lunes coïncident avec une éclipse de Lune pénombrale (20 février, 18 juillet, 17 août), et il n’y a pas de Lune bleue en 2027.',
+      ],
+      updated: 'Publié le 11 novembre 2026',
+      tableTitle: 'Les Pleines Lunes de 2027',
+      tableCaption: 'Instant de la Pleine Lune exacte, éphéméride NASA JPL DE440, distance Terre-Lune au centre',
+      cols: ['Pleine Lune', 'Heure de Paris', 'UTC', 'Position et distance'],
+      rows,
+      sections: [
+        {
+          h2: 'Les Pleines Lunes 2027 mois par mois',
+          paragraphs: [
+            'Janvier (22) en Lion, février (20-21) en Vierge, mars (22) en Balance, avril (20) et mai (20) en Scorpion, juin (19) en Sagittaire, juillet (18) en Capricorne, août (17) en Verseau, septembre (16, heure de Paris) en Poissons, octobre (15) en Bélier, novembre (14) en Taureau et décembre (13) en Gémeaux.',
+            'Le Scorpion reçoit deux Pleines Lunes de suite (0°37′ le 20 avril, 29°14′ le 20 mai) et aucune ne tombe en Cancer en 2027 : la précédente est celle du 24 décembre 2026, la suivante arrive en janvier 2028.',
+          ],
+        },
+        {
+          h2: 'Super Lune et « micro Lune » de 2027',
+          paragraphs: [
+            'La Pleine Lune du 22 janvier 2027 est la plus proche de l’année, à 357 644 km : c’est la super Lune de 2027, un peu plus grande et plus lumineuse qu’à l’ordinaire. Celle du 20 février, à 363 305 km, est encore assez proche.',
+            'À l’inverse, la Pleine Lune du 18 juillet est la plus lointaine (405 978 km), suivie de près par celle du 17 août. La différence de taille apparente est réelle mais difficile à remarquer à l’œil nu.',
+          ],
+        },
+        {
+          h2: 'Les Pleines Lunes éclipsées',
+          paragraphs: [
+            'Trois Pleines Lunes de 2027 tombent pendant une éclipse de Lune pénombrale : le 20 février (Vierge), le 18 juillet (Capricorne) et le 17 août (Verseau). La Lune s’assombrit à peine ; celle de juillet est presque imperceptible.',
+            'Les heures et la visibilité de ces éclipses sont détaillées sur notre calendrier des éclipses 2027.',
+          ],
+        },
+        {
+          h2: 'D’où viennent les noms des Pleines Lunes ?',
+          paragraphs: [
+            'Les noms comme Lune du loup ou Lune des moissons viennent surtout des almanachs nord-américains, qui les ont empruntés à des traditions amérindiennes et européennes. Ce sont des noms populaires, pas des termes d’astronomie.',
+            'La Lune des moissons est la Pleine Lune la plus proche de l’équinoxe d’automne : en 2027, celle du 15 septembre (16 septembre à Paris), une semaine environ avant l’équinoxe du 23 septembre.',
+          ],
+        },
+        {
+          h2: 'Ce que signifie une Pleine Lune en astrologie',
+          paragraphs: [
+            'À la Pleine Lune, le Soleil et la Lune sont face à face, dans deux signes opposés. Les astrologues y voient un point culminant : ce qui a été semé à la Nouvelle Lune précédente arrive à maturité, et les émotions sont plus visibles.',
+            'C’est une lecture symbolique. Il n’existe pas de preuve solide d’un effet de la Pleine Lune sur le sommeil ou l’humeur de tout le monde, mais beaucoup s’en servent comme d’un rendez-vous mensuel pour faire le point.',
+          ],
+        },
+      ],
+      signsTitle: 'Les Pleines Lunes 2027 pour chaque signe',
+      signsIntro: 'Lecture à partir de votre signe solaire : la Pleine Lune dans votre signe, puis celle dans le signe opposé. Avec votre thème astral gratuit, vous voyez la maison exacte touchée.',
+      adviceTitle: 'Comment utiliser les Pleines Lunes de 2027',
+      advice: [
+        'Notez chaque date dans votre agenda et prenez dix minutes ce soir-là pour écrire ce qui s’est accompli depuis la Nouvelle Lune.',
+        'Pour observer, regardez le lever de Lune à l’est, au coucher du soleil : c’est là qu’elle paraît la plus grande.',
+        'Évitez de trancher une dispute le soir même : attendez un jour ou deux que les émotions retombent.',
+        'Suivez le signe et la phase au jour le jour sur notre page la Lune aujourd’hui.',
+      ],
+      method: 'Méthode : instants des Pleines Lunes (opposition exacte en longitude du Soleil et de la Lune), degrés et distances calculés par Callastral avec l’éphéméride NASA JPL DE440 (positions géocentriques apparentes, zodiaque tropical). L’heure de Paris est UTC+1 jusqu’au 28 mars 2027, puis UTC+2 jusqu’au 31 octobre 2027. Le seuil de « super Lune » varie selon les sources ; nous retenons la plus proche de l’année.',
+      faqTitle: 'Questions fréquentes',
+      faqs: [
+        { question: 'Combien y a-t-il de Pleines Lunes en 2027 ?', answer: 'Douze, une par mois, du 22 janvier au 13 décembre 2027. Il n’y a pas de Lune bleue en 2027.' },
+        { question: 'Quelle est la date de la super Lune 2027 ?', answer: 'Le 22 janvier 2027 à 13 h 17, heure de Paris (12 h 17 UTC), en Lion, à 357 644 km de la Terre.' },
+        { question: 'Quand est la Pleine Lune de janvier 2027 ?', answer: 'Le 22 janvier 2027 à 13 h 17 (heure de Paris), à 2°14′ Lion. C’est la Lune du loup.' },
+        { question: 'Y a-t-il une Pleine Lune en Cancer en 2027 ?', answer: 'Non. La dernière est celle du 24 décembre 2026 et la suivante tombe en janvier 2028. Le Scorpion, lui, en reçoit deux (20 avril et 20 mai).' },
+        { question: 'Quelles Pleines Lunes de 2027 sont des éclipses ?', answer: 'Celles du 20 février, du 18 juillet et du 17 août 2027, toutes trois des éclipses de Lune pénombrales, peu visibles.' },
+        { question: 'Quelle est la Lune des moissons 2027 ?', answer: 'La Pleine Lune du 15 septembre 2027 à 23 h 04 UTC (16 septembre à 1 h 04 à Paris), en Poissons.' },
+      ],
+      ctaText: 'Une Pleine Lune qui remue tout, un cœur qui s’emmêle ? Parlez-en à voix haute avec une Conseillère ou un Conseiller Callastral, à partir de votre vrai thème. Aucune date inventée. Aucun compteur caché. Ton vrai ciel.',
+      ctaButton: '3 min offertes, sans carte',
+      linksTitle: 'Aller plus loin',
+      links,
+      related: { href: SKY_EVENT_PATHS.eclipses2027.fr, label: SKY_EVENT_LABELS.eclipses2027.fr },
+      home: 'Accueil',
+      disclaimer: DISCLAIMER.fr,
+    };
+  }
+  return {
+    id: 'fullMoons2027',
+    locale,
+    path,
+    title: 'Full Moon Calendar 2027: Dates, Times and Signs',
+    description: 'All 12 Full Moons of 2027, from 22 January (supermoon in Leo) to 13 December (Gemini). Paris and UTC times, signs, Moon names, eclipses and effects by sign.',
+    h1: 'Full Moon calendar 2027: dates, times and signs',
+    breadcrumb: 'Full Moons 2027',
+    answer: [
+      'There are 12 Full Moons in 2027, one each month: the first on 22 January at 12:17 UTC in Leo, the last on 13 December at 16:09 UTC in Gemini.',
+      'The supermoon of the year is on 22 January (357,644 km), three Full Moons coincide with a penumbral lunar eclipse (20 February, 18 July, 17 August), and there is no Blue Moon in 2027.',
+    ],
+    updated: 'Published on 11 November 2026',
+    tableTitle: 'Full Moons of 2027',
+    tableCaption: 'Time of exact Full Moon, NASA JPL DE440 ephemeris, centre-to-centre Earth–Moon distance',
+    cols: ['Full Moon', 'Paris time', 'UTC', 'Position and distance'],
+    rows,
+    sections: [
+      {
+        h2: '2027 Full Moons month by month',
+        paragraphs: [
+          'January (22) in Leo, February (20) in Virgo, March (22) in Libra, April (20) and May (20) in Scorpio, June (19) in Sagittarius, July (18) in Capricorn, August (17) in Aquarius, September (15) in Pisces, October (15) in Aries, November (14) in Taurus and December (13) in Gemini.',
+          'Scorpio gets two Full Moons in a row (0°37′ on 20 April, 29°14′ on 20 May) and none falls in Cancer in 2027: the previous one is on 24 December 2026 and the next arrives in January 2028.',
+        ],
+      },
+      {
+        h2: 'Supermoon and micromoon of 2027',
+        paragraphs: [
+          'The Full Moon of 22 January 2027 is the closest of the year, at 357,644 km: the 2027 supermoon, slightly larger and brighter than usual. The one on 20 February, at 363,305 km, is still fairly close.',
+          'At the other end, the 18 July Full Moon is the farthest (405,978 km), closely followed by 17 August. The difference in apparent size is real but hard to notice with the naked eye.',
+        ],
+      },
+      {
+        h2: 'Eclipsed Full Moons',
+        paragraphs: [
+          'Three 2027 Full Moons fall during a penumbral lunar eclipse: 20 February (Virgo), 18 July (Capricorn) and 17 August (Aquarius). The Moon dims only slightly, and the July one is almost impossible to notice.',
+          'Times and visibility for these eclipses are on our 2027 eclipse calendar.',
+        ],
+      },
+      {
+        h2: 'Where do Full Moon names come from?',
+        paragraphs: [
+          'Names such as Wolf Moon or Harvest Moon mostly come from North American almanacs, which borrowed them from Native American and European traditions. They are folk names, not astronomical terms.',
+          'The Harvest Moon is the Full Moon closest to the September equinox: in 2027 it is the 15 September Full Moon, about a week before the equinox on 23 September.',
+        ],
+      },
+      {
+        h2: 'What a Full Moon means in astrology',
+        paragraphs: [
+          'At a Full Moon the Sun and Moon face each other in opposite signs. Astrologers read it as a peak: what was planted at the previous New Moon comes to fruition, and emotions are more visible.',
+          'This is a symbolic reading. There is no solid evidence that the Full Moon affects everyone’s sleep or mood, but many people use it as a monthly check-in.',
+        ],
+      },
+    ],
+    signsTitle: 'The 2027 Full Moons for each sign',
+    signsIntro: 'Reading from your Sun sign: the Full Moon in your sign, then the one in your opposite sign. With your free birth chart you see the exact house it touches.',
+    adviceTitle: 'How to use the 2027 Full Moons',
+    advice: [
+      'Put each date in your calendar and take ten minutes that evening to write down what has come together since the New Moon.',
+      'To watch it, look for moonrise in the east around sunset: that is when it looks biggest.',
+      'Avoid settling an argument that same night: give it a day or two for emotions to cool.',
+      'Follow the sign and phase day by day on our Moon today page.',
+    ],
+    method: 'Method: Full Moon times (exact opposition in longitude of Sun and Moon), degrees and distances computed by Callastral with the NASA JPL DE440 ephemeris (geocentric, apparent positions, tropical zodiac). Paris time is UTC+1 until 28 March 2027, then UTC+2 until 31 October 2027. The supermoon threshold varies between sources; we use the closest Full Moon of the year.',
+    faqTitle: 'Frequently asked questions',
+    faqs: [
+      { question: 'How many Full Moons are there in 2027?', answer: 'Twelve, one per month, from 22 January to 13 December 2027. There is no Blue Moon in 2027.' },
+      { question: 'When is the 2027 supermoon?', answer: 'On 22 January 2027 at 12:17 UTC (13:17 Paris time), in Leo, 357,644 km from Earth.' },
+      { question: 'When is the January 2027 Full Moon?', answer: 'On 22 January 2027 at 12:17 UTC, at 2°14′ Leo. It is the Wolf Moon.' },
+      { question: 'Is there a Full Moon in Cancer in 2027?', answer: 'No. The last one is on 24 December 2026 and the next falls in January 2028. Scorpio, on the other hand, gets two (20 April and 20 May).' },
+      { question: 'Which 2027 Full Moons are eclipses?', answer: 'Those of 20 February, 18 July and 17 August 2027, all three penumbral lunar eclipses that are hard to see.' },
+      { question: 'When is the Harvest Moon 2027?', answer: 'On 15 September 2027 at 23:04 UTC (01:04 Paris time on 16 September), in Pisces.' },
+    ],
+    ctaText: 'A Full Moon that stirs everything up, a heart in knots? Talk it through out loud with a Callastral advisor, from your real birth chart. No invented dates. No hidden meter. Your real sky.',
+    ctaButton: '3 free minutes, no card',
+    linksTitle: 'Go further',
+    links,
+    related: { href: SKY_EVENT_PATHS.eclipses2027.en, label: SKY_EVENT_LABELS.eclipses2027.en },
+    home: 'Home',
+    disclaimer: DISCLAIMER.en,
+  };
+}
+
 export function skyEventCopy(id: SkyEventId, locale: SkyLocale): SkyEventCopy {
   let copy: SkyEventCopy;
   if (id === 'mercuryVenusDirect') copy = mercuryVenusCopy(locale);
@@ -1701,6 +2176,8 @@ export function skyEventCopy(id: SkyEventId, locale: SkyLocale): SkyEventCopy {
   else if (id === 'fullMoonGemini') copy = fullMoonCopy(locale);
   else if (id === 'mercuryRetrograde2027') copy = mercuryRetro2027Copy(locale);
   else if (id === 'eclipses2027') copy = eclipses2027Copy(locale);
+  else if (id === 'marsRetrograde2027') copy = marsRetro2027Copy(locale);
+  else if (id === 'fullMoons2027') copy = fullMoons2027Copy(locale);
   else copy = sagittariusSeasonCopy(locale);
   // Maillage : chaque page événement renvoie vers les autres pages du ciel de la saison.
   const others = SKY_EVENT_IDS.filter((other) => other !== id && SKY_EVENT_PATHS[other][locale] !== copy.related.href);
