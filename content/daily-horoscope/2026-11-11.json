@@ -1,0 +1,159 @@
+{
+  "date": "2026-11-11",
+  "sky": {
+    "date": "2026-11-11",
+    "computedAt": "08:00 Europe/Paris",
+    "phase": {
+      "id": "new",
+      "illumination": 4,
+      "waxing": true
+    },
+    "bodies": [
+      {
+        "name": "Soleil",
+        "sign": "Scorpion",
+        "degree": 18,
+        "retrograde": false
+      },
+      {
+        "name": "Lune",
+        "sign": "Sagittaire",
+        "degree": 11,
+        "retrograde": false
+      },
+      {
+        "name": "Mercure",
+        "sign": "Scorpion",
+        "degree": 5,
+        "retrograde": true
+      },
+      {
+        "name": "Vénus",
+        "sign": "Balance",
+        "degree": 23,
+        "retrograde": true
+      },
+      {
+        "name": "Mars",
+        "sign": "Lion",
+        "degree": 23,
+        "retrograde": false
+      },
+      {
+        "name": "Jupiter",
+        "sign": "Lion",
+        "degree": 25,
+        "retrograde": false
+      },
+      {
+        "name": "Saturne",
+        "sign": "Bélier",
+        "degree": 8,
+        "retrograde": true
+      },
+      {
+        "name": "Uranus",
+        "sign": "Gémeaux",
+        "degree": 4,
+        "retrograde": true
+      },
+      {
+        "name": "Neptune",
+        "sign": "Bélier",
+        "degree": 1,
+        "retrograde": true
+      },
+      {
+        "name": "Pluton",
+        "sign": "Verseau",
+        "degree": 3,
+        "retrograde": false
+      },
+      {
+        "name": "Nœud nord",
+        "sign": "Verseau",
+        "degree": 25,
+        "retrograde": true
+      }
+    ],
+    "ingresses": [],
+    "aspects": [
+      {
+        "a": "Vénus",
+        "b": "Mars",
+        "aspect": "sextile",
+        "orb": 0.6
+      },
+      {
+        "a": "Mars",
+        "b": "Jupiter",
+        "aspect": "conjunction",
+        "orb": 1.8
+      },
+      {
+        "a": "Mars",
+        "b": "Nœud nord",
+        "aspect": "opposition",
+        "orb": 1.9
+      },
+      {
+        "a": "Mercure",
+        "b": "Pluton",
+        "aspect": "square",
+        "orb": 2.3
+      },
+      {
+        "a": "Vénus",
+        "b": "Jupiter",
+        "aspect": "sextile",
+        "orb": 2.4
+      },
+      {
+        "a": "Vénus",
+        "b": "Nœud nord",
+        "aspect": "trine",
+        "orb": 2.5
+      },
+      {
+        "a": "Lune",
+        "b": "Saturne",
+        "aspect": "trine",
+        "orb": 2.6
+      }
+    ]
+  },
+  "en": {
+    "summary": "Wednesday 11 November 2026: the Moon travels through Sagittarius and makes a supportive trine to Saturn in Aries, two days after the New Moon in Scorpio. Mercury is retrograde in Scorpio and squares Pluto in Aquarius. Venus, retrograde in Libra, stays in close sextile to Mars and to Jupiter, while Mars and Jupiter remain conjunct in Leo, opposite the North Node in Aquarius.",
+    "signs": {
+      "belier": "Aries, today’s main theme is travel, study and the beliefs that guide you. The Moon moves through Sagittarius in that part of your chart and forms an easy trine to Saturn in Aries, in your sector of identity, body and first impressions, so enthusiasm can be backed by some structure. Your curiosity widens: reading, planning a trip or learning something new feels natural.\n\nMercury is retrograde in Scorpio, in your area of shared money, intimacy and deep bonds, and squares Pluto in Aquarius, in your sector of friends, groups and long-term plans: review before you decide and avoid pushing anyone into a corner. Venus, retrograde in Libra in your sector of partnerships and one-to-one relationships, sextiles Mars and Jupiter in Leo, in your area of love, pleasure and creativity, which favours repairing and reconnecting over starting from scratch.\n\nBook the course, the trip idea or the reading time you keep postponing, without paying more than you can afford. The sky describes a climate, not a fixed outcome.",
+      "taureau": "Taurus, the day’s key focus falls on shared money, intimacy and deep bonds. The Moon moves through Sagittarius in that part of your chart and forms an easy trine to Saturn in Aries, in your sector of rest, the inner world and what you keep hidden, so enthusiasm can be backed by some structure. Questions of trust, shared money or emotional closeness come up, and calm honesty works better than control.\n\nMercury is retrograde in Scorpio, in your area of partnerships and one-to-one relationships, and squares Pluto in Aquarius, in your sector of career, reputation and public goals: review before you decide and avoid pushing anyone into a corner. Venus, retrograde in Libra in your sector of daily work, health and routines, sextiles Mars and Jupiter in Leo, in your area of home, family and private roots, which favours repairing and reconnecting over starting from scratch.\n\nHave one honest conversation about a shared expense or a promise that is still unclear. Astrology offers a lens, not a verdict.",
+      "gemeaux": "For you, Gemini, today centres on partnerships and one-to-one relationships. The Moon moves through Sagittarius in that part of your chart and forms an easy trine to Saturn in Aries, in your sector of friends, groups and long-term plans, so enthusiasm can be backed by some structure. Other people bring ideas and opinions, and listening first will save you a misunderstanding.\n\nMercury is retrograde in Scorpio, in your area of daily work, health and routines, and squares Pluto in Aquarius, in your sector of travel, study and the beliefs that guide you: review before you decide and avoid pushing anyone into a corner. Venus, retrograde in Libra in your sector of love, pleasure and creativity, sextiles Mars and Jupiter in Leo, in your area of conversations, messages and short trips, which favours repairing and reconnecting over starting from scratch.\n\nAsk a partner or close colleague what they need from you this week, then listen. Read this as a weather report for your mood, not a prediction.",
+      "cancer": "Cancer, this Wednesday puts daily work, health and routines first. The Moon moves through Sagittarius in that part of your chart and forms an easy trine to Saturn in Aries, in your sector of career, reputation and public goals, so enthusiasm can be backed by some structure. Small practical fixes at work or in your routine bring more relief than a grand plan would.\n\nMercury is retrograde in Scorpio, in your area of love, pleasure and creativity, and squares Pluto in Aquarius, in your sector of shared money, intimacy and deep bonds: review before you decide and avoid pushing anyone into a corner. Venus, retrograde in Libra in your sector of home, family and private roots, sextiles Mars and Jupiter in Leo, in your area of money, possessions and self-worth, which favours repairing and reconnecting over starting from scratch.\n\nFinish one pending task completely before starting another. The planets show tendencies, and your choices still decide.",
+      "lion": "Leo, your priority today is love, pleasure and creativity. The Moon moves through Sagittarius in that part of your chart and forms an easy trine to Saturn in Aries, in your sector of travel, study and the beliefs that guide you, so enthusiasm can be backed by some structure. Playfulness returns, and a hobby or a light conversation with someone you like can lift your mood.\n\nMercury is retrograde in Scorpio, in your area of home, family and private roots, and squares Pluto in Aquarius, in your sector of partnerships and one-to-one relationships: review before you decide and avoid pushing anyone into a corner. Venus, retrograde in Libra in your sector of conversations, messages and short trips, sextiles Mars and Jupiter in Leo, in your area of identity, body and first impressions, which favours repairing and reconnecting over starting from scratch.\n\nMake time for one activity that is purely for pleasure, even for twenty minutes. The sky describes a climate, not a fixed outcome.",
+      "vierge": "Virgo, the sky points you toward home, family and private roots today. The Moon moves through Sagittarius in that part of your chart and forms an easy trine to Saturn in Aries, in your sector of shared money, intimacy and deep bonds, so enthusiasm can be backed by some structure. Home asks for attention: tidying one room or calling a relative can steady the whole day.\n\nMercury is retrograde in Scorpio, in your area of conversations, messages and short trips, and squares Pluto in Aquarius, in your sector of daily work, health and routines: review before you decide and avoid pushing anyone into a corner. Venus, retrograde in Libra in your sector of money, possessions and self-worth, sextiles Mars and Jupiter in Leo, in your area of rest, the inner world and what you keep hidden, which favours repairing and reconnecting over starting from scratch.\n\nCook something simple at home and give yourself an early evening. Astrology offers a lens, not a verdict.",
+      "balance": "Today, Libra, the spotlight is on conversations, messages and short trips. The Moon moves through Sagittarius in that part of your chart and forms an easy trine to Saturn in Aries, in your sector of partnerships and one-to-one relationships, so enthusiasm can be backed by some structure. A message you have delayed can now be sent in a simple, honest tone, without overexplaining.\n\nMercury is retrograde in Scorpio, in your area of money, possessions and self-worth, and squares Pluto in Aquarius, in your sector of love, pleasure and creativity: review before you decide and avoid pushing anyone into a corner. Venus, retrograde in Libra in your sector of identity, body and first impressions, sextiles Mars and Jupiter in Leo, in your area of friends, groups and long-term plans, which favours repairing and reconnecting over starting from scratch.\n\nReply to the most important message first, then switch off notifications for an hour. Read this as a weather report for your mood, not a prediction.",
+      "scorpion": "Scorpio, expect money, possessions and self-worth to set the tone today. The Moon moves through Sagittarius in that part of your chart and forms an easy trine to Saturn in Aries, in your sector of daily work, health and routines, so enthusiasm can be backed by some structure. It is a good morning to look at a budget line calmly and decide what a purchase is really worth to you.\n\nMercury is retrograde in Scorpio, in your area of identity, body and first impressions, and squares Pluto in Aquarius, in your sector of home, family and private roots: review before you decide and avoid pushing anyone into a corner. Venus, retrograde in Libra in your sector of rest, the inner world and what you keep hidden, sextiles Mars and Jupiter in Leo, in your area of career, reputation and public goals, which favours repairing and reconnecting over starting from scratch.\n\nCheck one bank statement or subscription and cancel what no longer serves you. The planets show tendencies, and your choices still decide.",
+      "sagittaire": "Sagittarius, today is mostly about identity, body and first impressions. The Moon moves through Sagittarius in that part of your chart and forms an easy trine to Saturn in Aries, in your sector of love, pleasure and creativity, so enthusiasm can be backed by some structure. You may feel more visible and more impatient than usual, so channel that energy into one personal goal rather than ten.\n\nMercury is retrograde in Scorpio, in your area of rest, the inner world and what you keep hidden, and squares Pluto in Aquarius, in your sector of conversations, messages and short trips: review before you decide and avoid pushing anyone into a corner. Venus, retrograde in Libra in your sector of friends, groups and long-term plans, sextiles Mars and Jupiter in Leo, in your area of travel, study and the beliefs that guide you, which favours repairing and reconnecting over starting from scratch.\n\nWrite down one goal for the week and the first step you can take before Friday. The sky describes a climate, not a fixed outcome.",
+      "capricorne": "Capricorn, your attention turns to rest, the inner world and what you keep hidden today. The Moon moves through Sagittarius in that part of your chart and forms an easy trine to Saturn in Aries, in your sector of home, family and private roots, so enthusiasm can be backed by some structure. You need more quiet than usual, so protect an hour of rest and let your intuition sort things out.\n\nMercury is retrograde in Scorpio, in your area of friends, groups and long-term plans, and squares Pluto in Aquarius, in your sector of money, possessions and self-worth: review before you decide and avoid pushing anyone into a corner. Venus, retrograde in Libra in your sector of career, reputation and public goals, sextiles Mars and Jupiter in Leo, in your area of shared money, intimacy and deep bonds, which favours repairing and reconnecting over starting from scratch.\n\nGo to bed a little earlier and note any dream or intuition in the morning. Astrology offers a lens, not a verdict.",
+      "verseau": "Aquarius, the theme that matters most today is friends, groups and long-term plans. The Moon moves through Sagittarius in that part of your chart and forms an easy trine to Saturn in Aries, in your sector of conversations, messages and short trips, so enthusiasm can be backed by some structure. Friends and group projects take the lead, and a message to someone you have lost touch with may be welcome.\n\nMercury is retrograde in Scorpio, in your area of career, reputation and public goals, and squares Pluto in Aquarius, in your sector of identity, body and first impressions: review before you decide and avoid pushing anyone into a corner. Venus, retrograde in Libra in your sector of travel, study and the beliefs that guide you, sextiles Mars and Jupiter in Leo, in your area of partnerships and one-to-one relationships, which favours repairing and reconnecting over starting from scratch.\n\nSend a short note to a friend and suggest a concrete date to meet. Read this as a weather report for your mood, not a prediction.",
+      "poissons": "Pisces, this midweek day highlights career, reputation and public goals. The Moon moves through Sagittarius in that part of your chart and forms an easy trine to Saturn in Aries, in your sector of money, possessions and self-worth, so enthusiasm can be backed by some structure. Your professional image is under the spotlight, so prepare well before speaking to a manager or client.\n\nMercury is retrograde in Scorpio, in your area of travel, study and the beliefs that guide you, and squares Pluto in Aquarius, in your sector of rest, the inner world and what you keep hidden: review before you decide and avoid pushing anyone into a corner. Venus, retrograde in Libra in your sector of shared money, intimacy and deep bonds, sextiles Mars and Jupiter in Leo, in your area of daily work, health and routines, which favours repairing and reconnecting over starting from scratch.\n\nPrepare your key points in writing before an important meeting. The planets show tendencies, and your choices still decide."
+    }
+  },
+  "fr": {
+    "summary": "Mercredi 11 novembre 2026 : la Lune traverse le Sagittaire et forme un trigone porteur à Saturne en Bélier, deux jours après la Nouvelle Lune en Scorpion. Mercure est rétrograde en Scorpion et forme un carré à Pluton en Verseau. Vénus, rétrograde en Balance, reste en sextile serré avec Mars et Jupiter, tandis que Mars et Jupiter restent conjoints en Lion, opposés au Nœud nord en Verseau.",
+    "signs": {
+      "belier": "Bélier, le thème principal du jour est celui des voyages, des études et des convictions. La Lune en Sagittaire forme un trigone fluide à Saturne en Bélier, dans votre secteur de l’identité, du corps et de l’image que vous donnez : l’enthousiasme peut s’appuyer sur un cadre. Votre curiosité s’élargit : lire, préparer un voyage ou apprendre quelque chose de nouveau vient naturellement.\n\nMercure, rétrograde en Scorpion dans votre domaine de l’argent partagé, de l’intimité et des liens profonds, est au carré de Pluton en Verseau, dans votre secteur des amis, des groupes et des projets à long terme : relisez avant de décider et évitez d’acculer quelqu’un. Vénus, rétrograde en Balance dans votre secteur du couple et des relations en face à face, forme un sextile à Mars et Jupiter en Lion, dans votre domaine de l’amour, du plaisir et de la créativité, ce qui favorise la réparation plutôt qu’un départ de zéro.\n\nRéservez la formation, l’idée de voyage ou le temps de lecture que vous repoussez, sans dépenser plus que vos moyens. Le ciel décrit un climat, pas un résultat écrit d’avance.",
+      "taureau": "Taureau, la journée se concentre sur le domaine de l’argent partagé, de l’intimité et des liens profonds. La Lune en Sagittaire forme un trigone fluide à Saturne en Bélier, dans votre secteur du repos, du monde intérieur et de ce que vous gardez pour vous : l’enthousiasme peut s’appuyer sur un cadre. Des questions de confiance, d’argent commun ou de proximité affective remontent, et l’honnêteté calme fonctionne mieux que le contrôle.\n\nMercure, rétrograde en Scorpion dans votre domaine du couple et des relations en face à face, est au carré de Pluton en Verseau, dans votre secteur de la carrière, de la réputation et des objectifs publics : relisez avant de décider et évitez d’acculer quelqu’un. Vénus, rétrograde en Balance dans votre secteur du travail quotidien, de la santé et des routines, forme un sextile à Mars et Jupiter en Lion, dans votre domaine du foyer, de la famille et des racines, ce qui favorise la réparation plutôt qu’un départ de zéro.\n\nAyez une conversation honnête sur une dépense commune ou une promesse encore floue. L’astrologie offre un éclairage, pas un verdict.",
+      "gemeaux": "Pour vous, Gémeaux, aujourd’hui tourne autour du couple et des relations en face à face. La Lune en Sagittaire forme un trigone fluide à Saturne en Bélier, dans votre secteur des amis, des groupes et des projets à long terme : l’enthousiasme peut s’appuyer sur un cadre. Les autres arrivent avec leurs idées et leurs avis, et écouter d’abord vous évitera un malentendu.\n\nMercure, rétrograde en Scorpion dans votre domaine du travail quotidien, de la santé et des routines, est au carré de Pluton en Verseau, dans votre secteur des voyages, des études et des convictions : relisez avant de décider et évitez d’acculer quelqu’un. Vénus, rétrograde en Balance dans votre secteur de l’amour, du plaisir et de la créativité, forme un sextile à Mars et Jupiter en Lion, dans votre domaine des échanges, des messages et des petits trajets, ce qui favorise la réparation plutôt qu’un départ de zéro.\n\nDemandez à votre partenaire ou à un collègue proche ce dont il a besoin cette semaine, puis écoutez. Lisez ceci comme une météo de l’humeur, pas comme une prédiction.",
+      "cancer": "Cancer, ce mercredi met en avant le domaine du travail quotidien, de la santé et des routines. La Lune en Sagittaire forme un trigone fluide à Saturne en Bélier, dans votre secteur de la carrière, de la réputation et des objectifs publics : l’enthousiasme peut s’appuyer sur un cadre. De petites corrections pratiques au travail ou dans vos habitudes soulagent davantage qu’un grand plan.\n\nMercure, rétrograde en Scorpion dans votre domaine de l’amour, du plaisir et de la créativité, est au carré de Pluton en Verseau, dans votre secteur de l’argent partagé, de l’intimité et des liens profonds : relisez avant de décider et évitez d’acculer quelqu’un. Vénus, rétrograde en Balance dans votre secteur du foyer, de la famille et des racines, forme un sextile à Mars et Jupiter en Lion, dans votre domaine de l’argent, des biens et de l’estime de soi, ce qui favorise la réparation plutôt qu’un départ de zéro.\n\nTerminez complètement une tâche en attente avant d’en commencer une autre. Les planètes montrent des tendances, et vos choix décident.",
+      "lion": "Lion, votre priorité du jour touche au domaine de l’amour, du plaisir et de la créativité. La Lune en Sagittaire forme un trigone fluide à Saturne en Bélier, dans votre secteur des voyages, des études et des convictions : l’enthousiasme peut s’appuyer sur un cadre. La légèreté revient, et un loisir ou une conversation détendue avec une personne qui vous plaît peut remonter le moral.\n\nMercure, rétrograde en Scorpion dans votre domaine du foyer, de la famille et des racines, est au carré de Pluton en Verseau, dans votre secteur du couple et des relations en face à face : relisez avant de décider et évitez d’acculer quelqu’un. Vénus, rétrograde en Balance dans votre secteur des échanges, des messages et des petits trajets, forme un sextile à Mars et Jupiter en Lion, dans votre domaine de l’identité, du corps et de l’image que vous donnez, ce qui favorise la réparation plutôt qu’un départ de zéro.\n\nGardez du temps pour une activité faite uniquement pour le plaisir, même vingt minutes. Le ciel décrit un climat, pas un résultat écrit d’avance.",
+      "vierge": "Vierge, le ciel vous oriente aujourd’hui vers le domaine du foyer, de la famille et des racines. La Lune en Sagittaire forme un trigone fluide à Saturne en Bélier, dans votre secteur de l’argent partagé, de l’intimité et des liens profonds : l’enthousiasme peut s’appuyer sur un cadre. La maison réclame de l’attention : ranger une pièce ou appeler un proche peut stabiliser toute la journée.\n\nMercure, rétrograde en Scorpion dans votre domaine des échanges, des messages et des petits trajets, est au carré de Pluton en Verseau, dans votre secteur du travail quotidien, de la santé et des routines : relisez avant de décider et évitez d’acculer quelqu’un. Vénus, rétrograde en Balance dans votre secteur de l’argent, des biens et de l’estime de soi, forme un sextile à Mars et Jupiter en Lion, dans votre domaine du repos, du monde intérieur et de ce que vous gardez pour vous, ce qui favorise la réparation plutôt qu’un départ de zéro.\n\nPréparez un repas simple à la maison et accordez-vous une soirée tranquille. L’astrologie offre un éclairage, pas un verdict.",
+      "balance": "Aujourd’hui, Balance, les projecteurs éclairent le domaine des échanges, des messages et des petits trajets. La Lune en Sagittaire forme un trigone fluide à Saturne en Bélier, dans votre secteur du couple et des relations en face à face : l’enthousiasme peut s’appuyer sur un cadre. Un message que vous repoussez peut maintenant partir, sur un ton simple et sincère, sans trop vous justifier.\n\nMercure, rétrograde en Scorpion dans votre domaine de l’argent, des biens et de l’estime de soi, est au carré de Pluton en Verseau, dans votre secteur de l’amour, du plaisir et de la créativité : relisez avant de décider et évitez d’acculer quelqu’un. Vénus, rétrograde en Balance dans votre secteur de l’identité, du corps et de l’image que vous donnez, forme un sextile à Mars et Jupiter en Lion, dans votre domaine des amis, des groupes et des projets à long terme, ce qui favorise la réparation plutôt qu’un départ de zéro.\n\nRépondez d’abord au message le plus important, puis coupez les notifications pendant une heure. Lisez ceci comme une météo de l’humeur, pas comme une prédiction.",
+      "scorpion": "Scorpion, le domaine de l’argent, des biens et de l’estime de soi donne le ton de la journée. La Lune en Sagittaire forme un trigone fluide à Saturne en Bélier, dans votre secteur du travail quotidien, de la santé et des routines : l’enthousiasme peut s’appuyer sur un cadre. C’est une bonne matinée pour regarder une ligne de budget avec calme et décider ce qu’un achat vaut vraiment pour vous.\n\nMercure, rétrograde en Scorpion dans votre domaine de l’identité, du corps et de l’image que vous donnez, est au carré de Pluton en Verseau, dans votre secteur du foyer, de la famille et des racines : relisez avant de décider et évitez d’acculer quelqu’un. Vénus, rétrograde en Balance dans votre secteur du repos, du monde intérieur et de ce que vous gardez pour vous, forme un sextile à Mars et Jupiter en Lion, dans votre domaine de la carrière, de la réputation et des objectifs publics, ce qui favorise la réparation plutôt qu’un départ de zéro.\n\nVérifiez un relevé bancaire ou un abonnement et supprimez ce qui ne vous sert plus. Les planètes montrent des tendances, et vos choix décident.",
+      "sagittaire": "Sagittaire, aujourd’hui parle surtout de l’identité, du corps et de l’image que vous donnez. La Lune en Sagittaire forme un trigone fluide à Saturne en Bélier, dans votre secteur de l’amour, du plaisir et de la créativité : l’enthousiasme peut s’appuyer sur un cadre. Vous pouvez vous sentir plus visible et plus impatient que d’habitude : concentrez cette énergie sur un seul objectif personnel plutôt que sur dix.\n\nMercure, rétrograde en Scorpion dans votre domaine du repos, du monde intérieur et de ce que vous gardez pour vous, est au carré de Pluton en Verseau, dans votre secteur des échanges, des messages et des petits trajets : relisez avant de décider et évitez d’acculer quelqu’un. Vénus, rétrograde en Balance dans votre secteur des amis, des groupes et des projets à long terme, forme un sextile à Mars et Jupiter en Lion, dans votre domaine des voyages, des études et des convictions, ce qui favorise la réparation plutôt qu’un départ de zéro.\n\nNotez un objectif pour la semaine et la première étape possible avant vendredi. Le ciel décrit un climat, pas un résultat écrit d’avance.",
+      "capricorne": "Capricorne, votre attention se tourne vers le domaine du repos, du monde intérieur et de ce que vous gardez pour vous. La Lune en Sagittaire forme un trigone fluide à Saturne en Bélier, dans votre secteur du foyer, de la famille et des racines : l’enthousiasme peut s’appuyer sur un cadre. Vous avez besoin de plus de calme que d’habitude : protégez une heure de repos et laissez votre intuition faire le tri.\n\nMercure, rétrograde en Scorpion dans votre domaine des amis, des groupes et des projets à long terme, est au carré de Pluton en Verseau, dans votre secteur de l’argent, des biens et de l’estime de soi : relisez avant de décider et évitez d’acculer quelqu’un. Vénus, rétrograde en Balance dans votre secteur de la carrière, de la réputation et des objectifs publics, forme un sextile à Mars et Jupiter en Lion, dans votre domaine de l’argent partagé, de l’intimité et des liens profonds, ce qui favorise la réparation plutôt qu’un départ de zéro.\n\nCouchez-vous un peu plus tôt et notez au réveil un rêve ou une intuition. L’astrologie offre un éclairage, pas un verdict.",
+      "verseau": "Verseau, le thème qui compte le plus aujourd’hui est celui des amis, des groupes et des projets à long terme. La Lune en Sagittaire forme un trigone fluide à Saturne en Bélier, dans votre secteur des échanges, des messages et des petits trajets : l’enthousiasme peut s’appuyer sur un cadre. Les amis et les projets collectifs prennent le dessus, et un message à une personne perdue de vue peut être bien reçu.\n\nMercure, rétrograde en Scorpion dans votre domaine de la carrière, de la réputation et des objectifs publics, est au carré de Pluton en Verseau, dans votre secteur de l’identité, du corps et de l’image que vous donnez : relisez avant de décider et évitez d’acculer quelqu’un. Vénus, rétrograde en Balance dans votre secteur des voyages, des études et des convictions, forme un sextile à Mars et Jupiter en Lion, dans votre domaine du couple et des relations en face à face, ce qui favorise la réparation plutôt qu’un départ de zéro.\n\nEnvoyez un petit mot à un ami et proposez une date précise pour vous voir. Lisez ceci comme une météo de l’humeur, pas comme une prédiction.",
+      "poissons": "Poissons, ce milieu de semaine souligne le domaine de la carrière, de la réputation et des objectifs publics. La Lune en Sagittaire forme un trigone fluide à Saturne en Bélier, dans votre secteur de l’argent, des biens et de l’estime de soi : l’enthousiasme peut s’appuyer sur un cadre. Votre image professionnelle est exposée, alors préparez-vous bien avant de parler à un responsable ou à un client.\n\nMercure, rétrograde en Scorpion dans votre domaine des voyages, des études et des convictions, est au carré de Pluton en Verseau, dans votre secteur du repos, du monde intérieur et de ce que vous gardez pour vous : relisez avant de décider et évitez d’acculer quelqu’un. Vénus, rétrograde en Balance dans votre secteur de l’argent partagé, de l’intimité et des liens profonds, forme un sextile à Mars et Jupiter en Lion, dans votre domaine du travail quotidien, de la santé et des routines, ce qui favorise la réparation plutôt qu’un départ de zéro.\n\nPréparez vos arguments par écrit avant une réunion importante. Les planètes montrent des tendances, et vos choix décident."
+    }
+  }
+}
