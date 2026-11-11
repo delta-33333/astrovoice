@@ -68,6 +68,8 @@ export default async function Page(props: { params: Promise<{ locale: string }> 
         <ul className="mt-4 list-disc pl-5 space-y-2 text-white/80">
           <li><Link href={SKY_EVENT_PATHS.mercuryRetrograde2027.fr} className="underline text-celestial-gold">Mercure rétrograde 2027</Link> : les trois périodes, les ombres et l’effet par signe.</li>
           <li><Link href={SKY_EVENT_PATHS.eclipses2027.fr} className="underline text-celestial-gold">Calendrier des éclipses 2027</Link> : annulaire du 6 février, totale du 2 août, éclipses de Lune.</li>
+          <li><Link href={SKY_EVENT_PATHS.marsRetrograde2027.fr} className="underline text-celestial-gold">Mars rétrograde 2027</Link> : du 10 janvier au 1er avril, de la Vierge au Lion, et pourquoi Vénus ne rétrograde pas cette année.</li>
+          <li><Link href={SKY_EVENT_PATHS.fullMoons2027.fr} className="underline text-celestial-gold">Calendrier des Pleines Lunes 2027</Link> : les 12 dates et heures, la super Lune du 22 janvier.</li>
           <li><Link href="/fr/horoscope-du-jour" className="underline text-celestial-gold">Horoscope du jour</Link> et <Link href="/fr/lune-aujourdhui" className="underline text-celestial-gold">la Lune aujourd’hui</Link> pour suivre le ciel au quotidien.</li>
         </ul>
       </section>
