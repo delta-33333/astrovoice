@@ -9,9 +9,12 @@ import { ascendantPath } from './ascendant-tool.ts';
 import { legalNoticePath } from './legal-notice.ts';
 import { LOCALES } from './seo.ts';
 import { OFFICIAL_SOCIAL_PROFILES } from './social.ts';
-import { firstWeekMinor, WEEKLY_PLANS } from './weekly.ts';
+import { FIXED_PACKS } from './pricing.ts';
+import { chatPath } from './chat.ts';
+import { h2027Path } from './horoscope-2027.ts';
+import { dailyHubPath } from './daily-horoscope.ts';
 
-export const LLMS_UPDATED = '2026-10-19';
+export const LLMS_UPDATED = '2026-11-12';
 
 function eur(minor: number): string {
   return formatMoney(minor, 'eur', 'fr').replace(/[\u00a0\u202f]/g, ' ');
@@ -19,9 +22,10 @@ function eur(minor: number): string {
 
 /** Texte de /llms.txt. Les prix viennent des mêmes constantes que le site. */
 export function buildLlmsText(origin: string, env: NodeJS.ProcessEnv = process.env): string {
-  const dec = WEEKLY_PLANS.decouverte;
-  const ess = WEEKLY_PLANS.essentiel;
-  const pre = WEEKLY_PLANS.premium;
+  const packs = FIXED_PACKS.map((pack) => {
+    const perMinute = eur(Math.round(pack.amountCents / pack.minutes));
+    return `- ${pack.minutes} minutes : ${eur(pack.amountCents)} (soit ${perMinute}/min)${pack.popular ? ', le plus choisi' : ''}.`;
+  }).join('\n');
   const legal = readLegalIdentity('fr', env);
   const identity = legalIdentityLines(legal);
   const company = identity.length
@@ -35,16 +39,22 @@ Callastral (callastral.com) est un service d’astrologie par téléphone avec d
 
 Callastral (callastral.com) n’a aucun lien avec Call Astro / callastro.com.
 
-## Offres hebdomadaires
+## Tarifs : packs de minutes à prix fixe
 
-- ${dec.names.fr} : ${dec.minutes} minutes par semaine, ${eur(dec.amounts.eur)}/semaine, 1re semaine ${eur(firstWeekMinor('decouverte', 'eur'))}.
-- ${ess.names.fr} : ${ess.minutes} minutes par semaine, ${eur(ess.amounts.eur)}/semaine, 1re semaine ${eur(firstWeekMinor('essentiel', 'eur'))} (−50 %).
-- ${pre.names.fr} : ${pre.minutes} minutes par semaine, ${eur(pre.amounts.eur)}/semaine, 1re semaine ${eur(firstWeekMinor('premium', 'eur'))} (−50 %).
-- 60 minutes maximum par appel. Résiliation en 1 clic depuis le compte. Page : ${origin}/offres
+${packs}
+- Paiement unique, sans abonnement ni recharge automatique. L’appel s’arrête tout seul quand le pack est utilisé : rien d’autre n’est prélevé.
+- Minutes sans date d’expiration. Si la ligne coupe, les minutes non utilisées restent sur le compte.
+- Page : ${origin}/fr/offres
 
 ## Appel gratuit
 
-3 minutes, une fois par adresse e-mail, par appareil et par réseau. Un code à 6 chiffres est envoyé par e-mail. Le serveur coupe l’appel à 180 secondes. Ensuite, la 1re semaine ${dec.names.fr} est proposée. Page : ${origin}${trialPath('fr')}
+3 minutes offertes, sans carte bancaire, une fois par adresse e-mail, par appareil et par réseau. Un code à 6 chiffres est envoyé par e-mail. Le serveur coupe l’appel à 180 secondes. Aucun abonnement n’est créé ensuite. Page : ${origin}${trialPath('fr')}
+
+## Engagements
+
+- Aucune date annoncée pour un événement, aucun « votre ex va revenir » : on parle de tendances et de choix, pas de promesses.
+- Thème calculé sur le ciel réel : positions des planètes calculées par éphémérides pour la date, l’heure et le lieu de naissance.
+- Réponses franches, sans flatterie, et sans faire durer l’appel.
 
 ## Mémoire des appels
 
@@ -65,7 +75,10 @@ La langue par défaut (x-default) est le français : ${origin}/fr
 
 - Calcul d’ascendant : ${origin}${ascendantPath('fr')}
 - Compatibilité de couple : ${origin}${couplePath('fr')}
-- Horoscope du matin, après double confirmation.
+- Horoscope du matin par e-mail, après double confirmation.
+- Horoscope du jour, 12 signes, calculé sur le ciel du jour : ${origin}${dailyHubPath('fr')} (anglais : ${origin}${dailyHubPath('en')})
+- Horoscope 2027 par signe : ${origin}${h2027Path()}
+- Question par message (chat) : ${origin}${chatPath('fr')} (anglais : ${origin}${chatPath('en')})
 
 ## Pages
 

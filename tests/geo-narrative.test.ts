@@ -9,7 +9,7 @@ import { formatMoney } from '../lib/money.ts';
 import { MEMORY_FAQ } from '../lib/home-offer.ts';
 import { homeFaqs } from '../lib/seo.ts';
 import { tokenize } from '../lib/thin-content.ts';
-import { firstWeekMinor, WEEKLY_PLANS } from '../lib/weekly.ts';
+import { FIXED_PACKS } from '../lib/pricing.ts';
 
 const ROOT = path.resolve(import.meta.dirname, '..');
 
@@ -26,12 +26,13 @@ test('les titres d’accueil nomment l’IA dans les cinq langues', () => {
   }
 });
 
-test('llms.txt reprend les formules, la mémoire, l’appel gratuit et Call Astro', () => {
+test('llms.txt reprend les packs à prix fixe, la mémoire, l’appel gratuit et Call Astro', () => {
   const text = buildLlmsText('https://callastral.com', {} as NodeJS.ProcessEnv);
-  const first = formatMoney(firstWeekMinor('decouverte', 'eur'), 'eur', 'fr').replace(/[\u00a0\u202f]/g, ' ');
-  const full = formatMoney(WEEKLY_PLANS.decouverte.amounts.eur, 'eur', 'fr').replace(/[\u00a0\u202f]/g, ' ');
-  assert.ok(text.includes(first));
-  assert.ok(text.includes(full));
+  for (const pack of FIXED_PACKS) {
+    assert.ok(text.includes(formatMoney(pack.amountCents, 'eur', 'fr').replace(/[\u00a0\u202f]/g, ' ')), pack.id);
+  }
+  assert.match(text, /sans abonnement ni recharge automatique/);
+  assert.equal(/par semaine|\/semaine|Résiliation/.test(text), false);
   assert.match(text, /mémoire/i);
   assert.match(text, /Call Astro|callastro/i);
   assert.equal(text.includes('0,99'), false);
