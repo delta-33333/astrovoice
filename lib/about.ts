@@ -1,11 +1,11 @@
 import { ascendantPath } from './ascendant-tool.ts';
-import { discoveryHeadline } from './book-funnel.ts';
 import { FREE_CALL_SECONDS } from './free-call.ts';
 import { AI_ACT_LINE, AI_ACT_SPOKEN } from './legal.ts';
 import { formatMoney } from './money.ts';
+import { FIXED_PACKS } from './pricing.ts';
 import { privacyPath } from './privacy-copy.ts';
 import { hreflangAlternates, hubPath, SPECIALTY_IDS, specialtyLabel, type Locale } from './seo.ts';
-import { firstWeekMinor, WEEKLY_MAX_CALL_MINUTES, WEEKLY_PLANS } from './weekly.ts';
+import { WEEKLY_MAX_CALL_MINUTES } from './weekly.ts';
 
 export const ABOUT_PATHS: Record<Locale, string> = {
   fr: '/fr/a-propos',
@@ -50,28 +50,22 @@ export interface AboutSection {
 }
 
 function priceLine(locale: Locale): string {
-  const lang = locale;
-  const money = (minor: number) => formatMoney(minor, 'eur', locale === 'en' ? 'en' : locale === 'fr' ? 'fr' : locale);
-  const dec = WEEKLY_PLANS.decouverte;
-  const ess = WEEKLY_PLANS.essentiel;
-  const pre = WEEKLY_PLANS.premium;
-  const first = discoveryHeadline(lang, 'eur');
-  const n = (plan: typeof dec) => plan.names[locale];
-  const fw = (id: 'essentiel' | 'premium') => money(firstWeekMinor(id, 'eur'));
+  const money = (minor: number) => formatMoney(minor, 'eur', locale);
+  const list = FIXED_PACKS.map((pack) => `${pack.minutes} min ${money(pack.amountCents)}`).join(', ');
   const free = FREE_CALL_SECONDS / 60;
   if (locale === 'es') {
-    return `Callastral cobra ${n(dec)} a ${money(dec.amounts.eur)} por semana (${dec.minutes} minutos, ${first}), ${n(ess)} a ${money(ess.amounts.eur)} (${ess.minutes} minutos, primera semana ${fw('essentiel')}) y ${n(pre)} a ${money(pre.amounts.eur)} (${pre.minutes} minutos, primera semana ${fw('premium')}). Una llamada de ${free} minutos es gratuita una sola vez. Callastral no muestra cuenta atrás.`;
+    return `Callastral vende paquetes de minutos a precio fijo, pagados una sola vez, sin suscripción ni recarga automática: ${list}. La llamada se detiene sola cuando se agota el paquete. Una llamada de ${free} minutos es gratuita una sola vez.`;
   }
   if (locale === 'de') {
-    return `Callastral berechnet für ${n(dec)} ${money(dec.amounts.eur)} pro Woche (${dec.minutes} Minuten, ${first}), für ${n(ess)} ${money(ess.amounts.eur)} (${ess.minutes} Minuten, erste Woche ${fw('essentiel')}) und für ${n(pre)} ${money(pre.amounts.eur)} (${pre.minutes} Minuten, erste Woche ${fw('premium')}). Ein Anruf von ${free} Minuten ist einmalig kostenlos. Callastral zeigt keinen Countdown.`;
+    return `Callastral verkauft Minutenpakete zum Festpreis, einmal bezahlt, ohne Abo und ohne automatische Aufladung: ${list}. Der Anruf endet von selbst, wenn das Paket aufgebraucht ist. Ein Anruf von ${free} Minuten ist einmalig kostenlos.`;
   }
   if (locale === 'it') {
-    return `Callastral addebita ${n(dec)} a ${money(dec.amounts.eur)} a settimana (${dec.minutes} minuti, ${first}), ${n(ess)} a ${money(ess.amounts.eur)} (${ess.minutes} minuti, prima settimana ${fw('essentiel')}) e ${n(pre)} a ${money(pre.amounts.eur)} (${pre.minutes} minuti, prima settimana ${fw('premium')}). Una chiamata di ${free} minuti è gratuita una sola volta. Callastral non mostra alcun conto alla rovescia.`;
+    return `Callastral vende pacchetti di minuti a prezzo fisso, pagati una sola volta, senza abbonamento né ricarica automatica: ${list}. La chiamata si ferma da sola quando il pacchetto è esaurito. Una chiamata di ${free} minuti è gratuita una sola volta.`;
   }
   if (locale === 'en') {
-    return `Callastral charges ${dec.names.en} at ${money(dec.amounts.eur)} per week (${dec.minutes} minutes, ${first}), ${ess.names.en} at ${money(ess.amounts.eur)} (${ess.minutes} minutes, first week ${money(firstWeekMinor('essentiel', 'eur'))}) and ${pre.names.en} at ${money(pre.amounts.eur)} (${pre.minutes} minutes, first week ${money(firstWeekMinor('premium', 'eur'))}). A ${FREE_CALL_SECONDS / 60}-minute call is free once. Callastral does not show a countdown.`;
+    return `Callastral sells fixed-price minute packs, paid once, with no subscription and no auto top-up: ${list}. The call stops by itself when the pack is used up. A ${free}-minute call is free once.`;
   }
-  return `Callastral facture Découverte ${money(dec.amounts.eur)} par semaine (${dec.minutes} minutes, ${first}), Essentiel ${money(ess.amounts.eur)} (${ess.minutes} minutes, 1re semaine ${money(firstWeekMinor('essentiel', 'eur'))}) et Premium ${money(pre.amounts.eur)} (${pre.minutes} minutes, 1re semaine ${money(firstWeekMinor('premium', 'eur'))}). Un appel de ${FREE_CALL_SECONDS / 60} minutes est offert une fois. Callastral n’affiche pas de compte à rebours.`;
+  return `Callastral vend des packs de minutes à prix fixe, payés une fois, sans abonnement ni recharge automatique : ${list}. L’appel s’arrête tout seul quand le pack est utilisé. Un appel de ${free} minutes est offert une fois.`;
 }
 
 const SECTIONS: Record<Locale, AboutSection[]> = {

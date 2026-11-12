@@ -1,5 +1,5 @@
 import { MARKET_PRICING, formatMoney } from './money.ts';
-import { MINUTE_PACKS } from './pricing.ts';
+import { FIXED_PACKS, MINUTE_PACKS } from './pricing.ts';
 import { WEEKLY_PLAN_IDS, WEEKLY_PLANS, firstWeekMinor } from './weekly.ts';
 
 /** Pages « réponse d’abord » (FR + EN). Prix concurrents : relevé du 3/10/2026, plan GEO. */
@@ -71,6 +71,7 @@ export function callastralFacts(locale: GeoLocale) {
       price: eur(pack.id === '10min' || pack.id === '30min' || pack.id === '60min' ? grid.packs[pack.id] : pack.amountCents, locale),
     })),
     weekly,
+    fixed: FIXED_PACKS.map((pack) => ({ minutes: pack.minutes, price: eur(grid.packs[pack.id as keyof typeof grid.packs], locale) })),
   };
 }
 
@@ -119,7 +120,7 @@ export function priceRows(locale: GeoLocale, ourModel: string): PriceRow[] {
         service: 'Callastral (notre service)',
         url: null,
         model: ourModel,
-        price: `3 min offertes une fois ; formules hebdomadaires : ${c.weekly.decouverte.name} ${c.weekly.decouverte.trial} la 1re semaine puis ${c.weekly.decouverte.full}/semaine (${c.weekly.decouverte.minutes} min), ${c.weekly.essentiel.name} ${c.weekly.essentiel.trial} puis ${c.weekly.essentiel.full} (${c.weekly.essentiel.minutes} min), ${c.weekly.premium.name} ${c.weekly.premium.trial} puis ${c.weekly.premium.full} (${c.weekly.premium.minutes} min)`,
+        price: `3 min offertes une fois, sans carte ; packs de minutes à prix fixe, sans abonnement ni recharge automatique : ${c.fixed.map((p) => `${p.minutes} min ${p.price}`).join(', ')}`,
         sources: [],
         ours: true,
       },
@@ -158,7 +159,7 @@ export function priceRows(locale: GeoLocale, ourModel: string): PriceRow[] {
       service: 'Callastral (our service)',
       url: null,
       model: ourModel,
-      price: `3 minutes free once; weekly plans: ${c.weekly.decouverte.name} ${c.weekly.decouverte.trial} the first week then ${c.weekly.decouverte.full}/week (${c.weekly.decouverte.minutes} min), ${c.weekly.essentiel.name} ${c.weekly.essentiel.trial} then ${c.weekly.essentiel.full} (${c.weekly.essentiel.minutes} min), ${c.weekly.premium.name} ${c.weekly.premium.trial} then ${c.weekly.premium.full} (${c.weekly.premium.minutes} min)`,
+      price: `3 minutes free once, no card; fixed-price minute packs, no subscription and no auto top-up: ${c.fixed.map((p) => `${p.minutes} min ${p.price}`).join(', ')}`,
       sources: [],
       ours: true,
     },
