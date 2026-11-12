@@ -30,10 +30,10 @@ export interface BookCopy {
 }
 
 const FR: BookCopy = {
-  title: 'Votre thème, en 10 minutes',
-  plan: 'Découverte',
-  minutes: '10 minutes avec un conseiller virtuel',
-  thenWeek: (full) => `puis ${full}/semaine`,
+  title: 'Votre thème, en packs à prix fixe',
+  plan: 'Packs à prix fixe',
+  minutes: '10, 20 ou 40 minutes avec un conseiller virtuel',
+  thenWeek: (full) => full,
   birthTitle: 'Naissance reprise du calcul',
   accountTitle: 'Pour le reçu et l’appel',
   firstName: 'Prénom',
@@ -48,7 +48,7 @@ const FR: BookCopy = {
   included: 'Ces 10 minutes sont incluses dans votre formule.',
   includedButton: 'Rejoindre l’appel',
   pickAdvisor: 'Choisir un conseiller',
-  trust: ['Paiement sécurisé Stripe', 'Sans engagement, résiliable en 1 clic', 'Échanges confidentiels'],
+  trust: ['Paiement sécurisé Stripe', 'Paiement unique, sans abonnement', 'Échanges confidentiels'],
   wallet: 'Apple Pay et Google Pay s’affichent si votre appareil les propose.',
   hold: 'Le créneau est bloqué 10 minutes, le temps du paiement.',
   back: '← Annuaire',
@@ -59,10 +59,10 @@ const FR: BookCopy = {
 };
 
 const EN: BookCopy = {
-  title: 'Your chart, in 10 minutes',
-  plan: 'Discovery',
-  minutes: '10 minutes with a virtual advisor',
-  thenWeek: (full) => `then ${full}/week`,
+  title: 'Your chart, in fixed-price packs',
+  plan: 'Fixed-price packs',
+  minutes: '10, 20 or 40 minutes with a virtual advisor',
+  thenWeek: (full) => full,
   birthTitle: 'Birth details from the calculator',
   accountTitle: 'For the receipt and the call',
   firstName: 'First name',
@@ -77,7 +77,7 @@ const EN: BookCopy = {
   included: 'These 10 minutes are included in your plan.',
   includedButton: 'Join the call',
   pickAdvisor: 'Choose an advisor',
-  trust: ['Secure payment by Stripe', 'No commitment, cancel in one click', 'Private conversations'],
+  trust: ['Secure payment by Stripe', 'One-off payment, no subscription', 'Private conversations'],
   wallet: 'Apple Pay and Google Pay appear when your device offers them.',
   hold: 'The slot is held for 10 minutes while you pay.',
   back: '← Directory',
@@ -88,10 +88,10 @@ const EN: BookCopy = {
 };
 
 const ES: BookCopy = {
-  title: 'Tu carta, en 10 minutos',
-  plan: 'Descubrimiento',
-  minutes: '10 minutos con un consejero virtual',
-  thenWeek: (full) => `luego ${full}/semana`,
+  title: 'Tu carta, en paquetes a precio fijo',
+  plan: 'Paquetes a precio fijo',
+  minutes: '10, 20 o 40 minutos con un consejero virtual',
+  thenWeek: (full) => full,
   birthTitle: 'Nacimiento tomado del cálculo',
   accountTitle: 'Para el recibo y la llamada',
   firstName: 'Nombre',
@@ -106,7 +106,7 @@ const ES: BookCopy = {
   included: 'Estos 10 minutos están incluidos en tu fórmula.',
   includedButton: 'Entrar en la llamada',
   pickAdvisor: 'Elegir un consejero',
-  trust: ['Pago seguro con Stripe', 'Sin permanencia, cancelable en 1 clic', 'Conversaciones confidenciales'],
+  trust: ['Pago seguro con Stripe', 'Pago único, sin suscripción', 'Conversaciones confidenciales'],
   wallet: 'Apple Pay y Google Pay aparecen si tu dispositivo los ofrece.',
   hold: 'El turno queda bloqueado 10 minutos mientras pagas.',
   back: '← Directorio',
@@ -117,10 +117,10 @@ const ES: BookCopy = {
 };
 
 const DE: BookCopy = {
-  title: 'Ihr Horoskop, in 10 Minuten',
-  plan: 'Entdeckung',
-  minutes: '10 Minuten mit einem virtuellen Berater',
-  thenWeek: (full) => `danach ${full}/Woche`,
+  title: 'Ihr Horoskop, in Festpreis-Paketen',
+  plan: 'Festpreis-Pakete',
+  minutes: '10, 20 oder 40 Minuten mit einem virtuellen Berater',
+  thenWeek: (full) => full,
   birthTitle: 'Geburt aus der Berechnung',
   accountTitle: 'Für die Quittung und den Anruf',
   firstName: 'Vorname',
@@ -135,7 +135,7 @@ const DE: BookCopy = {
   included: 'Diese 10 Minuten sind in Ihrer Formel enthalten.',
   includedButton: 'Anruf beitreten',
   pickAdvisor: 'Berater wählen',
-  trust: ['Sichere Zahlung über Stripe', 'Ohne Bindung, mit 1 Klick kündbar', 'Vertrauliche Gespräche'],
+  trust: ['Sichere Zahlung über Stripe', 'Einmalzahlung, ohne Abo', 'Vertrauliche Gespräche'],
   wallet: 'Apple Pay und Google Pay erscheinen, wenn Ihr Gerät sie anbietet.',
   hold: 'Der Termin bleibt 10 Minuten reserviert, während Sie zahlen.',
   back: '← Verzeichnis',
@@ -146,10 +146,10 @@ const DE: BookCopy = {
 };
 
 const IT: BookCopy = {
-  title: 'Il tuo tema, in 10 minuti',
-  plan: 'Scoperta',
-  minutes: '10 minuti con un consulente virtuale',
-  thenWeek: (full) => `poi ${full}/settimana`,
+  title: 'Il tuo tema, in pacchetti a prezzo fisso',
+  plan: 'Pacchetti a prezzo fisso',
+  minutes: '10, 20 o 40 minuti con un consulente virtuale',
+  thenWeek: (full) => full,
   birthTitle: 'Nascita ripresa dal calcolo',
   accountTitle: 'Per la ricevuta e la chiamata',
   firstName: 'Nome',
@@ -164,7 +164,7 @@ const IT: BookCopy = {
   included: 'Questi 10 minuti sono inclusi nella tua formula.',
   includedButton: 'Entra nella chiamata',
   pickAdvisor: 'Scegli un consulente',
-  trust: ['Pagamento sicuro con Stripe', 'Senza vincoli, disdetta in 1 clic', 'Conversazioni riservate'],
+  trust: ['Pagamento sicuro con Stripe', 'Pagamento unico, senza abbonamento', 'Conversazioni riservate'],
   wallet: 'Apple Pay e Google Pay compaiono se il dispositivo li propone.',
   hold: 'Lo slot resta bloccato 10 minuti mentre paghi.',
   back: '← Elenco',

@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     default: "Callastral — Consultation astrologique par téléphone",
     template: "%s",
   },
-  description: "Astrologue IA par téléphone, à partir de votre thème natal. Appel de 3 minutes offert, puis formules hebdomadaires.",
+  description: "Astrologue IA par téléphone, à partir de votre thème natal. Appel de 3 minutes offert, puis packs à prix fixe (10, 20 ou 40 min), sans abonnement.",
   manifest: "/manifest.json",
   icons: {
     icon: [

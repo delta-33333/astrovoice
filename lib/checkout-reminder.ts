@@ -1,8 +1,7 @@
 import 'server-only';
 import { isAdvisorLang, type AdvisorLang } from './money';
-import { renewalTerms } from './renewal-copy';
-import { isWeeklyPlan, weeklyCurrency, type WeeklyCurrency, type WeeklyPlanId } from './weekly';
-import { discoveryHeadline } from './book-funnel';
+import { weeklyCurrency, type WeeklyCurrency } from './weekly';
+import { packsCheckoutPath, packsLead, packsOfferLine } from './pack-offer';
 import { checkoutReminderMail, reminderAt, signOptOut } from './checkout-reminder-copy';
 import { freeCallEnabled, trialEmailNorm, trialPath } from './free-call';
 import { isLocale } from './seo';
@@ -60,21 +59,18 @@ export async function noteCheckoutOpened(input: {
     const market = await resolveMarket().catch(() => null);
     const requestedLang = input.language || '';
     const locale: AdvisorLang = isAdvisorLang(requestedLang) ? requestedLang : market?.language || 'fr';
-    const requestedPlan = input.plan || '';
-    const plan: WeeklyPlanId = isWeeklyPlan(requestedPlan) ? requestedPlan : 'decouverte';
     const requestedCurrency = input.currency || '';
     const currency: WeeklyCurrency = isWeeklyCurrencySafe(requestedCurrency)
       ? requestedCurrency
       : weeklyCurrency(market?.currency || 'eur');
-    const terms = renewalTerms(plan, currency, locale);
     const origin = appBaseUrl();
     const trialUrl = await unusedTrialUrl(input.user, locale, origin);
     const mail = checkoutReminderMail({
       locale,
       name: input.user.display_name || '',
-      offer: discoveryHeadline(locale, currency),
-      renewal: terms.sentence,
-      resumeUrl: `${origin}/book?offer=decouverte`,
+      offer: packsOfferLine(locale, currency),
+      renewal: packsLead(locale),
+      resumeUrl: `${origin}${packsCheckoutPath()}`,
       unsubscribeUrl: `${origin}/api/email/unsubscribe?token=${encodeURIComponent(signOptOut(input.user.id, secret))}&lang=${locale}`,
       ...(trialUrl ? { trialUrl } : {}),
     });

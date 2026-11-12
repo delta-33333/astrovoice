@@ -14,14 +14,14 @@ export const dynamic = 'force-dynamic';
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 const MESSAGE: Record<string, string> = {
-  disabled: 'L’essai gratuit est suspendu. La 1re semaine Découverte reste disponible.',
+  disabled: 'L’essai gratuit est suspendu. Les packs à prix fixe restent disponibles.',
   disposable: 'Cette adresse e-mail ne peut pas recevoir l’essai.',
   email: 'Un essai a déjà été utilisé avec cette adresse.',
   device: 'Un essai a déjà été utilisé sur cet appareil.',
   ip: 'Un essai a déjà été utilisé depuis ce réseau.',
   paid: 'Un compte a déjà une formule ou l’offre d’accueil. Ouvrez votre compte.',
-  cap: 'Les essais gratuits du jour sont épuisés. Revenez demain, ou commencez à 1,99 €.',
-  unavailable: 'L’essai gratuit n’est pas encore ouvert. Vous pouvez commencer par la formule Découverte.',
+  cap: 'Les essais gratuits du jour sont épuisés. Revenez demain, ou choisissez un pack à prix fixe.',
+  unavailable: 'L’essai gratuit n’est pas encore ouvert. Vous pouvez commencer par un pack à prix fixe.',
   mismatch: 'Indiquez un e-mail valide.',
   expired: 'Ce code n’est plus valable.',
   attempts: 'Trop de tentatives. Demandez un nouveau code.',

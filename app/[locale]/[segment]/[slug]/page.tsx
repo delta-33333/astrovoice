@@ -9,7 +9,8 @@ import { localizedBio } from '@/lib/advisor-bio';
 import { bookPath } from '@/lib/book-path';
 import { appBaseUrl } from '@/lib/stripe';
 import { homeOfferLine } from '@/lib/home-offer';
-import { firstWeekMinor, weeklyCurrency } from '@/lib/weekly';
+import { packGrid } from '@/lib/pack-offer';
+import { weeklyCurrency } from '@/lib/weekly';
 import { getAdvisorProfile, listDirectoryAdvisors } from '@/lib/slots';
 import {
   advisorAlternates,
@@ -50,7 +51,7 @@ export async function generateMetadata(
   const { locale, segment, slug } = await props.params;
   const advisor = await load(locale, segment, slug);
   if (!advisor || !isLocale(locale)) return {};
-  // Même source et même texte de prix que l’accueil (offre hebdomadaire Découverte).
+  // Même source et même texte de prix que l’accueil (packs à prix fixe).
   const offer = homeOfferLine(locale, weeklyCurrency(localeCurrency(locale)));
   const topic = specialtyLabel(locale, advisor.specialties[0] || 'amour');
   const title = `${advisor.name} — ${topic} — ${phonePhrase(locale)}`;
@@ -81,7 +82,7 @@ export default async function AdvisorSeoPage(
   if (!advisor) notFound();
 
   const currency = weeklyCurrency(localeCurrency(locale));
-  // Même source et même texte de prix que l’accueil (offre hebdomadaire Découverte).
+  // Même source et même texte de prix que l’accueil (packs à prix fixe).
   const offer = homeOfferLine(locale, currency);
   const topics = advisor.specialties.map((item) => specialtyLabel(locale, item));
   const languages = advisor.languages.map((code) => languageLabel(locale, code));
@@ -134,7 +135,7 @@ export default async function AdvisorSeoPage(
   };
 
   const showRating = advisor.averageRating != null && advisor.reviewCount >= 5;
-  const priceMajor = (firstWeekMinor('decouverte', currency) / 100).toFixed(2);
+  const priceMajor = (packGrid(locale, currency).packs['10min'] / 100).toFixed(2);
   const listed = indexableAdvisorLocales(advisor.languages).includes(locale);
   const orgId = `${origin}/#organization`;
 

@@ -17,15 +17,15 @@ const ENTRIES: { q: string; a: string }[] = [
   },
   {
     q: 'Quels sont les tarifs ?',
-    a: 'Un appel de 3 minutes est offert une fois, après un code envoyé par e-mail. Ensuite les formules sont hebdomadaires : Découverte (10 min, 5,90 €/semaine, 1,99 € la première semaine), Essentiel (30 min, 14,90 €/semaine) et Premium (60 min, 27,90 €/semaine). Le plafond est de 60 minutes par appel. La résiliation se fait en un clic depuis le compte.',
+    a: 'Un appel de 3 minutes est offert une fois, après un code envoyé par e-mail, sans carte. Ensuite les packs de minutes à prix fixe : 10 minutes 12,90 €, 20 minutes 22,90 €, 40 minutes 39,90 €. Paiement unique, sans abonnement ni recharge automatique. L’appel s’arrête tout seul quand le pack est utilisé.',
   },
   {
     q: 'La consultation s’appuie-t-elle sur mon thème natal ?',
     a: 'Oui. La date, l’heure et le lieu de naissance servent à établir le thème : positions, maisons et aspects. Si l’heure est inconnue, la lecture reste plus prudente sur l’ascendant et les maisons.',
   },
   {
-    q: 'Que comprennent les formules hebdomadaires ?',
-    a: 'Découverte : 10 minutes par semaine, 5,90 € puis 1,99 € la première semaine. Essentiel : 30 minutes par semaine, 14,90 € puis 7,45 € la première semaine. Premium : 60 minutes par semaine, 27,90 € puis 13,95 € la première semaine. Le plafond est de 60 minutes par appel. La première semaine à tarif réduit ne s’applique qu’une fois par client, toutes formules confondues. Le renouvellement se fait au tarif plein. La résiliation se fait en un clic depuis le compte.',
+    q: 'Que comprennent les packs de minutes ?',
+    a: 'Trois packs prépayés à prix fixe : 10 minutes 12,90 €, 20 minutes 22,90 €, 40 minutes 39,90 €. Vous payez une fois. Les minutes n’expirent pas. L’appel s’arrête tout seul quand le pack est utilisé : pas d’abonnement, pas de recharge automatique, jamais un centime de plus.',
   },
   {
     q: 'Quels documents écrits sont proposés ?',

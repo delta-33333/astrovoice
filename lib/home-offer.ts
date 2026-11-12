@@ -1,8 +1,8 @@
-import { discoveryHeadline } from './book-funnel.ts';
 import { VIRTUAL_ADVISOR_DISCLOSURE } from './legal.ts';
 import { formatMoney, MARKET_PRICING, type AdvisorLang } from './money.ts';
+import { packsOfferLine } from './pack-offer.ts';
 import type { Locale } from './seo.ts';
-import { firstWeekMinor, WEEKLY_PLANS, type WeeklyCurrency } from './weekly.ts';
+import type { WeeklyCurrency } from './weekly.ts';
 
 /** Accueil : au plus douze fiches, le reste passe par « voir tous ». */
 export const FEATURED_ADVISOR_LIMIT = 12;
@@ -56,18 +56,18 @@ export function homeReassure(locale: Locale): string {
 }
 
 export function homeSecondaryCta(locale: Locale, currency: WeeklyCurrency): string {
-  const price = discoveryHeadline(locale, currency);
+  const price = packsOfferLine(locale, currency);
   switch (locale) {
     case 'en':
-      return `Discovery plan: ${price}`;
+      return `Fixed-price packs: ${price}`;
     case 'es':
-      return `Fórmula Descubrimiento: ${price}`;
+      return `Paquetes a precio fijo: ${price}`;
     case 'de':
-      return `Tarif Entdeckung: ${price}`;
+      return `Festpreis-Pakete: ${price}`;
     case 'it':
-      return `Formula Scoperta: ${price}`;
+      return `Pacchetti a prezzo fisso: ${price}`;
     default:
-      return `Formule Découverte : ${price}`;
+      return `Packs à prix fixe : ${price}`;
   }
 }
 
@@ -139,15 +139,11 @@ export const MEMORY_FAQ: Record<Locale, { question: string; answer: string }> = 
 };
 
 export function weeklyOfferSentence(locale: AdvisorLang, currency: WeeklyCurrency): string {
-  const dec = WEEKLY_PLANS.decouverte;
-  const ess = WEEKLY_PLANS.essentiel;
-  const pre = WEEKLY_PLANS.premium;
-  const money = (minor: number) => formatMoney(minor, currency, locale);
-  const first = (plan: 'decouverte' | 'essentiel' | 'premium') => money(firstWeekMinor(plan, currency));
+  const line = packsOfferLine(locale, currency);
   if (locale === 'en') {
-    return `${dec.names.en} ${dec.minutes} min ${money(dec.amounts[currency])}/week, first week ${first('decouverte')}. ${ess.names.en} ${ess.minutes} min ${money(ess.amounts[currency])}/week, first week ${first('essentiel')}. ${pre.names.en} ${pre.minutes} min ${money(pre.amounts[currency])}/week, first week ${first('premium')}. Cancel in one click.`;
+    return `Fixed-price packs, paid once, no subscription: ${line}. The call stops by itself when the pack is used up.`;
   }
-  return `Découverte ${dec.minutes} min ${money(dec.amounts.eur)}/semaine, 1re semaine ${first('decouverte')}. Essentiel ${ess.minutes} min ${money(ess.amounts.eur)}/semaine, 1re semaine ${first('essentiel')}. Premium ${pre.minutes} min ${money(pre.amounts.eur)}/semaine, 1re semaine ${first('premium')}. Résiliable en 1 clic.`;
+  return `Packs à prix fixe, payés une fois, sans abonnement : ${line}. L’appel s’arrête tout seul quand le pack est utilisé.`;
 }
 
 export const HOME_DISCLOSURE = VIRTUAL_ADVISOR_DISCLOSURE;

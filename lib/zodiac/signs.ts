@@ -71,7 +71,7 @@ export const CLUSTER_SEGMENT: Record<ClusterKind, Record<Locale, string>> = {
   week: { fr: 'horoscope', en: 'weekly-horoscope', es: 'horoscopo-semanal', de: 'wochenhoroskop', it: 'oroscopo-settimanale' },
 };
 
-export const BOOK_DISCOVERY_PATH = '/book?offer=decouverte';
+export const BOOK_DISCOVERY_PATH = '/packs?pack=20min';
 
 const ELEMENT_LABEL: Record<Locale, Record<ElementId, string>> = {
   fr: { fire: 'feu', earth: 'terre', air: 'air', water: 'eau' },

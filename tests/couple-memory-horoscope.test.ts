@@ -85,7 +85,7 @@ test('compatibilité : score stable, cinq locales, partage sans naissance', () =
   assert.equal(dumped.includes('1990'), false);
   assert.equal(dumped.toLowerCase().includes('paris'), false);
   const book = coupleShareBookPath();
-  assert.match(book, /offer=decouverte/);
+  assert.match(book, /pack=20min/);
   assert.match(book, /utm_source=couple/);
   assert.match(book, /utm_medium=share/);
   assert.match(book, /utm_campaign=compatibilite/);
@@ -128,8 +128,8 @@ test('mémoire : trois résumés, reprise, e-mail sans rareté', () => {
     bookUrl: `https://callastral.com${recapBookPath()}`,
     privacyUrl: 'https://callastral.com/fr/confidentialite',
   });
-  assert.match(mail.html, /1,99/);
-  assert.match(mail.html, /offer=decouverte/);
+  assert.match(mail.html, /12,90|22,90|39,90/);
+  assert.match(mail.html, /pack=20min/);
   assert.match(mail.html, /utm_campaign=memoire/);
   assert.match(mail.html, /Ada &lt;script&gt;/);
   assert.equal(/places? restantes|dernières places|only \d+ left/i.test(mail.html), false);
@@ -171,8 +171,8 @@ test('horoscope : un texte par signe, consentement, désinscription', () => {
     unsubscribeUrl: `https://callastral.com/api/horoscope/unsubscribe?token=${token}&lang=fr`,
     privacyUrl: 'https://callastral.com/fr/confidentialite',
   });
-  assert.match(mail.html, /1,99/);
-  assert.match(mail.html, /offer=decouverte/);
+  assert.match(mail.html, /12,90|22,90|39,90/);
+  assert.match(mail.html, /pack=20min/);
   assert.match(mail.html, /utm_medium=email/);
   assert.match(mail.html, /Se désinscrire/);
   assert.match(mail.headers['List-Unsubscribe'], /horoscope\/unsubscribe/);

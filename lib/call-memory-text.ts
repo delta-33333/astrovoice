@@ -1,4 +1,4 @@
-import { discoveryHeadline } from './book-funnel.ts';
+import { packsCheckoutPath, packsOfferLine } from './pack-offer.ts';
 import { escapeHtml } from './email.ts';
 import { isLocale, type Locale } from './seo.ts';
 import { horoscopeModel } from './weekly-sky.ts';
@@ -127,7 +127,7 @@ export function recapMail(input: {
   bookUrl: string;
   privacyUrl: string;
 }): { subject: string; html: string } {
-  const price = discoveryHeadline(input.locale, 'eur');
+  const price = packsOfferLine(input.locale, 'eur');
   const subject = {
     fr: 'Après votre appel — un court rappel',
     en: 'After your call — a short recap',
@@ -157,18 +157,18 @@ export function recapMail(input: {
     it: 'Transiti della settimana',
   }[input.locale];
   const upsell = {
-    fr: `Si vous voulez reprendre cela avec un conseiller, la première semaine Découverte est à ${price}.`,
-    en: `If you want to continue with an advisor, the Découverte first week is ${price}.`,
-    es: `Si quiere retomarlo con un consejero, la primera semana Découverte es ${price}.`,
-    de: `Wenn Sie das mit einem Berater aufnehmen wollen, kostet die erste Découverte-Woche ${price}.`,
-    it: `Se vuole riprenderlo con un consulente, la prima settimana Découverte è ${price}.`,
+    fr: `Si vous voulez reprendre cela avec un conseiller, les packs à prix fixe sont à ${price}.`,
+    en: `If you want to continue with an advisor, the fixed-price packs are ${price}.`,
+    es: `Si quiere retomarlo con un consejero, los paquetes a precio fijo son ${price}.`,
+    de: `Wenn Sie das mit einem Berater aufnehmen wollen, kosten die Festpreis-Pakete ${price}.`,
+    it: `Se vuole riprenderlo con un consulente, i pacchetti a prezzo fisso sono ${price}.`,
   }[input.locale];
   const cta = {
-    fr: 'Voir la semaine Découverte',
-    en: 'See the Découverte week',
-    es: 'Ver la semana Découverte',
-    de: 'Découverte-Woche ansehen',
-    it: 'Vedere la settimana Découverte',
+    fr: 'Voir les packs à prix fixe',
+    en: 'See the fixed-price packs',
+    es: 'Ver los paquetes a precio fijo',
+    de: 'Festpreis-Pakete ansehen',
+    it: 'Vedere i pacchetti a prezzo fisso',
   }[input.locale];
   const topics = input.topics.slice(0, 3).map((item) => `<li>${escapeHtml(item)}</li>`).join('');
   const transits = input.transits.slice(0, 3).map((item) => `<p>${escapeHtml(item)}</p>`).join('');
@@ -193,11 +193,9 @@ export function asMemoryLocale(value: string | null | undefined): Locale {
 }
 
 export function recapBookPath(): string {
-  const params = new URLSearchParams({
-    offer: 'decouverte',
+  return packsCheckoutPath({
     utm_source: 'recap',
     utm_medium: 'email',
     utm_campaign: 'memoire',
   });
-  return `/book?${params.toString()}`;
 }

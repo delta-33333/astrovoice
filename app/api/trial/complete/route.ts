@@ -7,7 +7,7 @@ import { authSecret } from '@/lib/session';
 import { appBaseUrl } from '@/lib/stripe';
 import { isLocale, type Locale } from '@/lib/seo';
 import { signOptOut } from '@/lib/checkout-reminder-copy';
-import { discoveryHeadline } from '@/lib/book-funnel';
+import { packsOfferLine } from '@/lib/pack-offer';
 
 export const dynamic = 'force-dynamic';
 
@@ -52,7 +52,7 @@ export async function POST(request: NextRequest) {
   return NextResponse.json({
     ok: true,
     summary: finished.summary,
-    offer: discoveryHeadline(locale, 'eur'),
+    offer: packsOfferLine(locale, 'eur'),
     resumeUrl,
   });
 }
