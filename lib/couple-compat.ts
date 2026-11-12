@@ -1,5 +1,6 @@
 import { hreflangAlternates, type Locale } from './seo.ts';
 import { ascendantPath } from './ascendant-tool.ts';
+import { packsCheckoutPath } from './pack-offer.ts';
 import {
   SIGN_IDS,
   SIGNS,
@@ -29,25 +30,21 @@ export function coupleAlternates(): Record<string, string> {
   return hreflangAlternates(couplePath);
 }
 
-/** Lien du résultat partagé : offre Découverte, source identifiable. */
+/** Lien du résultat partagé : packs à prix fixe, source identifiable. */
 export function coupleShareBookPath(): string {
-  const params = new URLSearchParams({
-    offer: 'decouverte',
+  return packsCheckoutPath({
     utm_source: 'couple',
     utm_medium: 'share',
     utm_campaign: 'compatibilite',
   });
-  return `/book?${params.toString()}`;
 }
 
 export function coupleToolBookPath(): string {
-  const params = new URLSearchParams({
-    offer: 'decouverte',
+  return packsCheckoutPath({
     utm_source: 'couple',
     utm_medium: 'tool',
     utm_campaign: 'compatibilite',
   });
-  return `/book?${params.toString()}`;
 }
 
 const META: Record<Locale, { title: string; description: string; h1: string }> = {

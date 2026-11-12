@@ -9,6 +9,7 @@ import PaymentSheet from '@/components/PaymentSheet';
 import HoneypotField from '@/components/HoneypotField';
 import { bookCopy, type BookCopy } from '@/lib/book-copy';
 import { readBirthParams } from '@/lib/book-funnel';
+import { packsCheckoutPath } from '@/lib/pack-offer';
 import { funnel } from '@/lib/funnel-client';
 import HeardFromField from '@/components/HeardFromField';
 import { HONEYPOT_FIELD, normalizeEmail } from '@/lib/form-checks';
@@ -153,17 +154,14 @@ export default function BookCheckout({
         router.push('/#annuaire');
         return;
       }
-      const response = await fetch('/api/billing/subscribe', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ plan: 'decouverte' }),
+      const href = packsCheckoutPath({
+        pack: '20min',
+        lang: language === 'en' ? 'en' : 'fr',
+        advisor: advisorId,
       });
-      const payload = await response.json().catch(() => null);
-      if (!response.ok) throw new Error(payload?.error || copy.preparing);
-      funnel('checkout_start', { kind: 'subscription', plan: 'decouverte' });
-      setClientSecret(payload.clientSecret);
-      setCheckoutSessionId(payload.checkoutSessionId);
-      setSheetOpen(true);
+      funnel('checkout_start', { kind: 'pack', pack: '20min' });
+      router.push(href);
+      return;
     } catch (err) {
       setError(err instanceof Error ? err.message : copy.preparing);
     } finally {
@@ -211,11 +209,11 @@ export default function BookCheckout({
         </div>
         <Link href="/" className="mt-4 inline-block text-sm text-white/50">{copy.back}</Link>
 
-        <section data-funnel-step="offer" data-offer="decouverte" className="mt-4 rounded-3xl border border-celestial-gold/40 bg-celestial-gold/10 p-4 sm:p-5">
+        <section data-funnel-step="offer" data-offer="packs" className="mt-4 rounded-3xl border border-celestial-gold/40 bg-celestial-gold/10 p-4 sm:p-5">
           <p className="text-xs uppercase tracking-[0.16em] text-celestial-gold">{copy.plan}</p>
           <h1 className="mt-1 font-[family-name:var(--font-cinzel)] text-2xl sm:text-3xl">{copy.title}</h1>
           <p className="mt-3 text-3xl font-semibold leading-tight text-celestial-gold sm:text-4xl">{headline}</p>
-          <p className="mt-1 text-sm text-white/70">{copy.thenWeek(fullLabel)}</p>
+          {fullLabel ? <p className="mt-1 text-sm text-white/70">{copy.thenWeek(fullLabel)}</p> : null}
           <p className="mt-3 text-sm text-white/80">{copy.minutes}</p>
           <p className="mt-3 text-sm leading-relaxed text-white/85">{renewal}</p>
           <p className="mt-3 text-xs text-white/55">{copy.aiNote}</p>

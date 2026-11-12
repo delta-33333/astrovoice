@@ -1,5 +1,6 @@
-import { formatMoney, type AdvisorLang } from './money.ts';
-import { firstWeekMinor, type WeeklyCurrency } from './weekly.ts';
+import type { AdvisorLang } from './money.ts';
+import { packPriceLabel, packsCheckoutPath, packsOfferLine } from './pack-offer.ts';
+import type { WeeklyCurrency } from './weekly.ts';
 
 /**
  * Parcours /book avant cette branche : le prix Découverte n’est pas affiché,
@@ -15,7 +16,7 @@ export const FUNNEL_BEFORE = [
 
 /** Deux étapes au plus jusqu’au paiement. */
 export const FUNNEL_AFTER = [
-  'Voir l’offre Découverte, le prix de la 1re semaine, le renouvellement, la mention IA et la naissance déjà remplie',
+  'Voir les packs à prix fixe, la mention IA et la naissance déjà remplie',
   'Payer avec Apple Pay, Google Pay ou la carte',
 ] as const;
 
@@ -24,40 +25,28 @@ export function narrowPrice(label: string): string {
 }
 
 export function discoveryPriceLabel(locale: AdvisorLang, currency: WeeklyCurrency): string {
-  return narrowPrice(formatMoney(firstWeekMinor('decouverte', currency), currency, locale));
+  return packPriceLabel('10min', locale, currency);
 }
 
-/** Ligne affichée en tête de /book. En français et en euros : « 1,99 € la 1re semaine ». */
+/** Ligne d’offre publique : les trois packs à prix fixe. */
 export function discoveryHeadline(locale: AdvisorLang, currency: WeeklyCurrency): string {
-  const price = discoveryPriceLabel(locale, currency);
-  switch (locale) {
-    case 'en':
-      return `${price} the first week`;
-    case 'es':
-      return `${price} la 1.ª semana`;
-    case 'de':
-      return `${price} in der 1. Woche`;
-    case 'it':
-      return `${price} la 1ª settimana`;
-    default:
-      return `${price} la 1re semaine`;
-  }
+  return packsOfferLine(locale, currency);
 }
 
 /** CTA sous le résultat d’ascendant. Le prix suit la devise du marché. */
 export function chartReadingCta(locale: AdvisorLang, currency: WeeklyCurrency): string {
-  const offer = discoveryHeadline(locale, currency);
+  const price = discoveryPriceLabel(locale, currency);
   switch (locale) {
     case 'en':
-      return `Have your full chart read in 10 min — ${offer}`;
+      return `Have your full chart read in 10 min — from ${price}`;
     case 'es':
-      return `Haz leer tu carta completa en 10 min — ${offer}`;
+      return `Haz leer tu carta completa en 10 min — desde ${price}`;
     case 'de':
-      return `Lass dein vollständiges Horoskop in 10 min lesen — ${offer}`;
+      return `Lass dein vollständiges Horoskop in 10 min lesen — ab ${price}`;
     case 'it':
-      return `Fai leggere il tema completo in 10 min — ${offer}`;
+      return `Fai leggere il tema completo in 10 min — da ${price}`;
     default:
-      return `Fais lire ton thème complet en 10 min — ${offer}`;
+      return `Fais lire ton thème complet en 10 min — dès ${price}`;
   }
 }
 
@@ -88,17 +77,19 @@ export function resultCheckoutPath(input: {
   time: string;
   place: string;
 }): string {
-  const birth = new URLSearchParams({
+  const birth = {
     date: input.date,
     time: input.time,
     place: input.place,
-    offer: 'decouverte',
-  });
-  if (input.consultHref.startsWith('/book')) {
+    pack: '20min',
+  };
+  if (input.consultHref.startsWith('/book') || input.consultHref.startsWith('/packs')) {
     const url = new URL(input.consultHref, 'https://callastral.com');
-    for (const [key, value] of birth) url.searchParams.set(key, value);
+    for (const [key, value] of Object.entries(birth)) url.searchParams.set(key, value);
+    url.searchParams.delete('offer');
     const query = url.searchParams.toString();
-    return query ? `${url.pathname}?${query}` : url.pathname;
+    const path = url.pathname.startsWith('/book') ? '/packs' : url.pathname;
+    return query ? `${path}?${query}` : path;
   }
-  return `/book?${birth.toString()}`;
+  return packsCheckoutPath(birth);
 }

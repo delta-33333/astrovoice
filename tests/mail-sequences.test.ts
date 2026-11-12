@@ -8,7 +8,7 @@ test('le suivi d’essai part à J+0, J+1 et J+3, et le paiement annule le reste
     locale: 'fr',
     advisorName: 'Léa',
     summary: 'Question sur le travail.',
-    resumeUrl: 'https://callastral.com/book?offer=decouverte',
+    resumeUrl: 'https://callastral.com/packs?pack=20min',
     unsubscribeUrl: 'https://callastral.com/api/email/unsubscribe?token=abc',
     from,
   });
@@ -17,7 +17,7 @@ test('le suivi d’essai part à J+0, J+1 et J+3, et le paiement annule le reste
     mails.map((mail) => Date.parse(mail.sendAt) - from.getTime()),
     [...TRIAL_FOLLOWUP_OFFSETS_MS],
   );
-  assert.match(mails[0].html, /1,99|Découverte/);
+  assert.match(mails[0].html, /12,90|22,90|39,90|packs|prix fixe/i);
   assert.equal(mails[0].html.includes('31 octobre'), false);
   const pending = mails.map((mail, index) => ({
     id: String(index),

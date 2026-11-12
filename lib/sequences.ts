@@ -1,8 +1,7 @@
-import { discoveryHeadline } from './book-funnel.ts';
+import { packsLead, packsOfferLine } from './pack-offer.ts';
 import { escapeHtml } from './email.ts';
 import { VIRTUAL_ADVISOR_DISCLOSURE } from './legal.ts';
 import type { AdvisorLang } from './money.ts';
-import { WEEKLY_PLANS } from './weekly.ts';
 import { trialPath } from './free-call.ts';
 
 export const DAY_MS = 24 * 60 * 60 * 1000;
@@ -39,33 +38,31 @@ export function trialFollowupMails(input: {
   from?: Date;
 }): SequenceMail[] {
   const from = input.from ?? new Date();
-  const price = discoveryHeadline(input.locale, 'eur');
+  const price = packsOfferLine(input.locale, 'eur');
+  const lead = packsLead(input.locale);
   const name = escapeHtml(input.advisorName || 'Callastral');
   const summary = escapeHtml(input.summary || '');
   const href = escapeHtml(input.resumeUrl);
   const ai = escapeHtml(VIRTUAL_ADVISOR_DISCLOSURE);
-  const minutes = WEEKLY_PLANS.decouverte.minutes;
   const subjects = {
     fr: [
       `Le résumé de votre appel avec ${input.advisorName}`,
       'Votre question mérite plus de 3 minutes',
-      `La 1re semaine ${WEEKLY_PLANS.decouverte.names.fr} reste à ${price}`,
+      `Les packs à prix fixe restent disponibles : ${price}`,
     ],
     en: [
       `The summary of your call with ${input.advisorName}`,
       'Your question deserves more than 3 minutes',
-      `The first week of ${WEEKLY_PLANS.decouverte.names.en} is still ${price}`,
+      `Fixed-price packs are still available: ${price}`,
     ],
   };
   const pack = input.locale === 'en' ? subjects.en : subjects.fr;
   const html = [
     `<p>${summary}</p><p>${ai}</p><p><a href="${href}">${input.locale === 'en' ? `Continue with ${name} — ${price}` : `Continuer avec ${name} — ${price}`}</a></p>`,
+    `<p>${lead}</p><p>${ai}</p><p><a href="${href}">${price}</a></p>`,
     `<p>${input.locale === 'en'
-      ? `${WEEKLY_PLANS.decouverte.names.en}: ${minutes} minutes a week, call memory, cancel in one click.`
-      : `${WEEKLY_PLANS.decouverte.names.fr} : ${minutes} minutes par semaine, mémoire des appels, résiliation en 1 clic.`}</p><p>${ai}</p><p><a href="${href}">${price}</a></p>`,
-    `<p>${input.locale === 'en'
-      ? `The first week is ${price}. There is no end date on that price.`
-      : `La 1re semaine est à ${price}. Aucune date de fin n’est affichée pour ce prix.`}</p><p>${ai}</p><p><a href="${href}">${price}</a></p>`,
+      ? `The packs stay at ${price}. There is no end date on those prices.`
+      : `Les packs restent à ${price}. Aucune date de fin n’est affichée pour ces prix.`}</p><p>${ai}</p><p><a href="${href}">${price}</a></p>`,
   ];
   const kinds: SequenceKind[] = ['trial_followup_0', 'trial_followup_1', 'trial_followup_3'];
   return TRIAL_FOLLOWUP_OFFSETS_MS.map((offset, index) => ({

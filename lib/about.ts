@@ -74,7 +74,7 @@ const SECTIONS: Record<Locale, AboutSection[]> = {
       h2: 'Qu’est-ce que Callastral ?',
       paragraphs: [
         'Callastral est un service d’astrologie par téléphone où l’on parle à des conseillers virtuels, des voix générées par IA, qui lisent votre thème natal.',
-        'Callastral calcule le thème à partir de la date, de l’heure et du lieu de naissance, en zodiaque tropical. Le même calcul sert à l’ascendant gratuit et à la compatibilité de couple. Callastral indique la date de mise à jour de cette page. Les prix viennent des formules hebdomadaires. Callastral ne publie pas de note agrégée ni de témoignage inventé.',
+        'Callastral calcule le thème à partir de la date, de l’heure et du lieu de naissance, en zodiaque tropical. Le même calcul sert à l’ascendant gratuit et à la compatibilité de couple. Callastral indique la date de mise à jour de cette page. Les prix viennent des packs de minutes à prix fixe. Callastral ne publie pas de note agrégée ni de témoignage inventé.',
       ],
     },
     {

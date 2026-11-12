@@ -23,7 +23,7 @@ export const OFFERS_COPY: Record<Locale, OffersCopy> = {
     rebook: 'Reprise · 15 %', rebookBody: 'Après une consultation, le prochain rendez-vous payant bénéficie de 15 % de réduction, pendant 30 jours. Une seule offre en attente à la fois.', rebookCta: 'Reprendre un créneau',
     subDetail: '60 minutes maximum par appel.', reportDetail: 'Paiement sécurisé. Le document arrive par e-mail et dans le compte.', pay: 'Payer', error: 'Le paiement n’a pas pu être préparé.',
     savedBirth: 'Vos coordonnées de naissance', edit: 'Modifier', name: 'Prénom', birthDate: 'Date de naissance', time: 'Heure', timeUnknown: 'Heure inconnue (midi utilisé pour les maisons)', place: 'Lieu de naissance',
-    metaDescription: 'Formules hebdomadaires Découverte, Essentiel et Premium, plus les documents écrits.',
+    metaDescription: 'Packs de minutes à prix fixe (10, 20 et 40 min), plus les documents écrits.',
   },
   en: {
     title: 'Plans', intro: 'All prices below are the amounts charged. One price list: minute packs paid once, no subscription, no auto top-up.',
@@ -36,7 +36,7 @@ export const OFFERS_COPY: Record<Locale, OffersCopy> = {
     rebook: 'Come back · 15%', rebookBody: 'After a consultation, your next paid session is 15% off for 30 days. One pending offer at a time.', rebookCta: 'Book again',
     subDetail: '60 minutes maximum per call.', reportDetail: 'Secure payment. The document arrives by email and in your account.', pay: 'Pay', error: 'The payment could not be prepared.',
     savedBirth: 'Your birth details', edit: 'Edit', name: 'First name', birthDate: 'Date of birth', time: 'Time', timeUnknown: 'Time unknown (noon used for houses)', place: 'Place of birth',
-    metaDescription: 'Weekly Discovery, Essential and Premium plans, plus written reports.',
+    metaDescription: 'Fixed-price minute packs (10, 20 and 40 min), plus written reports.',
   },
   es: {
     title: 'Ofertas', intro: 'Todos los precios son los cobrados. Cada fórmula incluye minutos por semana, con 60 minutos como máximo por llamada.',
@@ -49,7 +49,7 @@ export const OFFERS_COPY: Record<Locale, OffersCopy> = {
     rebook: 'Vuelta · 15 %', rebookBody: 'Tras una consulta, la siguiente cita de pago tiene un 15 % de descuento durante 30 días. Una sola oferta pendiente a la vez.', rebookCta: 'Reservar de nuevo',
     subDetail: '60 minutos como máximo por llamada.', reportDetail: 'Pago seguro. El documento llega por correo y a la cuenta.', pay: 'Pagar', error: 'No se pudo preparar el pago.',
     savedBirth: 'Tus datos de nacimiento', edit: 'Modificar', name: 'Nombre', birthDate: 'Fecha de nacimiento', time: 'Hora', timeUnknown: 'Hora desconocida (se usa el mediodía para las casas)', place: 'Lugar de nacimiento',
-    metaDescription: 'Fórmulas semanales Descubrimiento, Esencial y Premium, y documentos escritos.',
+    metaDescription: 'Paquetes de minutos a precio fijo (10, 20 y 40 min) y documentos escritos.',
   },
   de: {
     title: 'Angebote', intro: 'Alle Preise sind die tatsächlich abgebuchten Beträge. Jeder Tarif enthält Minuten pro Woche, maximal 60 Minuten pro Anruf.',
@@ -62,7 +62,7 @@ export const OFFERS_COPY: Record<Locale, OffersCopy> = {
     rebook: 'Wiederkommen · 15 %', rebookBody: 'Nach einer Beratung ist der nächste bezahlte Termin 30 Tage lang 15 % günstiger. Nur ein offenes Angebot gleichzeitig.', rebookCta: 'Erneut buchen',
     subDetail: 'Maximal 60 Minuten pro Anruf.', reportDetail: 'Sichere Zahlung. Das Dokument kommt per E-Mail und ins Konto.', pay: 'Bezahlen', error: 'Die Zahlung konnte nicht vorbereitet werden.',
     savedBirth: 'Ihre Geburtsdaten', edit: 'Ändern', name: 'Vorname', birthDate: 'Geburtsdatum', time: 'Uhrzeit', timeUnknown: 'Uhrzeit unbekannt (Mittag für die Häuser)', place: 'Geburtsort',
-    metaDescription: 'Wöchentliche Tarife Entdeckung, Essenziell und Premium sowie schriftliche Deutungen.',
+    metaDescription: 'Minutenpakete zum Festpreis (10, 20 und 40 Min.) sowie schriftliche Deutungen.',
   },
   it: {
     title: 'Offerte', intro: 'Tutti i prezzi sono quelli addebitati. Ogni formula include minuti a settimana, con 60 minuti al massimo per chiamata.',
@@ -75,6 +75,6 @@ export const OFFERS_COPY: Record<Locale, OffersCopy> = {
     rebook: 'Ritorno · 15 %', rebookBody: 'Dopo un consulto, il prossimo appuntamento a pagamento ha il 15 % di sconto per 30 giorni. Una sola offerta in attesa alla volta.', rebookCta: 'Prenota di nuovo',
     subDetail: '60 minuti al massimo per chiamata.', reportDetail: 'Pagamento sicuro. Il documento arriva per e-mail e nell’account.', pay: 'Paga', error: 'Il pagamento non è stato preparato.',
     savedBirth: 'I tuoi dati di nascita', edit: 'Modifica', name: 'Nome', birthDate: 'Data di nascita', time: 'Ora', timeUnknown: 'Ora sconosciuta (mezzogiorno per le case)', place: 'Luogo di nascita',
-    metaDescription: 'Formule settimanali Scoperta, Essenziale e Premium, più i documenti scritti.',
+    metaDescription: 'Pacchetti di minuti a prezzo fisso (10, 20 e 40 min), più i documenti scritti.',
   },
 };

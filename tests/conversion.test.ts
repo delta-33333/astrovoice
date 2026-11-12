@@ -48,21 +48,21 @@ test('la première visite retient source, référent et page, hors admin et robo
   assert.equal(shouldCaptureVisit('/book', CHROME), true);
 });
 
-test('le parcours /book tient en deux étapes et affiche Découverte', () => {
+test('le parcours /book tient en deux étapes et affiche les packs à prix fixe', () => {
   assert.ok(FUNNEL_BEFORE.length > FUNNEL_AFTER.length);
   assert.ok(FUNNEL_AFTER.length <= 2);
-  assert.equal(discoveryHeadline('fr', 'eur'), '1,99 € la 1re semaine');
+  assert.equal(discoveryHeadline('fr', 'eur'), '10 min 12,90 € · 20 min 22,90 € · 40 min 39,90 €');
   assert.equal(
     chartReadingCta('fr', 'eur'),
-    'Fais lire ton thème complet en 10 min — 1,99 € la 1re semaine',
+    'Fais lire ton thème complet en 10 min — dès 12,90 €',
   );
   for (const locale of LOCALES) {
     const cta = chartReadingCta(locale, locale === 'en' ? 'usd' : 'eur');
     assert.match(cta, /10\s*min/i);
-    assert.match(cta, locale === 'en' ? /\$2\.49/ : /1,99 €/);
+    assert.match(cta, locale === 'en' ? /\$19\.90/ : /9,90 €|12,90 €/);
   }
   const page = fs.readFileSync(new URL('../components/BookCheckout.tsx', import.meta.url), 'utf8');
-  const offerAt = page.indexOf('data-offer="decouverte"');
+  const offerAt = page.indexOf('data-offer="packs"');
   const accountAt = page.indexOf('copy.accountTitle');
   assert.ok(offerAt > -1 && accountAt > offerAt);
   assert.equal(page.includes('BOOKING_DURATIONS'), false);
@@ -82,7 +82,8 @@ test('le résultat d’ascendant ouvre le paiement avec la naissance', () => {
   const params = new URL(href, 'https://callastral.com').searchParams;
   assert.equal(params.get('slot'), 'slot-w');
   assert.equal(params.get('advisor'), 'woman');
-  assert.equal(params.get('offer'), 'decouverte');
+  assert.equal(params.get('pack'), '20min');
+  assert.equal(params.get('offer'), null);
   const birth = readBirthParams(params);
   assert.deepEqual(birth, { date: '1990-01-02', time: '08:30', place: 'Lyon, France' });
 
@@ -92,7 +93,7 @@ test('le résultat d’ascendant ouvre le paiement avec la naissance', () => {
     time: '08:30',
     place: 'Lyon',
   });
-  assert.equal(plain.startsWith('/book?'), true);
+  assert.equal(plain.startsWith('/packs?'), true);
   assert.equal(new URL(plain, 'https://callastral.com').searchParams.get('place'), 'Lyon');
   for (const locale of LOCALES) {
     assert.equal(chartReadingCta(locale, 'eur').length > 20, true);
@@ -113,7 +114,7 @@ test('un seul rappel une heure plus tard, avec désinscription, sans urgence inv
       name: 'Ada',
       offer: discoveryHeadline(locale, locale === 'en' ? 'usd' : 'eur'),
       renewal: 'renewal',
-      resumeUrl: 'https://callastral.com/book?offer=decouverte',
+      resumeUrl: 'https://callastral.com/packs?pack=20min',
       unsubscribeUrl: 'https://callastral.com/api/email/unsubscribe?token=abc',
     });
     assert.match(mail.html, /unsubscribe|baja|abbestellen|désinscrire|Disiscriviti/i);
@@ -126,7 +127,7 @@ test('un seul rappel une heure plus tard, avec désinscription, sans urgence inv
     name: 'Ada',
     offer: discoveryHeadline('fr', 'eur'),
     renewal: 'renewal',
-    resumeUrl: 'https://callastral.com/book?offer=decouverte',
+    resumeUrl: 'https://callastral.com/packs?pack=20min',
     unsubscribeUrl: 'https://callastral.com/api/email/unsubscribe?token=abc',
     trialUrl: 'https://callastral.com/fr/essai?utm_source=checkout_abandon',
   });
@@ -156,7 +157,7 @@ test('les formules précèdent les conseillers, Essentiel reste mis en avant', (
   assert.ok(root.indexOf('Comment ça fonctionne') < root.indexOf('<AdvisorDirectory'));
   assert.ok(localeHome.indexOf('<FixedPacks') < localeHome.indexOf('ordered.map'));
   assert.match(plans, /grid-cols-1/);
-  assert.equal(discoveryHeadline('fr', 'eur'), '1,99 € la 1re semaine');
+  assert.equal(discoveryHeadline('fr', 'eur'), '10 min 12,90 € · 20 min 22,90 € · 40 min 39,90 €');
   const renewal = renewalTerms('decouverte', 'eur', 'fr', new Date('2026-10-13T09:00:00Z'));
   assert.match(renewal.sentence, /5,90/);
   assert.match(renewal.sentence, /sans engagement/);

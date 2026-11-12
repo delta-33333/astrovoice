@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { discoveryHeadline } from '@/lib/book-funnel';
+import { packsCheckoutPath, packsLead, packsOfferLine } from '@/lib/pack-offer';
 import { formatMoney, normalizeCurrency } from '@/lib/money';
 import { formatDuration } from '@/lib/utils';
 
@@ -131,17 +131,21 @@ export default function CompletePage() {
           {data.trial && (
             <div className="mt-6 rounded-2xl border border-celestial-gold/40 bg-celestial-gold/10 p-4 text-left">
               <p className="font-semibold">
-                Continuer avec {data.astrologerName || 'ce conseiller'} : 1re semaine Découverte à {discoveryHeadline('fr', 'eur')}
+                Continuer avec {data.astrologerName || 'ce conseiller'} : {packsOfferLine('fr', 'eur')}
               </p>
-              <p className="mt-1 text-sm text-white/75">Résiliable en un clic. Le résumé de l’appel part par e-mail si vous avez accepté les messages.</p>
+              <p className="mt-1 text-sm text-white/75">{packsLead('fr')} Le résumé de l’appel part par e-mail si vous avez accepté les messages.</p>
               <div className="mt-3 flex flex-col gap-2 sm:flex-row">
                 <Link
-                  href={`/book?offer=decouverte${data.astrologerId ? `&advisor=${encodeURIComponent(data.astrologerId)}` : ''}&utm_source=trial`}
+                  href={packsCheckoutPath({
+                    advisor: data.astrologerId,
+                    lang: 'fr',
+                    utm_source: 'trial',
+                  })}
                   className="btn-primary inline-block text-center"
                 >
                   Continuer avec {data.astrologerName || 'ce conseiller'}
                 </Link>
-                <Link href="/offres" className="btn-secondary inline-block text-center">Voir les autres formules</Link>
+                <Link href="/packs" className="btn-secondary inline-block text-center">Voir les packs</Link>
               </div>
             </div>
           )}
@@ -198,11 +202,7 @@ export default function CompletePage() {
         <div className="bg-white/5 border border-celestial-gold/30 rounded-3xl p-6 mb-8 text-left space-y-3">
           <h2 className="text-lg font-semibold">Pour la suite</h2>
           <p className="text-sm text-white/75">
-            Formules hebdomadaires
-            {offers.plans?.length
-              ? ` : ${offers.plans.map((plan) => `${plan.name} ${plan.trialLabel} la 1re semaine puis ${plan.priceLabel}/semaine (${plan.minutes} min)`).join(' · ')}`
-              : ''}
-            . {offers.maxCallMinutes || 60} minutes maximum par appel, sans facturation à la minute dans ce volume.
+            Packs à prix fixe : {packsOfferLine('fr', 'eur')}. {packsLead('fr')}
           </p>
           <p className="text-sm text-white/75">
             Thème natal {offers.natalLabel || ''} · Prévision 2026 et 2027 {offers.forecastLabel || ''} · Compatibilité{' '}
@@ -265,16 +265,16 @@ export default function CompletePage() {
           </Link>
 
           <Link
-            href="/offres"
+            href="/packs?pack=40min"
             className="bg-white/5 hover:bg-white/10 backdrop-blur-sm border border-white/10 hover:border-celestial-gold/50 rounded-2xl p-6 transition-all"
           >
             <div className="text-3xl mb-2">🌟</div>
-            <h3 className="font-semibold mb-2">Formule hebdomadaire</h3>
+            <h3 className="font-semibold mb-2">Pack 40 minutes</h3>
             <p className="text-sm text-white/60 mb-3">
-              Minutes chaque semaine, 60 minutes maximum par appel
+              Paiement unique, sans abonnement ni recharge automatique
             </p>
             <p className="text-xs text-celestial-gold">
-              {offers.plans?.find((plan) => plan.highlighted)?.trialLabel || '7,45 €'} la 1re semaine
+              40 min 39,90 €
             </p>
           </Link>
         </div>

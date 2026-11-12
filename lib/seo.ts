@@ -326,7 +326,7 @@ export function advisorFaqs(input: {
   standard: string;
   availability: string;
   gender?: 'femme' | 'homme' | null;
-  /** Phrase de prix de l’accueil (offre hebdomadaire) ; remplace le tarif à la minute. */
+  /** Phrase de prix de l’accueil (packs à prix fixe) ; remplace le tarif à la minute. */
   offer?: string;
 }): FaqItem[] {
   const { locale, name, specialties, style, languages, intro, standard, availability } = input;

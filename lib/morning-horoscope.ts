@@ -2,7 +2,7 @@ import { createHmac, timingSafeEqual } from 'node:crypto';
 import { DateTime } from 'luxon';
 import { skyAtUtc, type SkyBody } from './chart-calc.ts';
 import { escapeHtml } from './email.ts';
-import { discoveryHeadline } from './book-funnel.ts';
+import { packsCheckoutPath, packsOfferLine } from './pack-offer.ts';
 import type { Locale } from './seo.ts';
 import { isSignId, signByFrench, signName, SIGN_IDS, SIGNS, type SignId } from './zodiac/signs.ts';
 
@@ -17,13 +17,11 @@ export function issueKey(day: string, locale: Locale, sign: SignId): string {
 }
 
 export function morningBookPath(): string {
-  const params = new URLSearchParams({
-    offer: 'decouverte',
+  return packsCheckoutPath({
     utm_source: 'horoscope',
     utm_medium: 'email',
     utm_campaign: 'morning',
   });
-  return `/book?${params.toString()}`;
 }
 
 type AspectKey = 'conjunction' | 'opposition' | 'square' | 'trine' | 'sextile';
@@ -171,13 +169,13 @@ export function morningMail(input: {
   ctaLabel?: string;
   ctaUrl?: string;
 }): { subject: string; html: string; headers: Record<string, string> } {
-  const price = discoveryHeadline(input.locale, 'eur');
+  const price = packsOfferLine(input.locale, 'eur');
   const cta = {
-    fr: `Première semaine Découverte à ${price}`,
-    en: `Découverte first week at ${price}`,
-    es: `Primera semana Découverte a ${price}`,
-    de: `Erste Découverte-Woche zu ${price}`,
-    it: `Prima settimana Découverte a ${price}`,
+    fr: `Packs à prix fixe : ${price}`,
+    en: `Fixed-price packs: ${price}`,
+    es: `Paquetes a precio fijo: ${price}`,
+    de: `Festpreis-Pakete: ${price}`,
+    it: `Pacchetti a prezzo fisso: ${price}`,
   }[input.locale];
   const ctaText = input.ctaLabel || cta;
   const ctaHref = input.ctaUrl || input.bookUrl;

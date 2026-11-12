@@ -24,11 +24,11 @@ export async function POST(request: NextRequest) {
   if (result.status !== 'ok') {
     const status = result.status === 'disabled' ? 403 : result.status === 'unavailable' ? 503 : result.status === 'cap' ? 429 : 400;
     const error = result.status === 'unavailable'
-      ? 'L’essai gratuit n’est pas encore ouvert. Vous pouvez commencer par la formule Découverte.'
+      ? 'L’essai gratuit n’est pas encore ouvert. Vous pouvez commencer par un pack à prix fixe.'
       : result.status === 'disabled'
         ? 'L’essai gratuit est suspendu.'
         : result.status === 'cap'
-          ? 'Les essais gratuits du jour sont épuisés. Revenez demain, ou commencez à 1,99 €.'
+          ? 'Les essais gratuits du jour sont épuisés. Revenez demain, ou choisissez un pack à prix fixe.'
           : 'Code incorrect ou expiré.';
     return NextResponse.json({ error, code: result.status }, { status });
   }

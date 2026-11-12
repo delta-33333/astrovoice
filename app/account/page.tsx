@@ -182,9 +182,9 @@ export default function AccountPage() {
           ) : (
             <>
               <p className="text-sm text-white/75">
-                Découverte, Essentiel ou Premium : un volume de minutes par semaine, 60 minutes maximum par appel, sans engagement.
+                Packs à prix fixe : 10 min 12,90 €, 20 min 22,90 €, 40 min 39,90 €. Paiement unique, sans abonnement ni recharge automatique.
               </p>
-              <Link href="/offres#formules" className="btn-primary inline-block w-full text-center">Voir les formules</Link>
+              <Link href="/packs" className="btn-primary inline-block w-full text-center">Voir les packs</Link>
             </>
           )}
           {billing?.rebook && (

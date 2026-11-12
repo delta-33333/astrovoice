@@ -2,31 +2,31 @@ import Link from 'next/link';
 import FreeTrialForm from '@/components/FreeTrialForm';
 import Commitments from '@/components/Commitments';
 import { TRIAL_NO_CHARGE, TRUST_PROMISE } from '@/lib/trust-copy';
-import { discoveryHeadline } from '@/lib/book-funnel';
+import { packsCheckoutPath, packsLead, packsOfferLine } from '@/lib/pack-offer';
 import { freeCallEnabled } from '@/lib/free-call';
 import { localeCurrency, type Locale } from '@/lib/seo';
 import { weeklyCurrency } from '@/lib/weekly';
 
 const CLOSED: Record<Locale, { title: string; body: string }> = {
   fr: {
-    title: 'La formule Découverte',
-    body: 'L’appel offert est fermé. La première semaine Découverte reste disponible, résiliable en un clic.',
+    title: 'Packs à prix fixe',
+    body: 'L’appel offert est fermé. Vous pouvez continuer avec un pack de minutes, payé une fois, sans abonnement.',
   },
   en: {
-    title: 'The Discovery plan',
-    body: 'The free call is off. The first Discovery week is still available. Cancel in one click.',
+    title: 'Fixed-price packs',
+    body: 'The free call is off. You can continue with a minute pack, paid once, with no subscription.',
   },
   es: {
-    title: 'La fórmula Descubrimiento',
-    body: 'La llamada gratis está cerrada. La primera semana sigue disponible. Se cancela en un clic.',
+    title: 'Paquetes a precio fijo',
+    body: 'La llamada gratis está cerrada. Puedes continuar con un paquete de minutos, de pago único, sin suscripción.',
   },
   de: {
-    title: 'Der Tarif Entdeckung',
-    body: 'Der Gratis-Anruf ist geschlossen. Die erste Woche bleibt verfügbar. Kündigung mit einem Klick.',
+    title: 'Festpreis-Pakete',
+    body: 'Der Gratis-Anruf ist geschlossen. Sie können mit einem Minutenpaket weitermachen, einmalig bezahlt, ohne Abo.',
   },
   it: {
-    title: 'La formula Scoperta',
-    body: 'La chiamata gratuita è chiusa. La prima settimana resta disponibile. Disdetta in un clic.',
+    title: 'Pacchetti a prezzo fisso',
+    body: 'La chiamata gratuita è chiusa. Puoi continuare con un pacchetto di minuti, pagamento unico, senza abbonamento.',
   },
 };
 
@@ -38,9 +38,10 @@ export default function TrialPage({ locale }: { locale: Locale }) {
       <main className="max-w-lg mx-auto px-4 py-10">
         <h1 className="font-[family-name:var(--font-cinzel)] text-3xl">{copy.title}</h1>
         <p className="mt-3 text-sm text-white/75">{copy.body}</p>
-        <p className="mt-4 text-2xl text-celestial-gold">{discoveryHeadline(locale, currency)}</p>
-        <Link href="/book?offer=decouverte" className="btn-primary mt-6 inline-block">
-          {discoveryHeadline(locale, currency)}
+        <p className="mt-2 text-sm text-white/70">{packsLead(locale)}</p>
+        <p className="mt-4 text-2xl text-celestial-gold">{packsOfferLine(locale, currency)}</p>
+        <Link href={packsCheckoutPath({ lang: locale === 'en' ? 'en' : 'fr' })} className="btn-primary mt-6 inline-block">
+          {packsOfferLine(locale, currency)}
         </Link>
       </main>
     );

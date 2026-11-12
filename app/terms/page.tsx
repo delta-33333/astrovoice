@@ -39,15 +39,14 @@ export default function TermsPage() {
           <ul className="list-disc pl-5 space-y-2">
             <li>Chaque conseiller a un tarif dans la fourchette du pays : 0,99 € à 1,99 € la minute en France, en Belgique et en Allemagne ; 0,89 € à 1,49 € en Espagne ; 0,89 € à 1,29 € en Italie ; 0,99 CHF à 1,99 CHF en Suisse ; 0,99 £ à 1,79 £ au Royaume-Uni ; 1,49 $ à 2,99 $ aux États-Unis. Les trois premières minutes sont à un tarif fixe du marché, une fois par compte, à la seconde.</li>
             <li>Offre fondateur : 10 minutes pour 4,90 € (5,90 $), une fois par compte, 100 ventes au total, jusqu’au 31 octobre 2026 à 23 h 59, heure de Paris.</li>
-            <li>Packs de minutes, en France : 10 minutes pour 12,90 €, 30 minutes pour 34,90 €, 60 minutes pour 59,90 €. Ces minutes n’expirent pas. Les autres marchés ont leur propre grille.</li>
+            <li>Packs de minutes à prix fixe, en France : 10 minutes pour 12,90 €, 20 minutes pour 22,90 €, 40 minutes pour 39,90 €. Paiement unique, sans abonnement ni recharge automatique. Ces minutes n’expirent pas. L’appel s’arrête tout seul quand le pack est utilisé. Les autres marchés ont leur propre grille.</li>
             <li>Résumé écrit d’une consultation : 2,90 €.</li>
             <li>Thème natal écrit : 9,90 €. Prévision 2026 et 2027 : 14,90 €. Lecture de compatibilité : 7,90 €.</li>
-            <li>Formules hebdomadaires, 60 minutes maximum par appel. Découverte : 10 minutes par semaine, 5,90 € (1,99 € la première semaine). Essentiel : 30 minutes, 14,90 € (7,45 € la première semaine). Premium : 60 minutes, 27,90 € (13,95 € la première semaine). Les montants en franc suisse et en livre suivent les mêmes chiffres ; le dollar a sa grille. La première semaine à tarif réduit est réservée aux clients qui n’ont jamais souscrit. Ensuite le prix plein est prélevé chaque semaine. La résiliation se fait en un clic depuis le compte ; l’accès court jusqu’à la fin de la semaine déjà payée.</li>
+            <li>L’offre publique actuelle est celle des packs de minutes à prix fixe, payés une fois. Les formules hebdomadaires déjà souscrites restent en vigueur jusqu’à la fin de la période payée ou jusqu’à résiliation, qui se fait en un clic depuis le compte.</li>
             <li>Après une consultation, le prochain rendez-vous payant peut bénéficier de 15 % de réduction, pendant 30 jours, une seule offre à la fois.</li>
           </ul>
           <p>
-            Les prix de référence sont indiqués toutes taxes comprises, selon le pays détecté. Les formules
-            hebdomadaires sont proposées en euro, franc suisse, livre et dollar.
+            Les prix de référence sont indiqués toutes taxes comprises, selon le pays détecté. Les packs de minutes sont proposés en euro, franc suisse, livre et dollar.
           </p>
         </section>
 

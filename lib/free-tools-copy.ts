@@ -340,7 +340,7 @@ export const AFFILIATE: Record<ToolLang, AffiliateCopy> = {
     how: ['Inscrivez-vous ci-dessous : nom, e-mail, compte social.', 'Partagez votre lien personnel (bio, story, description de vidéo, newsletter).', 'Quand une personne arrivée par votre lien paie pour la première fois, 30 % de ce paiement vous est attribué.'],
     termsTitle: 'Conditions du programme',
     terms: [
-      'Commission : 30 % du montant effectivement payé lors du premier paiement d’un nouveau client (pack de minutes, rapport, semaine Découverte ou premier mois d’abonnement chat). Les paiements suivants du même client ne donnent pas lieu à commission.',
+      'Commission : 30 % du montant effectivement payé lors du premier paiement d’un nouveau client (pack de minutes, rapport ou premier mois d’abonnement chat). Les paiements suivants du même client ne donnent pas lieu à commission.',
       'Suivi : un cookie de 30 jours est déposé lors du clic sur votre lien ; le dernier lien d’affiliation cliqué l’emporte.',
       'Aucun versement automatique : les commissions sont vérifiées puis payées manuellement par Callastral, une fois par mois, par virement bancaire ou PayPal, après un délai de 30 jours couvrant les remboursements et contestations.',
       'Pas de commission sur un paiement remboursé, contesté, frauduleux, ou sur vos propres achats.',
@@ -367,7 +367,7 @@ export const AFFILIATE: Record<ToolLang, AffiliateCopy> = {
     how: ['Sign up below: name, email, social handle.', 'Share your personal link (bio, story, video description, newsletter).', 'When someone who arrived through your link pays for the first time, 30% of that payment is credited to you.'],
     termsTitle: 'Program terms',
     terms: [
-      'Commission: 30% of the amount actually paid on a new customer’s first payment (minute pack, report, Discovery week or first month of chat subscription). Later payments by the same customer earn no commission.',
+      'Commission: 30% of the amount actually paid on a new customer’s first payment (minute pack, report or first month of chat subscription). Later payments by the same customer earn no commission.',
       'Tracking: a 30-day cookie is set when your link is clicked; the last affiliate link clicked wins.',
       'No automatic payouts: commissions are reviewed and paid manually by Callastral once a month, by bank transfer or PayPal, after a 30-day period covering refunds and disputes.',
       'No commission on refunded, disputed or fraudulent payments, or on your own purchases.',
@@ -394,7 +394,7 @@ export const AFFILIATE: Record<ToolLang, AffiliateCopy> = {
     how: ['Regístrate abajo: nombre, correo y cuenta social.', 'Comparte tu enlace personal (bio, historia, descripción de vídeo, newsletter).', 'Cuando alguien que llegó por tu enlace paga por primera vez, se te atribuye el 30 % de ese pago.'],
     termsTitle: 'Condiciones del programa',
     terms: [
-      'Comisión: 30 % del importe realmente pagado en el primer pago de un nuevo cliente (pack de minutos, informe, semana Descubrimiento o primer mes de suscripción al chat). Los pagos posteriores del mismo cliente no generan comisión.',
+      'Comisión: 30 % del importe realmente pagado en el primer pago de un nuevo cliente (pack de minutos, informe o primer mes de suscripción al chat). Los pagos posteriores del mismo cliente no generan comisión.',
       'Seguimiento: se instala una cookie de 30 días al hacer clic en tu enlace; gana el último enlace de afiliado pulsado.',
       'Sin pagos automáticos: Callastral revisa y paga las comisiones manualmente una vez al mes, por transferencia o PayPal, tras un plazo de 30 días que cubre reembolsos y disputas.',
       'Sin comisión en pagos reembolsados, disputados o fraudulentos, ni en tus propias compras.',
