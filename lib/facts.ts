@@ -1,8 +1,8 @@
 import { aboutPath } from './about.ts';
-import { discoveryHeadline } from './book-funnel.ts';
 import { formatMoney } from './money.ts';
 import { hreflangAlternates, LOCALES, type Locale } from './seo.ts';
-import { firstWeekMinor, WEEKLY_MAX_CALL_MINUTES, WEEKLY_PLANS } from './weekly.ts';
+import { WEEKLY_MAX_CALL_MINUTES } from './weekly.ts';
+import { FIXED_PACKS } from './pricing.ts';
 import { FREE_CALL_SECONDS } from './free-call.ts';
 import { AI_ACT_SPOKEN, VIRTUAL_ADVISOR_DISCLOSURE } from './legal.ts';
 
@@ -31,15 +31,15 @@ export interface FactRow {
 
 export function factRows(locale: Locale, advisorCount: number | null): FactRow[] {
   const money = (minor: number) => formatMoney(minor, 'eur', locale === 'en' ? 'en' : 'fr');
-  const dec = WEEKLY_PLANS.decouverte;
-  const ess = WEEKLY_PLANS.essentiel;
-  const pre = WEEKLY_PLANS.premium;
-  const plans = `${dec.names[locale]} ${dec.minutes} min ${money(dec.amounts.eur)} / ${discoveryHeadline(locale, 'eur')} · ${ess.names[locale]} ${ess.minutes} min ${money(ess.amounts.eur)} · ${pre.names[locale]} ${pre.minutes} min ${money(pre.amounts.eur)}`;
+  const packs = FIXED_PACKS.map((pack) => `${pack.minutes} min ${money(pack.amountCents)}`).join(' · ');
+  const plans = locale === 'en'
+    ? `Fixed-price minute packs, paid once, no subscription and no auto top-up: ${packs}. The call stops by itself when the pack is used up.`
+    : `Packs de minutes à prix fixe, payés une fois, sans abonnement ni recharge automatique : ${packs}. L’appel s’arrête tout seul quand le pack est utilisé.`;
   const labels = {
     fr: {
       service: 'Service',
       serviceValue: 'Astrologie par téléphone avec des conseillers virtuels, voix générée par IA.',
-      plans: 'Formules',
+      plans: 'Tarifs',
       free: 'Appel gratuit',
       freeValue: `${FREE_CALL_SECONDS / 60} minutes, une fois par e-mail, par appareil et par réseau /24. Coupure serveur à ${FREE_CALL_SECONDS} secondes.`,
       memory: 'Mémoire',
@@ -60,7 +60,7 @@ export function factRows(locale: Locale, advisorCount: number | null): FactRow[]
     en: {
       service: 'Service',
       serviceValue: 'Astrology by phone with virtual advisors and an AI-generated voice.',
-      plans: 'Plans',
+      plans: 'Prices',
       free: 'Free call',
       freeValue: `${FREE_CALL_SECONDS / 60} minutes, once per email, device and /24 network. The server cuts the call at ${FREE_CALL_SECONDS} seconds.`,
       memory: 'Memory',
@@ -99,13 +99,13 @@ export function factsIntro(locale: Locale): { title: string; description: string
   if (locale === 'en') {
     return {
       title: 'Callastral facts and figures',
-      description: 'Official facts for Callastral: weekly plans, free 3-minute call, call memory, languages and limits.',
+      description: 'Official facts for Callastral: fixed-price minute packs, free 3-minute call, call memory, languages and limits.',
       h1: 'Callastral facts and figures',
     };
   }
   return {
     title: 'Callastral, faits et chiffres',
-    description: 'Fiche officielle de Callastral : formules hebdomadaires, appel gratuit de 3 minutes, mémoire, langues et limites.',
+    description: 'Fiche officielle de Callastral : packs de minutes à prix fixe, appel gratuit de 3 minutes, mémoire, langues et limites.',
     h1: 'Callastral, faits et chiffres',
   };
 }
