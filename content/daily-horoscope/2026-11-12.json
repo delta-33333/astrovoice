@@ -1,0 +1,183 @@
+{
+  "date": "2026-11-12",
+  "sky": {
+    "date": "2026-11-12",
+    "computedAt": "08:00 Europe/Paris",
+    "phase": {
+      "id": "waxingCrescent",
+      "illumination": 8,
+      "waxing": true
+    },
+    "bodies": [
+      {
+        "name": "Soleil",
+        "sign": "Scorpion",
+        "degree": 19,
+        "retrograde": false
+      },
+      {
+        "name": "Lune",
+        "sign": "Sagittaire",
+        "degree": 23,
+        "retrograde": false
+      },
+      {
+        "name": "Mercure",
+        "sign": "Scorpion",
+        "degree": 5,
+        "retrograde": true
+      },
+      {
+        "name": "Vénus",
+        "sign": "Balance",
+        "degree": 22,
+        "retrograde": true
+      },
+      {
+        "name": "Mars",
+        "sign": "Lion",
+        "degree": 24,
+        "retrograde": false
+      },
+      {
+        "name": "Jupiter",
+        "sign": "Lion",
+        "degree": 25,
+        "retrograde": false
+      },
+      {
+        "name": "Saturne",
+        "sign": "Bélier",
+        "degree": 8,
+        "retrograde": true
+      },
+      {
+        "name": "Uranus",
+        "sign": "Gémeaux",
+        "degree": 4,
+        "retrograde": true
+      },
+      {
+        "name": "Neptune",
+        "sign": "Bélier",
+        "degree": 1,
+        "retrograde": true
+      },
+      {
+        "name": "Pluton",
+        "sign": "Verseau",
+        "degree": 3,
+        "retrograde": false
+      },
+      {
+        "name": "Nœud nord",
+        "sign": "Verseau",
+        "degree": 25,
+        "retrograde": true
+      }
+    ],
+    "ingresses": [
+      {
+        "name": "Lune",
+        "from": "Sagittaire",
+        "to": "Capricorne"
+      }
+    ],
+    "aspects": [
+      {
+        "a": "Lune",
+        "b": "Vénus",
+        "aspect": "sextile",
+        "orb": 0.4
+      },
+      {
+        "a": "Lune",
+        "b": "Mars",
+        "aspect": "trine",
+        "orb": 0.8
+      },
+      {
+        "a": "Vénus",
+        "b": "Mars",
+        "aspect": "sextile",
+        "orb": 1.2
+      },
+      {
+        "a": "Mars",
+        "b": "Nœud nord",
+        "aspect": "opposition",
+        "orb": 1.4
+      },
+      {
+        "a": "Mars",
+        "b": "Jupiter",
+        "aspect": "conjunction",
+        "orb": 1.5
+      },
+      {
+        "a": "Mercure",
+        "b": "Pluton",
+        "aspect": "square",
+        "orb": 2
+      },
+      {
+        "a": "Lune",
+        "b": "Nœud nord",
+        "aspect": "sextile",
+        "orb": 2.1
+      },
+      {
+        "a": "Lune",
+        "b": "Jupiter",
+        "aspect": "trine",
+        "orb": 2.2
+      },
+      {
+        "a": "Vénus",
+        "b": "Jupiter",
+        "aspect": "sextile",
+        "orb": 2.6
+      },
+      {
+        "a": "Vénus",
+        "b": "Nœud nord",
+        "aspect": "trine",
+        "orb": 2.6
+      }
+    ]
+  },
+  "en": {
+    "summary": "Thursday 12 November 2026: the waxing crescent Moon (about 8% lit) crosses the last degrees of Sagittarius, sextile Venus and trine Mars and Jupiter in Leo, before entering Capricorn late in the day. Venus, retrograde in Libra, keeps its sextile to Mars and Jupiter, Mars and Jupiter remain conjunct in Leo opposite the North Node, and Mercury, retrograde in Scorpio, still squares Pluto in Aquarius.",
+    "signs": {
+      "belier": "Aries, Thursday’s main theme is travel, study and the beliefs that guide you. The Moon finishes its trip through Sagittarius in that part of your chart and forms a gentle sextile to Venus and a warm trine to Mars and Jupiter in Leo, in your sector of love, pleasure and creativity. A wider horizon tempts you, and an idea from a book, a course or a far-away friend can spark a plan.\n\nVenus, retrograde in Libra in your area of partnerships and one-to-one relationships, still favours mending over breaking. Mercury, retrograde in Scorpio in your sector of shared money, intimacy and deep bonds, squares Pluto in Aquarius, so double-check facts and avoid power struggles. Late in the day the Moon moves into Capricorn, your sector of career, reputation and public goals, and the mood turns more serious and practical.\n\nTonight, write down the professional result you want by the end of the year. These are tendencies, and you keep the final say.",
+      "taureau": "Taurus, today brings shared money, intimacy and deep bonds to the front. The Moon finishes its trip through Sagittarius in that part of your chart and forms a gentle sextile to Venus and a warm trine to Mars and Jupiter in Leo, in your sector of home, family and private roots. Feelings run deep but steady, and talking about what you need from someone feels less risky than it did.\n\nVenus, retrograde in Libra in your area of daily work, health and routines, still favours mending over breaking. Mercury, retrograde in Scorpio in your sector of partnerships and one-to-one relationships, squares Pluto in Aquarius, so double-check facts and avoid power struggles. Late in the day the Moon moves into Capricorn, your sector of travel, study and the beliefs that guide you, and the mood turns more serious and practical.\n\nTonight, choose one thing to learn or read this month and set a modest time for it. Use the sky as a compass, not as a script.",
+      "gemeaux": "For you, Gemini, this Thursday revolves around partnerships and one-to-one relationships. The Moon finishes its trip through Sagittarius in that part of your chart and forms a gentle sextile to Venus and a warm trine to Mars and Jupiter in Leo, in your sector of conversations, messages and short trips. A partner or close contact is more open than usual, which makes it a good day to talk plans through together.\n\nVenus, retrograde in Libra in your area of love, pleasure and creativity, still favours mending over breaking. Mercury, retrograde in Scorpio in your sector of daily work, health and routines, squares Pluto in Aquarius, so double-check facts and avoid power struggles. Late in the day the Moon moves into Capricorn, your sector of shared money, intimacy and deep bonds, and the mood turns more serious and practical.\n\nTonight, review one shared account, loan or bill and note any question to ask. Astrology describes a mood, and your choices shape the result.",
+      "cancer": "Cancer, the key area of the day is daily work, health and routines. The Moon finishes its trip through Sagittarius in that part of your chart and forms a gentle sextile to Venus and a warm trine to Mars and Jupiter in Leo, in your sector of money, possessions and self-worth. Energy for practical tasks is good, and sorting your schedule early frees the afternoon.\n\nVenus, retrograde in Libra in your area of home, family and private roots, still favours mending over breaking. Mercury, retrograde in Scorpio in your sector of love, pleasure and creativity, squares Pluto in Aquarius, so double-check facts and avoid power struggles. Late in the day the Moon moves into Capricorn, your sector of partnerships and one-to-one relationships, and the mood turns more serious and practical.\n\nTonight, agree on one concrete plan with your partner or a close friend. Take what helps and leave the rest.",
+      "lion": "Leo, most of today’s energy goes to love, pleasure and creativity. The Moon finishes its trip through Sagittarius in that part of your chart and forms a gentle sextile to Venus and a warm trine to Mars and Jupiter in Leo, in your sector of identity, body and first impressions. Your warmth is easy to read, so a small gesture toward someone you care about lands well.\n\nVenus, retrograde in Libra in your area of conversations, messages and short trips, still favours mending over breaking. Mercury, retrograde in Scorpio in your sector of home, family and private roots, squares Pluto in Aquarius, so double-check facts and avoid power struggles. Late in the day the Moon moves into Capricorn, your sector of daily work, health and routines, and the mood turns more serious and practical.\n\nTonight, write a short to-do list for Friday with no more than three items. These are tendencies, and you keep the final say.",
+      "vierge": "Virgo, today the Moon lights up home, family and private roots. The Moon finishes its trip through Sagittarius in that part of your chart and forms a gentle sextile to Venus and a warm trine to Mars and Jupiter in Leo, in your sector of rest, the inner world and what you keep hidden. Family matters feel lighter, and a shared meal or a simple chat at home can soften an old tension.\n\nVenus, retrograde in Libra in your area of money, possessions and self-worth, still favours mending over breaking. Mercury, retrograde in Scorpio in your sector of conversations, messages and short trips, squares Pluto in Aquarius, so double-check facts and avoid power struggles. Late in the day the Moon moves into Capricorn, your sector of love, pleasure and creativity, and the mood turns more serious and practical.\n\nTonight, plan something enjoyable for the weekend instead of leaving it to chance. Use the sky as a compass, not as a script.",
+      "balance": "This Thursday, Libra, conversations, messages and short trips take centre stage. The Moon finishes its trip through Sagittarius in that part of your chart and forms a gentle sextile to Venus and a warm trine to Mars and Jupiter in Leo, in your sector of friends, groups and long-term plans. Words flow more freely, so a phone call works better than a long written thread to clear up a doubt.\n\nVenus, retrograde in Libra in your area of identity, body and first impressions, still favours mending over breaking. Mercury, retrograde in Scorpio in your sector of money, possessions and self-worth, squares Pluto in Aquarius, so double-check facts and avoid power struggles. Late in the day the Moon moves into Capricorn, your sector of home, family and private roots, and the mood turns more serious and practical.\n\nTonight, give yourself a calm evening at home and prepare one thing for tomorrow morning. Astrology describes a mood, and your choices shape the result.",
+      "scorpion": "Scorpio, keep money, possessions and self-worth in view today. The Moon finishes its trip through Sagittarius in that part of your chart and forms a gentle sextile to Venus and a warm trine to Mars and Jupiter in Leo, in your sector of career, reputation and public goals. A clearer sense of what you value helps you say yes to one useful expense and no to an impulse buy.\n\nVenus, retrograde in Libra in your area of rest, the inner world and what you keep hidden, still favours mending over breaking. Mercury, retrograde in Scorpio in your sector of identity, body and first impressions, squares Pluto in Aquarius, so double-check facts and avoid power struggles. Late in the day the Moon moves into Capricorn, your sector of conversations, messages and short trips, and the mood turns more serious and practical.\n\nTonight, answer one pending message briefly, then put the phone away. Take what helps and leave the rest.",
+      "sagittaire": "Sagittarius, today’s headline is identity, body and first impressions. The Moon finishes its trip through Sagittarius in that part of your chart and forms a gentle sextile to Venus and a warm trine to Mars and Jupiter in Leo, in your sector of travel, study and the beliefs that guide you. Confidence comes more easily, and a bold first move on a personal project feels right as long as you keep it realistic.\n\nVenus, retrograde in Libra in your area of friends, groups and long-term plans, still favours mending over breaking. Mercury, retrograde in Scorpio in your sector of rest, the inner world and what you keep hidden, squares Pluto in Aquarius, so double-check facts and avoid power struggles. Late in the day the Moon moves into Capricorn, your sector of money, possessions and self-worth, and the mood turns more serious and practical.\n\nTonight, list your fixed costs for next month so Friday starts with a clear picture. These are tendencies, and you keep the final say.",
+      "capricorne": "Capricorn, the day leans toward rest, the inner world and what you keep hidden. The Moon finishes its trip through Sagittarius in that part of your chart and forms a gentle sextile to Venus and a warm trine to Mars and Jupiter in Leo, in your sector of shared money, intimacy and deep bonds. Quiet hours restore you, and stepping back from noise lets an answer you were waiting for come up on its own.\n\nVenus, retrograde in Libra in your area of career, reputation and public goals, still favours mending over breaking. Mercury, retrograde in Scorpio in your sector of friends, groups and long-term plans, squares Pluto in Aquarius, so double-check facts and avoid power struggles. Late in the day the Moon moves into Capricorn, your sector of identity, body and first impressions, and the mood turns more serious and practical.\n\nTonight, pick one personal habit you want to keep for the rest of the month and start it tomorrow. Use the sky as a compass, not as a script.",
+      "verseau": "Aquarius, what matters most this Thursday is friends, groups and long-term plans. The Moon finishes its trip through Sagittarius in that part of your chart and forms a gentle sextile to Venus and a warm trine to Mars and Jupiter in Leo, in your sector of partnerships and one-to-one relationships. Support from friends or a group is close at hand, and asking for a little help is perfectly fine today.\n\nVenus, retrograde in Libra in your area of travel, study and the beliefs that guide you, still favours mending over breaking. Mercury, retrograde in Scorpio in your sector of career, reputation and public goals, squares Pluto in Aquarius, so double-check facts and avoid power struggles. Late in the day the Moon moves into Capricorn, your sector of rest, the inner world and what you keep hidden, and the mood turns more serious and practical.\n\nTonight, switch off screens a little earlier and give your mind real rest. Astrology describes a mood, and your choices shape the result.",
+      "poissons": "Pisces, today’s focus is career, reputation and public goals. The Moon finishes its trip through Sagittarius in that part of your chart and forms a gentle sextile to Venus and a warm trine to Mars and Jupiter in Leo, in your sector of daily work, health and routines. Effort you put in at work gets noticed more easily, so show what you have done rather than what you intend.\n\nVenus, retrograde in Libra in your area of shared money, intimacy and deep bonds, still favours mending over breaking. Mercury, retrograde in Scorpio in your sector of travel, study and the beliefs that guide you, squares Pluto in Aquarius, so double-check facts and avoid power struggles. Late in the day the Moon moves into Capricorn, your sector of friends, groups and long-term plans, and the mood turns more serious and practical.\n\nTonight, set one realistic long-term goal and share it with someone you trust. Take what helps and leave the rest."
+    }
+  },
+  "fr": {
+    "summary": "Jeudi 12 novembre 2026 : la Lune croissante (environ 8 % éclairée) parcourt les derniers degrés du Sagittaire, en sextile à Vénus et en trigone à Mars et Jupiter en Lion, avant d’entrer en Capricorne en fin de journée. Vénus, rétrograde en Balance, garde son sextile à Mars et Jupiter, Mars et Jupiter restent conjoints en Lion face au Nœud nord, et Mercure, rétrograde en Scorpion, est toujours au carré de Pluton en Verseau.",
+    "signs": {
+      "belier": "Bélier, le thème principal de ce jeudi est celui des voyages, des études et des convictions. La Lune termine sa traversée du Sagittaire dans ce secteur de votre thème, en sextile doux à Vénus et en trigone chaleureux à Mars et Jupiter en Lion, dans votre domaine de l’amour, du plaisir et de la créativité. Un horizon plus large vous attire, et une idée venue d’un livre, d’une formation ou d’un ami lointain peut lancer un projet.\n\nVénus, rétrograde en Balance dans votre secteur du couple et des relations en face à face, favorise toujours la réparation plutôt que la rupture. Mercure, rétrograde en Scorpion dans votre domaine de l’argent partagé, de l’intimité et des liens profonds, est au carré de Pluton en Verseau : vérifiez les faits et évitez les rapports de force. En fin de journée, la Lune entre en Capricorne, dans votre secteur de la carrière, de la réputation et des objectifs publics, et l’ambiance devient plus sérieuse et concrète.\n\nCe soir, notez le résultat professionnel que vous visez d’ici la fin de l’année. Ce sont des tendances, et vous gardez le dernier mot.",
+      "taureau": "Taureau, aujourd’hui place au premier plan le domaine de l’argent partagé, de l’intimité et des liens profonds. La Lune termine sa traversée du Sagittaire dans ce secteur de votre thème, en sextile doux à Vénus et en trigone chaleureux à Mars et Jupiter en Lion, dans votre domaine du foyer, de la famille et des racines. Les émotions sont profondes mais stables, et dire ce dont vous avez besoin vous paraît moins risqué qu’avant.\n\nVénus, rétrograde en Balance dans votre secteur du travail quotidien, de la santé et des routines, favorise toujours la réparation plutôt que la rupture. Mercure, rétrograde en Scorpion dans votre domaine du couple et des relations en face à face, est au carré de Pluton en Verseau : vérifiez les faits et évitez les rapports de force. En fin de journée, la Lune entre en Capricorne, dans votre secteur des voyages, des études et des convictions, et l’ambiance devient plus sérieuse et concrète.\n\nCe soir, choisissez une chose à apprendre ou à lire ce mois-ci et prévoyez-lui un temps modeste. Utilisez le ciel comme une boussole, pas comme un scénario.",
+      "gemeaux": "Pour vous, Gémeaux, ce jeudi tourne autour du couple et des relations en face à face. La Lune termine sa traversée du Sagittaire dans ce secteur de votre thème, en sextile doux à Vénus et en trigone chaleureux à Mars et Jupiter en Lion, dans votre domaine des échanges, des messages et des petits trajets. Votre partenaire ou un proche est plus ouvert que d’habitude, c’est donc un bon jour pour parler de projets à deux.\n\nVénus, rétrograde en Balance dans votre secteur de l’amour, du plaisir et de la créativité, favorise toujours la réparation plutôt que la rupture. Mercure, rétrograde en Scorpion dans votre domaine du travail quotidien, de la santé et des routines, est au carré de Pluton en Verseau : vérifiez les faits et évitez les rapports de force. En fin de journée, la Lune entre en Capricorne, dans votre secteur de l’argent partagé, de l’intimité et des liens profonds, et l’ambiance devient plus sérieuse et concrète.\n\nCe soir, relisez un compte commun, un prêt ou une facture et notez les questions à poser. L’astrologie décrit une ambiance, et vos choix façonnent le résultat.",
+      "cancer": "Cancer, le secteur clé de la journée est celui du travail quotidien, de la santé et des routines. La Lune termine sa traversée du Sagittaire dans ce secteur de votre thème, en sextile doux à Vénus et en trigone chaleureux à Mars et Jupiter en Lion, dans votre domaine de l’argent, des biens et de l’estime de soi. L’énergie pour les tâches pratiques est bonne, et organiser votre agenda tôt libère l’après-midi.\n\nVénus, rétrograde en Balance dans votre secteur du foyer, de la famille et des racines, favorise toujours la réparation plutôt que la rupture. Mercure, rétrograde en Scorpion dans votre domaine de l’amour, du plaisir et de la créativité, est au carré de Pluton en Verseau : vérifiez les faits et évitez les rapports de force. En fin de journée, la Lune entre en Capricorne, dans votre secteur du couple et des relations en face à face, et l’ambiance devient plus sérieuse et concrète.\n\nCe soir, mettez-vous d’accord sur un projet concret avec votre partenaire ou un ami proche. Prenez ce qui vous aide et laissez le reste.",
+      "lion": "Lion, l’essentiel de l’énergie du jour va au domaine de l’amour, du plaisir et de la créativité. La Lune termine sa traversée du Sagittaire dans ce secteur de votre thème, en sextile doux à Vénus et en trigone chaleureux à Mars et Jupiter en Lion, dans votre domaine de l’identité, du corps et de l’image que vous donnez. Votre chaleur se lit facilement, et un petit geste envers une personne qui compte pour vous est bien reçu.\n\nVénus, rétrograde en Balance dans votre secteur des échanges, des messages et des petits trajets, favorise toujours la réparation plutôt que la rupture. Mercure, rétrograde en Scorpion dans votre domaine du foyer, de la famille et des racines, est au carré de Pluton en Verseau : vérifiez les faits et évitez les rapports de force. En fin de journée, la Lune entre en Capricorne, dans votre secteur du travail quotidien, de la santé et des routines, et l’ambiance devient plus sérieuse et concrète.\n\nCe soir, écrivez une courte liste pour vendredi, trois tâches au maximum. Ce sont des tendances, et vous gardez le dernier mot.",
+      "vierge": "Vierge, aujourd’hui la Lune éclaire le domaine du foyer, de la famille et des racines. La Lune termine sa traversée du Sagittaire dans ce secteur de votre thème, en sextile doux à Vénus et en trigone chaleureux à Mars et Jupiter en Lion, dans votre domaine du repos, du monde intérieur et de ce que vous gardez pour vous. Les questions familiales paraissent plus légères, et un repas partagé ou une simple discussion à la maison peut apaiser une vieille tension.\n\nVénus, rétrograde en Balance dans votre secteur de l’argent, des biens et de l’estime de soi, favorise toujours la réparation plutôt que la rupture. Mercure, rétrograde en Scorpion dans votre domaine des échanges, des messages et des petits trajets, est au carré de Pluton en Verseau : vérifiez les faits et évitez les rapports de force. En fin de journée, la Lune entre en Capricorne, dans votre secteur de l’amour, du plaisir et de la créativité, et l’ambiance devient plus sérieuse et concrète.\n\nCe soir, prévoyez un moment agréable pour le week-end au lieu de le laisser au hasard. Utilisez le ciel comme une boussole, pas comme un scénario.",
+      "balance": "Ce jeudi, Balance, le domaine des échanges, des messages et des petits trajets occupe le devant de la scène. La Lune termine sa traversée du Sagittaire dans ce secteur de votre thème, en sextile doux à Vénus et en trigone chaleureux à Mars et Jupiter en Lion, dans votre domaine des amis, des groupes et des projets à long terme. Les mots viennent plus librement : un appel fonctionne mieux qu’un long échange écrit pour lever un doute.\n\nVénus, rétrograde en Balance dans votre secteur de l’identité, du corps et de l’image que vous donnez, favorise toujours la réparation plutôt que la rupture. Mercure, rétrograde en Scorpion dans votre domaine de l’argent, des biens et de l’estime de soi, est au carré de Pluton en Verseau : vérifiez les faits et évitez les rapports de force. En fin de journée, la Lune entre en Capricorne, dans votre secteur du foyer, de la famille et des racines, et l’ambiance devient plus sérieuse et concrète.\n\nCe soir, offrez-vous une soirée calme à la maison et préparez une chose pour demain matin. L’astrologie décrit une ambiance, et vos choix façonnent le résultat.",
+      "scorpion": "Scorpion, gardez en vue aujourd’hui le domaine de l’argent, des biens et de l’estime de soi. La Lune termine sa traversée du Sagittaire dans ce secteur de votre thème, en sextile doux à Vénus et en trigone chaleureux à Mars et Jupiter en Lion, dans votre domaine de la carrière, de la réputation et des objectifs publics. Vous voyez plus clairement ce qui compte pour vous, ce qui aide à valider une dépense utile et à refuser un achat impulsif.\n\nVénus, rétrograde en Balance dans votre secteur du repos, du monde intérieur et de ce que vous gardez pour vous, favorise toujours la réparation plutôt que la rupture. Mercure, rétrograde en Scorpion dans votre domaine de l’identité, du corps et de l’image que vous donnez, est au carré de Pluton en Verseau : vérifiez les faits et évitez les rapports de force. En fin de journée, la Lune entre en Capricorne, dans votre secteur des échanges, des messages et des petits trajets, et l’ambiance devient plus sérieuse et concrète.\n\nCe soir, répondez brièvement à un message en attente, puis posez le téléphone. Prenez ce qui vous aide et laissez le reste.",
+      "sagittaire": "Sagittaire, le titre du jour concerne le domaine de l’identité, du corps et de l’image que vous donnez. La Lune termine sa traversée du Sagittaire dans ce secteur de votre thème, en sextile doux à Vénus et en trigone chaleureux à Mars et Jupiter en Lion, dans votre domaine des voyages, des études et des convictions. La confiance vient plus facilement, et un premier pas audacieux sur un projet personnel sonne juste, tant qu’il reste réaliste.\n\nVénus, rétrograde en Balance dans votre secteur des amis, des groupes et des projets à long terme, favorise toujours la réparation plutôt que la rupture. Mercure, rétrograde en Scorpion dans votre domaine du repos, du monde intérieur et de ce que vous gardez pour vous, est au carré de Pluton en Verseau : vérifiez les faits et évitez les rapports de force. En fin de journée, la Lune entre en Capricorne, dans votre secteur de l’argent, des biens et de l’estime de soi, et l’ambiance devient plus sérieuse et concrète.\n\nCe soir, listez vos dépenses fixes du mois prochain pour aborder vendredi avec une vision claire. Ce sont des tendances, et vous gardez le dernier mot.",
+      "capricorne": "Capricorne, la journée penche vers le domaine du repos, du monde intérieur et de ce que vous gardez pour vous. La Lune termine sa traversée du Sagittaire dans ce secteur de votre thème, en sextile doux à Vénus et en trigone chaleureux à Mars et Jupiter en Lion, dans votre domaine de l’argent partagé, de l’intimité et des liens profonds. Les heures calmes vous ressourcent, et prendre du recul laisse remonter seule une réponse que vous attendiez.\n\nVénus, rétrograde en Balance dans votre secteur de la carrière, de la réputation et des objectifs publics, favorise toujours la réparation plutôt que la rupture. Mercure, rétrograde en Scorpion dans votre domaine des amis, des groupes et des projets à long terme, est au carré de Pluton en Verseau : vérifiez les faits et évitez les rapports de force. En fin de journée, la Lune entre en Capricorne, dans votre secteur de l’identité, du corps et de l’image que vous donnez, et l’ambiance devient plus sérieuse et concrète.\n\nCe soir, choisissez une habitude personnelle à garder jusqu’à la fin du mois et commencez-la demain. Utilisez le ciel comme une boussole, pas comme un scénario.",
+      "verseau": "Verseau, ce qui compte le plus ce jeudi relève du domaine des amis, des groupes et des projets à long terme. La Lune termine sa traversée du Sagittaire dans ce secteur de votre thème, en sextile doux à Vénus et en trigone chaleureux à Mars et Jupiter en Lion, dans votre domaine du couple et des relations en face à face. Le soutien d’amis ou d’un groupe est à portée de main, et demander un peu d’aide est tout à fait normal aujourd’hui.\n\nVénus, rétrograde en Balance dans votre secteur des voyages, des études et des convictions, favorise toujours la réparation plutôt que la rupture. Mercure, rétrograde en Scorpion dans votre domaine de la carrière, de la réputation et des objectifs publics, est au carré de Pluton en Verseau : vérifiez les faits et évitez les rapports de force. En fin de journée, la Lune entre en Capricorne, dans votre secteur du repos, du monde intérieur et de ce que vous gardez pour vous, et l’ambiance devient plus sérieuse et concrète.\n\nCe soir, éteignez les écrans un peu plus tôt et offrez à votre esprit un vrai repos. L’astrologie décrit une ambiance, et vos choix façonnent le résultat.",
+      "poissons": "Poissons, l’attention du jour porte sur le domaine de la carrière, de la réputation et des objectifs publics. La Lune termine sa traversée du Sagittaire dans ce secteur de votre thème, en sextile doux à Vénus et en trigone chaleureux à Mars et Jupiter en Lion, dans votre domaine du travail quotidien, de la santé et des routines. Vos efforts au travail se remarquent plus facilement : montrez ce que vous avez fait plutôt que ce que vous comptez faire.\n\nVénus, rétrograde en Balance dans votre secteur de l’argent partagé, de l’intimité et des liens profonds, favorise toujours la réparation plutôt que la rupture. Mercure, rétrograde en Scorpion dans votre domaine des voyages, des études et des convictions, est au carré de Pluton en Verseau : vérifiez les faits et évitez les rapports de force. En fin de journée, la Lune entre en Capricorne, dans votre secteur des amis, des groupes et des projets à long terme, et l’ambiance devient plus sérieuse et concrète.\n\nCe soir, fixez un objectif réaliste à long terme et partagez-le avec une personne de confiance. Prenez ce qui vous aide et laissez le reste."
+    }
+  }
+}
