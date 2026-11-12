@@ -175,16 +175,19 @@ test('le texte de renouvellement Découverte annonce 1,99 puis 5,90', () => {
   }
 });
 
-test('les pages géo affichent les formules hebdomadaires, plus l’ancienne fourchette', () => {
+test('les pages géo affichent les packs à prix fixe, plus les formules hebdomadaires', () => {
   const fr = priceRows('fr', 'conseillers virtuels').find((row) => row.ours);
   const en = priceRows('en', 'virtual advisors').find((row) => row.ours);
   assert.ok(fr);
   assert.ok(en);
-  assert.match(fr.price, /1,99/);
-  assert.match(fr.price, /5,90/);
+  assert.match(fr.price, /12,90/);
+  assert.match(fr.price, /39,90/);
+  assert.match(fr.price, /sans abonnement/);
+  assert.doesNotMatch(fr.price, /semaine|5,90/);
   assert.doesNotMatch(fr.price, /0,99/);
   assert.doesNotMatch(fr.price, /0,50/);
-  assert.match(en.price, /€1\.99|1,99/);
+  assert.match(en.price, /€12\.90|12,90/);
+  assert.doesNotMatch(en.price, /week/);
   assert.doesNotMatch(en.price, /€0\.99/);
   assert.doesNotMatch(en.price, /0\.50/);
   const blob = `${fr.price}\n${en.price}`.toLowerCase();

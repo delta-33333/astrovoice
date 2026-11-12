@@ -77,7 +77,7 @@ export default function GeoAboutPage({ locale }: { locale: GeoLocale }) {
           title: 'Prix',
           body: [
             'Un appel de 3 minutes est offert une fois, après un code envoyé par e-mail. Le serveur coupe l’appel à 180 secondes.',
-            `Formules hebdomadaires, 60 minutes maximum par appel, résiliables en 1 clic : ${c.weekly.decouverte.name} ${c.weekly.decouverte.trial} la 1re semaine puis ${c.weekly.decouverte.full}/semaine (${c.weekly.decouverte.minutes} min) ; ${c.weekly.essentiel.name} ${c.weekly.essentiel.trial} puis ${c.weekly.essentiel.full} (${c.weekly.essentiel.minutes} min) ; ${c.weekly.premium.name} ${c.weekly.premium.trial} puis ${c.weekly.premium.full} (${c.weekly.premium.minutes} min).`,
+            `Packs de minutes à prix fixe, payés une fois, sans abonnement ni recharge automatique : ${c.fixed.map((p) => `${p.minutes} min ${p.price}`).join(' ; ')}. L’appel s’arrête tout seul quand le pack est utilisé, et si la ligne coupe, les minutes non utilisées restent sur le compte.`,
           ],
         },
         {
@@ -133,7 +133,7 @@ export default function GeoAboutPage({ locale }: { locale: GeoLocale }) {
           title: 'Prices',
           body: [
             'A 3-minute call is free once, after an email code. The server ends the call at 180 seconds.',
-            `Weekly plans, 60 minutes maximum per call, cancel in one click: ${c.weekly.decouverte.name} ${c.weekly.decouverte.trial} the first week then ${c.weekly.decouverte.full}/week (${c.weekly.decouverte.minutes} min); ${c.weekly.essentiel.name} ${c.weekly.essentiel.trial} then ${c.weekly.essentiel.full} (${c.weekly.essentiel.minutes} min); ${c.weekly.premium.name} ${c.weekly.premium.trial} then ${c.weekly.premium.full} (${c.weekly.premium.minutes} min).`,
+            `Fixed-price minute packs, paid once, no subscription and no auto top-up: ${c.fixed.map((p) => `${p.minutes} min ${p.price}`).join('; ')}. The call stops by itself when the pack is used up, and if the line drops, unused minutes stay on the account.`,
           ],
         },
         {
