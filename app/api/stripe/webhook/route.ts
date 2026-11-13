@@ -12,7 +12,7 @@ import { deliverPaidSummary, markSummaryPaid } from '@/lib/summaries';
 import { cancelUserSequences } from '@/lib/mail-schedule';
 import { sendPasswordSetupIfNeeded } from '@/lib/password-setup';
 import { recordReferral } from '@/lib/referrals';
-import { attachGuestPrepaid } from '@/lib/guest-checkout';
+import { adoptCheckoutEmail, attachGuestPrepaid } from '@/lib/guest-checkout';
 import { isGuestCheckout } from '@/lib/guest-checkout-rules';
 
 export const runtime = 'nodejs';
@@ -70,6 +70,10 @@ export async function POST(request: NextRequest) {
           console.log('Crédit minutes (invité)', session.id, attached ? { granted: attached.granted, already: attached.already } : 'en attente');
           if (!attached && session.payment_status === 'paid') throw new Error('GUEST_ATTACH_PENDING');
         } else if (session.metadata?.purpose === 'prepaid') {
+          if (session.payment_status === 'paid') {
+            const adopted = await adoptCheckoutEmail(session).catch(() => false);
+            if (adopted) await sendPasswordSetupIfNeeded(session.metadata?.userId).catch(() => undefined);
+          }
           const result = await grantPrepaidCredits(session, { allowCookie: false });
           console.log('Crédit minutes', session.id, result);
         } else if (session.metadata?.purpose === 'booking' && session.metadata.booking_id) {

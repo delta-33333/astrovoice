@@ -8,7 +8,6 @@ import { HONEYPOT_FIELD } from '@/lib/form-checks';
 import { postEvent } from '@/lib/funnel-client';
 import type { Locale } from '@/lib/seo';
 import type { HeardFromId } from '@/lib/heard-from';
-import { SIGN_IDS, signName, type SignId } from '@/lib/zodiac/signs';
 
 const COPY: Record<Locale, {
   title: string;
@@ -46,7 +45,7 @@ const COPY: Record<Locale, {
     once: 'Une seule fois par personne. Aucun abonnement, aucun prélèvement, aucune carte demandée.',
     horoscope: 'Recevoir l’horoscope du matin',
     sign: 'Signe pour l’horoscope',
-    more: 'Personnaliser (facultatif) : prénom, naissance, horoscope',
+    more: 'Personnaliser (facultatif) : prénom, naissance',
   },
   en: {
     title: '3 free minutes with an AI astrologer',
@@ -65,7 +64,7 @@ const COPY: Record<Locale, {
     once: 'Once per person. No subscription, no charge, no card requested.',
     horoscope: 'Receive the morning horoscope',
     sign: 'Sign for the horoscope',
-    more: 'Personalise (optional): name, birth, horoscope',
+    more: 'Personalise (optional): name, birth',
   },
   es: {
     title: '3 minutos gratis con un astrólogo IA',
@@ -84,7 +83,7 @@ const COPY: Record<Locale, {
     once: 'Una sola vez por persona. No se pide tarjeta.',
     horoscope: 'Recibir el horóscopo de la mañana',
     sign: 'Signo del horóscopo',
-    more: 'Personalizar (opcional): nombre, nacimiento, horóscopo',
+    more: 'Personalizar (opcional): nombre, nacimiento',
   },
   de: {
     title: '3 Minuten gratis mit einem KI-Astrologen',
@@ -103,7 +102,7 @@ const COPY: Record<Locale, {
     once: 'Einmal pro Person. Keine Karte nötig.',
     horoscope: 'Das Morgenhoroskop erhalten',
     sign: 'Zeichen für das Horoskop',
-    more: 'Anpassen (optional): Name, Geburt, Horoskop',
+    more: 'Anpassen (optional): Name, Geburt',
   },
   it: {
     title: '3 minuti gratis con un astrologo IA',
@@ -122,25 +121,20 @@ const COPY: Record<Locale, {
     once: 'Una sola volta a persona. Nessuna carta richiesta.',
     horoscope: 'Ricevere l’oroscopo del mattino',
     sign: 'Segno per l’oroscopo',
-    more: 'Personalizza (facoltativo): nome, nascita, oroscopo',
+    more: 'Personalizza (facoltativo): nome, nascita',
   },
 };
 
 export default function FreeTrialForm({ locale }: { locale: Locale }) {
   const copy = COPY[locale];
   const router = useRouter();
-  const [email, setEmail] = useState('');
   const [firstName, setFirstName] = useState('');
   const [birthDate, setBirthDate] = useState('');
   const [birthTime, setBirthTime] = useState('');
   const [birthPlace, setBirthPlace] = useState('');
-  const [horoscope, setHoroscope] = useState(false);
-  const [sign, setSign] = useState<SignId>('belier');
   const [heardFrom, setHeardFrom] = useState<HeardFromId | ''>('');
   const [consent, setConsent] = useState(false);
   const [hp, setHp] = useState('');
-  const [code, setCode] = useState('');
-  const [sent, setSent] = useState(false);
   const [error, setError] = useState('');
   const [pending, setPending] = useState(false);
 
@@ -154,16 +148,16 @@ export default function FreeTrialForm({ locale }: { locale: Locale }) {
     }
   }, []);
 
-  const requestCode = async (event: FormEvent) => {
+  // Essai allégé : consentement IA puis appel tout de suite. L’e-mail (avec code) est demandé après l’appel.
+  const start = async (event: FormEvent) => {
     event.preventDefault();
     setError('');
     setPending(true);
-    postEvent('trial_start', { metadata: { source: 'essai' } });
-    const response = await fetch('/api/trial/start', {
+    postEvent('trial_start', { metadata: { source: 'essai', quick: 'true' } });
+    const response = await fetch('/api/trial/quick', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        email,
         firstName,
         locale,
         consent,
@@ -172,47 +166,13 @@ export default function FreeTrialForm({ locale }: { locale: Locale }) {
       }),
     });
     const payload = await response.json().catch(() => null);
-    if (response.ok && horoscope) {
-      void fetch('/api/horoscope/subscribe', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          email,
-          locale,
-          sign,
-          birthDate: birthDate || null,
-          consent: true,
-          heardFrom: heardFrom || null,
-          placement: 'trial',
-          [HONEYPOT_FIELD]: hp,
-        }),
-      }).catch(() => undefined);
-    }
-    setPending(false);
-    if (!response.ok) {
+    if (!response.ok || !payload?.trialId) {
+      setPending(false);
       setError(payload?.error || 'Indisponible');
       return;
     }
-    postEvent('trial_code_sent', { metadata: { source: 'essai' } });
-    setSent(true);
-  };
-
-  const verify = async (event: FormEvent) => {
-    event.preventDefault();
-    setError('');
-    setPending(true);
-    const response = await fetch('/api/trial/verify', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, code, locale }),
-    });
-    const payload = await response.json().catch(() => null);
-    setPending(false);
-    if (!response.ok || !payload?.trialId) {
-      setError(payload?.error || 'Code refusé');
-      return;
-    }
     sessionStorage.setItem('trialId', payload.trialId);
+    sessionStorage.setItem('trialQuick', '1');
     if (payload.advisorId) sessionStorage.setItem('astrologerId', payload.advisorId);
     sessionStorage.setItem('afterBirth', '/call');
     if (birthDate && birthPlace.trim()) {
@@ -239,13 +199,8 @@ export default function FreeTrialForm({ locale }: { locale: Locale }) {
     <div className="relative max-w-lg mx-auto px-4 py-10">
       <h1 className="font-[family-name:var(--font-cinzel)] text-3xl">{copy.title}</h1>
       <p className="mt-3 text-sm text-white/70">{copy.sub}</p>
-      {!sent ? (
-        <form onSubmit={requestCode} className="relative mt-6 space-y-3">
+      <form onSubmit={start} className="relative mt-6 space-y-3">
           <HoneypotField value={hp} onChange={setHp} />
-          <label className="block text-sm">
-            {copy.email}
-            <input className="mt-1 w-full rounded-xl border border-white/20 bg-white/10 px-3 py-3" type="email" value={email} onChange={(event) => setEmail(event.target.value)} autoComplete="email" required />
-          </label>
           <details className="rounded-xl border border-white/10 px-3 py-2">
             <summary className="cursor-pointer text-sm text-white/70">{copy.more}</summary>
             <div className="mt-3 space-y-3">
@@ -269,39 +224,15 @@ export default function FreeTrialForm({ locale }: { locale: Locale }) {
             </label>
           </fieldset>
           <HeardFromField locale={locale} value={heardFrom} onChange={setHeardFrom} />
-          <label className="flex gap-2 text-sm text-white/80">
-            <input type="checkbox" checked={horoscope} onChange={(event) => setHoroscope(event.target.checked)} />
-            <span>{copy.horoscope}</span>
-          </label>
-          {horoscope && (
-            <label className="block text-sm">
-              {copy.sign}
-              <select className="mt-1 w-full rounded-xl border border-white/20 bg-white/10 px-3 py-3" value={sign} onChange={(event) => setSign(event.target.value as SignId)}>
-                {SIGN_IDS.map((id) => (
-                  <option key={id} value={id}>{signName(locale, id)}</option>
-                ))}
-              </select>
-            </label>
-          )}
             </div>
           </details>
           <label className="flex gap-2 text-sm text-white/80">
             <input type="checkbox" checked={consent} onChange={(event) => setConsent(event.target.checked)} required />
             <span>{copy.consent}</span>
           </label>
-          <button type="submit" className="btn-primary w-full" disabled={pending}>{copy.send}</button>
+          <button type="submit" className="btn-primary w-full" disabled={pending || !consent}>{copy.confirm}</button>
           <p className="text-xs text-white/55">{copy.once}</p>
         </form>
-      ) : (
-        <form onSubmit={verify} className="mt-6 space-y-3">
-          <p className="text-sm text-white/80">{copy.sent.replace('{email}', email)}</p>
-          <label className="block text-sm">
-            {copy.code}
-            <input className="mt-1 w-full rounded-xl border border-white/20 bg-white/10 px-3 py-3 tracking-[0.3em]" inputMode="numeric" autoComplete="one-time-code" value={code} onChange={(event) => setCode(event.target.value)} required />
-          </label>
-          <button type="submit" className="btn-primary w-full" disabled={pending}>{copy.confirm}</button>
-        </form>
-      )}
       {error && <p className="mt-3 text-sm text-red-200" role="alert">{error}</p>}
     </div>
   );
