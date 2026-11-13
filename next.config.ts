@@ -63,7 +63,6 @@ const nextConfig: NextConfig = {
       },
       { source: '/a-propos', destination: '/fr/a-propos', permanent: true },
       { source: '/about', destination: '/en/about', permanent: true },
-      { source: '/packs', destination: '/offres', permanent: true },
       { source: '/pricing', destination: '/offres', permanent: true },
       { source: '/tarifs', destination: '/offres', permanent: true },
       { source: '/fr/tarifs', destination: '/offres', permanent: true },
