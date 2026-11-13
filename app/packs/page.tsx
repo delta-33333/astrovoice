@@ -7,6 +7,17 @@ import PaymentSheet from '@/components/PaymentSheet';
 import { FIXED_PACKS, formatCurrency, type MinutePack } from '@/lib/pricing';
 import { DROP_CREDIT, FIXED_PRICE_LINE } from '@/lib/trust-copy';
 
+async function savePendingBirth() {
+  try {
+    const raw = sessionStorage.getItem('pendingBirth');
+    if (!raw) return;
+    sessionStorage.removeItem('pendingBirth');
+    await fetch('/api/birth-data', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: raw });
+  } catch {
+    // facultatif
+  }
+}
+
 export default function PacksPage() {
   const router = useRouter();
   const [selectedPack, setSelectedPack] = useState<string | null>(null);
@@ -192,9 +203,14 @@ export default function PacksPage() {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ checkoutSessionId }),
-          }).finally(() => {
-            router.push('/home?pack_success=1');
-          });
+          })
+            .then((response) => response.json())
+            .catch(() => ({}))
+            .then(async (payload) => {
+              // Achat invité : compte créé et connecté → date de naissance éventuellement saisie sur /book.
+              if (payload?.loggedIn) await savePendingBirth();
+              router.push(payload?.guest && !payload?.loggedIn ? '/auth?pack_success=1' : '/home?pack_success=1');
+            });
         }}
       />
     </main>

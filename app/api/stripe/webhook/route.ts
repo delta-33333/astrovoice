@@ -12,6 +12,8 @@ import { deliverPaidSummary, markSummaryPaid } from '@/lib/summaries';
 import { cancelUserSequences } from '@/lib/mail-schedule';
 import { sendPasswordSetupIfNeeded } from '@/lib/password-setup';
 import { recordReferral } from '@/lib/referrals';
+import { attachGuestPrepaid } from '@/lib/guest-checkout';
+import { isGuestCheckout } from '@/lib/guest-checkout-rules';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -61,7 +63,13 @@ export async function POST(request: NextRequest) {
           await cancelUserSequences(session.metadata?.userId).catch(() => undefined);
           await sendPasswordSetupIfNeeded(session.metadata?.userId).catch(() => undefined);
         }
-        if (session.metadata?.purpose === 'prepaid') {
+        if (session.metadata?.purpose === 'prepaid' && isGuestCheckout(session.metadata) && !session.metadata?.userId) {
+          // Achat invité : compte trouvé ou créé par l’e-mail Stripe, puis crédit idempotent par session.
+          const attached = await attachGuestPrepaid(session);
+          if (attached) await sendPasswordSetupIfNeeded(attached.userId).catch(() => undefined);
+          console.log('Crédit minutes (invité)', session.id, attached ? { granted: attached.granted, already: attached.already } : 'en attente');
+          if (!attached && session.payment_status === 'paid') throw new Error('GUEST_ATTACH_PENDING');
+        } else if (session.metadata?.purpose === 'prepaid') {
           const result = await grantPrepaidCredits(session, { allowCookie: false });
           console.log('Crédit minutes', session.id, result);
         } else if (session.metadata?.purpose === 'booking' && session.metadata.booking_id) {

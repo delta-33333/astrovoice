@@ -34,13 +34,14 @@ export default function ReturnClient() {
       }
 
       if (data.purpose === 'prepaid' && data.paymentStatus === 'paid' && data.status === 'complete') {
-        await fetch('/api/stripe/confirm-prepaid', {
+        const confirmed = await fetch('/api/stripe/confirm-prepaid', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ checkoutSessionId: sessionId }),
         });
+        const payload = await confirmed.json().catch(() => ({}));
         funnel('payment_success', { kind: 'pack', redirect: true });
-        router.replace('/home?pack_success=1');
+        router.replace(payload?.guest && !payload?.loggedIn ? '/auth?pack_success=1' : '/home?pack_success=1');
         return;
       }
 

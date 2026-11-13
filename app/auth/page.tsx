@@ -22,6 +22,13 @@ export default function AuthPage() {
     if (mode === 'signup') funnel('signup_view', { from: 'auth' }, { log: true, metadata: { source: 'auth' } });
   }, [mode]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [paidNotice, setPaidNotice] = useState(false);
+  useEffect(() => {
+    if (new URLSearchParams(window.location.search).get('pack_success') === '1') {
+      setPaidNotice(true);
+      sessionStorage.setItem('afterAuth', '/home?pack_success=1');
+    }
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -89,6 +96,12 @@ export default function AuthPage() {
             {mode === 'login' ? 'Connectez-vous à votre compte' : 'Créez votre compte'}
           </p>
         </div>
+
+        {paidNotice && (
+          <p role="status" className="mb-4 rounded-2xl border border-celestial-gold/40 bg-celestial-gold/10 p-4 text-sm text-white/90">
+            Paiement confirmé : vos minutes sont ajoutées au compte de l’e-mail saisi au paiement. Connectez-vous, ou utilisez le lien reçu par e-mail pour choisir votre mot de passe.
+          </p>
+        )}
 
         <form onSubmit={handleSubmit} className="relative space-y-5 bg-white/5 backdrop-blur-sm p-8 rounded-3xl border border-white/10">
           <HoneypotField value={honeypot} onChange={setHoneypot} />

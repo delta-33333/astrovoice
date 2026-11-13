@@ -57,7 +57,8 @@ async function ensureCustomer(
 
 export async function createElementsCheckout(options: {
   request: NextRequest;
-  user: UserProfile;
+  /** null = achat invité : e-mail saisi dans le paiement Stripe, compte rattaché après paiement. */
+  user: UserProfile | null;
   amountCents: number;
   currency?: Currency;
   productName: string;
@@ -79,18 +80,21 @@ export async function createElementsCheckout(options: {
     throw new Error('STRIPE_NOT_CONFIGURED');
   }
 
-  const { customerId, email } = await ensureCustomer(stripe, options.user);
+  const user = options.user;
+  const { customerId, email } = user
+    ? await ensureCustomer(stripe, user)
+    : { customerId: null as string | null, email: undefined as string | undefined };
   const origin = appBaseUrl(options.request.nextUrl.origin);
   const sessionId =
     options.metadata.sessionId ||
-    `session_${Date.now()}_${options.user.id.slice(-6)}`;
+    `session_${Date.now()}_${user ? user.id.slice(-6) : 'guest'}`;
 
   const currency: Currency =
     options.currency && isCurrency(options.currency) ? options.currency : 'eur';
   const metadata: Record<string, string> = {
     ...options.metadata,
     purpose: options.purpose,
-    userId: options.user.id,
+    ...(user ? { userId: user.id } : { guest: 'true' }),
     sessionId,
     app: 'callastral',
     amountCents: String(options.amountCents),
@@ -103,7 +107,7 @@ export async function createElementsCheckout(options: {
     mode: 'payment',
     ui_mode: 'elements',
     locale: 'fr',
-    customer: customerId,
+    ...(customerId ? { customer: customerId } : { customer_creation: 'always' as const }),
     adaptive_pricing: { enabled: false },
     integration_identifier: integrationIdentifier(options.integrationFlow),
     return_url: `${origin}/payment/return?session_id={CHECKOUT_SESSION_ID}&flow=${options.flow}`,
@@ -126,22 +130,22 @@ export async function createElementsCheckout(options: {
       metadata,
       ...(options.manualCapture ? { capture_method: 'manual' as const } : {}),
     },
-    client_reference_id: options.user.id,
+    ...(user ? { client_reference_id: user.id } : {}),
   });
 
   if (!session.client_secret) {
     throw new Error('CLIENT_SECRET_MISSING');
   }
 
-  await Promise.all([
+  if (user) await Promise.all([
     stampCheckoutAcquisition({
-      userId: options.user.id,
+      userId: user.id,
       bookingId: options.metadata.booking_id || null,
       checkoutSessionId: session.id,
       purpose: options.purpose,
     }),
     noteCheckoutOpened({
-      user: options.user,
+      user,
       checkoutSessionId: session.id,
       purpose: options.purpose,
     }),

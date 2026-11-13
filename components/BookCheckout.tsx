@@ -39,7 +39,10 @@ export default function BookCheckout({
   const [birth, setBirth] = useState<{ date: string; time: string; place: string } | null>(null);
   const [authed, setAuthed] = useState<boolean | null>(null);
   const [included, setIncluded] = useState(false);
-  const [accountMode, setAccountMode] = useState<'signup' | 'login'>('signup');
+  const [accountMode, setAccountMode] = useState<'signup' | 'login'>('login');
+  // Pas de création de compte avant le paiement : l’e-mail est saisi dans le paiement Stripe.
+  // Le formulaire ne s’ouvre que pour se connecter à un compte existant.
+  const [showLogin, setShowLogin] = useState(false);
   const [firstName, setFirstName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -73,7 +76,7 @@ export default function BookCheckout({
   }, []);
 
   const ensureAccount = async () => {
-    if (authed) return;
+    if (authed || !showLogin) return;
     if (!normalizeEmail(email)) throw new Error(copy.emailInvalid);
     if (accountMode === 'signup') {
       if (!firstName.trim()) throw new Error(copy.nameRequired);
@@ -145,7 +148,16 @@ export default function BookCheckout({
     try {
       await ensureAccount();
       const me = await fetch('/api/auth/me').then((response) => response.json()).catch(() => null);
-      await saveBirth(me?.user?.displayName || firstName);
+      if (me?.authenticated) {
+        await saveBirth(me?.user?.displayName || firstName);
+      } else if (birth) {
+        // Achat invité : la naissance est enregistrée après paiement, une fois le compte créé.
+        try {
+          sessionStorage.setItem('pendingBirth', JSON.stringify({ name: 'Vous', date: birth.date, time: birth.time, timeUnknown: false, place: birth.place }));
+        } catch {
+          // facultatif
+        }
+      }
       if (included && slotId) {
         await joinIncluded();
         return;
@@ -254,7 +266,13 @@ export default function BookCheckout({
 
         {included && <p className="mt-4 text-sm text-celestial-gold">{copy.included}</p>}
 
-        {authed === false && !included && (
+        {authed === false && !included && !showLogin && (
+          <button type="button" onClick={() => { setAccountMode('login'); setShowLogin(true); }} className="mt-4 text-sm text-celestial-gold underline">
+            {copy.login}
+          </button>
+        )}
+
+        {authed === false && !included && showLogin && (
           <div className="relative mt-4 space-y-3 rounded-2xl border border-white/10 bg-white/5 p-4">
             <HoneypotField value={honeypot} onChange={setHoneypot} />
             <p className="text-sm text-white/70">{copy.accountTitle}</p>
