@@ -178,3 +178,34 @@ test('les boutons « Choisir » des packs mènent au paiement /packs sans redire
   const fixed = fs.readFileSync('components/FixedPacks.tsx', 'utf8');
   assert.match(fixed, /\/packs\?pack=\$\{pack\.id\}/);
 });
+
+test('achat invité : cookie signé lié à la session et connexion auto seulement pour un compte créé par ce paiement', async () => {
+  const rules = await import('../lib/guest-checkout-rules.ts');
+  const secret = 'test-secret-0123456789';
+  const token = rules.signGuestCheckout('cs_test_abc', secret);
+  assert.equal(rules.guestCheckoutMatches(token, 'cs_test_abc', secret), true);
+  assert.equal(rules.guestCheckoutMatches(token, 'cs_test_other', secret), false);
+  assert.equal(rules.guestCheckoutMatches(token, 'cs_test_abc', 'autre-secret-0123456'), false);
+  assert.equal(rules.guestCheckoutMatches(undefined, 'cs_test_abc', secret), false);
+  assert.equal(rules.guestCheckoutMatches(token, 'cs_test_abc', null), false);
+
+  const opened = 1_800_000_000;
+  const after = new Date((opened + 60) * 1000).toISOString();
+  const before = new Date((opened - 3600) * 1000).toISOString();
+  assert.equal(rules.guestAutoLoginAllowed({ userCreatedAt: after, passwordHash: null, checkoutCreatedSec: opened }), true);
+  assert.equal(rules.guestAutoLoginAllowed({ userCreatedAt: before, passwordHash: null, checkoutCreatedSec: opened }), false);
+  assert.equal(rules.guestAutoLoginAllowed({ userCreatedAt: after, passwordHash: '$2b$hash', checkoutCreatedSec: opened }), false);
+  assert.equal(rules.isGuestCheckout({ guest: 'true' }), true);
+  assert.equal(rules.isGuestCheckout({ userId: 'u1' }), false);
+});
+
+test('achat de pack sans compte : plus de mur /auth avant le paiement', () => {
+  const route = fs.readFileSync('app/api/purchase-pack/route.ts', 'utf8');
+  assert.match(route, /GUEST_CHECKOUT_COOKIE/);
+  const checkout = fs.readFileSync('lib/checkout.ts', 'utf8');
+  assert.match(checkout, /customer_creation: 'always'/);
+  const book = fs.readFileSync('components/BookCheckout.tsx', 'utf8');
+  assert.match(book, /if \(authed \|\| !showLogin\) return;/);
+  const webhook = fs.readFileSync('app/api/stripe/webhook/route.ts', 'utf8');
+  assert.match(webhook, /attachGuestPrepaid/);
+});

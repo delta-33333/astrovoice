@@ -9,15 +9,24 @@ import { formatMoney, MARKET_PRICING, packMarketFor } from '@/lib/money';
 import { getPack, isFixedPackId, packForMarket, packSeconds } from '@/lib/pricing';
 import { getSupabaseAdmin, supabaseAvailable } from '@/lib/supabase';
 import { stripeSecretConfigured } from '@/lib/stripe';
+import { authSecret } from '@/lib/session';
+import { tooManyRequests } from '@/lib/guard';
+import { GUEST_CHECKOUT_COOKIE, GUEST_CHECKOUT_MAX_AGE, signGuestCheckout } from '@/lib/guest-checkout-rules';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 export async function POST(request: NextRequest) {
   try {
+    // Sans compte : achat invité. L’e-mail est saisi dans le paiement Stripe,
+    // le compte est créé ou retrouvé après paiement (webhook + page de retour).
     const user = await getSession();
-    if (!user) {
+    const secret = authSecret();
+    if (!user && !secret) {
       return NextResponse.json({ error: 'Non authentifié' }, { status: 401 });
+    }
+    if (!user && tooManyRequests(request, 'guest-checkout', 12, 60 * 60 * 1000)) {
+      return NextResponse.json({ error: 'Trop de demandes. Réessayez dans un moment.' }, { status: 429 });
     }
 
     const body = await request.json().catch(() => ({}));
@@ -30,6 +39,7 @@ export async function POST(request: NextRequest) {
     }
 
     if (pack.founding) {
+      if (!user) return NextResponse.json({ error: 'Non authentifié' }, { status: 401 });
       const sales = await foundingSalesCount();
       if (!foundingOfferOpen(new Date(), sales)) {
         return NextResponse.json(
@@ -84,11 +94,11 @@ export async function POST(request: NextRequest) {
 
     await trackEvent({
       name: 'checkout_start',
-      userId: user.id,
-      metadata: { purpose: 'prepaid', packId: pack.id },
+      userId: user?.id,
+      metadata: { purpose: 'prepaid', packId: pack.id, guest: user ? 'false' : 'true' },
     });
 
-    return NextResponse.json({
+    const response = NextResponse.json({
       clientSecret: checkout.clientSecret,
       checkoutSessionId: checkout.checkoutSessionId,
       amount: checkout.amountCents,
@@ -97,7 +107,18 @@ export async function POST(request: NextRequest) {
       minutes: pack.minutes,
       label,
       collectContact: checkout.collectContact,
+      guest: !user,
     });
+    if (!user && secret) {
+      response.cookies.set(GUEST_CHECKOUT_COOKIE, signGuestCheckout(checkout.checkoutSessionId, secret), {
+        httpOnly: true,
+        sameSite: 'lax',
+        secure: process.env.NODE_ENV === 'production',
+        path: '/',
+        maxAge: GUEST_CHECKOUT_MAX_AGE,
+      });
+    }
+    return response;
   } catch (error) {
     console.error('Achat de minutes:', error);
     return NextResponse.json(
