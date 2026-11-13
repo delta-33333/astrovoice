@@ -91,9 +91,9 @@ export default async function LandingPage({
           {SKY_PROMISE.fr.h1}
         </h1>
         <p className="mt-2 text-celestial-gold font-semibold" data-trust-promise>{TRUST_PROMISE.fr}</p>
-        <p className="mt-3 text-white/80 leading-relaxed">{SKY_PROMISE.fr.sub}</p>
+        <p className="mt-3 hidden text-white/80 leading-relaxed sm:block">{SKY_PROMISE.fr.sub}</p>
         <SkyNowHero locale="fr" trialHref={trialPath('fr')} disclosure={VIRTUAL_ADVISOR_DISCLOSURE} />
-        <p className="mt-4 text-center sm:text-left">
+        <p className="mt-4 hidden sm:block sm:text-left">
           <Link href={trialPath('fr')} data-primary-cta="trial" data-cta="hero-home" className="text-sm text-celestial-gold underline underline-offset-4">
             {SKY_PROMISE.fr.direct}
           </Link>
@@ -114,7 +114,7 @@ export default async function LandingPage({
               Vingt-cinq secondes, générées par IA, pour entendre le ton avant d’appeler.
             </Step>
             <Step n="2" title="Essayez 3 minutes">
-              Un code à six chiffres arrive par e-mail. Aucune carte, aucun abonnement, aucun prélèvement. L’appel s’arrête à trois minutes.
+              Cochez l’accord « conseiller IA » et l’appel démarre. Aucune carte, aucun abonnement, aucun prélèvement. L’appel s’arrête à trois minutes ; l’e-mail est demandé après, pour le résumé.
             </Step>
             <Step n="3" title="Prenez un pack à prix fixe">
               10, 20 ou 40 minutes, payées une fois. L’appel s’arrête tout seul quand le pack est utilisé. Jamais un centime de plus.

@@ -107,9 +107,9 @@ export default async function LocaleHome(props: {
             <p className="text-xs uppercase tracking-[0.18em] text-celestial-gold/80">{SKY_PROMISE[sky].eyebrow}</p>
             <h1 className="mt-2 font-[family-name:var(--font-cinzel)] text-3xl sm:text-4xl text-glow">{SKY_PROMISE[sky].h1}</h1>
             <p className="mt-2 text-celestial-gold font-semibold" data-trust-promise>{TRUST_PROMISE[sky]}</p>
-            <p className="mt-3 text-white/80 leading-relaxed">{SKY_PROMISE[sky].sub}</p>
+            <p className="mt-3 hidden text-white/80 leading-relaxed sm:block">{SKY_PROMISE[sky].sub}</p>
             <SkyNowHero locale={sky} trialHref={trialPath(locale)} disclosure={disclosure} />
-            <p className="mt-4 text-center sm:text-left">
+            <p className="mt-4 hidden sm:block sm:text-left">
               <Link href={trialPath(locale)} data-primary-cta="trial" data-cta="hero-home" className="text-sm text-celestial-gold underline underline-offset-4">{SKY_PROMISE[sky].direct}</Link>
             </p>
             <p className="mt-3 text-xs text-white/60">{disclosure}</p>
@@ -124,10 +124,6 @@ export default async function LocaleHome(props: {
             <p className="mt-3 text-sm text-white/70">{disclosure}</p>
           </>
         )}
-        <div className="mt-6 flex flex-col sm:flex-row gap-3">
-          <Link href={`/packs?pack=20min&lang=${sky ?? 'en'}`} className="btn-secondary text-center">{locale === 'fr' ? 'Pack 20 minutes à prix fixe' : '20-minute fixed-price pack'}</Link>
-          <ChatCta locale={locale} placement="home-hero" className="w-full sm:w-auto" />
-        </div>
         <VoiceSample locale={locale} src={locale === 'en' ? '/samples/sample-en.mp3' : '/samples/sample-fr.mp3'} />
         <p className="mt-4">
           <Link href={couplePath(locale)} className="text-celestial-gold underline">
@@ -140,6 +136,11 @@ export default async function LocaleHome(props: {
             }[locale]}
           </Link>
         </p>
+        {/* Actions secondaires sous le premier écran : la date de naissance reste l’action principale. */}
+        <div className="mt-6 flex flex-col sm:flex-row gap-3">
+          <Link href={`/packs?pack=20min&lang=${sky ?? 'en'}`} className="btn-secondary text-center">{locale === 'fr' ? 'Pack 20 minutes à prix fixe' : '20-minute fixed-price pack'}</Link>
+          <ChatCta locale={locale} placement="home-hero" className="w-full sm:w-auto" />
+        </div>
         <HoroscopeSignup locale={locale} placement="home" />
       </div>
       {sky && <UseCases locale={sky} trialHref={trialPath(locale)} />}
@@ -151,7 +152,7 @@ export default async function LocaleHome(props: {
             {{ fr: 'Comment ça marche', en: 'How it works', es: 'Cómo funciona', de: 'So funktioniert es', it: 'Come funziona' }[locale]}
           </h2>
           <p className="text-sm text-white/75">1. {{ fr: 'Écoutez un extrait de 25 secondes, généré par IA.', en: 'Listen to a 25-second AI-generated excerpt.', es: 'Escucha un extracto de 25 segundos generado por IA.', de: 'Hören Sie einen 25-Sekunden-Auszug, erzeugt von KI.', it: 'Ascolta un estratto di 25 secondi generato dall’IA.' }[locale]}</p>
-          <p className="text-sm text-white/75">2. {{ fr: 'Essayez 3 minutes avec un code reçu par e-mail.', en: 'Try 3 minutes with a code sent by email.', es: 'Prueba 3 minutos con un código enviado por correo.', de: 'Testen Sie 3 Minuten mit einem Code per E-Mail.', it: 'Prova 3 minuti con un codice inviato per e-mail.' }[locale]}</p>
+          <p className="text-sm text-white/75">2. {{ fr: 'Essayez 3 minutes, sans carte ni e-mail avant l’appel.', en: 'Try 3 minutes, no card and no email before the call.', es: 'Prueba 3 minutos, sin tarjeta ni correo antes de la llamada.', de: 'Testen Sie 3 Minuten, ohne Karte und ohne E-Mail vor dem Anruf.', it: 'Prova 3 minuti, senza carta né e-mail prima della chiamata.' }[locale]}</p>
           <p className="text-sm text-white/75">3. {{ fr: 'Prenez un pack à prix fixe : l’appel s’arrête quand il est utilisé.', en: 'Pick a fixed-price pack: the call stops when it is used.', es: 'Elige un paquete de precio fijo: la llamada se detiene al agotarlo.', de: 'Wählen Sie ein Festpreis-Paket: der Anruf endet, wenn es aufgebraucht ist.', it: 'Scegli un pacchetto a prezzo fisso: la chiamata si ferma quando è esaurito.' }[locale]}</p>
         </section>
         <nav className="mt-8" aria-label={homeLabel(locale)}>

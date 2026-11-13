@@ -48,7 +48,7 @@ ${packs}
 
 ## Appel gratuit
 
-3 minutes offertes, sans carte bancaire, une fois par adresse e-mail, par appareil et par réseau. Un code à 6 chiffres est envoyé par e-mail. Le serveur coupe l’appel à 180 secondes. Aucun abonnement n’est créé ensuite. Page : ${origin}${trialPath('fr')}
+3 minutes offertes, sans carte bancaire, une fois par adresse e-mail, par appareil et par réseau. L’appel démarre après l’accord « conseiller IA » ; l’e-mail est demandé après l’appel, avec un code à 6 chiffres. Le serveur coupe l’appel à 180 secondes. Aucun abonnement n’est créé ensuite. Page : ${origin}${trialPath('fr')}
 
 ## Engagements
 
