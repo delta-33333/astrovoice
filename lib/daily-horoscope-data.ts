@@ -29,6 +29,8 @@ export async function loadDailyDay(date: string): Promise<DailyDay | null> {
       return (await import('../content/daily-horoscope/2026-11-11.json')).default as unknown as DailyDay;
     case '2026-11-12':
       return (await import('../content/daily-horoscope/2026-11-12.json')).default as unknown as DailyDay;
+    case '2026-11-13':
+      return (await import('../content/daily-horoscope/2026-11-13.json')).default as unknown as DailyDay;
     default:
       return null;
   }
