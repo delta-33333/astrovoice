@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { packsCheckoutPath, packsLead, packsOfferLine } from '@/lib/pack-offer';
 import { formatMoney, normalizeCurrency } from '@/lib/money';
 import { formatDuration } from '@/lib/utils';
+import TrialEmailCapture from '@/components/TrialEmailCapture';
 
 interface CallCompleteData {
   durationSeconds: number;
@@ -147,6 +148,7 @@ export default function CompletePage() {
                 </Link>
                 <Link href="/packs" className="btn-secondary inline-block text-center">Voir les packs</Link>
               </div>
+              <TrialEmailCapture />
             </div>
           )}
 

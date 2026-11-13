@@ -43,3 +43,19 @@ test('l’essai dure 180 s, un par e-mail, appareil et /24, cap 50', () => {
   assert.equal(remainingTrialSeconds({ secondsUsed: 0, tokenIssuedAt: null }), 180);
   assert.equal(clampTrialSeconds(9999), 180);
 });
+
+test('essai allégé : consentement IA obligatoire, appareil/réseau/plafond vérifiés, e-mail après l’appel', async () => {
+  const fsm = await import('node:fs');
+  const route = fsm.readFileSync('app/api/trial/quick/route.ts', 'utf8');
+  assert.match(route, /body\?\.consent !== true/);
+  assert.match(route, /tooManyRequests\(request, 'trial-quick'/);
+  const store = fsm.readFileSync('lib/free-call-store.ts', 'utf8');
+  const quick = store.slice(store.indexOf('export async function beginQuickTrial'));
+  assert.match(quick, /deviceUsedByOther: deviceUsed > 0/);
+  assert.match(quick, /ipUsedByOther: ipUsed > 0/);
+  assert.match(quick, /cap: freeCallDailyCap\(\)/);
+  const form = fsm.readFileSync('components/FreeTrialForm.tsx', 'utf8');
+  assert.match(form, /\/api\/trial\/quick/);
+  assert.match(form, /copy\.consent/);
+  assert.doesNotMatch(form, /type="email"/);
+});

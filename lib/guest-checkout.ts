@@ -65,3 +65,19 @@ export async function attachGuestPrepaid(session: Stripe.Checkout.Session): Prom
     already: result.already ?? false,
   };
 }
+
+/**
+ * Compte sans e-mail (essai lancé sans e-mail) qui paie un pack : l’e-mail saisi dans Stripe
+ * devient celui du compte s’il n’est pas déjà pris, pour le reçu et le lien « mot de passe ».
+ */
+export async function adoptCheckoutEmail(session: Stripe.Checkout.Session): Promise<boolean> {
+  const userId = session.metadata?.userId;
+  const email = normalizeEmail(session.customer_details?.email);
+  if (!supabaseAvailable || !userId || !email) return false;
+  const admin = getSupabaseAdmin();
+  const { data } = await admin.from('users').select('email').eq('id', userId).maybeSingle();
+  if (!data || data.email) return false;
+  if (await findUserByEmail(email)) return false;
+  const { error } = await admin.from('users').update({ email, username: email }).eq('id', userId);
+  return !error;
+}

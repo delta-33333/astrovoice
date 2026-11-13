@@ -298,3 +298,158 @@ export async function finishTrial(input: {
   });
   return { summary: draft.summary, advisorId: row.advisor_id };
 }
+
+/**
+ * Essai allégé : l’appel de 3 minutes démarre sans e-mail.
+ * Garde-fous : consentement IA (route), 1 essai par appareil (cookie) et par réseau (IP hachée),
+ * plafond quotidien, limite de requêtes par IP (route). L’e-mail est demandé après l’appel, avec un code.
+ */
+export async function beginQuickTrial(input: {
+  ip: string;
+  deviceId: string;
+  locale: Locale;
+  heardFrom: string | null;
+  firstName: string | null;
+  currentUser: { id: string; email?: string | null; intro_claimed?: boolean | null } | null;
+}): Promise<{ status: 'ok'; trialId: string; userId: string; advisorId: string } | { status: TrialBlock | 'unavailable' }> {
+  if (!freeCallEnabled()) return { status: 'disabled' };
+  if (!supabaseAvailable) return { status: 'unavailable' };
+  const secret = authSecret();
+  if (!secret) return { status: 'unavailable' };
+  if (input.currentUser?.intro_claimed) return { status: 'paid' };
+  const admin = getSupabaseAdmin();
+  const ipHash = hashNetwork(input.ip, secret);
+  const deviceHash = hashDevice(input.deviceId, secret);
+  const knownEmail = trialEmailNorm(input.currentUser?.email);
+  if (knownEmail) {
+    const prior = await readTrialByEmail(knownEmail);
+    if (prior === 'missing') return { status: 'unavailable' };
+    if (prior) return { status: 'email' };
+  }
+  if (input.currentUser) {
+    const { count, error } = await admin.from('free_trials').select('id', { count: 'exact', head: true }).eq('user_id', input.currentUser.id);
+    if (error) return { status: 'unavailable' };
+    if ((count ?? 0) > 0) return { status: 'email' };
+  }
+  const [deviceUsed, ipUsed, verified] = await Promise.all([
+    countWhere('device_hash', deviceHash),
+    countWhere('ip_hash', ipHash),
+    (async () => {
+      const { count, error } = await admin
+        .from('free_trials')
+        .select('id', { count: 'exact', head: true })
+        .gte('verified_at', parisStart());
+      if (error) {
+        if (isMissingRelation(error)) return 'missing' as const;
+        throw new Error(error.message);
+      }
+      return count ?? 0;
+    })(),
+  ]);
+  if (deviceUsed === 'missing' || ipUsed === 'missing' || verified === 'missing') return { status: 'unavailable' };
+  const decision = trialStartDecision({
+    enabled: true,
+    disposable: false,
+    sameEmailExists: false,
+    deviceUsedByOther: deviceUsed > 0,
+    ipUsedByOther: ipUsed > 0,
+    alreadyPaid: false,
+    verifiedToday: verified,
+    cap: freeCallDailyCap(),
+  });
+  if (decision !== 'ok') return { status: decision };
+
+  let userId = input.currentUser?.id ?? null;
+  if (!userId) {
+    const created = await admin
+      .from('users')
+      .insert({
+        username: `trial:${crypto.randomUUID()}`,
+        email: null,
+        password_hash: null,
+        display_name: normalizeFirstName(input.firstName) || 'Vous',
+        prepaid_seconds: 0,
+        heard_from: input.heardFrom,
+      })
+      .select('id')
+      .single();
+    if (created.error || !created.data) return { status: 'unavailable' };
+    userId = created.data.id as string;
+  }
+  const advisorId = await pickAdvisor(input.locale);
+  const inserted = await admin
+    .from('free_trials')
+    .insert({
+      email_norm: knownEmail || `device:${deviceHash.slice(0, 40)}`,
+      ip_hash: ipHash,
+      device_hash: deviceHash,
+      verified_at: new Date().toISOString(),
+      user_id: userId,
+      advisor_id: advisorId,
+      heard_from: input.heardFrom,
+      locale: input.locale,
+      quick: true,
+    })
+    .select('id')
+    .single();
+  if (inserted.error || !inserted.data) {
+    if (inserted.error?.code === '23505') return { status: 'device' };
+    return { status: 'unavailable' };
+  }
+  return { status: 'ok', trialId: inserted.data.id as string, userId, advisorId };
+}
+
+/** Après l’appel : envoie un code à l’e-mail choisi pour garder le compte et recevoir le résumé. */
+export async function requestTrialEmail(input: { userId: string; email: string }): Promise<{ status: 'ok'; email: string; code: string } | { status: TrialBlock | 'exists' | 'unavailable' }> {
+  const secret = authSecret();
+  if (!secret || !supabaseAvailable) return { status: 'unavailable' };
+  const norm = trialEmailNorm(input.email);
+  if (!norm) return { status: 'mismatch' };
+  if (trialEmailDisposable(input.email)) return { status: 'disposable' };
+  const admin = getSupabaseAdmin();
+  const { data: row } = await admin.from('free_trials').select('id, quick, pending_email, code_attempts').eq('user_id', input.userId).eq('quick', true).maybeSingle();
+  if (!row) return { status: 'mismatch' };
+  const prior = await readTrialByEmail(norm);
+  if (prior === 'missing') return { status: 'unavailable' };
+  if (prior && prior.id !== row.id) return { status: 'email' };
+  if (await findUserByEmail(norm)) return { status: 'exists' };
+  const code = randomTrialCode();
+  const saved = await admin.from('free_trials').update({
+    pending_email: norm,
+    code_hash: hashCode(code, secret),
+    code_expires_at: new Date(Date.now() + FREE_CALL_CODE_TTL_MS).toISOString(),
+    code_attempts: 0,
+  }).eq('id', row.id);
+  if (saved.error) return { status: 'unavailable' };
+  return { status: 'ok', email: norm, code };
+}
+
+/** Code correct : l’e-mail devient celui du compte d’essai. */
+export async function confirmTrialEmail(input: { userId: string; code: string }): Promise<{ status: 'ok'; email: string; summary: string | null; advisorId: string | null; locale: string } | { status: TrialBlock | 'exists' | 'unavailable' }> {
+  const secret = authSecret();
+  if (!secret || !supabaseAvailable) return { status: 'unavailable' };
+  if (!/^\d{6}$/.test(input.code)) return { status: 'mismatch' };
+  const admin = getSupabaseAdmin();
+  const { data: row } = await admin
+    .from('free_trials')
+    .select('id, pending_email, code_hash, code_expires_at, code_attempts, summary, advisor_id, locale')
+    .eq('user_id', input.userId)
+    .eq('quick', true)
+    .maybeSingle();
+  if (!row || !row.pending_email) return { status: 'mismatch' };
+  if (row.code_attempts >= FREE_CALL_MAX_ATTEMPTS) return { status: 'attempts' };
+  if (!codeStillValid(row.code_expires_at)) return { status: 'expired' };
+  if (row.code_hash !== hashCode(input.code, secret)) {
+    await admin.from('free_trials').update({ code_attempts: row.code_attempts + 1 }).eq('id', row.id);
+    return { status: 'mismatch' };
+  }
+  const email = row.pending_email as string;
+  if (await findUserByEmail(email)) return { status: 'exists' };
+  const user = await admin.from('users').update({ email, username: email }).eq('id', input.userId);
+  if (user.error) return user.error.code === '23505' ? { status: 'exists' } : { status: 'unavailable' };
+  const trial = await admin.from('free_trials').update({ email_norm: email, pending_email: null, code_hash: null }).eq('id', row.id);
+  if (trial.error && trial.error.code !== '23505') return { status: 'unavailable' };
+  const { attachHoroscopeSubscriber } = await import('./horoscope-subscribers');
+  await attachHoroscopeSubscriber(input.userId, email).catch(() => undefined);
+  return { status: 'ok', email, summary: (row.summary as string | null) ?? null, advisorId: (row.advisor_id as string | null) ?? null, locale: (row.locale as string) || 'fr' };
+}
