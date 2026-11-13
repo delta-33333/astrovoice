@@ -132,7 +132,7 @@ export default function GeoAboutPage({ locale }: { locale: GeoLocale }) {
         {
           title: 'Prices',
           body: [
-            'A 3-minute call is free once, after an email code. The server ends the call at 180 seconds.',
+            'A 3-minute call is free once, after ticking the AI-advisor consent. The server ends the call at 180 seconds.',
             `Fixed-price minute packs, paid once, no subscription and no auto top-up: ${c.fixed.map((p) => `${p.minutes} min ${p.price}`).join('; ')}. The call stops by itself when the pack is used up, and if the line drops, unused minutes stay on the account.`,
           ],
         },

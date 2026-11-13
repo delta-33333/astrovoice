@@ -5,7 +5,7 @@ import { notFound } from 'next/navigation';
 
 export const metadata: Metadata = {
   title: '3-minute free call | Callastral',
-  description: 'A six-digit email code unlocks a 3-minute call with an AI astrologer. The server ends it at 180 seconds.',
+  description: 'Tick the AI-advisor consent and a 3-minute call with an AI astrologer starts. The server ends it at 180 seconds.',
   robots: { index: false, follow: false },
   alternates: { canonical: trialPath('en') },
 };

@@ -6,7 +6,7 @@ import { notFound } from 'next/navigation';
 
 export const metadata: Metadata = {
   title: 'Essai gratuit de 3 minutes | Callastral',
-  description: 'Un code à six chiffres par e-mail ouvre un appel de 3 minutes avec une astrologue IA. Coupure à 180 secondes.',
+  description: 'Cochez l’accord « conseiller IA » : l’appel de 3 minutes avec une astrologue IA démarre. Coupure à 180 secondes.',
   robots: { index: false, follow: false },
   alternates: { canonical: trialPath('fr') },
 };

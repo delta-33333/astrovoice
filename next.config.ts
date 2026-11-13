@@ -68,6 +68,11 @@ const nextConfig: NextConfig = {
       { source: '/fr/tarifs', destination: '/offres', permanent: true },
       { source: '/prix', destination: '/offres', permanent: true },
       { source: '/fr/ascendant', destination: '/fr/calcul-ascendant-gratuit', permanent: true },
+      // /xx/essai hors français : vers la page d’essai de la langue (évitait un 404 sur /en/essai).
+      { source: '/en/essai', destination: '/en/free-trial', permanent: true },
+      { source: '/es/essai', destination: '/es/prueba', permanent: true },
+      { source: '/de/essai', destination: '/de/probe', permanent: true },
+      { source: '/it/essai', destination: '/it/prova', permanent: true },
       { source: '/login', destination: '/auth', permanent: true },
       { source: '/signin', destination: '/auth', permanent: true },
       { source: '/connexion', destination: '/auth', permanent: true },

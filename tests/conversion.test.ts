@@ -209,3 +209,13 @@ test('achat de pack sans compte : plus de mur /auth avant le paiement', () => {
   const webhook = fs.readFileSync('app/api/stripe/webhook/route.ts', 'utf8');
   assert.match(webhook, /attachGuestPrepaid/);
 });
+
+test('accueil mobile : une seule action au premier écran, /en/essai redirigé, fonctions à Paris', () => {
+  const config = fs.readFileSync('next.config.ts', 'utf8');
+  assert.match(config, /source: '\/en\/essai', destination: '\/en\/free-trial'/);
+  const vercel = JSON.parse(fs.readFileSync('vercel.json', 'utf8'));
+  assert.deepEqual(vercel.regions, ['cdg1']);
+  const home = fs.readFileSync('app/[locale]/page.tsx', 'utf8');
+  assert.ok(home.indexOf('<SkyNowHero') < home.indexOf('/packs?pack=20min'));
+  assert.ok(home.indexOf('<VoiceSample') < home.indexOf('/packs?pack=20min'));
+});
