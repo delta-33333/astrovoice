@@ -29,19 +29,15 @@ function isAltLocale(value: string): value is AltLocale {
 
 function callastralCells(locale: AltLocale) {
   const facts = callastralFacts(locale);
+  const packs = facts.fixed.map((pack) => `${pack.minutes} min ${pack.price}`).join(', ');
   const intro = locale === 'fr'
-    ? 'Les 3 premières minutes sont à un tarif réduit, environ deux tiers du tarif du conseiller.'
-    : 'The first 3 minutes are at a reduced rate, about two thirds of the advisor’s rate.';
-  const founding = facts.founding
-    ? (locale === 'fr'
-      ? ` Offre fondateur : ${facts.founding.minutes} min à ${facts.founding.price}, une fois par compte.`
-      : ` Founder offer: ${facts.founding.minutes} min for ${facts.founding.price}, once per account.`)
-    : '';
+    ? 'Les 3 premières minutes sont offertes, une fois par personne, sans carte ni abonnement.'
+    : 'The first 3 minutes are free, once per person, with no card and no subscription.';
   if (locale === 'fr') {
     return {
       advisors: `${AI_MODEL_SUMMARY.fr}. ${AI_ACT_LINE.fr}. Ce ne sont pas des personnes humaines, et ils ne gardent pas la mémoire des appels précédents.`,
-      price: `${facts.min} à ${facts.max}/min selon le conseiller, affiché avant l’appel.`,
-      welcome: `${intro}${founding}`,
+      price: `Packs à prix fixe : ${packs}, payés une fois, sans abonnement. L’appel s’arrête tout seul à la fin du pack.`,
+      welcome: intro,
       availability: '24 h/24, 7 j/7.',
       format: 'Téléphone uniquement.',
       freeTools: 'Calcul d’ascendant gratuit, sans compte.',
@@ -49,8 +45,8 @@ function callastralCells(locale: AltLocale) {
   }
   return {
     advisors: `${AI_MODEL_SUMMARY.en}. ${AI_ACT_LINE.en}. They are not human, and they do not remember previous calls.`,
-    price: `${facts.min} to ${facts.max}/min depending on the advisor, shown before the call.`,
-    welcome: `${intro}${founding}`,
+    price: `Fixed-price packs in France: ${packs}, paid once, no subscription. The call stops by itself when the pack runs out.`,
+    welcome: intro,
     availability: '24/7.',
     format: 'Phone only.',
     freeTools: 'Free rising-sign calculator, no account.',
