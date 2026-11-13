@@ -169,3 +169,12 @@ test('les formules précèdent les conseillers, Essentiel reste mis en avant', (
     assert.equal(/compte à rebours|plus que \d|dernières places|only \d left/i.test(`${copy.lead} ${copy.title}`), false);
   }
 });
+
+test('les boutons « Choisir » des packs mènent au paiement /packs sans redirection qui perd le pack', () => {
+  const config = fs.readFileSync('next.config.ts', 'utf8');
+  assert.equal(/source:\s*'\/packs'/.test(config), false);
+  const offers = fs.readFileSync('app/offres/page.tsx', 'utf8');
+  assert.match(offers, /\/packs\?/);
+  const fixed = fs.readFileSync('components/FixedPacks.tsx', 'utf8');
+  assert.match(fixed, /\/packs\?pack=\$\{pack\.id\}/);
+});
