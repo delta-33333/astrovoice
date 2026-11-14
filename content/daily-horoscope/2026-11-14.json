@@ -1,0 +1,171 @@
+{
+  "date": "2026-11-14",
+  "sky": {
+    "date": "2026-11-14",
+    "computedAt": "08:00 Europe/Paris",
+    "phase": {
+      "id": "waxingCrescent",
+      "illumination": 21,
+      "waxing": true
+    },
+    "bodies": [
+      {
+        "name": "Soleil",
+        "sign": "Scorpion",
+        "degree": 21,
+        "retrograde": false
+      },
+      {
+        "name": "Lune",
+        "sign": "Capricorne",
+        "degree": 17,
+        "retrograde": false
+      },
+      {
+        "name": "Mercure",
+        "sign": "Scorpion",
+        "degree": 5,
+        "retrograde": false
+      },
+      {
+        "name": "Vénus",
+        "sign": "Balance",
+        "degree": 22,
+        "retrograde": false
+      },
+      {
+        "name": "Mars",
+        "sign": "Lion",
+        "degree": 25,
+        "retrograde": false
+      },
+      {
+        "name": "Jupiter",
+        "sign": "Lion",
+        "degree": 25,
+        "retrograde": false
+      },
+      {
+        "name": "Saturne",
+        "sign": "Bélier",
+        "degree": 8,
+        "retrograde": true
+      },
+      {
+        "name": "Uranus",
+        "sign": "Gémeaux",
+        "degree": 4,
+        "retrograde": true
+      },
+      {
+        "name": "Neptune",
+        "sign": "Bélier",
+        "degree": 1,
+        "retrograde": true
+      },
+      {
+        "name": "Pluton",
+        "sign": "Verseau",
+        "degree": 3,
+        "retrograde": false
+      },
+      {
+        "name": "Nœud nord",
+        "sign": "Verseau",
+        "degree": 25,
+        "retrograde": true
+      }
+    ],
+    "ingresses": [],
+    "aspects": [
+      {
+        "a": "Mars",
+        "b": "Nœud nord",
+        "aspect": "opposition",
+        "orb": 0.4
+      },
+      {
+        "a": "Mars",
+        "b": "Jupiter",
+        "aspect": "conjunction",
+        "orb": 0.7
+      },
+      {
+        "a": "Mercure",
+        "b": "Pluton",
+        "aspect": "square",
+        "orb": 1.8
+      },
+      {
+        "a": "Vénus",
+        "b": "Mars",
+        "aspect": "sextile",
+        "orb": 2.1
+      },
+      {
+        "a": "Vénus",
+        "b": "Nœud nord",
+        "aspect": "trine",
+        "orb": 2.5
+      },
+      {
+        "a": "Vénus",
+        "b": "Jupiter",
+        "aspect": "sextile",
+        "orb": 2.9
+      },
+      {
+        "a": "Soleil",
+        "b": "Mars",
+        "aspect": "square",
+        "orb": 3.1
+      },
+      {
+        "a": "Soleil",
+        "b": "Nœud nord",
+        "aspect": "square",
+        "orb": 3.5
+      },
+      {
+        "a": "Soleil",
+        "b": "Jupiter",
+        "aspect": "square",
+        "orb": 3.8
+      }
+    ]
+  },
+  "en": {
+    "summary": "Saturday 14 November 2026: the waxing crescent Moon (about 21% lit) continues through Capricorn, forming a sextile to the Sun in Scorpio and a square to Venus in Libra during the day. Mercury, at 5° Scorpio, and Venus, at 22° Libra, are now moving direct again after their retrograde, and Mercury squares Pluto in Aquarius. Mars and Jupiter remain conjunct in Leo opposite the North Node, Venus sextiles them, and the Sun in Scorpio squares the pair.",
+    "signs": {
+      "belier": "Aries, this Saturday centres on career, reputation and public goals. The Capricorn Moon crosses that sector and makes a supportive sextile to the Sun in your area of shared money, intimacy and deep bonds, so effort you put in here is well received. Your public image benefits from patience, and quietly finishing what you promised earns more respect than speeches.\n\nLater the Moon squares Venus in your sector of partnerships and one-to-one relationships: a wish for comfort or approval may clash with what duty asks, and a small compromise is enough. Mercury and Venus are now direct, so stalled matters can move forward again, though Mercury’s square to Pluto, touching friends, groups and long-term plans, invites you to avoid power struggles in conversation. Mars and Jupiter in your sector of love, pleasure and creativity keep the energy high; channel it rather than forcing things.\n\nTomorrow, list the three results you want to show at work this month. The sky describes a climate, and you decide what to do with it.",
+      "taureau": "Taurus, your day leans toward travel, study and the beliefs that guide you. The Capricorn Moon crosses that sector and makes a supportive sextile to the Sun in your area of partnerships and one-to-one relationships, so effort you put in here is well received. A wider horizon calls, and a book, a course or a trip you plan step by step feeds your need for meaning.\n\nLater the Moon squares Venus in your sector of daily work, health and routines: a wish for comfort or approval may clash with what duty asks, and a small compromise is enough. Mercury and Venus are now direct, so stalled matters can move forward again, though Mercury’s square to Pluto, touching career, reputation and public goals, invites you to avoid power struggles in conversation. Mars and Jupiter in your sector of home, family and private roots keep the energy high; channel it rather than forcing things.\n\nTomorrow, take a walk somewhere new, even close to home. Treat this as guidance, not a forecast set in stone.",
+      "gemeaux": "Gemini, Saturday brings shared money, intimacy and deep bonds to the front. The Capricorn Moon crosses that sector and makes a supportive sextile to the Sun in your area of daily work, health and routines, so effort you put in here is well received. Deep bonds and shared resources need honesty, and naming a fear out loud often makes it smaller.\n\nLater the Moon squares Venus in your sector of love, pleasure and creativity: a wish for comfort or approval may clash with what duty asks, and a small compromise is enough. Mercury and Venus are now direct, so stalled matters can move forward again, though Mercury’s square to Pluto, touching travel, study and the beliefs that guide you, invites you to avoid power struggles in conversation. Mars and Jupiter in your sector of conversations, messages and short trips keep the energy high; channel it rather than forcing things.\n\nTomorrow, clarify one shared expense or promise so nothing stays vague. Your free will stays the main factor.",
+      "cancer": "Cancer, the theme to watch today is partnerships and one-to-one relationships. The Capricorn Moon crosses that sector and makes a supportive sextile to the Sun in your area of love, pleasure and creativity, so effort you put in here is well received. One-to-one bonds ask for clarity, and a sincere, calm exchange about what each of you expects keeps things fair.\n\nLater the Moon squares Venus in your sector of home, family and private roots: a wish for comfort or approval may clash with what duty asks, and a small compromise is enough. Mercury and Venus are now direct, so stalled matters can move forward again, though Mercury’s square to Pluto, touching shared money, intimacy and deep bonds, invites you to avoid power struggles in conversation. Mars and Jupiter in your sector of money, possessions and self-worth keep the energy high; channel it rather than forcing things.\n\nTomorrow, ask your partner or a close friend one real question and listen. Keep what resonates and let the rest go.",
+      "lion": "Leo, this weekend day is about daily work, health and routines. The Capricorn Moon crosses that sector and makes a supportive sextile to the Sun in your area of home, family and private roots, so effort you put in here is well received. Routines can be improved with small, steady changes, and one healthy habit started today is worth more than a big plan.\n\nLater the Moon squares Venus in your sector of conversations, messages and short trips: a wish for comfort or approval may clash with what duty asks, and a small compromise is enough. Mercury and Venus are now direct, so stalled matters can move forward again, though Mercury’s square to Pluto, touching partnerships and one-to-one relationships, invites you to avoid power struggles in conversation. Mars and Jupiter in your sector of identity, body and first impressions keep the energy high; channel it rather than forcing things.\n\nTomorrow, choose one routine to adjust for the week ahead. The sky describes a climate, and you decide what to do with it.",
+      "vierge": "Virgo, the Moon in Capricorn lights up love, pleasure and creativity. The Capricorn Moon crosses that sector and makes a supportive sextile to the Sun in your area of conversations, messages and short trips, so effort you put in here is well received. Joy grows from something you build with patience: a creative project, a planned outing or a love life you treat with care.\n\nLater the Moon squares Venus in your sector of money, possessions and self-worth: a wish for comfort or approval may clash with what duty asks, and a small compromise is enough. Mercury and Venus are now direct, so stalled matters can move forward again, though Mercury’s square to Pluto, touching daily work, health and routines, invites you to avoid power struggles in conversation. Mars and Jupiter in your sector of rest, the inner world and what you keep hidden keep the energy high; channel it rather than forcing things.\n\nTomorrow, give an hour to the hobby you keep promising yourself. Treat this as guidance, not a forecast set in stone.",
+      "balance": "Libra, today the story is home, family and private roots. The Capricorn Moon crosses that sector and makes a supportive sextile to the Sun in your area of money, possessions and self-worth, so effort you put in here is well received. Home and family need a firm, kind hand, and settling one practical question with relatives removes a background tension.\n\nLater the Moon squares Venus in your sector of identity, body and first impressions: a wish for comfort or approval may clash with what duty asks, and a small compromise is enough. Mercury and Venus are now direct, so stalled matters can move forward again, though Mercury’s square to Pluto, touching love, pleasure and creativity, invites you to avoid power struggles in conversation. Mars and Jupiter in your sector of friends, groups and long-term plans keep the energy high; channel it rather than forcing things.\n\nTomorrow, cook or share a simple meal with someone at home. Your free will stays the main factor.",
+      "scorpion": "Scorpio, this Saturday asks you to care for conversations, messages and short trips. The Capricorn Moon crosses that sector and makes a supportive sextile to the Sun in your area of identity, body and first impressions, so effort you put in here is well received. Words land with weight, so take the time to say one thing properly rather than many things in a hurry.\n\nLater the Moon squares Venus in your sector of rest, the inner world and what you keep hidden: a wish for comfort or approval may clash with what duty asks, and a small compromise is enough. Mercury and Venus are now direct, so stalled matters can move forward again, though Mercury’s square to Pluto, touching home, family and private roots, invites you to avoid power struggles in conversation. Mars and Jupiter in your sector of career, reputation and public goals keep the energy high; channel it rather than forcing things.\n\nTomorrow, send the message you have been drafting in your head. Keep what resonates and let the rest go.",
+      "sagittaire": "Sagittarius, your focus shifts today to money, possessions and self-worth. The Capricorn Moon crosses that sector and makes a supportive sextile to the Sun in your area of rest, the inner world and what you keep hidden, so effort you put in here is well received. Money matters feel easier to face calmly, and comparing what you spend with what really matters to you brings a clear, useful answer.\n\nLater the Moon squares Venus in your sector of friends, groups and long-term plans: a wish for comfort or approval may clash with what duty asks, and a small compromise is enough. Mercury and Venus are now direct, so stalled matters can move forward again, though Mercury’s square to Pluto, touching conversations, messages and short trips, invites you to avoid power struggles in conversation. Mars and Jupiter in your sector of travel, study and the beliefs that guide you keep the energy high; channel it rather than forcing things.\n\nTomorrow, sort one pile of receipts or bills and close the matter. The sky describes a climate, and you decide what to do with it.",
+      "capricorne": "Capricorn, the sky today underlines identity, body and first impressions. The Capricorn Moon crosses that sector and makes a supportive sextile to the Sun in your area of friends, groups and long-term plans, so effort you put in here is well received. Your ambitions for yourself get more realistic, and choosing one personal goal you can actually keep this month gives you steadier confidence.\n\nLater the Moon squares Venus in your sector of career, reputation and public goals: a wish for comfort or approval may clash with what duty asks, and a small compromise is enough. Mercury and Venus are now direct, so stalled matters can move forward again, though Mercury’s square to Pluto, touching money, possessions and self-worth, invites you to avoid power struggles in conversation. Mars and Jupiter in your sector of shared money, intimacy and deep bonds keep the energy high; channel it rather than forcing things.\n\nTomorrow, write one sentence describing who you want to be by the end of the year. Treat this as guidance, not a forecast set in stone.",
+      "verseau": "Aquarius, Saturday’s lesson concerns rest, the inner world and what you keep hidden. The Capricorn Moon crosses that sector and makes a supportive sextile to the Sun in your area of career, reputation and public goals, so effort you put in here is well received. Rest becomes a priority, and giving yourself permission to slow down helps your mind untangle what weighs on it.\n\nLater the Moon squares Venus in your sector of travel, study and the beliefs that guide you: a wish for comfort or approval may clash with what duty asks, and a small compromise is enough. Mercury and Venus are now direct, so stalled matters can move forward again, though Mercury’s square to Pluto, touching identity, body and first impressions, invites you to avoid power struggles in conversation. Mars and Jupiter in your sector of partnerships and one-to-one relationships keep the energy high; channel it rather than forcing things.\n\nTomorrow, sleep in or rest without guilt. Your free will stays the main factor.",
+      "poissons": "Pisces, today gently turns you toward friends, groups and long-term plans. The Capricorn Moon crosses that sector and makes a supportive sextile to the Sun in your area of travel, study and the beliefs that guide you, so effort you put in here is well received. Friendships reward loyalty, and helping someone in your circle with something concrete strengthens the tie.\n\nLater the Moon squares Venus in your sector of shared money, intimacy and deep bonds: a wish for comfort or approval may clash with what duty asks, and a small compromise is enough. Mercury and Venus are now direct, so stalled matters can move forward again, though Mercury’s square to Pluto, touching rest, the inner world and what you keep hidden, invites you to avoid power struggles in conversation. Mars and Jupiter in your sector of daily work, health and routines keep the energy high; channel it rather than forcing things.\n\nTomorrow, propose a simple plan to friends instead of waiting for one. Keep what resonates and let the rest go."
+    }
+  },
+  "fr": {
+    "summary": "Samedi 14 novembre 2026 : la Lune croissante (environ 21 % éclairée) poursuit sa route en Capricorne et forme dans la journée un sextile au Soleil en Scorpion et un carré à Vénus en Balance. Mercure, à 5° du Scorpion, et Vénus, à 22° de la Balance, ont repris leur marche directe après leur rétrogradation, et Mercure est au carré de Pluton en Verseau. Mars et Jupiter restent conjoints en Lion face au Nœud nord, Vénus leur fait sextile, et le Soleil en Scorpion est au carré du duo.",
+    "signs": {
+      "belier": "Bélier, ce samedi tourne autour du domaine de la carrière, de la réputation et des objectifs publics. La Lune en Capricorne traverse ce secteur et forme un sextile porteur au Soleil, dans votre domaine de l’argent partagé, de l’intimité et des liens profonds : l’effort fourni ici est bien reçu. Votre image publique gagne à la patience, et terminer discrètement ce que vous avez promis inspire plus de respect que les discours.\n\nPlus tard, la Lune est au carré de Vénus dans votre secteur du couple et des relations en face à face : confort et devoir peuvent se heurter, et un petit compromis suffit. Mercure et Vénus sont désormais directes, et ce qui était bloqué peut avancer, même si le carré de Mercure à Pluton, qui touche le domaine des amis, des groupes et des projets à long terme, invite à éviter les rapports de force. Mars et Jupiter dans votre secteur de l’amour, du plaisir et de la créativité gardent l’énergie haute : canalisez-la plutôt que de forcer.\n\nDemain, notez les trois résultats que vous voulez montrer au travail ce mois-ci. Le ciel décrit un climat, et c’est vous qui décidez quoi en faire.",
+      "taureau": "Taureau, votre journée penche vers le domaine des voyages, des études et des convictions. La Lune en Capricorne traverse ce secteur et forme un sextile porteur au Soleil, dans votre domaine du couple et des relations en face à face : l’effort fourni ici est bien reçu. Un horizon plus large vous appelle, et un livre, une formation ou un voyage préparé pas à pas nourrit votre besoin de sens.\n\nPlus tard, la Lune est au carré de Vénus dans votre secteur du travail quotidien, de la santé et des routines : confort et devoir peuvent se heurter, et un petit compromis suffit. Mercure et Vénus sont désormais directes, et ce qui était bloqué peut avancer, même si le carré de Mercure à Pluton, qui touche le domaine de la carrière, de la réputation et des objectifs publics, invite à éviter les rapports de force. Mars et Jupiter dans votre secteur du foyer, de la famille et des racines gardent l’énergie haute : canalisez-la plutôt que de forcer.\n\nDemain, marchez dans un endroit nouveau, même près de chez vous. Prenez ceci comme un repère, pas comme une prévision gravée dans le marbre.",
+      "gemeaux": "Gémeaux, ce samedi met au premier plan le domaine de l’argent partagé, de l’intimité et des liens profonds. La Lune en Capricorne traverse ce secteur et forme un sextile porteur au Soleil, dans votre domaine du travail quotidien, de la santé et des routines : l’effort fourni ici est bien reçu. Les liens profonds et les ressources partagées réclament de l’honnêteté, et dire une peur à voix haute la rend souvent plus petite.\n\nPlus tard, la Lune est au carré de Vénus dans votre secteur de l’amour, du plaisir et de la créativité : confort et devoir peuvent se heurter, et un petit compromis suffit. Mercure et Vénus sont désormais directes, et ce qui était bloqué peut avancer, même si le carré de Mercure à Pluton, qui touche le domaine des voyages, des études et des convictions, invite à éviter les rapports de force. Mars et Jupiter dans votre secteur des échanges, des messages et des petits trajets gardent l’énergie haute : canalisez-la plutôt que de forcer.\n\nDemain, clarifiez une dépense ou une promesse commune pour que rien ne reste flou. Votre libre arbitre reste le facteur principal.",
+      "cancer": "Cancer, le thème à surveiller aujourd’hui est celui du couple et des relations en face à face. La Lune en Capricorne traverse ce secteur et forme un sextile porteur au Soleil, dans votre domaine de l’amour, du plaisir et de la créativité : l’effort fourni ici est bien reçu. Les relations à deux demandent de la clarté, et un échange sincère et calme sur ce que chacun attend garde l’équilibre.\n\nPlus tard, la Lune est au carré de Vénus dans votre secteur du foyer, de la famille et des racines : confort et devoir peuvent se heurter, et un petit compromis suffit. Mercure et Vénus sont désormais directes, et ce qui était bloqué peut avancer, même si le carré de Mercure à Pluton, qui touche le domaine de l’argent partagé, de l’intimité et des liens profonds, invite à éviter les rapports de force. Mars et Jupiter dans votre secteur de l’argent, des biens et de l’estime de soi gardent l’énergie haute : canalisez-la plutôt que de forcer.\n\nDemain, posez une vraie question à votre partenaire ou à un proche, et écoutez. Gardez ce qui résonne et laissez le reste.",
+      "lion": "Lion, cette journée de week-end parle du domaine du travail quotidien, de la santé et des routines. La Lune en Capricorne traverse ce secteur et forme un sextile porteur au Soleil, dans votre domaine du foyer, de la famille et des racines : l’effort fourni ici est bien reçu. Vos routines s’améliorent par petites touches, et une bonne habitude commencée aujourd’hui vaut plus qu’un grand programme.\n\nPlus tard, la Lune est au carré de Vénus dans votre secteur des échanges, des messages et des petits trajets : confort et devoir peuvent se heurter, et un petit compromis suffit. Mercure et Vénus sont désormais directes, et ce qui était bloqué peut avancer, même si le carré de Mercure à Pluton, qui touche le domaine du couple et des relations en face à face, invite à éviter les rapports de force. Mars et Jupiter dans votre secteur de l’identité, du corps et de l’image que vous donnez gardent l’énergie haute : canalisez-la plutôt que de forcer.\n\nDemain, choisissez une routine à ajuster pour la semaine qui vient. Le ciel décrit un climat, et c’est vous qui décidez quoi en faire.",
+      "vierge": "Vierge, la Lune en Capricorne éclaire le domaine de l’amour, du plaisir et de la créativité. La Lune en Capricorne traverse ce secteur et forme un sextile porteur au Soleil, dans votre domaine des échanges, des messages et des petits trajets : l’effort fourni ici est bien reçu. La joie vient de ce que vous construisez avec patience : un projet créatif, une sortie prévue ou une vie amoureuse dont vous prenez soin.\n\nPlus tard, la Lune est au carré de Vénus dans votre secteur de l’argent, des biens et de l’estime de soi : confort et devoir peuvent se heurter, et un petit compromis suffit. Mercure et Vénus sont désormais directes, et ce qui était bloqué peut avancer, même si le carré de Mercure à Pluton, qui touche le domaine du travail quotidien, de la santé et des routines, invite à éviter les rapports de force. Mars et Jupiter dans votre secteur du repos, du monde intérieur et de ce que vous gardez pour vous gardent l’énergie haute : canalisez-la plutôt que de forcer.\n\nDemain, accordez une heure au loisir que vous vous promettez sans cesse. Prenez ceci comme un repère, pas comme une prévision gravée dans le marbre.",
+      "balance": "Balance, aujourd’hui l’histoire se joue dans le domaine du foyer, de la famille et des racines. La Lune en Capricorne traverse ce secteur et forme un sextile porteur au Soleil, dans votre domaine de l’argent, des biens et de l’estime de soi : l’effort fourni ici est bien reçu. Le foyer et la famille demandent une main ferme et douce, et régler une question pratique avec vos proches dissipe une tension de fond.\n\nPlus tard, la Lune est au carré de Vénus dans votre secteur de l’identité, du corps et de l’image que vous donnez : confort et devoir peuvent se heurter, et un petit compromis suffit. Mercure et Vénus sont désormais directes, et ce qui était bloqué peut avancer, même si le carré de Mercure à Pluton, qui touche le domaine de l’amour, du plaisir et de la créativité, invite à éviter les rapports de force. Mars et Jupiter dans votre secteur des amis, des groupes et des projets à long terme gardent l’énergie haute : canalisez-la plutôt que de forcer.\n\nDemain, cuisinez ou partagez un repas simple à la maison. Votre libre arbitre reste le facteur principal.",
+      "scorpion": "Scorpion, ce samedi vous demande de soigner le domaine des échanges, des messages et des petits trajets. La Lune en Capricorne traverse ce secteur et forme un sextile porteur au Soleil, dans votre domaine de l’identité, du corps et de l’image que vous donnez : l’effort fourni ici est bien reçu. Vos mots pèsent, alors prenez le temps de dire une chose correctement plutôt que plusieurs dans la précipitation.\n\nPlus tard, la Lune est au carré de Vénus dans votre secteur du repos, du monde intérieur et de ce que vous gardez pour vous : confort et devoir peuvent se heurter, et un petit compromis suffit. Mercure et Vénus sont désormais directes, et ce qui était bloqué peut avancer, même si le carré de Mercure à Pluton, qui touche le domaine du foyer, de la famille et des racines, invite à éviter les rapports de force. Mars et Jupiter dans votre secteur de la carrière, de la réputation et des objectifs publics gardent l’énergie haute : canalisez-la plutôt que de forcer.\n\nDemain, envoyez le message que vous rédigez depuis des jours dans votre tête. Gardez ce qui résonne et laissez le reste.",
+      "sagittaire": "Sagittaire, votre attention se déplace aujourd’hui vers le domaine de l’argent, des biens et de l’estime de soi. La Lune en Capricorne traverse ce secteur et forme un sextile porteur au Soleil, dans votre domaine du repos, du monde intérieur et de ce que vous gardez pour vous : l’effort fourni ici est bien reçu. Les questions d’argent se regardent plus calmement, et comparer vos dépenses avec ce qui compte vraiment pour vous apporte une réponse claire.\n\nPlus tard, la Lune est au carré de Vénus dans votre secteur des amis, des groupes et des projets à long terme : confort et devoir peuvent se heurter, et un petit compromis suffit. Mercure et Vénus sont désormais directes, et ce qui était bloqué peut avancer, même si le carré de Mercure à Pluton, qui touche le domaine des échanges, des messages et des petits trajets, invite à éviter les rapports de force. Mars et Jupiter dans votre secteur des voyages, des études et des convictions gardent l’énergie haute : canalisez-la plutôt que de forcer.\n\nDemain, triez une pile de factures ou de reçus et refermez le dossier. Le ciel décrit un climat, et c’est vous qui décidez quoi en faire.",
+      "capricorne": "Capricorne, le ciel du jour souligne le domaine de l’identité, du corps et de l’image que vous donnez. La Lune en Capricorne traverse ce secteur et forme un sextile porteur au Soleil, dans votre domaine des amis, des groupes et des projets à long terme : l’effort fourni ici est bien reçu. Vos ambitions personnelles deviennent plus réalistes, et choisir un seul objectif tenable ce mois-ci vous donne une confiance plus stable.\n\nPlus tard, la Lune est au carré de Vénus dans votre secteur de la carrière, de la réputation et des objectifs publics : confort et devoir peuvent se heurter, et un petit compromis suffit. Mercure et Vénus sont désormais directes, et ce qui était bloqué peut avancer, même si le carré de Mercure à Pluton, qui touche le domaine de l’argent, des biens et de l’estime de soi, invite à éviter les rapports de force. Mars et Jupiter dans votre secteur de l’argent partagé, de l’intimité et des liens profonds gardent l’énergie haute : canalisez-la plutôt que de forcer.\n\nDemain, écrivez une phrase décrivant qui vous voulez être d’ici la fin de l’année. Prenez ceci comme un repère, pas comme une prévision gravée dans le marbre.",
+      "verseau": "Verseau, la leçon de ce samedi concerne le domaine du repos, du monde intérieur et de ce que vous gardez pour vous. La Lune en Capricorne traverse ce secteur et forme un sextile porteur au Soleil, dans votre domaine de la carrière, de la réputation et des objectifs publics : l’effort fourni ici est bien reçu. Le repos devient prioritaire, et vous autoriser à ralentir aide votre esprit à démêler ce qui pèse sur lui.\n\nPlus tard, la Lune est au carré de Vénus dans votre secteur des voyages, des études et des convictions : confort et devoir peuvent se heurter, et un petit compromis suffit. Mercure et Vénus sont désormais directes, et ce qui était bloqué peut avancer, même si le carré de Mercure à Pluton, qui touche le domaine de l’identité, du corps et de l’image que vous donnez, invite à éviter les rapports de force. Mars et Jupiter dans votre secteur du couple et des relations en face à face gardent l’énergie haute : canalisez-la plutôt que de forcer.\n\nDemain, faites la grasse matinée ou reposez-vous sans culpabilité. Votre libre arbitre reste le facteur principal.",
+      "poissons": "Poissons, la journée vous oriente doucement vers le domaine des amis, des groupes et des projets à long terme. La Lune en Capricorne traverse ce secteur et forme un sextile porteur au Soleil, dans votre domaine des voyages, des études et des convictions : l’effort fourni ici est bien reçu. Les amitiés récompensent la fidélité, et aider concrètement quelqu’un de votre entourage renforce le lien.\n\nPlus tard, la Lune est au carré de Vénus dans votre secteur de l’argent partagé, de l’intimité et des liens profonds : confort et devoir peuvent se heurter, et un petit compromis suffit. Mercure et Vénus sont désormais directes, et ce qui était bloqué peut avancer, même si le carré de Mercure à Pluton, qui touche le domaine du repos, du monde intérieur et de ce que vous gardez pour vous, invite à éviter les rapports de force. Mars et Jupiter dans votre secteur du travail quotidien, de la santé et des routines gardent l’énergie haute : canalisez-la plutôt que de forcer.\n\nDemain, proposez un plan simple à vos amis au lieu d’attendre le leur. Gardez ce qui résonne et laissez le reste."
+    }
+  }
+}
