@@ -1,0 +1,183 @@
+{
+  "date": "2026-11-15",
+  "sky": {
+    "date": "2026-11-15",
+    "computedAt": "08:00 Europe/Paris",
+    "phase": {
+      "id": "waxingCrescent",
+      "illumination": 30,
+      "waxing": true
+    },
+    "bodies": [
+      {
+        "name": "Soleil",
+        "sign": "Scorpion",
+        "degree": 22,
+        "retrograde": false
+      },
+      {
+        "name": "Lune",
+        "sign": "Capricorne",
+        "degree": 28,
+        "retrograde": false
+      },
+      {
+        "name": "Mercure",
+        "sign": "Scorpion",
+        "degree": 5,
+        "retrograde": false
+      },
+      {
+        "name": "Vénus",
+        "sign": "Balance",
+        "degree": 22,
+        "retrograde": false
+      },
+      {
+        "name": "Mars",
+        "sign": "Lion",
+        "degree": 25,
+        "retrograde": false
+      },
+      {
+        "name": "Jupiter",
+        "sign": "Lion",
+        "degree": 25,
+        "retrograde": false
+      },
+      {
+        "name": "Saturne",
+        "sign": "Bélier",
+        "degree": 8,
+        "retrograde": true
+      },
+      {
+        "name": "Uranus",
+        "sign": "Gémeaux",
+        "degree": 4,
+        "retrograde": true
+      },
+      {
+        "name": "Neptune",
+        "sign": "Bélier",
+        "degree": 1,
+        "retrograde": true
+      },
+      {
+        "name": "Pluton",
+        "sign": "Verseau",
+        "degree": 3,
+        "retrograde": false
+      },
+      {
+        "name": "Nœud nord",
+        "sign": "Verseau",
+        "degree": 25,
+        "retrograde": true
+      }
+    ],
+    "ingresses": [
+      {
+        "name": "Lune",
+        "from": "Capricorne",
+        "to": "Verseau"
+      }
+    ],
+    "aspects": [
+      {
+        "a": "Mars",
+        "b": "Nœud nord",
+        "aspect": "opposition",
+        "orb": 0.1
+      },
+      {
+        "a": "Mars",
+        "b": "Jupiter",
+        "aspect": "conjunction",
+        "orb": 0.4
+      },
+      {
+        "a": "Mercure",
+        "b": "Pluton",
+        "aspect": "square",
+        "orb": 2
+      },
+      {
+        "a": "Soleil",
+        "b": "Nœud nord",
+        "aspect": "square",
+        "orb": 2.4
+      },
+      {
+        "a": "Vénus",
+        "b": "Nœud nord",
+        "aspect": "trine",
+        "orb": 2.4
+      },
+      {
+        "a": "Soleil",
+        "b": "Mars",
+        "aspect": "square",
+        "orb": 2.5
+      },
+      {
+        "a": "Vénus",
+        "b": "Mars",
+        "aspect": "sextile",
+        "orb": 2.6
+      },
+      {
+        "a": "Soleil",
+        "b": "Jupiter",
+        "aspect": "square",
+        "orb": 2.9
+      },
+      {
+        "a": "Vénus",
+        "b": "Jupiter",
+        "aspect": "sextile",
+        "orb": 2.9
+      },
+      {
+        "a": "Lune",
+        "b": "Pluton",
+        "aspect": "conjunction",
+        "orb": 4.5
+      }
+    ]
+  },
+  "en": {
+    "summary": "Sunday 15 November 2026: the waxing crescent Moon (about 30% lit) finishes its trip through Capricorn and enters Aquarius during the day, moving toward a conjunction with Pluto there. The Sun sits at 22° Scorpio, Mercury at 5° Scorpio (direct, square Pluto) and Venus at 22° Libra (direct). Mars and Jupiter stay conjunct at 25° Leo, exactly opposite the North Node, squared by the Sun and sextiled by Venus, which also trines the Node. Saturn, Uranus and Neptune are retrograde.",
+    "signs": {
+      "belier": "Aries, this Sunday puts the spotlight on friends, groups and long-term plans. The Moon leaves Capricorn and enters Aquarius in this part of your chart, then drifts toward Pluto, so feelings here run deeper than they first appear. Friends and networks feel especially alive, and reaching out to someone you have not heard from in a while can bring a welcome surprise.\n\nThe Sun in your sector of shared money, intimacy and deep bonds squares Mars and Jupiter in your area of love, pleasure and creativity: ambition and pride can push you to do too much, so pace yourself. Venus, in your sector of partnerships and one-to-one relationships, sextiles that pair and smooths things over with tact. Mercury still squares Pluto, which can make conversations intense; listen before you insist.\n\nOn Monday, reply to that group chat or invitation you left unanswered. You stay free to use this sky however you choose.",
+      "taureau": "Taurus, the key theme of your day is career, reputation and public goals. The Moon leaves Capricorn and enters Aquarius in this part of your chart, then drifts toward Pluto, so feelings here run deeper than they first appear. Your goals benefit from an original angle, and presenting an idea in your own way gets more attention than following the expected script.\n\nThe Sun in your sector of partnerships and one-to-one relationships squares Mars and Jupiter in your area of home, family and private roots: ambition and pride can push you to do too much, so pace yourself. Venus, in your sector of daily work, health and routines, sextiles that pair and smooths things over with tact. Mercury still squares Pluto, which can make conversations intense; listen before you insist.\n\nOn Monday, share one original idea with a colleague or manager. Read this as a mood of the day, not a fixed verdict.",
+      "gemeaux": "Gemini, Sunday turns your attention to travel, study and the beliefs that guide you. The Moon leaves Capricorn and enters Aquarius in this part of your chart, then drifts toward Pluto, so feelings here run deeper than they first appear. Curiosity pulls you beyond your usual frame, and an article, a conversation or a trip idea that challenges your views feels refreshing.\n\nThe Sun in your sector of daily work, health and routines squares Mars and Jupiter in your area of conversations, messages and short trips: ambition and pride can push you to do too much, so pace yourself. Venus, in your sector of love, pleasure and creativity, sextiles that pair and smooths things over with tact. Mercury still squares Pluto, which can make conversations intense; listen before you insist.\n\nOn Monday, read or listen to something outside your usual interests. Your own choices carry more weight than any transit.",
+      "cancer": "Cancer, today’s sky highlights shared money, intimacy and deep bonds. The Moon leaves Capricorn and enters Aquarius in this part of your chart, then drifts toward Pluto, so feelings here run deeper than they first appear. Shared resources and intimate trust come under a frank light, and a calm look at what you really need from someone clears the air.\n\nThe Sun in your sector of love, pleasure and creativity squares Mars and Jupiter in your area of money, possessions and self-worth: ambition and pride can push you to do too much, so pace yourself. Venus, in your sector of home, family and private roots, sextiles that pair and smooths things over with tact. Mercury still squares Pluto, which can make conversations intense; listen before you insist.\n\nOn Monday, review one shared commitment so it feels fair to both of you. Take what is useful and leave the rest.",
+      "lion": "Leo, the main story this Sunday is partnerships and one-to-one relationships. The Moon leaves Capricorn and enters Aquarius in this part of your chart, then drifts toward Pluto, so feelings here run deeper than they first appear. In close relationships you need equality and space, and saying so kindly keeps the bond honest rather than distant.\n\nThe Sun in your sector of home, family and private roots squares Mars and Jupiter in your area of identity, body and first impressions: ambition and pride can push you to do too much, so pace yourself. Venus, in your sector of conversations, messages and short trips, sextiles that pair and smooths things over with tact. Mercury still squares Pluto, which can make conversations intense; listen before you insist.\n\nOn Monday, tell someone close what kind of space you need, without blame. You stay free to use this sky however you choose.",
+      "vierge": "Virgo, once the Moon reaches Aquarius, the focus moves to daily work, health and routines. The Moon leaves Capricorn and enters Aquarius in this part of your chart, then drifts toward Pluto, so feelings here run deeper than they first appear. Your daily routine benefits from a smarter method, and one practical tool or shortcut can save you time all week.\n\nThe Sun in your sector of conversations, messages and short trips squares Mars and Jupiter in your area of rest, the inner world and what you keep hidden: ambition and pride can push you to do too much, so pace yourself. Venus, in your sector of money, possessions and self-worth, sextiles that pair and smooths things over with tact. Mercury still squares Pluto, which can make conversations intense; listen before you insist.\n\nOn Monday, test one new tool or method for a recurring task. Read this as a mood of the day, not a fixed verdict.",
+      "balance": "Libra, your Sunday revolves around love, pleasure and creativity. The Moon leaves Capricorn and enters Aquarius in this part of your chart, then drifts toward Pluto, so feelings here run deeper than they first appear. Romance and creativity respond to surprise, and doing something slightly out of your usual pattern brings back a spark.\n\nThe Sun in your sector of money, possessions and self-worth squares Mars and Jupiter in your area of friends, groups and long-term plans: ambition and pride can push you to do too much, so pace yourself. Venus, in your sector of identity, body and first impressions, sextiles that pair and smooths things over with tact. Mercury still squares Pluto, which can make conversations intense; listen before you insist.\n\nOn Monday, plan one spontaneous moment of fun for the week. Your own choices carry more weight than any transit.",
+      "scorpion": "Scorpio, today invites a new look at home, family and private roots. The Moon leaves Capricorn and enters Aquarius in this part of your chart, then drifts toward Pluto, so feelings here run deeper than they first appear. Home life wants more breathing room, and rearranging one corner or loosening one family habit makes the space feel lighter.\n\nThe Sun in your sector of identity, body and first impressions squares Mars and Jupiter in your area of career, reputation and public goals: ambition and pride can push you to do too much, so pace yourself. Venus, in your sector of rest, the inner world and what you keep hidden, sextiles that pair and smooths things over with tact. Mercury still squares Pluto, which can make conversations intense; listen before you insist.\n\nOn Monday, clear one shelf or drawer at home. Take what is useful and leave the rest.",
+      "sagittaire": "Sagittarius, this Sunday’s energy gathers around conversations, messages and short trips. The Moon leaves Capricorn and enters Aquarius in this part of your chart, then drifts toward Pluto, so feelings here run deeper than they first appear. Your mind runs quickly and enjoys unusual topics, so a lively exchange with someone who thinks differently opens a useful door.\n\nThe Sun in your sector of rest, the inner world and what you keep hidden squares Mars and Jupiter in your area of travel, study and the beliefs that guide you: ambition and pride can push you to do too much, so pace yourself. Venus, in your sector of friends, groups and long-term plans, sextiles that pair and smooths things over with tact. Mercury still squares Pluto, which can make conversations intense; listen before you insist.\n\nOn Monday, call or message someone whose opinion stimulates you. You stay free to use this sky however you choose.",
+      "capricorne": "Capricorn, the day’s central theme is money, possessions and self-worth. The Moon leaves Capricorn and enters Aquarius in this part of your chart, then drifts toward Pluto, so feelings here run deeper than they first appear. A new idea about earning or saving appears, and testing it on paper before committing protects you from a costly impulse.\n\nThe Sun in your sector of friends, groups and long-term plans squares Mars and Jupiter in your area of shared money, intimacy and deep bonds: ambition and pride can push you to do too much, so pace yourself. Venus, in your sector of career, reputation and public goals, sextiles that pair and smooths things over with tact. Mercury still squares Pluto, which can make conversations intense; listen before you insist.\n\nOn Monday, write down one idea for saving or earning and check it against real numbers. Read this as a mood of the day, not a fixed verdict.",
+      "verseau": "Aquarius, Sunday brings fresh air to identity, body and first impressions. The Moon leaves Capricorn and enters Aquarius in this part of your chart, then drifts toward Pluto, so feelings here run deeper than they first appear. You want to present yourself in a fresher, less conventional way, and trying one small change in your style or approach shows you what suits you now.\n\nThe Sun in your sector of career, reputation and public goals squares Mars and Jupiter in your area of partnerships and one-to-one relationships: ambition and pride can push you to do too much, so pace yourself. Venus, in your sector of travel, study and the beliefs that guide you, sextiles that pair and smooths things over with tact. Mercury still squares Pluto, which can make conversations intense; listen before you insist.\n\nOn Monday, try one small change in how you start your day. Your own choices carry more weight than any transit.",
+      "poissons": "Pisces, what matters most today is rest, the inner world and what you keep hidden. The Moon leaves Capricorn and enters Aquarius in this part of your chart, then drifts toward Pluto, so feelings here run deeper than they first appear. Your inner world asks for quiet processing, and journaling or a solitary walk helps you understand a feeling you had pushed away.\n\nThe Sun in your sector of travel, study and the beliefs that guide you squares Mars and Jupiter in your area of daily work, health and routines: ambition and pride can push you to do too much, so pace yourself. Venus, in your sector of shared money, intimacy and deep bonds, sextiles that pair and smooths things over with tact. Mercury still squares Pluto, which can make conversations intense; listen before you insist.\n\nOn Monday, protect twenty minutes for silence before the day gets busy. Take what is useful and leave the rest."
+    }
+  },
+  "fr": {
+    "summary": "Dimanche 15 novembre 2026 : la Lune croissante (environ 30 % éclairée) termine sa traversée du Capricorne et entre en Verseau dans la journée, en route vers une conjonction avec Pluton. Le Soleil est à 22° du Scorpion, Mercure à 5° du Scorpion (directe, au carré de Pluton) et Vénus à 22° de la Balance (directe). Mars et Jupiter restent conjoints à 25° du Lion, exactement opposés au Nœud nord, au carré du Soleil et en sextile à Vénus, qui fait aussi trigone au Nœud. Saturne, Uranus et Neptune sont rétrogrades.",
+    "signs": {
+      "belier": "Bélier, ce dimanche braque le projecteur sur le domaine des amis, des groupes et des projets à long terme. La Lune quitte le Capricorne et entre en Verseau dans cette zone de votre thème, puis s’approche de Pluton : les émotions y sont plus profondes qu’il n’y paraît. Amis et réseaux sont particulièrement vivants, et reprendre contact avec quelqu’un perdu de vue peut apporter une bonne surprise.\n\nLe Soleil, dans votre secteur de l’argent partagé, de l’intimité et des liens profonds, est au carré de Mars et Jupiter dans votre domaine de l’amour, du plaisir et de la créativité : ambition et fierté peuvent vous pousser à en faire trop, alors dosez vos efforts. Vénus, dans votre secteur du couple et des relations en face à face, fait sextile à ce duo et arrondit les angles avec tact. Mercure reste au carré de Pluton, ce qui peut rendre les échanges intenses : écoutez avant d’insister.\n\nLundi, répondez au groupe ou à l’invitation laissés sans réponse. Vous restez libre d’utiliser ce ciel comme vous le souhaitez.",
+      "taureau": "Taureau, le thème clé de votre journée est celui de la carrière, de la réputation et des objectifs publics. La Lune quitte le Capricorne et entre en Verseau dans cette zone de votre thème, puis s’approche de Pluton : les émotions y sont plus profondes qu’il n’y paraît. Vos objectifs gagnent à un angle original, et présenter une idée à votre manière attire plus l’attention que suivre le scénario attendu.\n\nLe Soleil, dans votre secteur du couple et des relations en face à face, est au carré de Mars et Jupiter dans votre domaine du foyer, de la famille et des racines : ambition et fierté peuvent vous pousser à en faire trop, alors dosez vos efforts. Vénus, dans votre secteur du travail quotidien, de la santé et des routines, fait sextile à ce duo et arrondit les angles avec tact. Mercure reste au carré de Pluton, ce qui peut rendre les échanges intenses : écoutez avant d’insister.\n\nLundi, partagez une idée originale avec un collègue ou un responsable. Lisez ceci comme une ambiance du jour, pas comme un verdict figé.",
+      "gemeaux": "Gémeaux, ce dimanche tourne votre attention vers le domaine des voyages, des études et des convictions. La Lune quitte le Capricorne et entre en Verseau dans cette zone de votre thème, puis s’approche de Pluton : les émotions y sont plus profondes qu’il n’y paraît. La curiosité vous pousse hors de votre cadre habituel, et un article, une discussion ou une idée de voyage qui bouscule vos opinions fait du bien.\n\nLe Soleil, dans votre secteur du travail quotidien, de la santé et des routines, est au carré de Mars et Jupiter dans votre domaine des échanges, des messages et des petits trajets : ambition et fierté peuvent vous pousser à en faire trop, alors dosez vos efforts. Vénus, dans votre secteur de l’amour, du plaisir et de la créativité, fait sextile à ce duo et arrondit les angles avec tact. Mercure reste au carré de Pluton, ce qui peut rendre les échanges intenses : écoutez avant d’insister.\n\nLundi, lisez ou écoutez quelque chose hors de vos centres d’intérêt habituels. Vos propres choix pèsent plus lourd que n’importe quel transit.",
+      "cancer": "Cancer, le ciel du jour met en lumière le domaine de l’argent partagé, de l’intimité et des liens profonds. La Lune quitte le Capricorne et entre en Verseau dans cette zone de votre thème, puis s’approche de Pluton : les émotions y sont plus profondes qu’il n’y paraît. Les ressources partagées et la confiance intime passent sous une lumière franche, et regarder calmement ce que vous attendez vraiment de l’autre éclaircit l’atmosphère.\n\nLe Soleil, dans votre secteur de l’amour, du plaisir et de la créativité, est au carré de Mars et Jupiter dans votre domaine de l’argent, des biens et de l’estime de soi : ambition et fierté peuvent vous pousser à en faire trop, alors dosez vos efforts. Vénus, dans votre secteur du foyer, de la famille et des racines, fait sextile à ce duo et arrondit les angles avec tact. Mercure reste au carré de Pluton, ce qui peut rendre les échanges intenses : écoutez avant d’insister.\n\nLundi, relisez un engagement commun pour qu’il soit juste pour vous deux. Prenez ce qui vous sert et laissez le reste.",
+      "lion": "Lion, l’histoire principale de ce dimanche se joue dans le domaine du couple et des relations en face à face. La Lune quitte le Capricorne et entre en Verseau dans cette zone de votre thème, puis s’approche de Pluton : les émotions y sont plus profondes qu’il n’y paraît. Dans le couple, vous avez besoin d’égalité et d’espace, et le dire avec douceur garde le lien sincère plutôt que distant.\n\nLe Soleil, dans votre secteur du foyer, de la famille et des racines, est au carré de Mars et Jupiter dans votre domaine de l’identité, du corps et de l’image que vous donnez : ambition et fierté peuvent vous pousser à en faire trop, alors dosez vos efforts. Vénus, dans votre secteur des échanges, des messages et des petits trajets, fait sextile à ce duo et arrondit les angles avec tact. Mercure reste au carré de Pluton, ce qui peut rendre les échanges intenses : écoutez avant d’insister.\n\nLundi, dites à un proche de quel espace vous avez besoin, sans reproche. Vous restez libre d’utiliser ce ciel comme vous le souhaitez.",
+      "vierge": "Vierge, dès que la Lune entre en Verseau, l’accent passe sur le domaine du travail quotidien, de la santé et des routines. La Lune quitte le Capricorne et entre en Verseau dans cette zone de votre thème, puis s’approche de Pluton : les émotions y sont plus profondes qu’il n’y paraît. Votre routine gagne à une méthode plus astucieuse, et un outil ou un raccourci pratique peut vous faire gagner du temps toute la semaine.\n\nLe Soleil, dans votre secteur des échanges, des messages et des petits trajets, est au carré de Mars et Jupiter dans votre domaine du repos, du monde intérieur et de ce que vous gardez pour vous : ambition et fierté peuvent vous pousser à en faire trop, alors dosez vos efforts. Vénus, dans votre secteur de l’argent, des biens et de l’estime de soi, fait sextile à ce duo et arrondit les angles avec tact. Mercure reste au carré de Pluton, ce qui peut rendre les échanges intenses : écoutez avant d’insister.\n\nLundi, testez un nouvel outil ou une nouvelle méthode pour une tâche répétitive. Lisez ceci comme une ambiance du jour, pas comme un verdict figé.",
+      "balance": "Balance, votre dimanche gravite autour du domaine de l’amour, du plaisir et de la créativité. La Lune quitte le Capricorne et entre en Verseau dans cette zone de votre thème, puis s’approche de Pluton : les émotions y sont plus profondes qu’il n’y paraît. L’amour et la créativité aiment la surprise, et sortir un peu de vos habitudes ravive l’étincelle.\n\nLe Soleil, dans votre secteur de l’argent, des biens et de l’estime de soi, est au carré de Mars et Jupiter dans votre domaine des amis, des groupes et des projets à long terme : ambition et fierté peuvent vous pousser à en faire trop, alors dosez vos efforts. Vénus, dans votre secteur de l’identité, du corps et de l’image que vous donnez, fait sextile à ce duo et arrondit les angles avec tact. Mercure reste au carré de Pluton, ce qui peut rendre les échanges intenses : écoutez avant d’insister.\n\nLundi, prévoyez un moment de plaisir spontané dans la semaine. Vos propres choix pèsent plus lourd que n’importe quel transit.",
+      "scorpion": "Scorpion, la journée invite à regarder autrement le domaine du foyer, de la famille et des racines. La Lune quitte le Capricorne et entre en Verseau dans cette zone de votre thème, puis s’approche de Pluton : les émotions y sont plus profondes qu’il n’y paraît. La vie à la maison réclame de l’air, et réaménager un coin ou assouplir une habitude familiale rend l’espace plus léger.\n\nLe Soleil, dans votre secteur de l’identité, du corps et de l’image que vous donnez, est au carré de Mars et Jupiter dans votre domaine de la carrière, de la réputation et des objectifs publics : ambition et fierté peuvent vous pousser à en faire trop, alors dosez vos efforts. Vénus, dans votre secteur du repos, du monde intérieur et de ce que vous gardez pour vous, fait sextile à ce duo et arrondit les angles avec tact. Mercure reste au carré de Pluton, ce qui peut rendre les échanges intenses : écoutez avant d’insister.\n\nLundi, videz une étagère ou un tiroir à la maison. Prenez ce qui vous sert et laissez le reste.",
+      "sagittaire": "Sagittaire, l’énergie de ce dimanche se concentre sur le domaine des échanges, des messages et des petits trajets. La Lune quitte le Capricorne et entre en Verseau dans cette zone de votre thème, puis s’approche de Pluton : les émotions y sont plus profondes qu’il n’y paraît. Votre esprit va vite et aime les sujets inattendus : un échange vivant avec quelqu’un qui pense autrement ouvre une porte utile.\n\nLe Soleil, dans votre secteur du repos, du monde intérieur et de ce que vous gardez pour vous, est au carré de Mars et Jupiter dans votre domaine des voyages, des études et des convictions : ambition et fierté peuvent vous pousser à en faire trop, alors dosez vos efforts. Vénus, dans votre secteur des amis, des groupes et des projets à long terme, fait sextile à ce duo et arrondit les angles avec tact. Mercure reste au carré de Pluton, ce qui peut rendre les échanges intenses : écoutez avant d’insister.\n\nLundi, appelez ou écrivez à quelqu’un dont l’avis vous stimule. Vous restez libre d’utiliser ce ciel comme vous le souhaitez.",
+      "capricorne": "Capricorne, le thème central du jour est celui de l’argent, des biens et de l’estime de soi. La Lune quitte le Capricorne et entre en Verseau dans cette zone de votre thème, puis s’approche de Pluton : les émotions y sont plus profondes qu’il n’y paraît. Une idée neuve pour gagner ou épargner apparaît, et la tester sur papier avant de vous engager vous protège d’un achat impulsif.\n\nLe Soleil, dans votre secteur des amis, des groupes et des projets à long terme, est au carré de Mars et Jupiter dans votre domaine de l’argent partagé, de l’intimité et des liens profonds : ambition et fierté peuvent vous pousser à en faire trop, alors dosez vos efforts. Vénus, dans votre secteur de la carrière, de la réputation et des objectifs publics, fait sextile à ce duo et arrondit les angles avec tact. Mercure reste au carré de Pluton, ce qui peut rendre les échanges intenses : écoutez avant d’insister.\n\nLundi, notez une idée pour épargner ou gagner et confrontez-la aux vrais chiffres. Lisez ceci comme une ambiance du jour, pas comme un verdict figé.",
+      "verseau": "Verseau, ce dimanche apporte de l’air neuf au domaine de l’identité, du corps et de l’image que vous donnez. La Lune quitte le Capricorne et entre en Verseau dans cette zone de votre thème, puis s’approche de Pluton : les émotions y sont plus profondes qu’il n’y paraît. Vous avez envie de vous montrer de façon plus libre et moins conventionnelle, et tester un petit changement de style ou d’attitude vous indique ce qui vous va maintenant.\n\nLe Soleil, dans votre secteur de la carrière, de la réputation et des objectifs publics, est au carré de Mars et Jupiter dans votre domaine du couple et des relations en face à face : ambition et fierté peuvent vous pousser à en faire trop, alors dosez vos efforts. Vénus, dans votre secteur des voyages, des études et des convictions, fait sextile à ce duo et arrondit les angles avec tact. Mercure reste au carré de Pluton, ce qui peut rendre les échanges intenses : écoutez avant d’insister.\n\nLundi, essayez un petit changement dans votre façon de commencer la journée. Vos propres choix pèsent plus lourd que n’importe quel transit.",
+      "poissons": "Poissons, ce qui compte le plus aujourd’hui, c’est le domaine du repos, du monde intérieur et de ce que vous gardez pour vous. La Lune quitte le Capricorne et entre en Verseau dans cette zone de votre thème, puis s’approche de Pluton : les émotions y sont plus profondes qu’il n’y paraît. Votre monde intérieur demande un temps de digestion, et écrire ou marcher seul aide à comprendre une émotion mise de côté.\n\nLe Soleil, dans votre secteur des voyages, des études et des convictions, est au carré de Mars et Jupiter dans votre domaine du travail quotidien, de la santé et des routines : ambition et fierté peuvent vous pousser à en faire trop, alors dosez vos efforts. Vénus, dans votre secteur de l’argent partagé, de l’intimité et des liens profonds, fait sextile à ce duo et arrondit les angles avec tact. Mercure reste au carré de Pluton, ce qui peut rendre les échanges intenses : écoutez avant d’insister.\n\nLundi, gardez vingt minutes de silence avant que la journée ne s’emballe. Prenez ce qui vous sert et laissez le reste."
+    }
+  }
+}
