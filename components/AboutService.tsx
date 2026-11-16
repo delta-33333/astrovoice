@@ -12,6 +12,40 @@ import { readLegalIdentity } from '@/lib/legal-entity';
 import type { Locale } from '@/lib/seo';
 import { appBaseUrl } from '@/lib/stripe';
 import { trialPath } from '@/lib/free-call';
+import { couplePath } from '@/lib/couple-compat';
+import { SKY_EVENT_PATHS, SKY_LINKS } from '@/lib/sky-events';
+
+function aboutSkyLinks(locale: Locale): { title: string; links: { href: string; label: string }[] } | null {
+  if (locale !== 'fr' && locale !== 'en') return null;
+  const l = SKY_LINKS[locale];
+  return locale === 'fr'
+    ? {
+        title: 'Outils gratuits et ciel réel :',
+        links: [
+          { href: l.chart, label: 'thème astral gratuit' },
+          { href: l.moon, label: 'la Lune aujourd’hui' },
+          { href: l.daily, label: 'horoscope du jour' },
+          { href: couplePath('fr'), label: 'compatibilité amoureuse' },
+          { href: '/fr/horoscope-2027', label: 'horoscope 2027' },
+          { href: SKY_EVENT_PATHS.newMoons2027.fr, label: 'Nouvelles Lunes 2027' },
+          { href: SKY_EVENT_PATHS.jupiterVirgo2027.fr, label: 'Jupiter en Vierge 2027' },
+          { href: SKY_EVENT_PATHS.eclipses2027.fr, label: 'éclipses 2027' },
+        ],
+      }
+    : {
+        title: 'Free tools and the real sky:',
+        links: [
+          { href: l.chart, label: 'free birth chart' },
+          { href: l.moon, label: 'the Moon today' },
+          { href: l.daily, label: 'daily horoscope' },
+          { href: couplePath('en'), label: 'love compatibility test' },
+          { href: SKY_EVENT_PATHS.newMoons2027.en, label: 'New Moons 2027' },
+          { href: SKY_EVENT_PATHS.fullMoons2027.en, label: 'Full Moons 2027' },
+          { href: SKY_EVENT_PATHS.jupiterVirgo2027.en, label: 'Jupiter in Virgo 2027' },
+          { href: SKY_EVENT_PATHS.eclipses2027.en, label: 'eclipses 2027' },
+        ],
+      };
+}
 
 const TRY_COPY: Record<Locale, { h2: string; line: string; trial: string; packs: string }> = {
   fr: { h2: 'Essayer sur son propre thème', line: 'Le thème est calculé sur le vrai ciel à partir de la date, de l’heure et du lieu de naissance. Aucune date inventée, aucun compteur caché.', trial: '3 minutes offertes, sans carte ni abonnement', packs: 'Voir les packs à prix fixe (l’appel s’arrête tout seul)' },
@@ -23,6 +57,7 @@ const TRY_COPY: Record<Locale, { h2: string; line: string; trial: string; packs:
 
 export default function AboutService({ locale }: { locale: Locale }) {
   const copy = aboutCopy(locale);
+  const sky = aboutSkyLinks(locale);
   const legal = readLegalIdentity(locale);
   const origin = appBaseUrl();
   const entity = [
@@ -83,6 +118,17 @@ export default function AboutService({ locale }: { locale: Locale }) {
             </span>
           ))}
         </p>
+        {sky ? (
+          <p className="mt-4">
+            {sky.title}{' '}
+            {sky.links.map((item, index) => (
+              <span key={item.href}>
+                {index > 0 ? ' · ' : ''}
+                <Link href={item.href} className="underline text-celestial-gold">{item.label}</Link>
+              </span>
+            ))}
+          </p>
+        ) : null}
       </article>
       <JsonLd data={aboutJsonLd(origin, locale)} />
     </main>

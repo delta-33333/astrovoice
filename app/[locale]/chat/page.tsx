@@ -9,16 +9,16 @@ import { hreflangAlternates } from '@/lib/seo';
 export const dynamic = 'force-dynamic';
 
 const TITLE = {
-  fr: 'Chat astrologie par message — 1ère réponse offerte | Callastral',
-  en: 'Astrology chat by message — first answer free | Callastral',
+  fr: 'Chat astrologie par message, 1re réponse offerte | Callastral',
+  en: 'Astrology Chat by Message: First Answer Free | Callastral',
   es: 'Chat de astrología por mensaje — primera respuesta gratis | Callastral',
   de: 'Astrologie-Chat per Nachricht — erste Antwort gratis | Callastral',
   it: 'Chat di astrologia per messaggio — prima risposta gratis | Callastral',
 } as const;
 
 const DESCRIPTION = {
-  fr: 'Posez votre question par écrit à une conseillère ou un conseiller Callastral. Réponse basée sur votre thème natal calculé. 1ère réponse offerte, puis 6,90 €/mois.',
-  en: 'Ask a Callastral advisor your question in writing. Answer based on your calculated natal chart. First answer free, then €6.90/month.',
+  fr: 'Amour, ex, travail, décision : posez votre question par écrit à une Conseillère ou un Conseiller Callastral, sur votre thème natal calculé. 1re réponse offerte.',
+  en: 'Love, an ex, work or a decision: ask a Callastral advisor in writing, with an answer based on your calculated natal chart. First answer free.',
   es: 'Haz tu pregunta por escrito a un consejero de Callastral, según tu carta natal calculada. Primera respuesta gratis, luego 6,90 €/mes.',
   de: 'Stelle einer Callastral-Beratung deine Frage schriftlich, basierend auf deinem berechneten Geburtshoroskop. Erste Antwort gratis, dann 6,90 €/Monat.',
   it: 'Fai la tua domanda per iscritto a un consulente Callastral, in base al tuo tema natale calcolato. Prima risposta gratis, poi 6,90 €/mese.',

@@ -49,15 +49,15 @@ export function coupleToolBookPath(): string {
 
 const META: Record<Locale, { title: string; description: string; h1: string }> = {
   fr: {
-    title: 'Compatibilité de couple gratuite | Callastral',
+    title: 'Compatibilité amoureuse gratuite par thème astral | Callastral',
     description:
-      'Score de compatibilité de couple gratuit : appuis et tensions entre deux thèmes. Les conseillers sont des voix virtuelles.',
+      'Test de compatibilité amoureuse gratuit : Soleil, Lune, Vénus, Mars et ascendant de vos deux thèmes, score, appuis et tensions. Conseillers : voix virtuelles.',
     h1: 'Compatibilité de couple',
   },
   en: {
-    title: 'Free couple compatibility | Callastral',
+    title: 'Free Love Compatibility Test by Birth Chart | Callastral',
     description:
-      'Free couple compatibility score: strengths and tensions between two charts. Advisors are virtual voices.',
+      'Free love compatibility test: Sun, Moon, Venus, Mars and rising sign of both charts, with a score, strengths and tensions. Advisors are virtual voices.',
     h1: 'Couple compatibility',
   },
   es: {

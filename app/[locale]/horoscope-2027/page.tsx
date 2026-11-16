@@ -70,6 +70,8 @@ export default async function Page(props: { params: Promise<{ locale: string }> 
           <li><Link href={SKY_EVENT_PATHS.eclipses2027.fr} className="underline text-celestial-gold">Calendrier des éclipses 2027</Link> : annulaire du 6 février, totale du 2 août, éclipses de Lune.</li>
           <li><Link href={SKY_EVENT_PATHS.marsRetrograde2027.fr} className="underline text-celestial-gold">Mars rétrograde 2027</Link> : du 10 janvier au 1er avril, de la Vierge au Lion, et pourquoi Vénus ne rétrograde pas cette année.</li>
           <li><Link href={SKY_EVENT_PATHS.fullMoons2027.fr} className="underline text-celestial-gold">Calendrier des Pleines Lunes 2027</Link> : les 12 dates et heures, la super Lune du 22 janvier.</li>
+          <li><Link href={SKY_EVENT_PATHS.newMoons2027.fr} className="underline text-celestial-gold">Calendrier des Nouvelles Lunes 2027</Link> : les 13 dates et heures pour poser vos intentions, dont les deux éclipses de Soleil.</li>
+          <li><Link href={SKY_EVENT_PATHS.jupiterVirgo2027.fr} className="underline text-celestial-gold">Jupiter en Vierge 2027</Link> : l’entrée du 26 juillet, la rétrogradation en Lion et l’effet pour chaque signe.</li>
           <li><Link href="/fr/horoscope-du-jour" className="underline text-celestial-gold">Horoscope du jour</Link> et <Link href="/fr/lune-aujourdhui" className="underline text-celestial-gold">la Lune aujourd’hui</Link> pour suivre le ciel au quotidien.</li>
         </ul>
       </section>
