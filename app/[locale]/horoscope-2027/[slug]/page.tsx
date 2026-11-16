@@ -3,6 +3,7 @@ import Link from 'next/link';
 import ChatCta from '@/components/ChatCta';
 import { notFound } from 'next/navigation';
 import { Chrome, Disclaimer, SignChips, SkyTable, TrialCta } from '@/components/Horoscope2027View';
+import { SKY_EVENT_IDS, SKY_EVENT_LABELS, SKY_EVENT_PATHS, SKY_LINKS } from '@/lib/sky-events';
 import { H2027_BASE, H2027_ORIGIN, H2027_SIGNS, h2027JsonLd, h2027Model, isH2027Sign } from '@/lib/horoscope-2027';
 
 export const dynamicParams = false;
@@ -48,6 +49,17 @@ export default async function Page(props: { params: Promise<{ locale: string; sl
       <section className="mt-10">
         <h2 className="font-[family-name:var(--font-cinzel)] text-2xl">Calendrier astrologique 2027</h2>
         <SkyTable />
+      </section>
+      <section className="mt-10">
+        <h2 className="font-[family-name:var(--font-cinzel)] text-2xl">Les dates du ciel 2027 en détail</h2>
+        <p className="mt-4 text-white/80 leading-relaxed">Heures de Paris et UTC calculées sur l’éphéméride de la NASA, avec l’effet pour {model.name} et les 11 autres signes.</p>
+        <ul className="mt-4 list-disc pl-5 space-y-2 text-white/80">
+          {SKY_EVENT_IDS.filter((id) => SKY_EVENT_PATHS[id].fr.endsWith('2027')).map((id) => (
+            <li key={id}><Link href={SKY_EVENT_PATHS[id].fr} className="underline text-celestial-gold">{SKY_EVENT_LABELS[id].fr}</Link></li>
+          ))}
+          <li><Link href={SKY_LINKS.fr.chart} className="underline text-celestial-gold">Votre thème astral gratuit</Link> pour connaître votre ascendant et lire 2027 maison par maison.</li>
+          <li><Link href={SKY_LINKS.fr.moon} className="underline text-celestial-gold">La Lune aujourd’hui</Link> et l’<Link href={SKY_LINKS.fr.daily} className="underline text-celestial-gold">horoscope du jour</Link>, calculés sur le ciel réel.</li>
+        </ul>
       </section>
       <section className="mt-10">
         <h2 className="font-[family-name:var(--font-cinzel)] text-2xl">Les autres signes en 2027</h2>

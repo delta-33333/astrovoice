@@ -7,9 +7,9 @@ import { SIGN_IDS, signPath, weekPath, type SignId } from './zodiac/signs.ts';
  * positions géocentriques apparentes), recoupées avec des tables publiées (astro-seek, otldr).
  */
 export type SkyLocale = 'fr' | 'en';
-export type SkyEventId = 'mercuryVenusDirect' | 'newMoonScorpio' | 'fullMoonGemini' | 'sagittariusSeason' | 'mercuryRetrograde2027' | 'eclipses2027' | 'marsRetrograde2027' | 'fullMoons2027';
+export type SkyEventId = 'mercuryVenusDirect' | 'newMoonScorpio' | 'fullMoonGemini' | 'sagittariusSeason' | 'mercuryRetrograde2027' | 'eclipses2027' | 'marsRetrograde2027' | 'fullMoons2027' | 'newMoons2027' | 'jupiterVirgo2027';
 
-export const SKY_EVENT_IDS: SkyEventId[] = ['mercuryVenusDirect', 'newMoonScorpio', 'fullMoonGemini', 'sagittariusSeason', 'mercuryRetrograde2027', 'eclipses2027', 'marsRetrograde2027', 'fullMoons2027'];
+export const SKY_EVENT_IDS: SkyEventId[] = ['mercuryVenusDirect', 'newMoonScorpio', 'fullMoonGemini', 'sagittariusSeason', 'mercuryRetrograde2027', 'eclipses2027', 'marsRetrograde2027', 'fullMoons2027', 'newMoons2027', 'jupiterVirgo2027'];
 export const SKY_EVENTS_ORIGIN = 'https://callastral.com';
 export const SKY_EVENTS_PUBLISHED = '2026-10-30';
 
@@ -23,6 +23,8 @@ export const SKY_EVENT_PUBLISHED: Record<SkyEventId, string> = {
   eclipses2027: '2026-11-09',
   marsRetrograde2027: '2026-11-11',
   fullMoons2027: '2026-11-11',
+  newMoons2027: '2026-11-16',
+  jupiterVirgo2027: '2026-11-16',
 };
 
 /** Dernière modification (titres et maillage revus le 02/11/2026). */
@@ -35,6 +37,8 @@ export const SKY_EVENT_MODIFIED: Record<SkyEventId, string> = {
   eclipses2027: '2026-11-09',
   marsRetrograde2027: '2026-11-11',
   fullMoons2027: '2026-11-11',
+  newMoons2027: '2026-11-16',
+  jupiterVirgo2027: '2026-11-16',
 };
 
 export const SKY_EVENT_PATHS: Record<SkyEventId, Record<SkyLocale, string>> = {
@@ -46,6 +50,8 @@ export const SKY_EVENT_PATHS: Record<SkyEventId, Record<SkyLocale, string>> = {
   eclipses2027: { en: '/en/eclipses-2027-calendar', fr: '/fr/calendrier-eclipses-2027' },
   marsRetrograde2027: { en: '/en/mars-retrograde-2027', fr: '/fr/mars-retrograde-2027' },
   fullMoons2027: { en: '/en/full-moon-calendar-2027', fr: '/fr/calendrier-pleines-lunes-2027' },
+  newMoons2027: { en: '/en/new-moon-calendar-2027', fr: '/fr/calendrier-nouvelles-lunes-2027' },
+  jupiterVirgo2027: { en: '/en/jupiter-in-virgo-2027', fr: '/fr/jupiter-en-vierge-2027' },
 };
 
 /** Même convention que les pages GEO : x-default = FR. */
@@ -385,6 +391,8 @@ export function signRows(event: SkyEventId, locale: SkyLocale): SkySignRow[] {
       text = signRows2027(event, locale, index);
     } else if (event === 'marsRetrograde2027' || event === 'fullMoons2027') {
       text = signRows2027b(event, locale, index);
+    } else if (event === 'newMoons2027' || event === 'jupiterVirgo2027') {
+      text = signRows2027c(event, locale, index);
     } else if (event === 'mercuryVenusDirect') {
       const hm = solarHouse(index, SCORPIO);
       const hv = solarHouse(index, LIBRA);
@@ -825,6 +833,8 @@ export const SKY_EVENT_LABELS: Record<SkyEventId, Record<SkyLocale, string>> = {
   eclipses2027: { en: 'Eclipses 2027: dates, times and effects by sign', fr: 'Éclipses 2027 : dates, heures et effets par signe' },
   marsRetrograde2027: { en: 'Mars retrograde 2027: 10 January to 1 April', fr: 'Mars rétrograde 2027 : du 10 janvier au 1er avril' },
   fullMoons2027: { en: 'Full Moon calendar 2027: the 12 Full Moons', fr: 'Calendrier des Pleines Lunes 2027 : les 12 dates' },
+  newMoons2027: { en: 'New Moon calendar 2027: the 13 New Moons', fr: 'Calendrier des Nouvelles Lunes 2027 : les 13 dates' },
+  jupiterVirgo2027: { en: 'Jupiter in Virgo 2027: from 26 July', fr: 'Jupiter en Vierge 2027 : à partir du 26 juillet' },
 };
 
 function fullMoonCopy(locale: SkyLocale): SkyEventCopy {
@@ -2169,6 +2179,455 @@ function fullMoons2027Copy(locale: SkyLocale): SkyEventCopy {
   };
 }
 
+/* ------------------------------------------------------------------ */
+/* Pages 2027 : Nouvelles Lunes et Jupiter en Vierge (publiées le 16/11/2026) */
+/* Calculées avec l’éphéméride NASA JPL DE440 (Skyfield), positions géocentriques apparentes. */
+/* Script : /workspace/callastral-growth/nm-jup-2027.py et jup2.py */
+/* ------------------------------------------------------------------ */
+
+/** Nouvelles Lunes 2027 : instant UTC, degré, index du signe, distance Terre-Lune (km). */
+export const NEW_MOONS_2027 = [
+  { utc: '2027-01-07T20:24:00Z', deg: '17°18′', sign: 9, km: 406523 },
+  { utc: '2027-02-06T15:56:00Z', deg: '17°38′', sign: 10, km: 402710 },
+  { utc: '2027-03-08T09:29:00Z', deg: '17°35′', sign: 11, km: 394343 },
+  { utc: '2027-04-06T23:51:00Z', deg: '16°57′', sign: 0, km: 383640 },
+  { utc: '2027-05-06T10:59:00Z', deg: '15°43′', sign: 1, km: 372976 },
+  { utc: '2027-06-04T19:40:00Z', deg: '13°58′', sign: 2, km: 364259 },
+  { utc: '2027-07-04T03:02:00Z', deg: '11°57′', sign: 3, km: 358803 },
+  { utc: '2027-08-02T10:05:00Z', deg: '9°55′', sign: 4, km: 357383 },
+  { utc: '2027-08-31T17:41:00Z', deg: '8°06′', sign: 5, km: 360262 },
+  { utc: '2027-09-30T02:36:00Z', deg: '6°43′', sign: 6, km: 367135 },
+  { utc: '2027-10-29T13:37:00Z', deg: '5°54′', sign: 7, km: 377030 },
+  { utc: '2027-11-28T03:24:00Z', deg: '5°39′', sign: 8, km: 388237 },
+  { utc: '2027-12-27T20:12:00Z', deg: '5°50′', sign: 9, km: 398403 },
+] as const;
+
+const NM_NOTE: Record<SkyLocale, Partial<Record<number, string>>> = {
+  en: { 1: 'annular solar eclipse', 7: 'total solar eclipse, closest New Moon of the year', 8: 'second New Moon of August, with Jupiter', 12: 'second New Moon in Capricorn' },
+  fr: { 1: 'éclipse de Soleil annulaire', 7: 'éclipse totale de Soleil, Nouvelle Lune la plus proche', 8: 'deuxième Nouvelle Lune d’août, avec Jupiter', 12: 'deuxième Nouvelle Lune en Capricorne' },
+};
+
+/** Jupiter 2026-2028 (UTC). */
+export const J2027 = {
+  retro: '2026-12-13T00:57:00Z',
+  opposition: '2027-02-11T00:29:00Z',
+  trineSaturn2: '2027-04-03T12:59:00Z',
+  direct: '2027-04-13T02:11:00Z',
+  trineSaturn3: '2027-07-11T23:16:00Z',
+  intoVirgo: '2027-07-26T04:49:00Z',
+  conjSun: '2027-08-31T07:29:00Z',
+  squareUranus: '2027-09-10T16:41:00Z',
+  retro2: '2028-01-12T08:53:00Z',
+  direct2: '2028-05-13T20:00:00Z',
+  intoLibra: '2028-08-24T05:08:00Z',
+} as const;
+
+const NM_2027_EXTRA: Record<SkyLocale, Partial<Record<number, string>>> = {
+  en: {
+    10: 'Your New Moon is also the annular solar eclipse of 6 February: a stronger restart than a usual birthday-month New Moon.',
+    4: 'Your New Moon is also the total solar eclipse of 2 August, with up to 6 min 23 s of totality near Luxor in Egypt.',
+    9: 'You get two New Moons in your sign, on 7 January and 27 December: one to open the year, one to prepare the next.',
+    5: 'Your New Moon on 31 August falls the same day Jupiter meets the Sun in your sign, at 7°42′ Virgo.',
+  },
+  fr: {
+    10: 'Votre Nouvelle Lune est aussi l’éclipse de Soleil annulaire du 6 février : un redémarrage plus marqué qu’une Nouvelle Lune d’anniversaire ordinaire.',
+    4: 'Votre Nouvelle Lune est aussi l’éclipse totale de Soleil du 2 août, avec jusqu’à 6 min 23 s de totalité près de Louxor, en Égypte.',
+    9: 'Vous recevez deux Nouvelles Lunes dans votre signe, le 7 janvier et le 27 décembre : une pour ouvrir l’année, une pour préparer la suivante.',
+    5: 'Votre Nouvelle Lune du 31 août tombe le jour même où Jupiter rejoint le Soleil dans votre signe, à 7°42′ Vierge.',
+  },
+};
+
+const JUP_2027_EXTRA: Record<SkyLocale, Partial<Record<number, string>>> = {
+  en: {
+    5: 'Jupiter enters your own sign on 26 July for the first time since August 2015 and stays until 24 August 2028: your growth year, best used for a personal project you have been postponing.',
+    4: 'Jupiter has been in your sign since 30 June 2026 and leaves on 26 July 2027: the first half of the year is the time to show your work, the second to turn it into steady income.',
+    11: 'Jupiter, your traditional ruler, enters your opposite sign on 26 July: partnerships, contracts and the people close to you take centre stage until August 2028.',
+    8: 'Jupiter is your ruling planet, so its move into Virgo on 26 July shifts your focus from long-distance plans to your career and public image.',
+    2: 'On 10 September Jupiter in Virgo squares Uranus in your sign, at 9°57′: a push to change your home or family set-up, best handled without rushing.',
+    1: 'From 26 July Jupiter moves through a fellow earth sign, in your 5th solar house: love, creativity and pleasure get a lighter tone.',
+    9: 'From 26 July Jupiter moves through a fellow earth sign, in your 9th solar house: travel, study and a broader view of your future.',
+  },
+  fr: {
+    5: 'Jupiter entre dans votre signe le 26 juillet, une première depuis août 2015, et y reste jusqu’au 24 août 2028 : votre année de croissance, à utiliser pour un projet personnel repoussé depuis longtemps.',
+    4: 'Jupiter est dans votre signe depuis le 30 juin 2026 et en sort le 26 juillet 2027 : le premier semestre sert à montrer votre travail, le second à le transformer en revenus réguliers.',
+    11: 'Jupiter, votre maître traditionnel, entre dans votre signe opposé le 26 juillet : le couple, les contrats et vos proches passent au premier plan jusqu’en août 2028.',
+    8: 'Jupiter gouverne votre signe : son passage en Vierge le 26 juillet déplace votre attention des projets lointains vers votre carrière et votre image publique.',
+    2: 'Le 10 septembre, Jupiter en Vierge forme un carré à Uranus dans votre signe, à 9°57′ : une poussée pour changer votre cadre de vie ou votre organisation familiale, à mener sans précipitation.',
+    1: 'À partir du 26 juillet, Jupiter traverse un signe de terre comme le vôtre, dans votre maison solaire 5 : l’amour, la créativité et le plaisir prennent un ton plus léger.',
+    9: 'À partir du 26 juillet, Jupiter traverse un signe de terre comme le vôtre, dans votre maison solaire 9 : voyages, études et vision plus large de votre avenir.',
+  },
+};
+
+export function signRows2027c(event: 'newMoons2027' | 'jupiterVirgo2027', locale: SkyLocale, index: number): string {
+  const name = SIGN_NAMES[locale][index];
+  const topic = (h: number) => HOUSE_TOPIC[locale][h - 1];
+  const o = (h: number) => ordinal(h, locale);
+  if (event === 'jupiterVirgo2027') {
+    const hl = solarHouse(index, SIGN_LEO);
+    const hv = solarHouse(index, SIGN_VIRGO);
+    const extra = JUP_2027_EXTRA[locale][index];
+    return locale === 'fr'
+      ? `Pour ${FR_ARTICLE[index]}${name}, Jupiter traverse votre maison solaire ${hl} (${topic(hl)}) jusqu’au 26 juillet 2027, puis votre maison ${hv} (${topic(hv)}) jusqu’au 24 août 2028. C’est dans ce second domaine que les occasions de grandir se présentent pendant un an.${extra ? ` ${extra}` : ''}`
+      : `For ${name}, Jupiter moves through your ${o(hl)} solar house (${topic(hl)}) until 26 July 2027, then your ${o(hv)} house (${topic(hv)}) until 24 August 2028. That second area is where chances to grow show up for a year.${extra ? ` ${extra}` : ''}`;
+  }
+  const own = NEW_MOONS_2027.filter((nm) => nm.sign === index);
+  const dateOf = (iso: string) => new Intl.DateTimeFormat(locale === 'fr' ? 'fr-FR' : 'en-GB', { day: 'numeric', month: 'long', timeZone: 'Europe/Paris' }).format(new Date(iso));
+  const first = own[0];
+  const career = (index + 9) % 12;
+  const careerNm = NEW_MOONS_2027.find((nm) => nm.sign === career)!;
+  const extra = NM_2027_EXTRA[locale][index];
+  return locale === 'fr'
+    ? `Pour ${FR_ARTICLE[index]}${name}, votre Nouvelle Lune de l’année est celle du ${dateOf(first.utc)}, à ${first.deg} ${name} : le meilleur moment du cycle pour poser une intention personnelle. Celle du ${dateOf(careerNm.utc)}, en ${SIGN_NAMES.fr[career]}, ouvre votre maison 10, celle de ${topic(10)}.${extra ? ` ${extra}` : ''}`
+    : `For ${name}, your New Moon of the year is on ${dateOf(first.utc)}, at ${first.deg} ${name}: the best point of the cycle to set a personal intention. The one on ${dateOf(careerNm.utc)}, in ${SIGN_NAMES.en[career]}, opens your 10th house, ${topic(10)}.${extra ? ` ${extra}` : ''}`;
+}
+
+function newMoons2027Copy(locale: SkyLocale): SkyEventCopy {
+  const path = SKY_EVENT_PATHS.newMoons2027[locale];
+  const links = [link2027(locale), ...commonLinks(locale)];
+  const signs = SIGN_NAMES[locale];
+  const rows = NEW_MOONS_2027.map((nm, i) => {
+    const note = NM_NOTE[locale][i];
+    const km = new Intl.NumberFormat(locale === 'fr' ? 'fr-FR' : 'en-GB').format(nm.km);
+    const label = locale === 'fr' ? `Nouvelle Lune en ${signs[nm.sign]}` : `New Moon in ${signs[nm.sign]}`;
+    return rowIso(nm.utc, locale, i === 12 ? `${label} (2)` : i === 0 ? `${label} (1)` : label, `${nm.deg} ${signs[nm.sign]}, ${km} km${note ? ` (${note})` : ''}`);
+  });
+  if (locale === 'fr') {
+    return {
+      id: 'newMoons2027',
+      locale,
+      path,
+      title: 'Nouvelles Lunes 2027 : calendrier, heures et signes',
+      description: 'Les 13 Nouvelles Lunes de 2027, du 7 janvier au 27 décembre (Capricorne). Heures de Paris et UTC, signes, 2 éclipses de Soleil, Lune noire d’août, 12 signes.',
+      h1: 'Calendrier des Nouvelles Lunes 2027 : dates, heures et signes',
+      breadcrumb: 'Nouvelles Lunes 2027',
+      answer: [
+        'Il y a 13 Nouvelles Lunes en 2027 : la première le 7 janvier à 21 h 24 (heure de Paris) en Capricorne, la dernière le 27 décembre à 21 h 12, de nouveau en Capricorne.',
+        'Deux d’entre elles sont des éclipses de Soleil (annulaire le 6 février en Verseau, totale le 2 août en Lion), et août en compte deux, le 2 et le 31 : la seconde est souvent appelée « Lune noire ».',
+      ],
+      updated: 'Publié le 16 novembre 2026',
+      tableTitle: 'Les Nouvelles Lunes de 2027',
+      tableCaption: 'Instant de la Nouvelle Lune exacte, éphéméride NASA JPL DE440, distance Terre-Lune au centre',
+      cols: ['Nouvelle Lune', 'Heure de Paris', 'UTC', 'Position et distance'],
+      rows,
+      sections: [
+        {
+          h2: 'Les Nouvelles Lunes 2027 mois par mois',
+          paragraphs: [
+            'Janvier (7) en Capricorne, février (6) en Verseau, mars (8) en Poissons, avril (7 à Paris, 6 en UTC) en Bélier, mai (6) en Taureau, juin (4) en Gémeaux, juillet (4) en Cancer, août (2) en Lion, août (31) en Vierge, septembre (30) en Balance, octobre (29) en Scorpion, novembre (28) en Sagittaire et décembre (27) en Capricorne.',
+            'Chaque signe reçoit donc sa Nouvelle Lune en 2027, et le Capricorne en reçoit deux. Attention au décalage horaire : la Nouvelle Lune en Bélier a lieu le 6 avril à 23 h 51 UTC, soit le 7 avril à 1 h 51 à Paris.',
+          ],
+        },
+        {
+          h2: 'Les deux Nouvelles Lunes éclipses de 2027',
+          paragraphs: [
+            'Le 6 février 2027, la Nouvelle Lune en Verseau (17°38′) produit une éclipse de Soleil annulaire, visible en bande étroite du Chili au Brésil puis du Ghana au Nigeria, pas depuis la France.',
+            'Le 2 août 2027, la Nouvelle Lune en Lion (9°55′) produit une éclipse totale de Soleil. C’est aussi la Nouvelle Lune la plus proche de la Terre de l’année (357 383 km), ce qui explique une totalité très longue, jusqu’à 6 min 23 s près de Louxor. Depuis la France, l’éclipse est partielle. Les heures et le trajet sont sur notre calendrier des éclipses 2027.',
+          ],
+        },
+        {
+          h2: 'Deux Nouvelles Lunes en août : la « Lune noire » du 31 août',
+          paragraphs: [
+            'Le 2 et le 31 août 2027, le mois compte deux Nouvelles Lunes. La seconde, à 8°06′ Vierge, est appelée « Lune noire » dans plusieurs calendriers populaires. Ce n’est pas un terme d’astronomie, et elle est invisible comme toute Nouvelle Lune.',
+            'Le même jour, à 9 h 29 heure de Paris, Jupiter est en conjonction avec le Soleil à 7°42′ Vierge. En astrologie, une Nouvelle Lune accompagnée de Jupiter est lue comme un départ porteur. Les dates de Jupiter sont sur notre page Jupiter en Vierge 2027.',
+          ],
+        },
+        {
+          h2: 'Ce que signifie une Nouvelle Lune en astrologie',
+          paragraphs: [
+            'À la Nouvelle Lune, la Lune passe entre la Terre et le Soleil : elle est dans le même signe que le Soleil et ne se voit pas. Le croissant réapparaît le soir, à l’ouest, un à deux jours plus tard.',
+            'Les astrologues y voient le début d’un cycle de 29,5 jours, propice aux intentions, aux décisions et aux nouveaux départs, que la Pleine Lune suivante viendra éclairer. C’est une lecture symbolique, sans effet physique prouvé sur l’humeur.',
+          ],
+        },
+      ],
+      signsTitle: 'Les Nouvelles Lunes 2027 pour chaque signe',
+      signsIntro: 'Lecture à partir de votre signe solaire : votre Nouvelle Lune personnelle, puis celle qui active votre maison de la carrière. Avec votre thème astral gratuit, vous voyez la maison exacte de chaque lunaison.',
+      adviceTitle: 'Comment utiliser les Nouvelles Lunes de 2027',
+      advice: [
+        'Notez les 13 dates dans votre agenda. Le soir de la Nouvelle Lune, écrivez une à trois intentions concrètes, au présent.',
+        'Gardez la même intention jusqu’à la Pleine Lune suivante, environ quinze jours plus tard, et faites le point ce jour-là.',
+        'Pour revoir le premier croissant, regardez à l’ouest juste après le coucher du soleil, un ou deux jours après la Nouvelle Lune.',
+        'Ne regardez jamais une éclipse de Soleil sans lunettes homologuées ISO 12312-2, même partielle.',
+      ],
+      method: 'Méthode : instants des Nouvelles Lunes (conjonction exacte en longitude du Soleil et de la Lune), degrés et distances calculés par Callastral avec l’éphéméride NASA JPL DE440 (positions géocentriques apparentes, zodiaque tropical). Éclipses recoupées avec le catalogue de la NASA. L’heure de Paris est UTC+1 jusqu’au 28 mars 2027, puis UTC+2 jusqu’au 31 octobre 2027, puis de nouveau UTC+1.',
+      faqTitle: 'Questions fréquentes',
+      faqs: [
+        { question: 'Combien y a-t-il de Nouvelles Lunes en 2027 ?', answer: 'Treize, du 7 janvier au 27 décembre 2027. Août en compte deux (le 2 et le 31) et le Capricorne en reçoit deux (7 janvier et 27 décembre).' },
+        { question: 'Quand est la Nouvelle Lune de janvier 2027 ?', answer: 'Le 7 janvier 2027 à 21 h 24, heure de Paris (20 h 24 UTC), à 17°18′ Capricorne.' },
+        { question: 'Quelles Nouvelles Lunes de 2027 sont des éclipses ?', answer: 'Celle du 6 février (éclipse annulaire en Verseau) et celle du 2 août (éclipse totale en Lion, partielle depuis la France).' },
+        { question: 'Qu’est-ce que la Lune noire d’août 2027 ?', answer: 'La deuxième Nouvelle Lune d’un même mois civil : le 31 août 2027 à 19 h 41 (heure de Paris), à 8°06′ Vierge. C’est un nom populaire, pas un terme d’astronomie.' },
+        { question: 'Quand est la Nouvelle Lune en Bélier 2027 ?', answer: 'Le 6 avril 2027 à 23 h 51 UTC, soit le 7 avril à 1 h 51 à Paris, à 16°57′ Bélier.' },
+        { question: 'Peut-on voir la Nouvelle Lune ?', answer: 'Non, elle est du côté du Soleil et sa face éclairée ne nous fait pas face. Seule exception : lors d’une éclipse de Soleil, on voit sa silhouette passer devant le Soleil.' },
+      ],
+      ctaText: 'Une intention à poser, une histoire à recommencer, une décision qui tourne en rond ? Parlez-en à voix haute avec une Conseillère ou un Conseiller Callastral, à partir de votre vrai thème. Aucune date inventée. Aucun compteur caché. Ton vrai ciel.',
+      ctaButton: '3 min offertes, sans carte',
+      linksTitle: 'Aller plus loin',
+      links,
+      related: { href: SKY_EVENT_PATHS.fullMoons2027.fr, label: SKY_EVENT_LABELS.fullMoons2027.fr },
+      home: 'Accueil',
+      disclaimer: DISCLAIMER.fr,
+    };
+  }
+  return {
+    id: 'newMoons2027',
+    locale,
+    path,
+    title: 'New Moon Calendar 2027: Dates, Times and Signs',
+    description: 'All 13 New Moons of 2027, 7 January to 27 December (both in Capricorn). Paris and UTC times, signs, 2 solar eclipses, August Black Moon and 12 signs.',
+    h1: 'New Moon calendar 2027: dates, times and signs',
+    breadcrumb: 'New Moons 2027',
+    answer: [
+      'There are 13 New Moons in 2027: the first on 7 January at 20:24 UTC in Capricorn, the last on 27 December at 20:12 UTC, again in Capricorn.',
+      'Two of them are solar eclipses (annular on 6 February in Aquarius, total on 2 August in Leo), and August has two New Moons, on the 2nd and the 31st: the second is often called a Black Moon.',
+    ],
+    updated: 'Published on 16 November 2026',
+    tableTitle: 'New Moons of 2027',
+    tableCaption: 'Time of exact New Moon, NASA JPL DE440 ephemeris, centre-to-centre Earth–Moon distance',
+    cols: ['New Moon', 'Paris time', 'UTC', 'Position and distance'],
+    rows,
+    sections: [
+      {
+        h2: '2027 New Moons month by month',
+        paragraphs: [
+          'January (7) in Capricorn, February (6) in Aquarius, March (8) in Pisces, April (6 UTC, 7 in Paris) in Aries, May (6) in Taurus, June (4) in Gemini, July (4) in Cancer, August (2) in Leo, August (31) in Virgo, September (30) in Libra, October (29) in Scorpio, November (28) in Sagittarius and December (27) in Capricorn.',
+          'So every sign gets its New Moon in 2027, and Capricorn gets two. Watch the time zone: the Aries New Moon is on 6 April at 23:51 UTC, which is 01:51 on 7 April in Paris and later in Asia.',
+        ],
+      },
+      {
+        h2: 'The two eclipse New Moons of 2027',
+        paragraphs: [
+          'On 6 February 2027 the New Moon in Aquarius (17°38′) produces an annular solar eclipse, visible along a narrow path from Chile to Brazil, then from Ivory Coast to Nigeria, not from France.',
+          'On 2 August 2027 the New Moon in Leo (9°55′) produces a total solar eclipse. It is also the closest New Moon of the year (357,383 km), which helps explain a very long totality, up to 6 min 23 s near Luxor in Egypt. From most of Europe it is partial. Times and path are on our 2027 eclipse calendar.',
+        ],
+      },
+      {
+        h2: 'Two New Moons in August: the Black Moon of 31 August',
+        paragraphs: [
+          'August 2027 has two New Moons, on the 2nd and the 31st. The second, at 8°06′ Virgo, is called a Black Moon in several popular calendars. It is not an astronomical term, and like every New Moon it cannot be seen.',
+          'The same day, at 07:29 UTC, Jupiter is conjunct the Sun at 7°42′ Virgo. In astrology a New Moon joined by Jupiter is read as a supportive start. Jupiter’s dates are on our Jupiter in Virgo 2027 page.',
+        ],
+      },
+      {
+        h2: 'What a New Moon means in astrology',
+        paragraphs: [
+          'At the New Moon the Moon passes between Earth and the Sun: it sits in the same sign as the Sun and is invisible. The thin crescent returns in the western evening sky one or two days later.',
+          'Astrologers read it as the start of a 29.5-day cycle, good for intentions, decisions and fresh starts, which the following Full Moon will bring to light. This is a symbolic reading, with no proven physical effect on mood.',
+        ],
+      },
+    ],
+    signsTitle: 'The 2027 New Moons for each sign',
+    signsIntro: 'Reading from your Sun sign: your personal New Moon, then the one that activates your career house. With your free birth chart you see the exact house of each lunation.',
+    adviceTitle: 'How to use the 2027 New Moons',
+    advice: [
+      'Put all 13 dates in your calendar. On the evening of each New Moon, write one to three concrete intentions, in the present tense.',
+      'Keep the same intention until the next Full Moon, about two weeks later, and check in that day.',
+      'To catch the first crescent, look west just after sunset, one or two days after the New Moon.',
+      'Never look at a solar eclipse without ISO 12312-2 certified glasses, even a partial one.',
+    ],
+    method: 'Method: New Moon times (exact conjunction in longitude of Sun and Moon), degrees and distances computed by Callastral with the NASA JPL DE440 ephemeris (geocentric, apparent positions, tropical zodiac). Eclipses cross-checked against the NASA catalogue. Paris time is UTC+1 until 28 March 2027, UTC+2 until 31 October 2027, then UTC+1 again.',
+    faqTitle: 'Frequently asked questions',
+    faqs: [
+      { question: 'How many New Moons are there in 2027?', answer: 'Thirteen, from 7 January to 27 December 2027. August has two (2nd and 31st) and Capricorn gets two (7 January and 27 December).' },
+      { question: 'When is the January 2027 New Moon?', answer: 'On 7 January 2027 at 20:24 UTC (21:24 Paris time), at 17°18′ Capricorn.' },
+      { question: 'Which 2027 New Moons are eclipses?', answer: 'The 6 February New Moon (annular eclipse in Aquarius) and the 2 August New Moon (total eclipse in Leo).' },
+      { question: 'What is the Black Moon of August 2027?', answer: 'The second New Moon in one calendar month: 31 August 2027 at 17:41 UTC, at 8°06′ Virgo. It is a folk name, not an astronomical term.' },
+      { question: 'When is the New Moon in Aries 2027?', answer: 'On 6 April 2027 at 23:51 UTC (01:51 on 7 April in Paris), at 16°57′ Aries.' },
+      { question: 'Can you see a New Moon?', answer: 'No, it sits on the Sun’s side and its lit face points away from us. The exception is a solar eclipse, when you see its silhouette cross the Sun.' },
+    ],
+    ctaText: 'An intention to set, a story to start over, a decision going round in circles? Talk it through out loud with a Callastral advisor, from your real birth chart. No invented dates. No hidden meter. Your real sky.',
+    ctaButton: '3 free minutes, no card',
+    linksTitle: 'Go further',
+    links,
+    related: { href: SKY_EVENT_PATHS.fullMoons2027.en, label: SKY_EVENT_LABELS.fullMoons2027.en },
+    home: 'Home',
+    disclaimer: DISCLAIMER.en,
+  };
+}
+
+const METHOD_JUP: Record<SkyLocale, string> = {
+  en: 'Method: Jupiter’s ingresses, stations, aspects and degrees were computed by Callastral with the NASA JPL DE440 ephemeris (geocentric, apparent positions, tropical zodiac). Station times can differ by an hour or more between ephemerides, because Jupiter barely moves for days around a station. Paris times follow French winter time (UTC+1) and summer time (UTC+2).',
+  fr: 'Méthode : entrées en signe, stations, aspects et degrés de Jupiter calculés par Callastral avec l’éphéméride NASA JPL DE440 (positions géocentriques apparentes, zodiaque tropical). L’heure d’une station peut varier d’une heure ou plus selon l’éphéméride, car Jupiter reste presque immobile plusieurs jours. Les heures de Paris suivent l’heure d’hiver (UTC+1) et l’heure d’été (UTC+2).',
+};
+
+function jupiterVirgo2027Copy(locale: SkyLocale): SkyEventCopy {
+  const t = (iso: string) => bothIso(iso, locale);
+  const path = SKY_EVENT_PATHS.jupiterVirgo2027[locale];
+  const links = [link2027(locale), ...commonLinks(locale)];
+  if (locale === 'fr') {
+    return {
+      id: 'jupiterVirgo2027',
+      locale,
+      path,
+      title: 'Jupiter en Vierge 2027 : date, rétrograde et 12 signes',
+      description: 'Jupiter entre en Vierge le 26 juillet 2027 à 6 h 49 (Paris) et y reste jusqu’au 24 août 2028. Jupiter 2027 : rétrograde, trigone à Saturne et 12 signes.',
+      h1: 'Jupiter en Vierge 2027 : dates, heures et effets par signe',
+      breadcrumb: 'Jupiter en Vierge 2027',
+      answer: [
+        `En 2027, Jupiter entre en Vierge le ${t(J2027.intoVirgo)} et y reste jusqu’au 24 août 2028, date de son entrée en Balance.`,
+        'Avant cela, Jupiter passe les sept premiers mois de 2027 en Lion : rétrograde depuis le 13 décembre 2026, il redevient direct le 13 avril 2027 à 17°00′ Lion. C’est la première fois depuis 2015-2016 que Jupiter traverse la Vierge.',
+      ],
+      updated: 'Publié le 16 novembre 2026',
+      tableTitle: 'Le calendrier de Jupiter 2026-2028',
+      tableCaption: 'Calculé avec l’éphéméride NASA JPL DE440',
+      cols: ['Événement', 'Heure de Paris', 'UTC', 'Position'],
+      rows: [
+        rowIso(J2027.retro, 'fr', 'Jupiter devient rétrograde', '27°01′ Lion'),
+        rowIso(J2027.opposition, 'fr', 'Opposition au Soleil (visibilité maximale)', '22°02′ Lion'),
+        rowIso(J2027.trineSaturn2, 'fr', 'Trigone Jupiter-Saturne (2e passage)', '17°08′ Lion / Bélier'),
+        rowIso(J2027.direct, 'fr', 'Jupiter redevient direct', '17°00′ Lion'),
+        rowIso(J2027.trineSaturn3, 'fr', 'Trigone Jupiter-Saturne (3e passage)', '27°10′ Lion / Bélier'),
+        rowIso(J2027.intoVirgo, 'fr', 'Jupiter entre en Vierge', '0° Vierge'),
+        rowIso(J2027.conjSun, 'fr', 'Conjonction Jupiter-Soleil', '7°42′ Vierge'),
+        rowIso(J2027.squareUranus, 'fr', 'Carré Jupiter-Uranus', '9°57′ Vierge / Gémeaux'),
+        rowIso(J2027.retro2, 'fr', 'Jupiter devient rétrograde', '27°31′ Vierge'),
+        rowIso(J2027.direct2, 'fr', 'Jupiter redevient direct', '17°32′ Vierge'),
+        rowIso(J2027.intoLibra, 'fr', 'Jupiter entre en Balance', '0° Balance'),
+      ],
+      sections: [
+        {
+          h2: 'Jupiter 2027 en un coup d’œil',
+          paragraphs: [
+            'Jupiter met environ douze ans à faire le tour du zodiaque et reste à peu près un an dans chaque signe. Entré en Lion le 30 juin 2026, il y passe l’hiver et le printemps 2027, puis entre en Vierge le 26 juillet 2027. Il ne revient pas en Lion : sa rétrogradation de 2028 s’arrête à 17°32′ Vierge.',
+            'Le dernier passage de Jupiter en Vierge a eu lieu du 11 août 2015 au 9 septembre 2016. Ce qui s’est ouvert pour vous à cette période peut donner une idée du domaine qui revient au premier plan.',
+          ],
+        },
+        {
+          h2: 'Jusqu’au 26 juillet 2027 : Jupiter en Lion, rétrograde puis direct',
+          paragraphs: [
+            `Jupiter est rétrograde depuis le ${t(J2027.retro)} et redevient direct le ${t(J2027.direct)}. Le ${t(J2027.opposition)}, il est à l’opposition du Soleil : visible toute la nuit, à environ 652 millions de km, c’est le meilleur moment de l’année pour l’observer.`,
+            'Jupiter forme aussi un trigone à Saturne en Bélier, en trois passages exacts : 31 août 2026, 3 avril 2027 et 11 juillet 2027. En astrologie, ce trigone feu-feu est lu comme une période où l’élan et la structure vont dans le même sens, favorable pour bâtir quelque chose de durable.',
+          ],
+        },
+        {
+          h2: 'À partir du 26 juillet 2027 : ce que signifie Jupiter en Vierge',
+          paragraphs: [
+            'En astrologie, Jupiter représente la croissance, la confiance et les occasions. En Vierge, signe de terre gouverné par Mercure, cette expansion passe par le concret : le travail bien fait, la santé, les habitudes, l’organisation et le service rendu aux autres.',
+            'Les astrologues lisent souvent Jupiter en Vierge comme une période où l’on progresse par petites améliorations régulières plutôt que par coups d’éclat. La Vierge étant un signe de détail, l’excès de Jupiter peut aussi prendre la forme du perfectionnisme ou d’un trop-plein de tâches.',
+          ],
+        },
+        {
+          h2: 'Les dates clés de Jupiter en Vierge',
+          paragraphs: [
+            `Le ${t(J2027.conjSun)}, Jupiter est en conjonction avec le Soleil, et la Nouvelle Lune du même jour tombe à 8°06′ Vierge. Le ${t(J2027.squareUranus)}, Jupiter forme un carré exact à Uranus en Gémeaux : un aspect de changement rapide et d’imprévus.`,
+            'Jupiter devient rétrograde le 12 janvier 2028 à 27°31′ Vierge et redevient direct le 13 mai 2028 à 17°32′ Vierge, avant d’entrer en Balance le 24 août 2028.',
+          ],
+        },
+      ],
+      signsTitle: 'Jupiter en 2027 pour chaque signe',
+      signsIntro: 'Lecture par maisons solaires, à partir de votre signe solaire. Votre ascendant, calculé par notre thème astral gratuit, donne la maison exacte touchée par Jupiter.',
+      adviceTitle: 'Comment profiter de Jupiter en Vierge',
+      advice: [
+        'Choisissez une habitude à améliorer (sommeil, sport, organisation) et suivez-la sur douze mois, le temps du passage de Jupiter.',
+        'Avant le 26 juillet, terminez ou montrez ce que vous avez lancé pendant Jupiter en Lion ; après, consolidez.',
+        'Repérez le domaine de votre maison Vierge dans votre thème astral : c’est là que les occasions sont lues en astrologie.',
+        'Jupiter promet de la croissance, pas un résultat garanti : gardez vos décisions d’argent et de santé appuyées sur des avis professionnels.',
+      ],
+      method: METHOD_JUP.fr,
+      faqTitle: 'Questions fréquentes',
+      faqs: [
+        { question: 'Quand Jupiter entre-t-il en Vierge en 2027 ?', answer: 'Le 26 juillet 2027 à 6 h 49, heure de Paris (4 h 49 UTC). Il y reste jusqu’au 24 août 2028.' },
+        { question: 'Combien de temps Jupiter reste-t-il en Vierge ?', answer: 'Environ 13 mois, du 26 juillet 2027 au 24 août 2028, sans retour en Lion.' },
+        { question: 'Quand Jupiter est-il rétrograde en 2027 ?', answer: 'Du 13 décembre 2026 (27°01′ Lion) au 13 avril 2027 (17°00′ Lion). La rétrogradation suivante va du 12 janvier au 13 mai 2028, en Vierge.' },
+        { question: 'Quand Jupiter était-il en Vierge la dernière fois ?', answer: 'Du 11 août 2015 au 9 septembre 2016. Jupiter revient dans un même signe environ tous les douze ans.' },
+        { question: 'Quels signes profitent le plus de Jupiter en Vierge ?', answer: 'En lecture solaire, la Vierge (Jupiter dans son signe), le Taureau et le Capricorne (signes de terre en harmonie). Les Poissons le vivent par le couple, les Gémeaux et le Sagittaire par des tensions à transformer.' },
+        { question: 'Quand voir Jupiter dans le ciel en 2027 ?', answer: 'Autour de l’opposition du 11 février 2027 : Jupiter est alors visible toute la nuit en Lion, plus brillant que toutes les étoiles. Fin août, il est invisible, noyé dans la lumière du Soleil.' },
+      ],
+      ctaText: 'Une envie de changer de travail, une habitude à reprendre, une relation à faire grandir ? Parlez-en à voix haute avec une Conseillère ou un Conseiller Callastral, à partir de votre vrai thème. Aucune date inventée. Aucun compteur caché. Ton vrai ciel.',
+      ctaButton: '3 min offertes, sans carte',
+      linksTitle: 'Aller plus loin',
+      links,
+      related: { href: SKY_EVENT_PATHS.marsRetrograde2027.fr, label: SKY_EVENT_LABELS.marsRetrograde2027.fr },
+      home: 'Accueil',
+      disclaimer: DISCLAIMER.fr,
+    };
+  }
+  return {
+    id: 'jupiterVirgo2027',
+    locale,
+    path,
+    title: 'Jupiter in Virgo 2027: Dates, Retrograde and 12 Signs',
+    description: 'Jupiter enters Virgo on 26 July 2027 at 04:49 UTC and stays until 24 August 2028. Jupiter 2027: retrograde, trine to Saturn and effects for all 12 signs.',
+    h1: 'Jupiter in Virgo 2027: dates, times and effects by sign',
+    breadcrumb: 'Jupiter in Virgo 2027',
+    answer: [
+      `In 2027 Jupiter enters Virgo on ${t(J2027.intoVirgo)} and stays there until 24 August 2028, when it moves into Libra.`,
+      'Before that, Jupiter spends the first seven months of 2027 in Leo: retrograde since 13 December 2026, it turns direct on 13 April 2027 at 17°00′ Leo. It is Jupiter’s first time in Virgo since 2015–2016.',
+    ],
+    updated: 'Published on 16 November 2026',
+    tableTitle: 'Jupiter 2026–2028 calendar',
+    tableCaption: 'Calculated with the NASA JPL DE440 ephemeris',
+    cols: ['Event', 'Paris time', 'UTC', 'Position'],
+    rows: [
+      rowIso(J2027.retro, 'en', 'Jupiter stations retrograde', '27°01′ Leo'),
+      rowIso(J2027.opposition, 'en', 'Opposition to the Sun (best visibility)', '22°02′ Leo'),
+      rowIso(J2027.trineSaturn2, 'en', 'Jupiter trine Saturn (2nd pass)', '17°08′ Leo / Aries'),
+      rowIso(J2027.direct, 'en', 'Jupiter stations direct', '17°00′ Leo'),
+      rowIso(J2027.trineSaturn3, 'en', 'Jupiter trine Saturn (3rd pass)', '27°10′ Leo / Aries'),
+      rowIso(J2027.intoVirgo, 'en', 'Jupiter enters Virgo', '0° Virgo'),
+      rowIso(J2027.conjSun, 'en', 'Jupiter conjunct the Sun', '7°42′ Virgo'),
+      rowIso(J2027.squareUranus, 'en', 'Jupiter square Uranus', '9°57′ Virgo / Gemini'),
+      rowIso(J2027.retro2, 'en', 'Jupiter stations retrograde', '27°31′ Virgo'),
+      rowIso(J2027.direct2, 'en', 'Jupiter stations direct', '17°32′ Virgo'),
+      rowIso(J2027.intoLibra, 'en', 'Jupiter enters Libra', '0° Libra'),
+    ],
+    sections: [
+      {
+        h2: 'Jupiter 2027 at a glance',
+        paragraphs: [
+          'Jupiter takes about twelve years to travel the zodiac and spends roughly a year in each sign. After entering Leo on 30 June 2026, it stays there through winter and spring 2027, then enters Virgo on 26 July 2027. It does not go back to Leo: its 2028 retrograde stops at 17°32′ Virgo.',
+          'Jupiter’s last stay in Virgo ran from 11 August 2015 to 9 September 2016. Whatever opened up for you then can hint at the area that comes back into focus.',
+        ],
+      },
+      {
+        h2: 'Until 26 July 2027: Jupiter in Leo, retrograde then direct',
+        paragraphs: [
+          `Jupiter has been retrograde since ${t(J2027.retro)} and turns direct on ${t(J2027.direct)}. On ${t(J2027.opposition)} it is opposite the Sun: visible all night, about 652 million km away, the best time of the year to see it.`,
+          'Jupiter also forms a trine to Saturn in Aries, exact three times: 31 August 2026, 3 April 2027 and 11 July 2027. In astrology this fire trine is read as a time when drive and structure pull in the same direction, good for building something that lasts.',
+        ],
+      },
+      {
+        h2: 'From 26 July 2027: what Jupiter in Virgo means',
+        paragraphs: [
+          'In astrology Jupiter stands for growth, confidence and opportunity. In Virgo, an earth sign ruled by Mercury, that growth goes through practical things: work done well, health, habits, organisation and being useful to others.',
+          'Astrologers often read Jupiter in Virgo as a period of progress through small, steady improvements rather than big gestures. Because Virgo is a sign of detail, Jupiter’s excess can also show up as perfectionism or too many tasks.',
+        ],
+      },
+      {
+        h2: 'Key dates of Jupiter in Virgo',
+        paragraphs: [
+          `On ${t(J2027.conjSun)} Jupiter is conjunct the Sun, and the New Moon that same day falls at 8°06′ Virgo. On ${t(J2027.squareUranus)} Jupiter makes an exact square to Uranus in Gemini: an aspect of fast change and surprises.`,
+          'Jupiter turns retrograde on 12 January 2028 at 27°31′ Virgo and direct again on 13 May 2028 at 17°32′ Virgo, before entering Libra on 24 August 2028.',
+        ],
+      },
+    ],
+    signsTitle: 'Jupiter in 2027 for each sign',
+    signsIntro: 'Reading by solar houses, from your Sun sign. Your rising sign, calculated by our free birth chart, gives the exact house Jupiter touches.',
+    adviceTitle: 'How to make the most of Jupiter in Virgo',
+    advice: [
+      'Pick one habit to improve (sleep, exercise, organisation) and track it for twelve months, the length of Jupiter’s stay.',
+      'Before 26 July, finish or show what you started under Jupiter in Leo; after it, consolidate.',
+      'Find the area of your Virgo house in your birth chart: that is where astrology reads the opportunities.',
+      'Jupiter suggests growth, not a guaranteed result: keep money and health decisions grounded in professional advice.',
+    ],
+    method: METHOD_JUP.en,
+    faqTitle: 'Frequently asked questions',
+    faqs: [
+      { question: 'When does Jupiter enter Virgo in 2027?', answer: 'On 26 July 2027 at 04:49 UTC (06:49 Paris time). It stays there until 24 August 2028.' },
+      { question: 'How long is Jupiter in Virgo?', answer: 'About 13 months, from 26 July 2027 to 24 August 2028, with no return to Leo.' },
+      { question: 'When is Jupiter retrograde in 2027?', answer: 'From 13 December 2026 (27°01′ Leo) to 13 April 2027 (17°00′ Leo). The next retrograde runs from 12 January to 13 May 2028, in Virgo.' },
+      { question: 'When was Jupiter last in Virgo?', answer: 'From 11 August 2015 to 9 September 2016. Jupiter comes back to the same sign about every twelve years.' },
+      { question: 'Which signs benefit most from Jupiter in Virgo?', answer: 'In a Sun-sign reading, Virgo (Jupiter in its sign), Taurus and Capricorn (fellow earth signs). Pisces feels it through partnerships, Gemini and Sagittarius through tensions to work with.' },
+      { question: 'When can you see Jupiter in 2027?', answer: 'Around the opposition of 11 February 2027, when Jupiter is visible all night in Leo, brighter than any star. In late August it is lost in the Sun’s glare.' },
+    ],
+    ctaText: 'Thinking of changing jobs, picking up a habit, helping a relationship grow? Talk it through out loud with a Callastral advisor, from your real birth chart. No invented dates. No hidden meter. Your real sky.',
+    ctaButton: '3 free minutes, no card',
+    linksTitle: 'Go further',
+    links,
+    related: { href: SKY_EVENT_PATHS.marsRetrograde2027.en, label: SKY_EVENT_LABELS.marsRetrograde2027.en },
+    home: 'Home',
+    disclaimer: DISCLAIMER.en,
+  };
+}
+
 export function skyEventCopy(id: SkyEventId, locale: SkyLocale): SkyEventCopy {
   let copy: SkyEventCopy;
   if (id === 'mercuryVenusDirect') copy = mercuryVenusCopy(locale);
@@ -2178,6 +2637,8 @@ export function skyEventCopy(id: SkyEventId, locale: SkyLocale): SkyEventCopy {
   else if (id === 'eclipses2027') copy = eclipses2027Copy(locale);
   else if (id === 'marsRetrograde2027') copy = marsRetro2027Copy(locale);
   else if (id === 'fullMoons2027') copy = fullMoons2027Copy(locale);
+  else if (id === 'newMoons2027') copy = newMoons2027Copy(locale);
+  else if (id === 'jupiterVirgo2027') copy = jupiterVirgo2027Copy(locale);
   else copy = sagittariusSeasonCopy(locale);
   // Maillage : chaque page événement renvoie vers les autres pages du ciel de la saison.
   const others = SKY_EVENT_IDS.filter((other) => other !== id && SKY_EVENT_PATHS[other][locale] !== copy.related.href);

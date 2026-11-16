@@ -91,3 +91,12 @@ test('Mars rétrograde 2027 et Pleines Lunes 2027 : heures calculées DE440', ()
   assert.equal(fm.rows[0].utc, '22 January 2027, 12:17 UTC');
   assert.equal(skyEventCopy('fullMoons2027', 'fr').rows[8].paris, '16 septembre 2027 à 1 h 04 (heure de Paris)');
 });
+
+test('Nouvelles Lunes 2027 et Jupiter en Vierge 2027 : heures calculées DE440', () => {
+  const nm = skyEventCopy('newMoons2027', 'en');
+  assert.equal(nm.rows.length, 13);
+  assert.equal(nm.rows[0].utc, '7 January 2027, 20:24 UTC');
+  assert.equal(skyEventCopy('newMoons2027', 'fr').rows[3].paris, '7 avril 2027 à 1 h 51 (heure de Paris)');
+  assert.match(skyEventCopy('jupiterVirgo2027', 'fr').answer[0], /26 juillet, 6 h 49 Paris \(4 h 49 UTC\)/);
+  assert.match(skyEventCopy('jupiterVirgo2027', 'en').answer[0], /26 July, 06:49 Paris \(04:49 UTC\)/);
+});
