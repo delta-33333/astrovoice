@@ -20,7 +20,17 @@ const TRIAL_PATH: Record<Locale, string> = {
   de: '/de/probe',
   it: '/it/prova',
 };
+
+/** Entrée essai sous le résultat : douleur n°1 (incertitude amoureuse), sans date inventée. */
+const COUPLE_TRIAL: Record<Locale, { lead: string; cta: string; again: string }> = {
+  fr: { lead: 'Un score ne dit pas ce que l’autre ressent ni quand il reviendra. Parlez-en à une voix IA qui part de votre thème calculé sur le vrai ciel, sans date inventée.', cta: 'Parler 3 min gratuitement de votre couple', again: 'Calculer une autre compatibilité' },
+  en: { lead: 'A score cannot tell what the other person feels or when they will come back. Talk it through with an AI voice that starts from your chart computed on the real sky, with no invented dates.', cta: 'Talk 3 minutes free about your couple', again: 'Calculate another match' },
+  es: { lead: 'Una puntuación no dice lo que siente la otra persona ni cuándo volverá. Háblalo con una voz IA que parte de tu carta calculada sobre el cielo real, sin fechas inventadas.', cta: 'Hablar 3 min gratis de tu pareja', again: 'Calcular otra compatibilidad' },
+  de: { lead: 'Ein Wert sagt nicht, was die andere Person fühlt oder wann sie zurückkommt. Sprich mit einer KI-Stimme, die von deinem Horoskop nach dem echten Himmel ausgeht, ohne erfundene Daten.', cta: '3 Minuten gratis über eure Beziehung sprechen', again: 'Weitere Kompatibilität berechnen' },
+  it: { lead: 'Un punteggio non dice cosa prova l’altra persona né quando tornerà. Parlane con una voce IA che parte dal tuo tema calcolato sul cielo reale, senza date inventate.', cta: 'Parla 3 min gratis della tua coppia', again: 'Calcola un’altra compatibilità' },
+};
 import { HONEYPOT_FIELD } from '@/lib/form-checks';
+import { COMMON } from '@/lib/free-tools-copy';
 import type { Locale } from '@/lib/seo';
 
 const inputClass =
@@ -316,12 +326,16 @@ export default function CoupleTool({ locale }: { locale: Locale }) {
               label={locale === 'en' ? 'Share' : 'Partager'}
             />
           )}
-          <p className="flex flex-col gap-2 text-sm">
-            <Link href={couplePath(locale)} className="text-celestial-gold underline">
-              {locale === 'en' ? 'Calculate yours' : 'Calculer la vôtre'}
+          <div className="rounded-2xl border border-celestial-gold/30 bg-celestial-purple/10 p-4">
+            <p className="text-sm text-white/80 leading-relaxed">{COUPLE_TRIAL[locale].lead}</p>
+            <Link href={`${TRIAL_PATH[locale]}?topic=couple`} data-cta="trial-couple-result" data-funnel="trial" className="btn-primary mt-3 inline-block w-full text-center">
+              {COUPLE_TRIAL[locale].cta}
             </Link>
-            <Link href={`${TRIAL_PATH[locale]}?topic=couple`} className="text-celestial-gold underline">
-              {locale === 'en' ? 'Talk 3 minutes free about your couple' : 'Parler 3 min gratuitement de votre couple'}
+            <p className="mt-2 text-xs text-white/60">{COMMON[locale].callNote}</p>
+          </div>
+          <p className="text-sm">
+            <Link href={couplePath(locale)} className="text-celestial-gold underline">
+              {COUPLE_TRIAL[locale].again}
             </Link>
           </p>
           <Link href={result.sharePath ? coupleShareBookPath() : coupleToolBookPath()} data-funnel="book" className="btn-secondary inline-block text-center">
