@@ -1,0 +1,177 @@
+{
+  "date": "2026-11-16",
+  "sky": {
+    "date": "2026-11-16",
+    "computedAt": "08:00 Europe/Paris",
+    "phase": {
+      "id": "firstQuarter",
+      "illumination": 39,
+      "waxing": true
+    },
+    "bodies": [
+      {
+        "name": "Soleil",
+        "sign": "Scorpion",
+        "degree": 23,
+        "retrograde": false
+      },
+      {
+        "name": "Lune",
+        "sign": "Verseau",
+        "degree": 10,
+        "retrograde": false
+      },
+      {
+        "name": "Mercure",
+        "sign": "Scorpion",
+        "degree": 5,
+        "retrograde": false
+      },
+      {
+        "name": "Vénus",
+        "sign": "Balance",
+        "degree": 22,
+        "retrograde": false
+      },
+      {
+        "name": "Mars",
+        "sign": "Lion",
+        "degree": 25,
+        "retrograde": false
+      },
+      {
+        "name": "Jupiter",
+        "sign": "Lion",
+        "degree": 25,
+        "retrograde": false
+      },
+      {
+        "name": "Saturne",
+        "sign": "Bélier",
+        "degree": 8,
+        "retrograde": true
+      },
+      {
+        "name": "Uranus",
+        "sign": "Gémeaux",
+        "degree": 4,
+        "retrograde": true
+      },
+      {
+        "name": "Neptune",
+        "sign": "Bélier",
+        "degree": 1,
+        "retrograde": true
+      },
+      {
+        "name": "Pluton",
+        "sign": "Verseau",
+        "degree": 3,
+        "retrograde": false
+      },
+      {
+        "name": "Nœud nord",
+        "sign": "Verseau",
+        "degree": 25,
+        "retrograde": true
+      }
+    ],
+    "ingresses": [],
+    "aspects": [
+      {
+        "a": "Mars",
+        "b": "Jupiter",
+        "aspect": "conjunction",
+        "orb": 0
+      },
+      {
+        "a": "Mars",
+        "b": "Nœud nord",
+        "aspect": "opposition",
+        "orb": 0.6
+      },
+      {
+        "a": "Soleil",
+        "b": "Nœud nord",
+        "aspect": "square",
+        "orb": 1.3
+      },
+      {
+        "a": "Soleil",
+        "b": "Mars",
+        "aspect": "square",
+        "orb": 2
+      },
+      {
+        "a": "Soleil",
+        "b": "Jupiter",
+        "aspect": "square",
+        "orb": 2
+      },
+      {
+        "a": "Lune",
+        "b": "Saturne",
+        "aspect": "sextile",
+        "orb": 2.2
+      },
+      {
+        "a": "Mercure",
+        "b": "Pluton",
+        "aspect": "square",
+        "orb": 2.3
+      },
+      {
+        "a": "Vénus",
+        "b": "Nœud nord",
+        "aspect": "trine",
+        "orb": 2.3
+      },
+      {
+        "a": "Vénus",
+        "b": "Mars",
+        "aspect": "sextile",
+        "orb": 2.9
+      },
+      {
+        "a": "Vénus",
+        "b": "Jupiter",
+        "aspect": "sextile",
+        "orb": 2.9
+      }
+    ]
+  },
+  "en": {
+    "summary": "Monday 16 November 2026: the waxing Moon (about 39% lit, nearing first quarter) travels through Aquarius at around 10°, just past its meeting with Pluto, and forms a sextile to retrograde Saturn in Aries. The Sun sits at 23° Scorpio, Mercury at 5° Scorpio (direct, still square Pluto) and Venus at 22° Libra (direct). Mars and Jupiter remain conjunct at 25° Leo, opposite the North Node, squared by the Sun and sextiled by Venus, which also trines the Node. Saturn, Uranus and Neptune are retrograde. No planet changes sign today.",
+    "signs": {
+      "belier": "Aries, this Monday’s key theme is friends, groups and long-term plans. The Moon moves through Aquarius in this part of your chart and receives a supportive sextile from Saturn in your sector of identity, body and first impressions, so feelings turn into sensible plans. Friends, groups and hopes for the future take centre stage, and a useful exchange with your network can open a practical path.\n\nThe Sun in your area of shared money, intimacy and deep bonds keeps its square to Mars and Jupiter in your sector of love, pleasure and creativity: enthusiasm is high, but overcommitting is the risk, so say yes to fewer things and do them well. Venus, placed in your area of partnerships and one-to-one relationships, sextiles that pair and helps you negotiate gracefully. Mercury’s square to Pluto can still make words sharper than intended, so choose them with care.\n\nOn Tuesday, follow up on one useful contact. Use this sky as a guide, never as a sentence.",
+      "taureau": "Taurus, the week opens with a focus on career, reputation and public goals. The Moon moves through Aquarius in this part of your chart and receives a supportive sextile from Saturn in your sector of rest, the inner world and what you keep hidden, so feelings turn into sensible plans. Your public role benefits from a fresh, methodical approach, and showing results rather than promises earns quiet respect.\n\nThe Sun in your area of partnerships and one-to-one relationships keeps its square to Mars and Jupiter in your sector of home, family and private roots: enthusiasm is high, but overcommitting is the risk, so say yes to fewer things and do them well. Venus, placed in your area of daily work, health and routines, sextiles that pair and helps you negotiate gracefully. Mercury’s square to Pluto can still make words sharper than intended, so choose them with care.\n\nOn Tuesday, share a concrete result with the people who count. These are tendencies, and you decide what to do with them.",
+      "gemeaux": "Gemini, today’s sky points you toward travel, study and the beliefs that guide you. The Moon moves through Aquarius in this part of your chart and receives a supportive sextile from Saturn in your sector of friends, groups and long-term plans, so feelings turn into sensible plans. Learning and long-range plans feel exciting, and taking one concrete step toward a course, a trip or a project makes the idea real.\n\nThe Sun in your area of daily work, health and routines keeps its square to Mars and Jupiter in your sector of conversations, messages and short trips: enthusiasm is high, but overcommitting is the risk, so say yes to fewer things and do them well. Venus, placed in your area of love, pleasure and creativity, sextiles that pair and helps you negotiate gracefully. Mercury’s square to Pluto can still make words sharper than intended, so choose them with care.\n\nOn Tuesday, book or research the next step of that plan. Your choices count for more than any aspect.",
+      "cancer": "Cancer, Monday puts shared money, intimacy and deep bonds at the top of your list. The Moon moves through Aquarius in this part of your chart and receives a supportive sextile from Saturn in your sector of career, reputation and public goals, so feelings turn into sensible plans. Shared money, trust and intimacy call for clarity, and naming one need plainly prevents a silent misunderstanding.\n\nThe Sun in your area of love, pleasure and creativity keeps its square to Mars and Jupiter in your sector of money, possessions and self-worth: enthusiasm is high, but overcommitting is the risk, so say yes to fewer things and do them well. Venus, placed in your area of home, family and private roots, sextiles that pair and helps you negotiate gracefully. Mercury’s square to Pluto can still make words sharper than intended, so choose them with care.\n\nOn Tuesday, put one shared arrangement in writing. Keep what helps and let the rest go.",
+      "lion": "Leo, the heart of your day is partnerships and one-to-one relationships. The Moon moves through Aquarius in this part of your chart and receives a supportive sextile from Saturn in your sector of travel, study and the beliefs that guide you, so feelings turn into sensible plans. Partnerships need mutual respect and a little distance, and a frank but gentle talk about expectations brings you closer.\n\nThe Sun in your area of home, family and private roots keeps its square to Mars and Jupiter in your sector of identity, body and first impressions: enthusiasm is high, but overcommitting is the risk, so say yes to fewer things and do them well. Venus, placed in your area of conversations, messages and short trips, sextiles that pair and helps you negotiate gracefully. Mercury’s square to Pluto can still make words sharper than intended, so choose them with care.\n\nOn Tuesday, ask your partner or a close ally what they need this week. Use this sky as a guide, never as a sentence.",
+      "vierge": "Virgo, the Aquarius Moon spotlights daily work, health and routines today. The Moon moves through Aquarius in this part of your chart and receives a supportive sextile from Saturn in your sector of shared money, intimacy and deep bonds, so feelings turn into sensible plans. Your workload responds to good organisation, and sorting tasks by priority this morning spares you a scattered afternoon.\n\nThe Sun in your area of conversations, messages and short trips keeps its square to Mars and Jupiter in your sector of rest, the inner world and what you keep hidden: enthusiasm is high, but overcommitting is the risk, so say yes to fewer things and do them well. Venus, placed in your area of money, possessions and self-worth, sextiles that pair and helps you negotiate gracefully. Mercury’s square to Pluto can still make words sharper than intended, so choose them with care.\n\nOn Tuesday, block one hour for your most important task. These are tendencies, and you decide what to do with them.",
+      "balance": "Libra, your week begins around love, pleasure and creativity. The Moon moves through Aquarius in this part of your chart and receives a supportive sextile from Saturn in your sector of partnerships and one-to-one relationships, so feelings turn into sensible plans. Pleasure and romance grow through honesty more than drama, and planning a simple shared moment says more than grand gestures.\n\nThe Sun in your area of money, possessions and self-worth keeps its square to Mars and Jupiter in your sector of friends, groups and long-term plans: enthusiasm is high, but overcommitting is the risk, so say yes to fewer things and do them well. Venus, placed in your area of identity, body and first impressions, sextiles that pair and helps you negotiate gracefully. Mercury’s square to Pluto can still make words sharper than intended, so choose them with care.\n\nOn Tuesday, suggest an easy plan to someone you enjoy. Your choices count for more than any aspect.",
+      "scorpion": "Scorpio, this Monday asks you to look at home, family and private roots. The Moon moves through Aquarius in this part of your chart and receives a supportive sextile from Saturn in your sector of daily work, health and routines, so feelings turn into sensible plans. Home and family ask for calm structure, and fixing one practical detail at home makes the whole week feel more grounded.\n\nThe Sun in your area of identity, body and first impressions keeps its square to Mars and Jupiter in your sector of career, reputation and public goals: enthusiasm is high, but overcommitting is the risk, so say yes to fewer things and do them well. Venus, placed in your area of rest, the inner world and what you keep hidden, sextiles that pair and helps you negotiate gracefully. Mercury’s square to Pluto can still make words sharper than intended, so choose them with care.\n\nOn Tuesday, finish one small repair or tidy-up at home. Keep what helps and let the rest go.",
+      "sagittaire": "Sagittarius, the clearest message of today concerns conversations, messages and short trips. The Moon moves through Aquarius in this part of your chart and receives a supportive sextile from Saturn in your sector of love, pleasure and creativity, so feelings turn into sensible plans. Conversations flow with clear logic, so an honest message or a well-prepared call settles something that had been hanging.\n\nThe Sun in your area of rest, the inner world and what you keep hidden keeps its square to Mars and Jupiter in your sector of travel, study and the beliefs that guide you: enthusiasm is high, but overcommitting is the risk, so say yes to fewer things and do them well. Venus, placed in your area of friends, groups and long-term plans, sextiles that pair and helps you negotiate gracefully. Mercury’s square to Pluto can still make words sharper than intended, so choose them with care.\n\nOn Tuesday, send the message you drafted in your head today. Use this sky as a guide, never as a sentence.",
+      "capricorne": "Capricorn, Monday’s energy settles on money, possessions and self-worth. The Moon moves through Aquarius in this part of your chart and receives a supportive sextile from Saturn in your sector of home, family and private roots, so feelings turn into sensible plans. Money matters reward a rational review, and setting one simple rule for spending this week keeps you calm and in control.\n\nThe Sun in your area of friends, groups and long-term plans keeps its square to Mars and Jupiter in your sector of shared money, intimacy and deep bonds: enthusiasm is high, but overcommitting is the risk, so say yes to fewer things and do them well. Venus, placed in your area of career, reputation and public goals, sextiles that pair and helps you negotiate gracefully. Mercury’s square to Pluto can still make words sharper than intended, so choose them with care.\n\nOn Tuesday, check one bill or subscription you no longer use. These are tendencies, and you decide what to do with them.",
+      "verseau": "Aquarius, the day brings a clear head to identity, body and first impressions. The Moon moves through Aquarius in this part of your chart and receives a supportive sextile from Saturn in your sector of conversations, messages and short trips, so feelings turn into sensible plans. Starting the week with a cleaner image of yourself works best, and one decision about how you want to be seen gives you steady confidence.\n\nThe Sun in your area of career, reputation and public goals keeps its square to Mars and Jupiter in your sector of partnerships and one-to-one relationships: enthusiasm is high, but overcommitting is the risk, so say yes to fewer things and do them well. Venus, placed in your area of travel, study and the beliefs that guide you, sextiles that pair and helps you negotiate gracefully. Mercury’s square to Pluto can still make words sharper than intended, so choose them with care.\n\nOn Tuesday, choose one habit that reflects who you are becoming. Your choices count for more than any aspect.",
+      "poissons": "Pisces, the first thing to watch this week is rest, the inner world and what you keep hidden. The Moon moves through Aquarius in this part of your chart and receives a supportive sextile from Saturn in your sector of money, possessions and self-worth, so feelings turn into sensible plans. Your inner world asks for rest and reflection, and giving yourself a quiet evening helps you see a situation with more distance.\n\nThe Sun in your area of travel, study and the beliefs that guide you keeps its square to Mars and Jupiter in your sector of daily work, health and routines: enthusiasm is high, but overcommitting is the risk, so say yes to fewer things and do them well. Venus, placed in your area of shared money, intimacy and deep bonds, sextiles that pair and helps you negotiate gracefully. Mercury’s square to Pluto can still make words sharper than intended, so choose them with care.\n\nOn Tuesday, go to bed a little earlier than usual. Keep what helps and let the rest go."
+    }
+  },
+  "fr": {
+    "summary": "Lundi 16 novembre 2026 : la Lune croissante (environ 39 % éclairée, proche du premier quartier) avance vers 10° du Verseau, juste après sa rencontre avec Pluton, et forme un sextile à Saturne rétrograde en Bélier. Le Soleil est à 23° du Scorpion, Mercure à 5° du Scorpion (directe, toujours au carré de Pluton) et Vénus à 22° de la Balance (directe). Mars et Jupiter restent conjoints à 25° du Lion, opposés au Nœud nord, au carré du Soleil et en sextile à Vénus, qui fait aussi trigone au Nœud. Saturne, Uranus et Neptune sont rétrogrades. Aucune planète ne change de signe aujourd’hui.",
+    "signs": {
+      "belier": "Bélier, le thème clé de ce lundi est celui des amis, des groupes et des projets à long terme. La Lune traverse le Verseau dans cette zone de votre thème et reçoit un sextile porteur de Saturne, dans votre secteur de l’identité, du corps et de l’image que vous donnez : les émotions se transforment en projets raisonnables. Amis, groupes et espoirs pour l’avenir sont au premier plan, et un échange utile avec votre réseau peut ouvrir une voie concrète.\n\nLe Soleil, dans votre domaine de l’argent partagé, de l’intimité et des liens profonds, reste au carré de Mars et Jupiter dans votre secteur de l’amour, du plaisir et de la créativité : l’enthousiasme est fort, mais le risque est d’en promettre trop, alors dites oui à moins de choses et faites-les bien. Vénus, placée dans votre domaine du couple et des relations en face à face, fait sextile à ce duo et vous aide à négocier avec élégance. Le carré Mercure-Pluton peut rendre les mots tranchants : pesez-les.\n\nMardi, relancez un contact utile. Servez-vous de ce ciel comme d’un repère, jamais comme d’une sentence.",
+      "taureau": "Taureau, la semaine s’ouvre sur le domaine de la carrière, de la réputation et des objectifs publics. La Lune traverse le Verseau dans cette zone de votre thème et reçoit un sextile porteur de Saturne, dans votre secteur du repos, du monde intérieur et de ce que vous gardez pour vous : les émotions se transforment en projets raisonnables. Votre rôle public gagne à une approche neuve et méthodique, et montrer des résultats plutôt que des promesses vous vaut un respect discret.\n\nLe Soleil, dans votre domaine du couple et des relations en face à face, reste au carré de Mars et Jupiter dans votre secteur du foyer, de la famille et des racines : l’enthousiasme est fort, mais le risque est d’en promettre trop, alors dites oui à moins de choses et faites-les bien. Vénus, placée dans votre domaine du travail quotidien, de la santé et des routines, fait sextile à ce duo et vous aide à négocier avec élégance. Le carré Mercure-Pluton peut rendre les mots tranchants : pesez-les.\n\nMardi, partagez un résultat concret avec les personnes qui comptent. Ce sont des tendances, et c’est vous qui décidez quoi en faire.",
+      "gemeaux": "Gémeaux, le ciel du jour vous oriente vers le domaine des voyages, des études et des convictions. La Lune traverse le Verseau dans cette zone de votre thème et reçoit un sextile porteur de Saturne, dans votre secteur des amis, des groupes et des projets à long terme : les émotions se transforment en projets raisonnables. Les études et les projets lointains vous stimulent, et faire un pas concret vers une formation, un voyage ou un projet rend l’idée réelle.\n\nLe Soleil, dans votre domaine du travail quotidien, de la santé et des routines, reste au carré de Mars et Jupiter dans votre secteur des échanges, des messages et des petits trajets : l’enthousiasme est fort, mais le risque est d’en promettre trop, alors dites oui à moins de choses et faites-les bien. Vénus, placée dans votre domaine de l’amour, du plaisir et de la créativité, fait sextile à ce duo et vous aide à négocier avec élégance. Le carré Mercure-Pluton peut rendre les mots tranchants : pesez-les.\n\nMardi, réservez ou préparez l’étape suivante de ce projet. Vos choix comptent davantage que n’importe quel aspect.",
+      "cancer": "Cancer, ce lundi place en tête de liste le domaine de l’argent partagé, de l’intimité et des liens profonds. La Lune traverse le Verseau dans cette zone de votre thème et reçoit un sextile porteur de Saturne, dans votre secteur de la carrière, de la réputation et des objectifs publics : les émotions se transforment en projets raisonnables. L’argent partagé, la confiance et l’intimité demandent de la clarté, et nommer simplement un besoin évite un malentendu silencieux.\n\nLe Soleil, dans votre domaine de l’amour, du plaisir et de la créativité, reste au carré de Mars et Jupiter dans votre secteur de l’argent, des biens et de l’estime de soi : l’enthousiasme est fort, mais le risque est d’en promettre trop, alors dites oui à moins de choses et faites-les bien. Vénus, placée dans votre domaine du foyer, de la famille et des racines, fait sextile à ce duo et vous aide à négocier avec élégance. Le carré Mercure-Pluton peut rendre les mots tranchants : pesez-les.\n\nMardi, mettez par écrit un arrangement commun. Gardez ce qui vous aide et laissez le reste.",
+      "lion": "Lion, le cœur de votre journée se trouve dans le domaine du couple et des relations en face à face. La Lune traverse le Verseau dans cette zone de votre thème et reçoit un sextile porteur de Saturne, dans votre secteur des voyages, des études et des convictions : les émotions se transforment en projets raisonnables. Les relations ont besoin de respect mutuel et d’un peu d’espace, et une discussion franche mais douce sur vos attentes vous rapproche.\n\nLe Soleil, dans votre domaine du foyer, de la famille et des racines, reste au carré de Mars et Jupiter dans votre secteur de l’identité, du corps et de l’image que vous donnez : l’enthousiasme est fort, mais le risque est d’en promettre trop, alors dites oui à moins de choses et faites-les bien. Vénus, placée dans votre domaine des échanges, des messages et des petits trajets, fait sextile à ce duo et vous aide à négocier avec élégance. Le carré Mercure-Pluton peut rendre les mots tranchants : pesez-les.\n\nMardi, demandez à votre partenaire ou à un proche ce dont il a besoin cette semaine. Servez-vous de ce ciel comme d’un repère, jamais comme d’une sentence.",
+      "vierge": "Vierge, la Lune en Verseau éclaire aujourd’hui le domaine du travail quotidien, de la santé et des routines. La Lune traverse le Verseau dans cette zone de votre thème et reçoit un sextile porteur de Saturne, dans votre secteur de l’argent partagé, de l’intimité et des liens profonds : les émotions se transforment en projets raisonnables. Votre charge de travail répond à une bonne organisation, et trier vos tâches par priorité dès ce matin vous évite un après-midi dispersé.\n\nLe Soleil, dans votre domaine des échanges, des messages et des petits trajets, reste au carré de Mars et Jupiter dans votre secteur du repos, du monde intérieur et de ce que vous gardez pour vous : l’enthousiasme est fort, mais le risque est d’en promettre trop, alors dites oui à moins de choses et faites-les bien. Vénus, placée dans votre domaine de l’argent, des biens et de l’estime de soi, fait sextile à ce duo et vous aide à négocier avec élégance. Le carré Mercure-Pluton peut rendre les mots tranchants : pesez-les.\n\nMardi, bloquez une heure pour votre tâche la plus importante. Ce sont des tendances, et c’est vous qui décidez quoi en faire.",
+      "balance": "Balance, votre semaine commence autour du domaine de l’amour, du plaisir et de la créativité. La Lune traverse le Verseau dans cette zone de votre thème et reçoit un sextile porteur de Saturne, dans votre secteur du couple et des relations en face à face : les émotions se transforment en projets raisonnables. Le plaisir et l’amour se nourrissent de sincérité plus que de drame, et prévoir un moment simple à deux en dit plus qu’un grand geste.\n\nLe Soleil, dans votre domaine de l’argent, des biens et de l’estime de soi, reste au carré de Mars et Jupiter dans votre secteur des amis, des groupes et des projets à long terme : l’enthousiasme est fort, mais le risque est d’en promettre trop, alors dites oui à moins de choses et faites-les bien. Vénus, placée dans votre domaine de l’identité, du corps et de l’image que vous donnez, fait sextile à ce duo et vous aide à négocier avec élégance. Le carré Mercure-Pluton peut rendre les mots tranchants : pesez-les.\n\nMardi, proposez un projet simple à quelqu’un dont la compagnie vous plaît. Vos choix comptent davantage que n’importe quel aspect.",
+      "scorpion": "Scorpion, ce lundi vous demande de regarder le domaine du foyer, de la famille et des racines. La Lune traverse le Verseau dans cette zone de votre thème et reçoit un sextile porteur de Saturne, dans votre secteur du travail quotidien, de la santé et des routines : les émotions se transforment en projets raisonnables. Le foyer et la famille demandent une structure calme, et régler un détail pratique à la maison rend toute la semaine plus stable.\n\nLe Soleil, dans votre domaine de l’identité, du corps et de l’image que vous donnez, reste au carré de Mars et Jupiter dans votre secteur de la carrière, de la réputation et des objectifs publics : l’enthousiasme est fort, mais le risque est d’en promettre trop, alors dites oui à moins de choses et faites-les bien. Vénus, placée dans votre domaine du repos, du monde intérieur et de ce que vous gardez pour vous, fait sextile à ce duo et vous aide à négocier avec élégance. Le carré Mercure-Pluton peut rendre les mots tranchants : pesez-les.\n\nMardi, terminez une petite réparation ou un rangement à la maison. Gardez ce qui vous aide et laissez le reste.",
+      "sagittaire": "Sagittaire, le message le plus clair du jour concerne le domaine des échanges, des messages et des petits trajets. La Lune traverse le Verseau dans cette zone de votre thème et reçoit un sextile porteur de Saturne, dans votre secteur de l’amour, du plaisir et de la créativité : les émotions se transforment en projets raisonnables. Les échanges suivent une logique claire : un message honnête ou un appel bien préparé règle une question restée en suspens.\n\nLe Soleil, dans votre domaine du repos, du monde intérieur et de ce que vous gardez pour vous, reste au carré de Mars et Jupiter dans votre secteur des voyages, des études et des convictions : l’enthousiasme est fort, mais le risque est d’en promettre trop, alors dites oui à moins de choses et faites-les bien. Vénus, placée dans votre domaine des amis, des groupes et des projets à long terme, fait sextile à ce duo et vous aide à négocier avec élégance. Le carré Mercure-Pluton peut rendre les mots tranchants : pesez-les.\n\nMardi, envoyez le message que vous avez rédigé dans votre tête aujourd’hui. Servez-vous de ce ciel comme d’un repère, jamais comme d’une sentence.",
+      "capricorne": "Capricorne, l’énergie de ce lundi se pose sur le domaine de l’argent, des biens et de l’estime de soi. La Lune traverse le Verseau dans cette zone de votre thème et reçoit un sextile porteur de Saturne, dans votre secteur du foyer, de la famille et des racines : les émotions se transforment en projets raisonnables. Côté argent, un examen rationnel est payant, et fixer une règle simple de dépenses pour la semaine vous garde serein et maître de vos choix.\n\nLe Soleil, dans votre domaine des amis, des groupes et des projets à long terme, reste au carré de Mars et Jupiter dans votre secteur de l’argent partagé, de l’intimité et des liens profonds : l’enthousiasme est fort, mais le risque est d’en promettre trop, alors dites oui à moins de choses et faites-les bien. Vénus, placée dans votre domaine de la carrière, de la réputation et des objectifs publics, fait sextile à ce duo et vous aide à négocier avec élégance. Le carré Mercure-Pluton peut rendre les mots tranchants : pesez-les.\n\nMardi, vérifiez une facture ou un abonnement dont vous ne vous servez plus. Ce sont des tendances, et c’est vous qui décidez quoi en faire.",
+      "verseau": "Verseau, la journée apporte les idées claires dans le domaine de l’identité, du corps et de l’image que vous donnez. La Lune traverse le Verseau dans cette zone de votre thème et reçoit un sextile porteur de Saturne, dans votre secteur des échanges, des messages et des petits trajets : les émotions se transforment en projets raisonnables. Commencer la semaine avec une image de vous plus nette fonctionne bien, et une décision sur la façon dont vous voulez être perçu vous donne une confiance stable.\n\nLe Soleil, dans votre domaine de la carrière, de la réputation et des objectifs publics, reste au carré de Mars et Jupiter dans votre secteur du couple et des relations en face à face : l’enthousiasme est fort, mais le risque est d’en promettre trop, alors dites oui à moins de choses et faites-les bien. Vénus, placée dans votre domaine des voyages, des études et des convictions, fait sextile à ce duo et vous aide à négocier avec élégance. Le carré Mercure-Pluton peut rendre les mots tranchants : pesez-les.\n\nMardi, choisissez une habitude qui reflète la personne que vous devenez. Vos choix comptent davantage que n’importe quel aspect.",
+      "poissons": "Poissons, la première chose à surveiller cette semaine, c’est le domaine du repos, du monde intérieur et de ce que vous gardez pour vous. La Lune traverse le Verseau dans cette zone de votre thème et reçoit un sextile porteur de Saturne, dans votre secteur de l’argent, des biens et de l’estime de soi : les émotions se transforment en projets raisonnables. Votre monde intérieur demande repos et réflexion, et vous accorder une soirée calme aide à prendre du recul sur une situation.\n\nLe Soleil, dans votre domaine des voyages, des études et des convictions, reste au carré de Mars et Jupiter dans votre secteur du travail quotidien, de la santé et des routines : l’enthousiasme est fort, mais le risque est d’en promettre trop, alors dites oui à moins de choses et faites-les bien. Vénus, placée dans votre domaine de l’argent partagé, de l’intimité et des liens profonds, fait sextile à ce duo et vous aide à négocier avec élégance. Le carré Mercure-Pluton peut rendre les mots tranchants : pesez-les.\n\nMardi, couchez-vous un peu plus tôt que d’habitude. Gardez ce qui vous aide et laissez le reste."
+    }
+  }
+}
