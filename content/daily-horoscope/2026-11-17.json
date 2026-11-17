@@ -1,0 +1,201 @@
+{
+  "date": "2026-11-17",
+  "sky": {
+    "date": "2026-11-17",
+    "computedAt": "08:00 Europe/Paris",
+    "phase": {
+      "id": "firstQuarter",
+      "illumination": 48,
+      "waxing": true
+    },
+    "bodies": [
+      {
+        "name": "Soleil",
+        "sign": "Scorpion",
+        "degree": 24,
+        "retrograde": false
+      },
+      {
+        "name": "Lune",
+        "sign": "Verseau",
+        "degree": 22,
+        "retrograde": false
+      },
+      {
+        "name": "Mercure",
+        "sign": "Scorpion",
+        "degree": 6,
+        "retrograde": false
+      },
+      {
+        "name": "Vénus",
+        "sign": "Balance",
+        "degree": 23,
+        "retrograde": false
+      },
+      {
+        "name": "Mars",
+        "sign": "Lion",
+        "degree": 26,
+        "retrograde": false
+      },
+      {
+        "name": "Jupiter",
+        "sign": "Lion",
+        "degree": 25,
+        "retrograde": false
+      },
+      {
+        "name": "Saturne",
+        "sign": "Bélier",
+        "degree": 8,
+        "retrograde": true
+      },
+      {
+        "name": "Uranus",
+        "sign": "Gémeaux",
+        "degree": 4,
+        "retrograde": true
+      },
+      {
+        "name": "Neptune",
+        "sign": "Bélier",
+        "degree": 1,
+        "retrograde": true
+      },
+      {
+        "name": "Pluton",
+        "sign": "Verseau",
+        "degree": 3,
+        "retrograde": false
+      },
+      {
+        "name": "Nœud nord",
+        "sign": "Verseau",
+        "degree": 25,
+        "retrograde": true
+      }
+    ],
+    "ingresses": [
+      {
+        "name": "Lune",
+        "from": "Verseau",
+        "to": "Poissons"
+      }
+    ],
+    "aspects": [
+      {
+        "a": "Soleil",
+        "b": "Nœud nord",
+        "aspect": "square",
+        "orb": 0.3
+      },
+      {
+        "a": "Lune",
+        "b": "Vénus",
+        "aspect": "trine",
+        "orb": 0.4
+      },
+      {
+        "a": "Mars",
+        "b": "Jupiter",
+        "aspect": "conjunction",
+        "orb": 0.4
+      },
+      {
+        "a": "Soleil",
+        "b": "Jupiter",
+        "aspect": "square",
+        "orb": 1
+      },
+      {
+        "a": "Mars",
+        "b": "Nœud nord",
+        "aspect": "opposition",
+        "orb": 1.1
+      },
+      {
+        "a": "Soleil",
+        "b": "Mars",
+        "aspect": "square",
+        "orb": 1.4
+      },
+      {
+        "a": "Vénus",
+        "b": "Nœud nord",
+        "aspect": "trine",
+        "orb": 2.1
+      },
+      {
+        "a": "Soleil",
+        "b": "Lune",
+        "aspect": "square",
+        "orb": 2.2
+      },
+      {
+        "a": "Lune",
+        "b": "Nœud nord",
+        "aspect": "conjunction",
+        "orb": 2.5
+      },
+      {
+        "a": "Mercure",
+        "b": "Pluton",
+        "aspect": "square",
+        "orb": 2.9
+      },
+      {
+        "a": "Vénus",
+        "b": "Jupiter",
+        "aspect": "sextile",
+        "orb": 2.9
+      },
+      {
+        "a": "Lune",
+        "b": "Jupiter",
+        "aspect": "opposition",
+        "orb": 3.3
+      },
+      {
+        "a": "Lune",
+        "b": "Mars",
+        "aspect": "opposition",
+        "orb": 3.6
+      }
+    ]
+  },
+  "en": {
+    "summary": "Tuesday 17 November 2026: the Moon reaches its first quarter around midday, about half lit and waxing, at roughly 22° Aquarius, close to the North Node. It trines Venus at 23° Libra, squares the Sun at 24° Scorpio and opposes the Mars–Jupiter conjunction at 25–26° Leo. Late this evening the Moon leaves Aquarius for Pisces. Mercury at 6° Scorpio (direct) still squares Pluto, the Sun squares Mars, Jupiter and the Node, and Venus sextiles Jupiter. Saturn, Uranus and Neptune are retrograde.",
+    "signs": {
+      "belier": "Aries, today’s key theme is friends, groups and long-term plans. The first quarter Moon in Aquarius crosses this part of your chart and trines Venus in your area of partnerships and one-to-one relationships, so a gentle approach works better than force. Friendships and future hopes need a clear choice, and investing your time in the people who truly support you pays off.\n\nThe Moon also opposes Mars and Jupiter in your sector of love, pleasure and creativity, while the Sun in your area of shared money, intimacy and deep bonds squares the same pair: tension between what you want and what others expect is likely, and a pause before reacting helps. Mercury’s square to Pluto can make discussions intense, so keep facts on the table. Late tonight the Moon enters Pisces, in your area of rest, the inner world and what you keep hidden, and the mood softens.\n\nOn Wednesday, reply to one message you have left unanswered. Use this sky as a guide, never as a sentence.",
+      "taureau": "Taurus, this Tuesday centres on career, reputation and public goals. The first quarter Moon in Aquarius crosses this part of your chart and trines Venus in your area of daily work, health and routines, so a gentle approach works better than force. Your work image is under the spotlight, and finishing one visible task speaks louder than any promise.\n\nThe Moon also opposes Mars and Jupiter in your sector of home, family and private roots, while the Sun in your area of partnerships and one-to-one relationships squares the same pair: tension between what you want and what others expect is likely, and a pause before reacting helps. Mercury’s square to Pluto can make discussions intense, so keep facts on the table. Late tonight the Moon enters Pisces, in your area of friends, groups and long-term plans, and the mood softens.\n\nOn Wednesday, update someone who matters on your progress. These are tendencies, and you decide what to do with them.",
+      "gemeaux": "Gemini, the first quarter Moon puts travel, study and the beliefs that guide you in the spotlight. The first quarter Moon in Aquarius crosses this part of your chart and trines Venus in your area of love, pleasure and creativity, so a gentle approach works better than force. Your wider plans call for commitment, and choosing a date for that trip, course or project makes it move forward.\n\nThe Moon also opposes Mars and Jupiter in your sector of conversations, messages and short trips, while the Sun in your area of daily work, health and routines squares the same pair: tension between what you want and what others expect is likely, and a pause before reacting helps. Mercury’s square to Pluto can make discussions intense, so keep facts on the table. Late tonight the Moon enters Pisces, in your area of career, reputation and public goals, and the mood softens.\n\nOn Wednesday, read or watch one thing that feeds that plan. Your choices count for more than any aspect.",
+      "cancer": "Cancer, the main thread of your day is shared money, intimacy and deep bonds. The first quarter Moon in Aquarius crosses this part of your chart and trines Venus in your area of home, family and private roots, so a gentle approach works better than force. Trust and shared resources need an honest check, and asking one direct question protects you from a quiet resentment.\n\nThe Moon also opposes Mars and Jupiter in your sector of money, possessions and self-worth, while the Sun in your area of love, pleasure and creativity squares the same pair: tension between what you want and what others expect is likely, and a pause before reacting helps. Mercury’s square to Pluto can make discussions intense, so keep facts on the table. Late tonight the Moon enters Pisces, in your area of travel, study and the beliefs that guide you, and the mood softens.\n\nOn Wednesday, put any shared arrangement into writing. Keep what helps and let the rest go.",
+      "lion": "Leo, Tuesday asks for a decision about partnerships and one-to-one relationships. The first quarter Moon in Aquarius crosses this part of your chart and trines Venus in your area of conversations, messages and short trips, so a gentle approach works better than force. Relationships reach a point where something must be said, and naming one expectation calmly clears the air between you.\n\nThe Moon also opposes Mars and Jupiter in your sector of identity, body and first impressions, while the Sun in your area of home, family and private roots squares the same pair: tension between what you want and what others expect is likely, and a pause before reacting helps. Mercury’s square to Pluto can make discussions intense, so keep facts on the table. Late tonight the Moon enters Pisces, in your area of shared money, intimacy and deep bonds, and the mood softens.\n\nOn Wednesday, listen more than you speak in your closest bond. Use this sky as a guide, never as a sentence.",
+      "vierge": "Virgo, the sky highlights daily work, health and routines today. The first quarter Moon in Aquarius crosses this part of your chart and trines Venus in your area of money, possessions and self-worth, so a gentle approach works better than force. Daily routines and health respond to a small correction, and changing one habit now saves you fatigue later in the week.\n\nThe Moon also opposes Mars and Jupiter in your sector of rest, the inner world and what you keep hidden, while the Sun in your area of conversations, messages and short trips squares the same pair: tension between what you want and what others expect is likely, and a pause before reacting helps. Mercury’s square to Pluto can make discussions intense, so keep facts on the table. Late tonight the Moon enters Pisces, in your area of partnerships and one-to-one relationships, and the mood softens.\n\nOn Wednesday, take a short walk at lunchtime. These are tendencies, and you decide what to do with them.",
+      "balance": "Libra, your attention goes to love, pleasure and creativity this Tuesday. The first quarter Moon in Aquarius crosses this part of your chart and trines Venus in your area of identity, body and first impressions, so a gentle approach works better than force. Romance and creativity want real effort, and making the first move on a plan you enjoy turns a wish into a date in the calendar.\n\nThe Moon also opposes Mars and Jupiter in your sector of friends, groups and long-term plans, while the Sun in your area of money, possessions and self-worth squares the same pair: tension between what you want and what others expect is likely, and a pause before reacting helps. Mercury’s square to Pluto can make discussions intense, so keep facts on the table. Late tonight the Moon enters Pisces, in your area of daily work, health and routines, and the mood softens.\n\nOn Wednesday, keep the plan you made even if the mood changes. Your choices count for more than any aspect.",
+      "scorpion": "Scorpio, the turning point of the day concerns home, family and private roots. The first quarter Moon in Aquarius crosses this part of your chart and trines Venus in your area of rest, the inner world and what you keep hidden, so a gentle approach works better than force. Home matters ask for a practical turning point, and settling one household question frees energy for the rest of the week.\n\nThe Moon also opposes Mars and Jupiter in your sector of career, reputation and public goals, while the Sun in your area of identity, body and first impressions squares the same pair: tension between what you want and what others expect is likely, and a pause before reacting helps. Mercury’s square to Pluto can make discussions intense, so keep facts on the table. Late tonight the Moon enters Pisces, in your area of love, pleasure and creativity, and the mood softens.\n\nOn Wednesday, ask a family member for help with one chore. Keep what helps and let the rest go.",
+      "sagittaire": "Sagittarius, today’s message is about conversations, messages and short trips. The first quarter Moon in Aquarius crosses this part of your chart and trines Venus in your area of friends, groups and long-term plans, so a gentle approach works better than force. Your words carry weight today, and a clear, kind message lands better than a long explanation.\n\nThe Moon also opposes Mars and Jupiter in your sector of travel, study and the beliefs that guide you, while the Sun in your area of rest, the inner world and what you keep hidden squares the same pair: tension between what you want and what others expect is likely, and a pause before reacting helps. Mercury’s square to Pluto can make discussions intense, so keep facts on the table. Late tonight the Moon enters Pisces, in your area of home, family and private roots, and the mood softens.\n\nOn Wednesday, follow up on the conversation you start today. Use this sky as a guide, never as a sentence.",
+      "capricorne": "Capricorn, the Moon’s half-lit face points to money, possessions and self-worth. The first quarter Moon in Aquarius crosses this part of your chart and trines Venus in your area of career, reputation and public goals, so a gentle approach works better than force. Money and self-worth need a firm decision, and adjusting one expense today relieves a pressure you have felt for a while.\n\nThe Moon also opposes Mars and Jupiter in your sector of shared money, intimacy and deep bonds, while the Sun in your area of friends, groups and long-term plans squares the same pair: tension between what you want and what others expect is likely, and a pause before reacting helps. Mercury’s square to Pluto can make discussions intense, so keep facts on the table. Late tonight the Moon enters Pisces, in your area of conversations, messages and short trips, and the mood softens.\n\nOn Wednesday, review your bank app for five minutes. These are tendencies, and you decide what to do with them.",
+      "verseau": "Aquarius, this Tuesday brings identity, body and first impressions to the front. The first quarter Moon in Aquarius crosses this part of your chart and trines Venus in your area of travel, study and the beliefs that guide you, so a gentle approach works better than force. Your image and your personal goals are in focus, and the first quarter Moon asks you to act on one intention instead of polishing it again.\n\nThe Moon also opposes Mars and Jupiter in your sector of partnerships and one-to-one relationships, while the Sun in your area of career, reputation and public goals squares the same pair: tension between what you want and what others expect is likely, and a pause before reacting helps. Mercury’s square to Pluto can make discussions intense, so keep facts on the table. Late tonight the Moon enters Pisces, in your area of money, possessions and self-worth, and the mood softens.\n\nOn Wednesday, write down the one goal you acted on and how it felt. Your choices count for more than any aspect.",
+      "poissons": "Pisces, the day’s focus falls on rest, the inner world and what you keep hidden. The first quarter Moon in Aquarius crosses this part of your chart and trines Venus in your area of shared money, intimacy and deep bonds, so a gentle approach works better than force. Rest and inner balance come first, and saying no to one extra demand protects the energy you need tomorrow.\n\nThe Moon also opposes Mars and Jupiter in your sector of daily work, health and routines, while the Sun in your area of travel, study and the beliefs that guide you squares the same pair: tension between what you want and what others expect is likely, and a pause before reacting helps. Mercury’s square to Pluto can make discussions intense, so keep facts on the table. Late tonight the Moon enters Pisces, in your area of identity, body and first impressions, and the mood softens.\n\nOn Wednesday, give yourself a calm, screen-free evening. Keep what helps and let the rest go."
+    }
+  },
+  "fr": {
+    "summary": "Mardi 17 novembre 2026 : la Lune atteint son premier quartier vers midi, à moitié éclairée et croissante, vers 22° du Verseau, près du Nœud nord. Elle fait trigone à Vénus à 23° de la Balance, carré au Soleil à 24° du Scorpion et s’oppose à la conjonction Mars-Jupiter à 25-26° du Lion. En fin de soirée, la Lune quitte le Verseau pour les Poissons. Mercure à 6° du Scorpion (directe) reste au carré de Pluton, le Soleil est au carré de Mars, Jupiter et du Nœud, et Vénus fait sextile à Jupiter. Saturne, Uranus et Neptune sont rétrogrades.",
+    "signs": {
+      "belier": "Bélier, le thème clé du jour est celui des amis, des groupes et des projets à long terme. La Lune du premier quartier en Verseau passe ici et fait trigone à Vénus, dans votre domaine du couple et des relations en face à face : la douceur réussit mieux que la force. Les amitiés et vos espoirs demandent un choix clair, et donner votre temps aux personnes qui vous soutiennent vraiment est payant.\n\nLa Lune s’oppose aussi à Mars et Jupiter dans votre secteur de l’amour, du plaisir et de la créativité, tandis que le Soleil, dans votre domaine de l’argent partagé, de l’intimité et des liens profonds, fait carré à ce même duo : une tension entre vos envies et les attentes des autres est probable, et une pause avant de réagir aide. Le carré Mercure-Pluton durcit les discussions : restez factuel. En fin de soirée, la Lune entre en Poissons, dans votre domaine du repos, du monde intérieur et de ce que vous gardez pour vous, et l’ambiance s’adoucit.\n\nMercredi, répondez à un message laissé sans réponse. Servez-vous de ce ciel comme d’un repère, jamais comme d’une sentence.",
+      "taureau": "Taureau, ce mardi tourne autour du domaine de la carrière, de la réputation et des objectifs publics. La Lune du premier quartier en Verseau passe ici et fait trigone à Vénus, dans votre domaine du travail quotidien, de la santé et des routines : la douceur réussit mieux que la force. Votre image professionnelle est sous les projecteurs, et terminer une tâche visible en dit plus qu’une promesse.\n\nLa Lune s’oppose aussi à Mars et Jupiter dans votre secteur du foyer, de la famille et des racines, tandis que le Soleil, dans votre domaine du couple et des relations en face à face, fait carré à ce même duo : une tension entre vos envies et les attentes des autres est probable, et une pause avant de réagir aide. Le carré Mercure-Pluton durcit les discussions : restez factuel. En fin de soirée, la Lune entre en Poissons, dans votre domaine des amis, des groupes et des projets à long terme, et l’ambiance s’adoucit.\n\nMercredi, informez une personne importante de vos progrès. Ce sont des tendances, et c’est vous qui décidez quoi en faire.",
+      "gemeaux": "Gémeaux, la Lune du premier quartier met en lumière le domaine des voyages, des études et des convictions. La Lune du premier quartier en Verseau passe ici et fait trigone à Vénus, dans votre domaine de l’amour, du plaisir et de la créativité : la douceur réussit mieux que la force. Vos projets lointains demandent un engagement, et fixer une date pour ce voyage, cette formation ou ce projet le fait avancer.\n\nLa Lune s’oppose aussi à Mars et Jupiter dans votre secteur des échanges, des messages et des petits trajets, tandis que le Soleil, dans votre domaine du travail quotidien, de la santé et des routines, fait carré à ce même duo : une tension entre vos envies et les attentes des autres est probable, et une pause avant de réagir aide. Le carré Mercure-Pluton durcit les discussions : restez factuel. En fin de soirée, la Lune entre en Poissons, dans votre domaine de la carrière, de la réputation et des objectifs publics, et l’ambiance s’adoucit.\n\nMercredi, lisez ou regardez une chose qui nourrit ce projet. Vos choix comptent davantage que n’importe quel aspect.",
+      "cancer": "Cancer, le fil conducteur de votre journée est le domaine de l’argent partagé, de l’intimité et des liens profonds. La Lune du premier quartier en Verseau passe ici et fait trigone à Vénus, dans votre domaine du foyer, de la famille et des racines : la douceur réussit mieux que la force. La confiance et les ressources partagées demandent une vérification honnête, et poser une question directe vous protège d’un ressentiment silencieux.\n\nLa Lune s’oppose aussi à Mars et Jupiter dans votre secteur de l’argent, des biens et de l’estime de soi, tandis que le Soleil, dans votre domaine de l’amour, du plaisir et de la créativité, fait carré à ce même duo : une tension entre vos envies et les attentes des autres est probable, et une pause avant de réagir aide. Le carré Mercure-Pluton durcit les discussions : restez factuel. En fin de soirée, la Lune entre en Poissons, dans votre domaine des voyages, des études et des convictions, et l’ambiance s’adoucit.\n\nMercredi, mettez par écrit un arrangement commun. Gardez ce qui vous aide et laissez le reste.",
+      "lion": "Lion, ce mardi demande une décision dans le domaine du couple et des relations en face à face. La Lune du premier quartier en Verseau passe ici et fait trigone à Vénus, dans votre domaine des échanges, des messages et des petits trajets : la douceur réussit mieux que la force. Vos relations arrivent à un moment où quelque chose doit être dit, et exprimer calmement une attente apaise l’atmosphère entre vous.\n\nLa Lune s’oppose aussi à Mars et Jupiter dans votre secteur de l’identité, du corps et de l’image que vous donnez, tandis que le Soleil, dans votre domaine du foyer, de la famille et des racines, fait carré à ce même duo : une tension entre vos envies et les attentes des autres est probable, et une pause avant de réagir aide. Le carré Mercure-Pluton durcit les discussions : restez factuel. En fin de soirée, la Lune entre en Poissons, dans votre domaine de l’argent partagé, de l’intimité et des liens profonds, et l’ambiance s’adoucit.\n\nMercredi, écoutez plus que vous ne parlez dans votre relation la plus proche. Servez-vous de ce ciel comme d’un repère, jamais comme d’une sentence.",
+      "vierge": "Vierge, le ciel souligne aujourd’hui le domaine du travail quotidien, de la santé et des routines. La Lune du premier quartier en Verseau passe ici et fait trigone à Vénus, dans votre domaine de l’argent, des biens et de l’estime de soi : la douceur réussit mieux que la force. Le quotidien et la santé répondent à une petite correction, et changer une habitude maintenant vous évite de la fatigue plus tard dans la semaine.\n\nLa Lune s’oppose aussi à Mars et Jupiter dans votre secteur du repos, du monde intérieur et de ce que vous gardez pour vous, tandis que le Soleil, dans votre domaine des échanges, des messages et des petits trajets, fait carré à ce même duo : une tension entre vos envies et les attentes des autres est probable, et une pause avant de réagir aide. Le carré Mercure-Pluton durcit les discussions : restez factuel. En fin de soirée, la Lune entre en Poissons, dans votre domaine du couple et des relations en face à face, et l’ambiance s’adoucit.\n\nMercredi, faites une courte marche à midi. Ce sont des tendances, et c’est vous qui décidez quoi en faire.",
+      "balance": "Balance, votre attention se porte ce mardi sur le domaine de l’amour, du plaisir et de la créativité. La Lune du premier quartier en Verseau passe ici et fait trigone à Vénus, dans votre domaine de l’identité, du corps et de l’image que vous donnez : la douceur réussit mieux que la force. L’amour et la créativité réclament un vrai effort, et faire le premier pas vers un projet qui vous plaît transforme une envie en rendez-vous.\n\nLa Lune s’oppose aussi à Mars et Jupiter dans votre secteur des amis, des groupes et des projets à long terme, tandis que le Soleil, dans votre domaine de l’argent, des biens et de l’estime de soi, fait carré à ce même duo : une tension entre vos envies et les attentes des autres est probable, et une pause avant de réagir aide. Le carré Mercure-Pluton durcit les discussions : restez factuel. En fin de soirée, la Lune entre en Poissons, dans votre domaine du travail quotidien, de la santé et des routines, et l’ambiance s’adoucit.\n\nMercredi, tenez le projet prévu même si l’humeur change. Vos choix comptent davantage que n’importe quel aspect.",
+      "scorpion": "Scorpion, le tournant de la journée concerne le domaine du foyer, de la famille et des racines. La Lune du premier quartier en Verseau passe ici et fait trigone à Vénus, dans votre domaine du repos, du monde intérieur et de ce que vous gardez pour vous : la douceur réussit mieux que la force. Les questions du foyer demandent un tournant concret, et régler un point domestique libère de l’énergie pour le reste de la semaine.\n\nLa Lune s’oppose aussi à Mars et Jupiter dans votre secteur de la carrière, de la réputation et des objectifs publics, tandis que le Soleil, dans votre domaine de l’identité, du corps et de l’image que vous donnez, fait carré à ce même duo : une tension entre vos envies et les attentes des autres est probable, et une pause avant de réagir aide. Le carré Mercure-Pluton durcit les discussions : restez factuel. En fin de soirée, la Lune entre en Poissons, dans votre domaine de l’amour, du plaisir et de la créativité, et l’ambiance s’adoucit.\n\nMercredi, demandez de l’aide à un proche pour une tâche. Gardez ce qui vous aide et laissez le reste.",
+      "sagittaire": "Sagittaire, le message du jour porte sur le domaine des échanges, des messages et des petits trajets. La Lune du premier quartier en Verseau passe ici et fait trigone à Vénus, dans votre domaine des amis, des groupes et des projets à long terme : la douceur réussit mieux que la force. Vos mots ont du poids aujourd’hui, et un message clair et bienveillant passe mieux qu’une longue explication.\n\nLa Lune s’oppose aussi à Mars et Jupiter dans votre secteur des voyages, des études et des convictions, tandis que le Soleil, dans votre domaine du repos, du monde intérieur et de ce que vous gardez pour vous, fait carré à ce même duo : une tension entre vos envies et les attentes des autres est probable, et une pause avant de réagir aide. Le carré Mercure-Pluton durcit les discussions : restez factuel. En fin de soirée, la Lune entre en Poissons, dans votre domaine du foyer, de la famille et des racines, et l’ambiance s’adoucit.\n\nMercredi, donnez suite à la conversation commencée aujourd’hui. Servez-vous de ce ciel comme d’un repère, jamais comme d’une sentence.",
+      "capricorne": "Capricorne, la Lune à moitié éclairée désigne le domaine de l’argent, des biens et de l’estime de soi. La Lune du premier quartier en Verseau passe ici et fait trigone à Vénus, dans votre domaine de la carrière, de la réputation et des objectifs publics : la douceur réussit mieux que la force. L’argent et l’estime de vous demandent une décision ferme, et ajuster une dépense aujourd’hui soulage une pression que vous ressentez depuis un moment.\n\nLa Lune s’oppose aussi à Mars et Jupiter dans votre secteur de l’argent partagé, de l’intimité et des liens profonds, tandis que le Soleil, dans votre domaine des amis, des groupes et des projets à long terme, fait carré à ce même duo : une tension entre vos envies et les attentes des autres est probable, et une pause avant de réagir aide. Le carré Mercure-Pluton durcit les discussions : restez factuel. En fin de soirée, la Lune entre en Poissons, dans votre domaine des échanges, des messages et des petits trajets, et l’ambiance s’adoucit.\n\nMercredi, passez cinq minutes sur votre application bancaire. Ce sont des tendances, et c’est vous qui décidez quoi en faire.",
+      "verseau": "Verseau, ce mardi fait passer au premier plan le domaine de l’identité, du corps et de l’image que vous donnez. La Lune du premier quartier en Verseau passe ici et fait trigone à Vénus, dans votre domaine des voyages, des études et des convictions : la douceur réussit mieux que la force. Votre image et vos objectifs personnels sont au centre, et la Lune du premier quartier vous demande d’agir sur une intention au lieu de la peaufiner encore.\n\nLa Lune s’oppose aussi à Mars et Jupiter dans votre secteur du couple et des relations en face à face, tandis que le Soleil, dans votre domaine de la carrière, de la réputation et des objectifs publics, fait carré à ce même duo : une tension entre vos envies et les attentes des autres est probable, et une pause avant de réagir aide. Le carré Mercure-Pluton durcit les discussions : restez factuel. En fin de soirée, la Lune entre en Poissons, dans votre domaine de l’argent, des biens et de l’estime de soi, et l’ambiance s’adoucit.\n\nMercredi, notez l’objectif sur lequel vous avez agi et ce que vous avez ressenti. Vos choix comptent davantage que n’importe quel aspect.",
+      "poissons": "Poissons, la journée se concentre sur le domaine du repos, du monde intérieur et de ce que vous gardez pour vous. La Lune du premier quartier en Verseau passe ici et fait trigone à Vénus, dans votre domaine de l’argent partagé, de l’intimité et des liens profonds : la douceur réussit mieux que la force. Le repos et l’équilibre intérieur passent en premier, et refuser une demande de trop protège l’énergie dont vous aurez besoin demain.\n\nLa Lune s’oppose aussi à Mars et Jupiter dans votre secteur du travail quotidien, de la santé et des routines, tandis que le Soleil, dans votre domaine des voyages, des études et des convictions, fait carré à ce même duo : une tension entre vos envies et les attentes des autres est probable, et une pause avant de réagir aide. Le carré Mercure-Pluton durcit les discussions : restez factuel. En fin de soirée, la Lune entre en Poissons, dans votre domaine de l’identité, du corps et de l’image que vous donnez, et l’ambiance s’adoucit.\n\nMercredi, offrez-vous une soirée calme, sans écran. Gardez ce qui vous aide et laissez le reste."
+    }
+  }
+}
