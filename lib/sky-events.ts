@@ -7,14 +7,15 @@ import { SIGN_IDS, signPath, weekPath, type SignId } from './zodiac/signs.ts';
  * positions géocentriques apparentes), recoupées avec des tables publiées (astro-seek, otldr).
  */
 export type SkyLocale = 'fr' | 'en';
-export type SkyEventId = 'mercuryVenusDirect' | 'newMoonScorpio' | 'fullMoonGemini' | 'sagittariusSeason' | 'mercuryRetrograde2027' | 'eclipses2027' | 'marsRetrograde2027' | 'fullMoons2027' | 'newMoons2027' | 'jupiterVirgo2027';
+export type SkyEventId = 'leonids2026' | 'mercuryVenusDirect' | 'newMoonScorpio' | 'fullMoonGemini' | 'sagittariusSeason' | 'mercuryRetrograde2027' | 'eclipses2027' | 'marsRetrograde2027' | 'fullMoons2027' | 'newMoons2027' | 'jupiterVirgo2027';
 
-export const SKY_EVENT_IDS: SkyEventId[] = ['mercuryVenusDirect', 'newMoonScorpio', 'fullMoonGemini', 'sagittariusSeason', 'mercuryRetrograde2027', 'eclipses2027', 'marsRetrograde2027', 'fullMoons2027', 'newMoons2027', 'jupiterVirgo2027'];
+export const SKY_EVENT_IDS: SkyEventId[] = ['leonids2026', 'mercuryVenusDirect', 'newMoonScorpio', 'fullMoonGemini', 'sagittariusSeason', 'mercuryRetrograde2027', 'eclipses2027', 'marsRetrograde2027', 'fullMoons2027', 'newMoons2027', 'jupiterVirgo2027'];
 export const SKY_EVENTS_ORIGIN = 'https://callastral.com';
 export const SKY_EVENTS_PUBLISHED = '2026-10-30';
 
 /** Date de publication (et de dernière mise à jour) par page. */
 export const SKY_EVENT_PUBLISHED: Record<SkyEventId, string> = {
+  leonids2026: '2026-11-17',
   mercuryVenusDirect: '2026-10-30',
   newMoonScorpio: '2026-10-30',
   fullMoonGemini: '2026-11-02',
@@ -29,6 +30,7 @@ export const SKY_EVENT_PUBLISHED: Record<SkyEventId, string> = {
 
 /** Dernière modification (titres et maillage revus le 02/11/2026). */
 export const SKY_EVENT_MODIFIED: Record<SkyEventId, string> = {
+  leonids2026: '2026-11-17',
   mercuryVenusDirect: '2026-11-02',
   newMoonScorpio: '2026-11-02',
   fullMoonGemini: '2026-11-02',
@@ -42,6 +44,7 @@ export const SKY_EVENT_MODIFIED: Record<SkyEventId, string> = {
 };
 
 export const SKY_EVENT_PATHS: Record<SkyEventId, Record<SkyLocale, string>> = {
+  leonids2026: { en: '/en/leonids-2026', fr: '/fr/leonides-2026' },
   mercuryVenusDirect: { en: '/en/mercury-venus-direct-november-2026', fr: '/fr/mercure-venus-direct-novembre-2026' },
   newMoonScorpio: { en: '/en/new-moon-scorpio-november-2026', fr: '/fr/nouvelle-lune-scorpion-novembre-2026' },
   fullMoonGemini: { en: '/en/full-moon-gemini-november-2026', fr: '/fr/pleine-lune-gemeaux-novembre-2026' },
@@ -73,6 +76,13 @@ export const SKY_FACTS = {
   mercuryStationDirect: { utc: '2026-11-13T15:54:00Z', degree: '5°02′', sign: 'scorpio' },
   venusStationDirect: { utc: '2026-11-14T00:27:00Z', degree: '22°52′', sign: 'libra' },
   marsJupiter: { utc: '2026-11-16T06:24:00Z', degree: '25°53′', sign: 'leo' },
+  moonPisces17: { utc: '2026-11-17T21:19:00Z' },
+  leonidsRadiantRise: { utc: '2026-11-17T22:19:00Z' },
+  marsJupiterRise18: { utc: '2026-11-17T22:48:00Z' },
+  moonset18Paris: { utc: '2026-11-17T23:22:00Z' },
+  leonidsMax: { utc: '2026-11-17T23:45:00Z' },
+  dawn18Paris: { utc: '2026-11-18T05:13:00Z' },
+  leonidsTrail1800: { utc: '2026-11-18T21:55:00Z' },
   sunSagittarius: { utc: '2026-11-22T07:23:00Z' },
   fullMoon: { utc: '2026-11-24T14:53:00Z', degree: '2°20′', sign: 'gemini' },
   moonrise24Paris: { utc: '2026-11-24T15:25:00Z' },
@@ -393,6 +403,11 @@ export function signRows(event: SkyEventId, locale: SkyLocale): SkySignRow[] {
       text = signRows2027b(event, locale, index);
     } else if (event === 'newMoons2027' || event === 'jupiterVirgo2027') {
       text = signRows2027c(event, locale, index);
+    } else if (event === 'leonids2026') {
+      const h = solarHouse(index, 4);
+      text = locale === 'fr'
+        ? `Pour ${FR_ARTICLE[index]}${name}, les Léonides partent du Lion, votre maison solaire ${h}, là où Mars et Jupiter viennent de se rejoindre : ${LEONIDS_HOUSE.fr[h - 1]}`
+        : `For ${name}, the Leonids radiate from Leo, your ${ordinal(h, 'en')} solar house, where Mars and Jupiter have just met: ${LEONIDS_HOUSE.en[h - 1]}`;
     } else if (event === 'mercuryVenusDirect') {
       const hm = solarHouse(index, SCORPIO);
       const hv = solarHouse(index, LIBRA);
@@ -825,6 +840,7 @@ function newMoonCopy(locale: SkyLocale): SkyEventCopy {
 
 /** Libellés courts pour le maillage entre pages événement. */
 export const SKY_EVENT_LABELS: Record<SkyEventId, Record<SkyLocale, string>> = {
+  leonids2026: { en: 'Leonids 2026: peak on the night of 17 to 18 November', fr: 'Léonides 2026 : pic dans la nuit du 17 au 18 novembre' },
   mercuryVenusDirect: { en: 'Mercury and Venus direct on 13–14 November 2026', fr: 'Mercure et Vénus directs les 13 et 14 novembre 2026' },
   newMoonScorpio: { en: 'New Moon in Scorpio on 9 November 2026', fr: 'Nouvelle Lune en Scorpion du 9 novembre 2026' },
   fullMoonGemini: { en: 'Full Moon in Gemini (Beaver supermoon) on 24 November 2026', fr: 'Pleine Lune en Gémeaux (super Lune) du 24 novembre 2026' },
@@ -2628,9 +2644,201 @@ function jupiterVirgo2027Copy(locale: SkyLocale): SkyEventCopy {
   };
 }
 
+
+const LEONIDS_HOUSE: Record<SkyLocale, string[]> = {
+  fr: [
+    'l’envie de vous montrer tel que vous êtes revient. Un vœu qui parle de vous, pas de quelqu’un d’autre, a plus de chances de tenir.',
+    'les questions d’argent et de valeur personnelle. Un vœu concret, chiffré, vaut mieux qu’un souhait flou.',
+    'les messages et les conversations. Si un message vous brûle les doigts cette nuit, écrivez-le et relisez-le demain.',
+    'la maison, la famille et le besoin de sécurité. Une nuit à regarder le ciel peut aussi être une nuit pour vous apaiser.',
+    'l’amour, le plaisir et la créativité. Le cœur parle fort : écoutez-le sans lui demander une date.',
+    'le quotidien, la santé et les habitudes. Un petit changement tenu vaut plus qu’une grande promesse.',
+    'le couple et les relations proches. Ce que vous attendez de l’autre mérite d’être dit simplement.',
+    'l’intimité, les liens profonds et ce que vous partagez. Une émotion forte remonte : elle n’est pas une prophétie.',
+    'les voyages, les études et le sens. Une nuit dehors peut redonner de la perspective à un projet.',
+    'la carrière et l’image publique. Une ambition se construit étape par étape, pas en une étoile filante.',
+    'les amis, les groupes et les projets à plusieurs. Regarder le ciel à deux ou à plusieurs a quelque chose de rassurant.',
+    'le repos, les rêves et ce que vous gardez pour vous. Si vous ne dormez pas cette nuit, offrez-vous ce moment calme sous le ciel.',
+  ],
+  en: [
+    'the wish to show up as you really are. A wish about you, not about someone else, is more likely to hold.',
+    'money and self-worth. A concrete, specific wish beats a vague hope.',
+    'messages and conversations. If a text is burning your fingers tonight, write it and reread it tomorrow.',
+    'home, family and the need to feel safe. A night under the sky can also be a night to calm down.',
+    'love, pleasure and creativity. The heart speaks loudly: listen to it without asking it for a date.',
+    'daily routines, health and habits. One small change you keep is worth more than a big promise.',
+    'your partner and close relationships. What you expect from the other person deserves to be said simply.',
+    'intimacy, deep bonds and what you share. A strong emotion comes up: it is not a prophecy.',
+    'travel, study and meaning. A night outside can give a project back its perspective.',
+    'career and public image. Ambition is built step by step, not on one shooting star.',
+    'friends, groups and shared plans. Watching the sky together has something reassuring about it.',
+    'rest, dreams and what you keep to yourself. If you cannot sleep tonight, give yourself this quiet moment under the sky.',
+  ],
+};
+
+function leonids2026Copy(locale: SkyLocale): SkyEventCopy {
+  const t = (id: SkyFactId) => bothTimes(id, locale);
+  const path = SKY_EVENT_PATHS.leonids2026[locale];
+  if (locale === 'fr') {
+    return {
+      id: 'leonids2026',
+      locale,
+      path,
+      title: 'Léonides 2026 : pic le 18 novembre à 0 h 45 (Paris)',
+      description: 'Léonides 2026 : maximum le 18 novembre à 0 h 45, heure de Paris. Environ 15 météores par heure sous ciel noir, meilleur créneau de 3 h à 6 h, côté est.',
+      h1: 'Léonides 2026 : le pic de la nuit du 17 au 18 novembre',
+      breadcrumb: 'Léonides 2026',
+      answer: [
+        `Le maximum des Léonides 2026 est prévu le ${t('leonidsMax')}, selon l’International Meteor Organization. Le point d’où partent les étoiles filantes, dans le Lion, se lève vers 23 h 19 à Paris, et la Lune se couche le ${t('moonset18Paris')}.`,
+        'C’est une année calme : environ 15 météores par heure sous un ciel parfaitement noir, une ou deux en ville. Le meilleur créneau va de 3 h à 6 h du matin, en regardant vers l’est, sous Mars et Jupiter qui brillent côte à côte dans le Lion.',
+      ],
+      updated: 'Publié le 17 novembre 2026',
+      tableTitle: 'La nuit des Léonides 2026, heure par heure',
+      tableCaption: 'Heures calculées pour Paris avec l’éphéméride NASA JPL DE440 ; maximum selon l’IMO',
+      cols: ['Moment', 'Heure de Paris', 'UTC', 'Détail'],
+      rows: [
+        row('moonPisces17', 'fr', 'La Lune entre en Poissons', 'Premier quartier passé'),
+        row('leonidsRadiantRise', 'fr', 'Le radiant des Léonides se lève', 'Constellation du Lion, à l’est-nord-est'),
+        row('marsJupiterRise18', 'fr', 'Mars et Jupiter se lèvent', 'Côte à côte, juste sous le radiant'),
+        row('moonset18Paris', 'fr', 'La Lune se couche', 'Le ciel devient sombre'),
+        row('leonidsMax', 'fr', 'Maximum des Léonides', 'Environ 15 par heure sous ciel noir (IMO)'),
+        row('dawn18Paris', 'fr', 'Début de l’aube astronomique', 'Fin du meilleur créneau'),
+        row('leonidsTrail1800', 'fr', 'Passage près d’une traînée de 1800', 'Faible, pas de sursaut attendu'),
+      ],
+      sections: [
+        {
+          h2: 'Ce que sont vraiment les Léonides',
+          paragraphs: [
+            'Les Léonides sont des grains de poussière laissés par la comète 55P/Tempel-Tuttle. Plus petits qu’un pois pour la plupart, ils entrent dans l’atmosphère à 71 km/s et brûlent vers 100 km d’altitude : c’est cette traînée lumineuse qu’on appelle une étoile filante.',
+            'Elles semblent toutes partir d’un même point du Lion, le radiant, d’où leur nom. L’essaim est actif du 6 au 30 novembre. Les grandes pluies de 1833, 1966 ou 2001 venaient de traînées très denses ; selon l’IMO, aucune rencontre de ce type n’est prévue en 2026.',
+          ],
+        },
+        {
+          h2: 'Comment bien les observer cette nuit',
+          paragraphs: [
+            `Éloignez-vous des éclairages, allongez-vous et laissez vos yeux s’habituer au noir pendant vingt minutes, sans regarder votre téléphone. La Lune se couche le ${t('moonset18Paris')} : après, le ciel est vraiment sombre.`,
+            'Vers 3 h, le Lion est haut à l’est. Mars et Jupiter, qui se sont rejoints le 16 novembre, brillent juste en dessous du radiant et servent de repère. Regardez un peu à côté du radiant plutôt que dessus : les traînées y sont plus longues.',
+            `Une seconde occasion, plus faible, existe le ${t('leonidsTrail1800')}, quand la Terre frôle une traînée éjectée en 1800. Les modèles ne prévoient pas de sursaut notable.`,
+          ],
+        },
+        {
+          h2: 'Étoiles filantes et astrologie : ce qu’on peut dire, ce qu’on ne peut pas',
+          paragraphs: [
+            'En astrologie, une pluie d’étoiles filantes n’est pas un aspect planétaire : elle ne change pas votre thème et ne fixe aucune date. Elle n’annonce pas le retour de quelqu’un. Ce qu’elle offre, c’est un moment pour lever les yeux et formuler clairement ce que vous voulez.',
+            'Le ciel astrologique de la nuit est réel : la Lune passe en Poissons, Mars et Jupiter sont conjoints en Lion, Vénus en Balance leur fait un sextile. Pour savoir où cela tombe dans votre thème, il faut votre heure et votre lieu de naissance.',
+          ],
+        },
+      ],
+      signsTitle: 'La nuit des Léonides pour chaque signe',
+      signsIntro: 'Lecture par maisons solaires, à partir de votre signe solaire : le radiant des Léonides et la conjonction Mars-Jupiter sont dans le Lion. Avec votre ascendant, calculé par notre thème astral gratuit, la lecture est plus précise.',
+      adviceTitle: 'Conseils pour la nuit du 17 au 18 novembre',
+      advice: [
+        'Sortez après le coucher de la Lune, idéalement entre 3 h et 6 h, loin des lampadaires.',
+        'Faites un vœu qui dépend de vous : une action, une décision, une limite à poser.',
+        'Si un message vous brûle les doigts, écrivez-le cette nuit et envoyez-le demain, à tête reposée.',
+        'Si vous ne dormez pas parce que votre cœur s’emmêle, parler à voix haute aide souvent plus que de tourner en rond.',
+      ],
+      method: METHOD.fr,
+      faqTitle: 'Questions fréquentes',
+      faqs: [
+        { question: 'Quand voir les Léonides 2026 ?', answer: 'Le maximum est prévu le 18 novembre 2026 à 0 h 45, heure de Paris (17 novembre à 23 h 45 UTC). Le meilleur créneau en France va de 3 h à 6 h du matin, après le coucher de la Lune.' },
+        { question: 'Combien d’étoiles filantes verra-t-on ?', answer: 'Environ 15 par heure sous un ciel parfaitement noir, selon l’International Meteor Organization. En ville, comptez plutôt une ou deux par heure.' },
+        { question: 'Où regarder pour voir les Léonides ?', answer: 'Vers l’est, puis le sud-est en fin de nuit. Le radiant est dans le Lion, juste au-dessus de Mars et Jupiter, faciles à repérer. Les étoiles filantes traversent tout le ciel.' },
+        { question: 'La Lune va-t-elle gêner ?', answer: 'Un peu en début de nuit : la Lune, juste après le premier quartier, se couche vers 0 h 22 à Paris. Après, le ciel est sombre jusqu’à l’aube, vers 6 h 13.' },
+        { question: 'Une étoile filante peut-elle annoncer le retour d’un ex ?', answer: 'Non. Une étoile filante est un grain de poussière qui brûle dans l’atmosphère. Elle ne fixe aucune date. Callastral n’invente jamais de date : votre thème est calculé sur le vrai ciel.' },
+        { question: 'Y aura-t-il une pluie d’étoiles filantes comme en 1966 ?', answer: 'Non. Selon l’IMO, la Terre ne croisera pas de traînée dense de la comète Tempel-Tuttle en 2026. Le prochain passage de la comète au plus près du Soleil est prévu en mai 2031.' },
+      ],
+      ctaText: 'Réveillé cette nuit avec le cœur emmêlé ? Parlez-en à voix haute avec une Conseillère ou un Conseiller Callastral, à partir de votre vrai thème. Prix fixe, l’appel s’arrête tout seul. Aucune date inventée. Aucun compteur caché. Ton vrai ciel.',
+      ctaButton: '3 min offertes, sans carte',
+      linksTitle: 'Aller plus loin',
+      links: commonLinks('fr'),
+      related: { href: SKY_EVENT_PATHS.fullMoonGemini.fr, label: SKY_EVENT_LABELS.fullMoonGemini.fr },
+      home: 'Accueil',
+      disclaimer: DISCLAIMER.fr,
+    };
+  }
+  return {
+    id: 'leonids2026',
+    locale,
+    path,
+    title: 'Leonids 2026: peak on 17 Nov at 23:45 UTC',
+    description: 'Leonids 2026: the peak is expected on 17 November at 23:45 UTC. About 15 meteors per hour under dark skies; best from moonset until dawn, looking east.',
+    h1: 'Leonids 2026: the peak on the night of 17 to 18 November',
+    breadcrumb: 'Leonids 2026',
+    answer: [
+      `The Leonid meteor shower peaks on ${formatUtc(SKY_FACTS.leonidsMax.utc, 'en')} (${formatParis(SKY_FACTS.leonidsMax.utc, 'en')}), according to the International Meteor Organization. The radiant in Leo rises late in the evening, and the Moon sets around midnight local time.`,
+      'It is a quiet year: about 15 meteors per hour under a perfectly dark sky, one or two from a city. The best window runs from moonset until dawn, looking east, below Mars and Jupiter shining side by side in Leo.',
+    ],
+    updated: 'Published 17 November 2026',
+    tableTitle: 'Leonids night 2026, hour by hour',
+    tableCaption: 'Times computed for Paris with the NASA JPL DE440 ephemeris; peak time from the IMO',
+    cols: ['Moment', 'Paris time', 'UTC', 'Detail'],
+    rows: [
+      row('moonPisces17', 'en', 'The Moon enters Pisces', 'Just past first quarter'),
+      row('leonidsRadiantRise', 'en', 'The Leonid radiant rises (Paris)', 'Constellation Leo, east-northeast'),
+      row('marsJupiterRise18', 'en', 'Mars and Jupiter rise (Paris)', 'Side by side, just below the radiant'),
+      row('moonset18Paris', 'en', 'Moonset (Paris)', 'The sky turns dark'),
+      row('leonidsMax', 'en', 'Leonid maximum', 'About 15 per hour under dark skies (IMO)'),
+      row('dawn18Paris', 'en', 'Astronomical dawn begins (Paris)', 'End of the best window'),
+      row('leonidsTrail1800', 'en', 'Close pass to a dust trail from 1800', 'Weak, no outburst expected'),
+    ],
+    sections: [
+      {
+        h2: 'What the Leonids really are',
+        paragraphs: [
+          'The Leonids are grains of dust left behind by comet 55P/Tempel-Tuttle. Most are smaller than a pea. They hit the atmosphere at 71 km/s and burn up about 100 km above the ground: that glowing streak is what we call a shooting star.',
+          'They all seem to come from one point in Leo, the radiant, which gives them their name. The shower is active from 6 to 30 November. The great storms of 1833, 1966 and 2001 came from very dense trails; according to the IMO, no such encounter is expected in 2026.',
+        ],
+      },
+      {
+        h2: 'How to watch them tonight',
+        paragraphs: [
+          'Get away from lights, lie down and give your eyes twenty minutes to adapt, without looking at your phone. Once the Moon has set, the sky is truly dark.',
+          'Around 3 am, Leo is high in the east. Mars and Jupiter, which met on 16 November, shine just below the radiant and make an easy landmark. Look a little to the side of the radiant rather than straight at it: the streaks look longer there.',
+          `A second, weaker chance comes on ${formatUtc(SKY_FACTS.leonidsTrail1800.utc, 'en')}, when Earth brushes a dust trail released in 1800. Models do not predict a notable outburst.`,
+        ],
+      },
+      {
+        h2: 'Shooting stars and astrology: what we can say, and what we cannot',
+        paragraphs: [
+          'In astrology, a meteor shower is not a planetary aspect: it does not change your chart and sets no date. It does not announce that someone will come back. What it offers is a moment to look up and say clearly what you want.',
+          'The astrological sky of the night is real: the Moon moves into Pisces, Mars and Jupiter are conjunct in Leo, and Venus in Libra sextiles them. To know where this falls in your chart, you need your birth time and place.',
+        ],
+      },
+    ],
+    signsTitle: 'The Leonids night for each sign',
+    signsIntro: 'Reading by solar houses, from your Sun sign: the Leonid radiant and the Mars-Jupiter conjunction are both in Leo. With your rising sign, calculated by our free birth chart, the reading is more precise.',
+    adviceTitle: 'Tips for the night of 17 to 18 November',
+    advice: [
+      'Go out after moonset, ideally between 3 am and 6 am, away from street lights.',
+      'Make a wish that depends on you: an action, a decision, a boundary to set.',
+      'If a text is burning your fingers, write it tonight and send it tomorrow with a clear head.',
+      'If you cannot sleep because your heart feels tangled, talking out loud often helps more than going round in circles.',
+    ],
+    method: METHOD.en,
+    faqTitle: 'Frequently asked questions',
+    faqs: [
+      { question: 'When is the Leonids peak in 2026?', answer: 'The maximum is expected on 17 November 2026 at 23:45 UTC (18 November, 00:45 Paris time; 6:45 pm EST on 17 November). The best window is from moonset until dawn.' },
+      { question: 'How many meteors will I see?', answer: 'About 15 per hour under a perfectly dark sky, according to the International Meteor Organization. From a city, expect one or two per hour.' },
+      { question: 'Where should I look?', answer: 'East, then southeast later in the night. The radiant is in Leo, just above Mars and Jupiter, which are easy to spot. The meteors cross the whole sky.' },
+      { question: 'Will the Moon get in the way?', answer: 'A little early in the night. The Moon, just past first quarter, sets around midnight local time. After that the sky stays dark until dawn.' },
+      { question: 'Can a shooting star mean my ex is coming back?', answer: 'No. A shooting star is a grain of dust burning up in the atmosphere. It sets no date. Callastral never invents dates: your chart is computed on the real sky.' },
+      { question: 'Will there be a meteor storm like in 1966?', answer: 'No. According to the IMO, Earth will not cross a dense trail from comet Tempel-Tuttle in 2026. The comet’s next perihelion is due in May 2031.' },
+    ],
+    ctaText: 'Awake tonight with a tangled heart? Talk it through out loud with a Callastral advisor, from your real chart. Fixed price, the call stops by itself. No invented dates. No hidden meter. Your real sky.',
+    ctaButton: '3 free minutes, no card',
+    linksTitle: 'Go further',
+    links: commonLinks('en'),
+    related: { href: SKY_EVENT_PATHS.fullMoonGemini.en, label: SKY_EVENT_LABELS.fullMoonGemini.en },
+    home: 'Home',
+    disclaimer: DISCLAIMER.en,
+  };
+}
+
 export function skyEventCopy(id: SkyEventId, locale: SkyLocale): SkyEventCopy {
   let copy: SkyEventCopy;
-  if (id === 'mercuryVenusDirect') copy = mercuryVenusCopy(locale);
+  if (id === 'leonids2026') copy = leonids2026Copy(locale);
+  else if (id === 'mercuryVenusDirect') copy = mercuryVenusCopy(locale);
   else if (id === 'newMoonScorpio') copy = newMoonCopy(locale);
   else if (id === 'fullMoonGemini') copy = fullMoonCopy(locale);
   else if (id === 'mercuryRetrograde2027') copy = mercuryRetro2027Copy(locale);
