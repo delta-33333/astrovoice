@@ -13,8 +13,9 @@ import { FIXED_PACKS } from './pricing.ts';
 import { chatPath } from './chat.ts';
 import { h2027Path } from './horoscope-2027.ts';
 import { dailyHubPath } from './daily-horoscope.ts';
+import { SKY_EVENT_IDS, SKY_EVENT_LABELS, SKY_EVENT_PATHS } from './sky-events.ts';
 
-export const LLMS_UPDATED = '2026-11-12';
+export const LLMS_UPDATED = '2026-11-18';
 
 function eur(minor: number): string {
   return formatMoney(minor, 'eur', 'fr').replace(/[\u00a0\u202f]/g, ' ');
@@ -32,6 +33,7 @@ export function buildLlmsText(origin: string, env: NodeJS.ProcessEnv = process.e
     ? identity.join(', ')
     : 'Identité de l’éditeur publiée sur les mentions légales lorsqu’elle est renseignée.';
   const homes = LOCALES.map((locale) => `${origin}/${locale}`).join(' ');
+  const skyEvents = SKY_EVENT_IDS.map((id) => `- ${SKY_EVENT_LABELS[id].fr} : ${origin}${SKY_EVENT_PATHS[id].fr} (anglais : ${origin}${SKY_EVENT_PATHS[id].en})`).join('\n');
   const profiles = OFFICIAL_SOCIAL_PROFILES.map((profile) => `- ${profile.name} : ${profile.href}`).join('\n');
   return `# Callastral
 
@@ -79,6 +81,10 @@ La langue par défaut (x-default) est le français : ${origin}/fr
 - Horoscope du jour, 12 signes, calculé sur le ciel du jour : ${origin}${dailyHubPath('fr')} (anglais : ${origin}${dailyHubPath('en')})
 - Horoscope 2027 par signe : ${origin}${h2027Path()}
 - Question par message (chat) : ${origin}${chatPath('fr')} (anglais : ${origin}${chatPath('en')})
+
+## Calendrier du ciel (heures calculées pour Paris sur éphémérides, sans date de retour promise)
+
+${skyEvents}
 
 ## Pages
 
