@@ -100,3 +100,17 @@ test('Nouvelles Lunes 2027 et Jupiter en Vierge 2027 : heures calculées DE440',
   assert.match(skyEventCopy('jupiterVirgo2027', 'fr').answer[0], /26 juillet, 6 h 49 Paris \(4 h 49 UTC\)/);
   assert.match(skyEventCopy('jupiterVirgo2027', 'en').answer[0], /26 July, 06:49 Paris \(04:49 UTC\)/);
 });
+
+test('Saturne rétrograde 2027 et Uranus en Gémeaux 2027 : heures calculées DE440', () => {
+  assert.match(skyEventCopy('saturnRetrograde2027', 'en').answer[0], /9 August, 20:06 Paris \(18:06 UTC\)/);
+  assert.match(skyEventCopy('saturnRetrograde2027', 'fr').answer[0], /24 décembre, 3 h 46 Paris \(2 h 46 UTC\)/);
+  assert.match(skyEventCopy('uranusGemini2027', 'en').answer[0], /8 February, 13:30 Paris \(12:30 UTC\)/);
+  assert.match(skyEventCopy('uranusGemini2027', 'fr').answer[0], /15 septembre, 11 h 09 Paris \(9 h 09 UTC\)/);
+  for (const id of ['saturnRetrograde2027', 'uranusGemini2027'] as const) {
+    for (const locale of ['en', 'fr'] as const) {
+      const text = JSON.stringify([skyEventCopy(id, locale), signRows(id, locale)]);
+      assert.equal(text.includes('—'), false, `${id} ${locale} tiret cadratin`);
+      assert.equal(/1,99|per minute|par minute/i.test(text), false, `${id} ${locale} prix`);
+    }
+  }
+});

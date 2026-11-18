@@ -7,9 +7,9 @@ import { SIGN_IDS, signPath, weekPath, type SignId } from './zodiac/signs.ts';
  * positions géocentriques apparentes), recoupées avec des tables publiées (astro-seek, otldr).
  */
 export type SkyLocale = 'fr' | 'en';
-export type SkyEventId = 'leonids2026' | 'mercuryVenusDirect' | 'newMoonScorpio' | 'fullMoonGemini' | 'sagittariusSeason' | 'mercuryRetrograde2027' | 'eclipses2027' | 'marsRetrograde2027' | 'fullMoons2027' | 'newMoons2027' | 'jupiterVirgo2027';
+export type SkyEventId = 'leonids2026' | 'mercuryVenusDirect' | 'newMoonScorpio' | 'fullMoonGemini' | 'sagittariusSeason' | 'mercuryRetrograde2027' | 'eclipses2027' | 'marsRetrograde2027' | 'fullMoons2027' | 'newMoons2027' | 'jupiterVirgo2027' | 'saturnRetrograde2027' | 'uranusGemini2027';
 
-export const SKY_EVENT_IDS: SkyEventId[] = ['leonids2026', 'mercuryVenusDirect', 'newMoonScorpio', 'fullMoonGemini', 'sagittariusSeason', 'mercuryRetrograde2027', 'eclipses2027', 'marsRetrograde2027', 'fullMoons2027', 'newMoons2027', 'jupiterVirgo2027'];
+export const SKY_EVENT_IDS: SkyEventId[] = ['leonids2026', 'mercuryVenusDirect', 'newMoonScorpio', 'fullMoonGemini', 'sagittariusSeason', 'mercuryRetrograde2027', 'eclipses2027', 'marsRetrograde2027', 'fullMoons2027', 'newMoons2027', 'jupiterVirgo2027', 'saturnRetrograde2027', 'uranusGemini2027'];
 export const SKY_EVENTS_ORIGIN = 'https://callastral.com';
 export const SKY_EVENTS_PUBLISHED = '2026-10-30';
 
@@ -26,6 +26,8 @@ export const SKY_EVENT_PUBLISHED: Record<SkyEventId, string> = {
   fullMoons2027: '2026-11-11',
   newMoons2027: '2026-11-16',
   jupiterVirgo2027: '2026-11-16',
+  saturnRetrograde2027: '2026-11-18',
+  uranusGemini2027: '2026-11-18',
 };
 
 /** Dernière modification (titres et maillage revus le 02/11/2026). */
@@ -41,6 +43,8 @@ export const SKY_EVENT_MODIFIED: Record<SkyEventId, string> = {
   fullMoons2027: '2026-11-11',
   newMoons2027: '2026-11-16',
   jupiterVirgo2027: '2026-11-16',
+  saturnRetrograde2027: '2026-11-18',
+  uranusGemini2027: '2026-11-18',
 };
 
 export const SKY_EVENT_PATHS: Record<SkyEventId, Record<SkyLocale, string>> = {
@@ -55,6 +59,8 @@ export const SKY_EVENT_PATHS: Record<SkyEventId, Record<SkyLocale, string>> = {
   fullMoons2027: { en: '/en/full-moon-calendar-2027', fr: '/fr/calendrier-pleines-lunes-2027' },
   newMoons2027: { en: '/en/new-moon-calendar-2027', fr: '/fr/calendrier-nouvelles-lunes-2027' },
   jupiterVirgo2027: { en: '/en/jupiter-in-virgo-2027', fr: '/fr/jupiter-en-vierge-2027' },
+  saturnRetrograde2027: { en: '/en/saturn-retrograde-2027', fr: '/fr/saturne-retrograde-2027' },
+  uranusGemini2027: { en: '/en/uranus-in-gemini-2027', fr: '/fr/uranus-en-gemeaux-2027' },
 };
 
 /** Même convention que les pages GEO : x-default = FR. */
@@ -403,6 +409,8 @@ export function signRows(event: SkyEventId, locale: SkyLocale): SkySignRow[] {
       text = signRows2027b(event, locale, index);
     } else if (event === 'newMoons2027' || event === 'jupiterVirgo2027') {
       text = signRows2027c(event, locale, index);
+    } else if (event === 'saturnRetrograde2027' || event === 'uranusGemini2027') {
+      text = signRows2027d(event, locale, index);
     } else if (event === 'leonids2026') {
       const h = solarHouse(index, 4);
       text = locale === 'fr'
@@ -851,6 +859,8 @@ export const SKY_EVENT_LABELS: Record<SkyEventId, Record<SkyLocale, string>> = {
   fullMoons2027: { en: 'Full Moon calendar 2027: the 12 Full Moons', fr: 'Calendrier des Pleines Lunes 2027 : les 12 dates' },
   newMoons2027: { en: 'New Moon calendar 2027: the 13 New Moons', fr: 'Calendrier des Nouvelles Lunes 2027 : les 13 dates' },
   jupiterVirgo2027: { en: 'Jupiter in Virgo 2027: from 26 July', fr: 'Jupiter en Vierge 2027 : à partir du 26 juillet' },
+  saturnRetrograde2027: { en: 'Saturn retrograde 2027: 9 August to 24 December in Aries', fr: 'Saturne rétrograde 2027 : du 9 août au 24 décembre en Bélier' },
+  uranusGemini2027: { en: 'Uranus in Gemini 2027: dates, retrograde and effects by sign', fr: 'Uranus en Gémeaux 2027 : dates, rétrograde et effets par signe' },
 };
 
 function fullMoonCopy(locale: SkyLocale): SkyEventCopy {
@@ -2645,6 +2655,469 @@ function jupiterVirgo2027Copy(locale: SkyLocale): SkyEventCopy {
 }
 
 
+/** Saturne 2027 (UTC), DE440, calculé le 18/11/2026 (/workspace/callastral-growth/sat-ura-2027.py). */
+export const S2027 = {
+  retroPrev: '2026-07-26T19:56:00Z',
+  directPrev: '2026-12-10T23:31:00Z',
+  shadowEndPrev: '2027-03-15T06:51:00Z',
+  conjSun: '2027-04-07T17:18:00Z',
+  preShadow: '2027-05-04T17:18:00Z',
+  squareSun: '2027-07-20T10:49:00Z',
+  retro: '2027-08-09T18:06:00Z',
+  trineSun: '2027-08-21T00:40:00Z',
+  opposition: '2027-10-18T00:36:00Z',
+  trineMars: '2027-11-15T12:53:00Z',
+  squareMars: '2027-12-23T04:01:00Z',
+  direct: '2027-12-24T02:46:00Z',
+  postShadow: '2028-03-27T05:06:00Z',
+  intoTaurus: '2028-04-13T03:40:00Z',
+} as const;
+
+/** Uranus 2026-2028 (UTC), DE440, calculé le 18/11/2026. */
+export const U2027 = {
+  retroPrev: '2026-09-10T18:27:00Z',
+  oppositionPrev: '2026-11-25T22:41:00Z',
+  sextileNeptune: '2027-01-15T09:26:00Z',
+  direct: '2027-02-08T12:30:00Z',
+  shadowEndPrev: '2027-05-26T05:01:00Z',
+  conjSun: '2027-05-27T06:12:00Z',
+  preShadow: '2027-05-30T04:41:00Z',
+  sextileNeptune2: '2027-06-06T10:12:00Z',
+  trinePluto: '2027-06-15T08:11:00Z',
+  squareJupiter: '2027-09-10T16:41:00Z',
+  retro: '2027-09-15T09:09:00Z',
+  opposition: '2027-11-30T09:22:00Z',
+  direct2: '2028-02-12T23:49:00Z',
+} as const;
+
+const SIGN_ARIES = 0;
+
+const SAT_2027_EXTRA: Record<SkyLocale, Partial<Record<number, string>>> = {
+  en: {
+    0: 'Saturn has been in your sign since 14 February 2026 and leaves on 13 April 2028. The retrograde runs from 27°53′ back to 21°01′ Aries, so Aries born roughly 11 to 18 April feel this review most directly.',
+    11: 'Saturn left your sign on 14 February 2026 after almost three years. This retrograde in your money sector asks you to check budgets and fees calmly, not to start everything again.',
+    9: 'Saturn rules your sign. On 23 December Mars in Capricorn squares Saturn at 21°01′, one day before the direct station, so avoid forcing a family or housing decision that week.',
+    10: 'Saturn is your traditional ruler, so contracts, studies and the way you speak to people close to you get a slower and more serious review.',
+    6: 'Saturn sits in your opposite sign. On 18 October the Sun in Libra faces it exactly, the night Saturn is closest to Earth: a moment of truth for a partnership, felt most by Libras born around 14 to 21 October.',
+    3: 'On 20 July the Sun in Cancer squares Saturn, three weeks before the station, which shows clearly which professional responsibility deserves your energy.',
+    4: 'Jupiter in your sign trines Saturn on 3 April and 11 July, before the retrograde begins: a good window to sign up for a course or plan a long trip.',
+    8: 'Mars in your sign trines Saturn on 15 November, in the middle of the retrograde, giving steady energy to a creative or love project you want to rebuild properly.',
+  },
+  fr: {
+    0: 'Saturne est dans votre signe depuis le 14 février 2026 et en sort le 13 avril 2028. La rétrogradation revient de 27°53′ à 21°01′ Bélier : les Bélier nés à peu près entre le 11 et le 18 avril vivent ce bilan de plus près.',
+    11: 'Saturne a quitté votre signe le 14 février 2026, après presque trois ans. Cette rétrogradation dans votre secteur de l’argent invite à vérifier budgets et frais au calme, sans tout recommencer.',
+    9: 'Saturne gouverne votre signe. Le 23 décembre, Mars en Capricorne forme un carré à Saturne à 21°01′, la veille de la station directe : évitez de forcer une décision familiale ou immobilière cette semaine-là.',
+    10: 'Saturne est votre maître traditionnel : les contrats, les études et votre façon de parler à vos proches passent par une révision plus lente et plus sérieuse.',
+    6: 'Saturne occupe votre signe opposé. Le 18 octobre, le Soleil en Balance lui fait face exactement, la nuit où Saturne est au plus près de la Terre : un moment de vérité pour un couple ou une association, surtout pour les natifs nés entre le 14 et le 21 octobre environ.',
+    3: 'Le 20 juillet, le Soleil en Cancer forme un carré à Saturne, trois semaines avant la station, ce qui montre quelle responsabilité professionnelle mérite votre énergie.',
+    4: 'Jupiter dans votre signe forme un trigone à Saturne le 3 avril et le 11 juillet, avant la rétrogradation : une bonne fenêtre pour vous inscrire à une formation ou préparer un long voyage.',
+    8: 'Mars dans votre signe forme un trigone à Saturne le 15 novembre, au milieu de la rétrogradation, et donne une énergie stable à un projet créatif ou amoureux que vous voulez reconstruire sur de bonnes bases.',
+  },
+};
+
+const URA_2027_EXTRA: Record<SkyLocale, Partial<Record<number, string>>> = {
+  en: {
+    2: 'Uranus has been in your sign since 26 April 2026 and stays until August 2032. In 2027 it moves between 1°41′ and 9°57′ Gemini, so Geminis born roughly 22 May to 1 June feel the strongest urge to change how they live and present themselves.',
+    1: 'Uranus left your sign for good on 26 April 2026, after about seven years. 2027 is the first full year without it, and the focus moves to your income and what you value.',
+    10: 'Uranus is your modern ruler. On 15 June it trines Pluto in your sign at 6°52′, a supportive aspect for a bold personal change you have been preparing.',
+    8: 'Uranus sits in your opposite sign. Its opposition to the Sun on 30 November falls in your own season, and Sagittarians born around 23 November to 2 December feel partnership questions most.',
+    5: 'Jupiter enters your sign on 26 July and squares Uranus on 10 September at 9°57′. Mars in Virgo also squares Uranus on 17 February and 29 May, so expect your plans for work and health to need some flexibility.',
+    11: 'Uranus squares your sign. Pisces born roughly 20 February to 1 March feel the pressure most, especially around 20 February when the Sun in Pisces squares Uranus.',
+    0: 'Uranus sextiles Neptune in your sign, exact for the last time on 6 June at 6°21′: a helpful aspect for learning, writing or speaking about what you want next.',
+    6: 'Uranus moves through a fellow air sign. On 3 October the Sun in Libra trines Uranus, a good day to plan a trip or start a course.',
+  },
+  fr: {
+    2: 'Uranus est dans votre signe depuis le 26 avril 2026 et y reste jusqu’en août 2032. En 2027, il avance entre 1°41′ et 9°57′ Gémeaux : les Gémeaux nés à peu près entre le 22 mai et le 1er juin ressentent le plus l’envie de changer leur façon de vivre et de se présenter.',
+    1: 'Uranus a quitté votre signe pour de bon le 26 avril 2026, après environ sept ans. 2027 est la première année complète sans lui, et l’attention se porte sur vos revenus et ce qui compte pour vous.',
+    10: 'Uranus est votre maître moderne. Le 15 juin, il forme un trigone à Pluton dans votre signe à 6°52′, un aspect porteur pour un changement personnel audacieux que vous préparez.',
+    8: 'Uranus occupe votre signe opposé. Son opposition au Soleil du 30 novembre tombe pendant votre saison, et les natifs nés entre le 23 novembre et le 2 décembre environ sentent le plus les questions de couple.',
+    5: 'Jupiter entre dans votre signe le 26 juillet et forme un carré à Uranus le 10 septembre à 9°57′. Mars en Vierge forme aussi un carré à Uranus le 17 février et le 29 mai : vos projets de travail et de santé demanderont de la souplesse.',
+    11: 'Uranus forme un carré à votre signe. Les Poissons nés à peu près entre le 20 février et le 1er mars le ressentent le plus, surtout autour du 20 février, quand le Soleil en Poissons forme un carré à Uranus.',
+    0: 'Uranus forme un sextile à Neptune dans votre signe, exact pour la dernière fois le 6 juin à 6°21′ : un aspect aidant pour apprendre, écrire ou dire ce que vous voulez ensuite.',
+    6: 'Uranus traverse un signe d’air comme le vôtre. Le 3 octobre, le Soleil en Balance forme un trigone à Uranus, une bonne journée pour préparer un voyage ou commencer une formation.',
+  },
+};
+
+export function signRows2027d(event: 'saturnRetrograde2027' | 'uranusGemini2027', locale: SkyLocale, index: number): string {
+  const name = SIGN_NAMES[locale][index];
+  const topic = (h: number) => HOUSE_TOPIC[locale][h - 1];
+  const o = (h: number) => ordinal(h, locale);
+  if (event === 'saturnRetrograde2027') {
+    const h = solarHouse(index, SIGN_ARIES);
+    const extra = SAT_2027_EXTRA[locale][index];
+    return locale === 'fr'
+      ? `Pour ${FR_ARTICLE[index]}${name}, Saturne rétrograde en Bélier revient sur votre maison solaire ${h} (${topic(h)}). Du 9 août au 24 décembre 2027, c’est le domaine où l’on consolide ce qui a été lancé depuis 2025 et où l’on corrige ce qui a été bâti trop vite.${extra ? ` ${extra}` : ''}`
+      : `For ${name}, Saturn retrograde in Aries goes back over your ${o(h)} solar house (${topic(h)}). From 9 August to 24 December 2027, this is the area where you consolidate what started in 2025 and fix what was built too fast.${extra ? ` ${extra}` : ''}`;
+  }
+  const h = solarHouse(index, SIGN_GEMINI);
+  const extra = URA_2027_EXTRA[locale][index];
+  return locale === 'fr'
+    ? `Pour ${FR_ARTICLE[index]}${name}, Uranus en Gémeaux traverse votre maison solaire ${h} (${topic(h)}) pendant toute l’année 2027. C’est là que les changements soudains, les idées neuves et le besoin de liberté se font sentir.${extra ? ` ${extra}` : ''}`
+    : `For ${name}, Uranus in Gemini moves through your ${o(h)} solar house (${topic(h)}) for the whole of 2027. This is where sudden changes, new ideas and a need for freedom show up.${extra ? ` ${extra}` : ''}`;
+}
+
+const METHOD_OUTER: Record<SkyLocale, string> = {
+  en: 'Method: stations, ingresses, oppositions, aspects and degrees computed by Callastral with the NASA JPL DE440 ephemeris (geocentric, apparent positions, tropical zodiac). Saturn and Uranus barely move for days around a station, so published station times can differ by 10 to 20 minutes from one ephemeris to another. Shadow dates mark when the planet first and last crosses the degrees of the retrograde. Paris time is UTC+1 in winter and UTC+2 from 28 March to 31 October 2027.',
+  fr: 'Méthode : stations, entrées en signe, oppositions, aspects et degrés calculés par Callastral avec l’éphéméride NASA JPL DE440 (positions géocentriques apparentes, zodiaque tropical). Saturne et Uranus restent presque immobiles plusieurs jours autour d’une station : l’heure publiée peut varier de 10 à 20 minutes selon l’éphéméride. Les dates d’ombre indiquent le premier et le dernier passage de la planète sur les degrés de la rétrogradation. L’heure de Paris est UTC+1 en hiver et UTC+2 du 28 mars au 31 octobre 2027.',
+};
+
+function saturnRetro2027Copy(locale: SkyLocale): SkyEventCopy {
+  const t = (iso: string) => bothIso(iso, locale);
+  const path = SKY_EVENT_PATHS.saturnRetrograde2027[locale];
+  const links = [link2027(locale), ...commonLinks(locale)];
+  if (locale === 'fr') {
+    return {
+      id: 'saturnRetrograde2027',
+      locale,
+      path,
+      title: 'Saturne rétrograde 2027 : dates, ombre et 12 signes',
+      description: 'Saturne est rétrograde du 9 août au 24 décembre 2027, de 27°53′ à 21°01′ Bélier. Heures de Paris et UTC, période d’ombre et effets pour les 12 signes.',
+      h1: 'Saturne rétrograde 2027 : dates, heures et effets par signe',
+      breadcrumb: 'Saturne rétrograde 2027',
+      answer: [
+        `En 2027, Saturne est rétrograde du ${t(S2027.retro)} au ${t(S2027.direct)}, soit environ 136 jours.`,
+        'Toute la rétrogradation se déroule en Bélier, de 27°53′ à 21°01′. La période d’ombre commence le 4 mai 2027 et se termine le 27 mars 2028, deux semaines avant l’entrée de Saturne en Taureau le 13 avril 2028.',
+      ],
+      updated: 'Publié le 18 novembre 2026',
+      tableTitle: 'Le calendrier de Saturne 2027',
+      tableCaption: 'Calculé avec l’éphéméride NASA JPL DE440',
+      cols: ['Événement', 'Heure de Paris', 'UTC', 'Position'],
+      rows: [
+        rowIso(S2027.shadowEndPrev, 'fr', 'Fin de l’ombre de la rétrogradation 2026', '14°45′ Bélier'),
+        rowIso(S2027.conjSun, 'fr', 'Conjonction Saturne-Soleil', '17°40′ Bélier'),
+        rowIso(S2027.preShadow, 'fr', 'Début de l’ombre (pré-rétrogradation)', '21°01′ Bélier'),
+        rowIso(S2027.squareSun, 'fr', 'Carré Soleil-Saturne', '27°31′ Cancer / Bélier'),
+        rowIso(S2027.retro, 'fr', 'Saturne devient rétrograde', '27°53′ Bélier'),
+        rowIso(S2027.opposition, 'fr', 'Opposition au Soleil (Saturne au plus près)', '24°25′ Bélier'),
+        rowIso(S2027.squareMars, 'fr', 'Carré Mars-Saturne', '21°01′ Capricorne / Bélier'),
+        rowIso(S2027.direct, 'fr', 'Saturne redevient direct', '21°01′ Bélier'),
+        rowIso(S2027.postShadow, 'fr', 'Fin de l’ombre (post-rétrogradation)', '27°53′ Bélier'),
+        rowIso(S2027.intoTaurus, 'fr', 'Saturne entre en Taureau', '0° Taureau'),
+      ],
+      sections: [
+        {
+          h2: 'Saturne 2027 en un coup d’œil',
+          paragraphs: [
+            'Saturne met environ 29 ans et demi à faire le tour du zodiaque et reste deux à trois ans dans chaque signe. Entré en Bélier une première fois le 25 mai 2025, revenu en Poissons le 1er septembre 2025, il est en Bélier pour de bon depuis le 14 février 2026. Il y passe toute l’année 2027, de 8°20′ Bélier le 1er janvier jusqu’à 27°53′ à la station du 9 août.',
+            'Saturne est rétrograde chaque année pendant environ quatre mois et demi. La rétrogradation précédente allait du 26 juillet au 10 décembre 2026, de 14°45′ à 7°56′ Bélier. La suivante commencera le 22 août 2028, à 11°19′ Taureau.',
+          ],
+        },
+        {
+          h2: 'Ce que signifie Saturne rétrograde en Bélier',
+          paragraphs: [
+            'En astrologie, Saturne représente la structure, la durée, les responsabilités et les limites. Le Bélier est un signe de feu cardinal, celui des départs et de l’initiative. La tradition y place la chute de Saturne : la patience saturnienne et l’impatience du Bélier tirent en sens contraire.',
+            'Une rétrogradation de Saturne est lue comme une période de révision plutôt que de lancement. En Bélier, elle invite à revoir les engagements pris dans l’élan depuis 2025, à finir ce qui a été commencé et à distinguer le courage de la précipitation.',
+          ],
+        },
+        {
+          h2: 'L’ombre, la station et les dates clés',
+          paragraphs: [
+            `Saturne atteint pour la première fois 21°01′ Bélier le ${t(S2027.preShadow)} : c’est le début de l’ombre. Il devient rétrograde le ${t(S2027.retro)}, recule jusqu’à 21°01′, puis redevient direct le ${t(S2027.direct)}. Il ne repasse 27°53′ que le 27 mars 2028, fin de l’ombre.`,
+            `Le ${t(S2027.opposition)}, Saturne est à l’opposition du Soleil, à environ 1,25 milliard de km : visible toute la nuit en Bélier, avec ses anneaux qui se rouvrent dans un petit télescope après leur passage par la tranche en 2025. Le 23 décembre, Mars en Capricorne forme un carré à Saturne au degré exact de la station directe, une veille de station qui demande de la patience.`,
+          ],
+        },
+        {
+          h2: 'La dernière fois que Saturne était en Bélier',
+          paragraphs: [
+            'Le passage précédent de Saturne en Bélier date du 7 avril 1996 au 1er mars 1999, avec un retour en Bélier du 25 octobre 1998 au 1er mars 1999. Celui d’avant allait du 3 mars 1967 au 29 avril 1969.',
+            'Si vous avez vécu ces années, le domaine de vie qui s’est structuré à l’époque peut donner une idée de ce qui revient aujourd’hui. En 2027, Saturne et Neptune traversent ensemble le Bélier, après leur conjonction exacte du 20 février 2026 à 0°45′ Bélier.',
+          ],
+        },
+      ],
+      signsTitle: 'Saturne rétrograde 2027 pour chaque signe',
+      signsIntro: 'Lecture par maisons solaires, à partir de votre signe solaire. Votre ascendant, calculé par notre thème astral gratuit, donne la maison exacte où Saturne recule.',
+      adviceTitle: 'Comment traverser Saturne rétrograde',
+      advice: [
+        'Entre le 4 mai et le 9 août, notez les engagements qui vous pèsent : ce sont eux que la rétrogradation remettra sur la table.',
+        'Pendant la rétrogradation, terminez, réparez et consolidez plutôt que d’ouvrir de nouveaux chantiers lourds.',
+        'Repérez dans votre thème astral la maison qui contient 21° à 28° Bélier : c’est là que la révision est lue en astrologie.',
+        'Saturne rétrograde ne bloque pas votre vie : gardez vos décisions d’argent, de santé ou de droit appuyées sur des avis professionnels.',
+      ],
+      method: METHOD_OUTER.fr,
+      faqTitle: 'Questions fréquentes',
+      faqs: [
+        { question: 'Quand Saturne est-il rétrograde en 2027 ?', answer: 'Du 9 août 2027 à 20 h 06, heure de Paris (18 h 06 UTC), au 24 décembre 2027 à 3 h 46, heure de Paris (2 h 46 UTC). La rétrogradation dure environ 136 jours.' },
+        { question: 'Dans quel signe Saturne rétrograde-t-il en 2027 ?', answer: 'En Bélier, de 27°53′ à 21°01′. Saturne reste en Bélier toute l’année et n’entre en Taureau que le 13 avril 2028.' },
+        { question: 'Quelles sont les dates de l’ombre de Saturne en 2027 ?', answer: 'L’ombre d’avant commence le 4 mai 2027, quand Saturne atteint 21°01′ Bélier. L’ombre d’après se termine le 27 mars 2028, quand il repasse 27°53′.' },
+        { question: 'Saturne est-il rétrograde chaque année ?', answer: 'Oui, environ quatre mois et demi par an. En 2026, du 26 juillet au 10 décembre ; en 2028, à partir du 22 août, en Taureau.' },
+        { question: 'Quels signes ressentent le plus Saturne rétrograde en 2027 ?', answer: 'En lecture solaire, le Bélier, puis la Balance, le Cancer et le Capricorne, surtout pour les natifs dont le Soleil est entre 21° et 28° de leur signe.' },
+        { question: 'Quand voir Saturne dans le ciel en 2027 ?', answer: 'Autour de l’opposition du 18 octobre 2027 : Saturne se lève au coucher du Soleil et reste visible toute la nuit en Bélier. Début avril, il est caché dans la lumière du Soleil.' },
+      ],
+      ctaText: 'Un engagement qui pèse, une relation à consolider, un projet à finir avant d’en lancer un autre ? Parlez-en à voix haute avec une Conseillère ou un Conseiller Callastral, à partir de votre vrai thème. Les 3 premières minutes sont offertes, puis vous choisissez un pack à prix fixe si vous voulez continuer.',
+      ctaButton: '3 min offertes, sans carte',
+      linksTitle: 'Aller plus loin',
+      links,
+      related: { href: SKY_EVENT_PATHS.uranusGemini2027.fr, label: SKY_EVENT_LABELS.uranusGemini2027.fr },
+      home: 'Accueil',
+      disclaimer: DISCLAIMER.fr,
+    };
+  }
+  return {
+    id: 'saturnRetrograde2027',
+    locale,
+    path,
+    title: 'Saturn Retrograde 2027: Dates, Shadow and 12 Signs',
+    description: 'Saturn is retrograde from 9 August to 24 December 2027, from 27°53′ to 21°01′ Aries. Exact UTC and Paris times, shadow dates and effects for all 12 signs.',
+    h1: 'Saturn retrograde 2027: dates, times and effects by sign',
+    breadcrumb: 'Saturn retrograde 2027',
+    answer: [
+      `In 2027 Saturn is retrograde from ${t(S2027.retro)} to ${t(S2027.direct)}, a span of about 136 days.`,
+      'The whole retrograde takes place in Aries, from 27°53′ back to 21°01′. The shadow period starts on 4 May 2027 and ends on 27 March 2028, two weeks before Saturn enters Taurus on 13 April 2028.',
+    ],
+    updated: 'Published on 18 November 2026',
+    tableTitle: 'Saturn 2027 calendar',
+    tableCaption: 'Calculated with the NASA JPL DE440 ephemeris',
+    cols: ['Event', 'Paris time', 'UTC', 'Position'],
+    rows: [
+      rowIso(S2027.shadowEndPrev, 'en', 'End of the 2026 retrograde shadow', '14°45′ Aries'),
+      rowIso(S2027.conjSun, 'en', 'Saturn conjunct the Sun', '17°40′ Aries'),
+      rowIso(S2027.preShadow, 'en', 'Shadow begins (pre-retrograde)', '21°01′ Aries'),
+      rowIso(S2027.squareSun, 'en', 'Sun square Saturn', '27°31′ Cancer / Aries'),
+      rowIso(S2027.retro, 'en', 'Saturn stations retrograde', '27°53′ Aries'),
+      rowIso(S2027.opposition, 'en', 'Opposition to the Sun (Saturn closest)', '24°25′ Aries'),
+      rowIso(S2027.squareMars, 'en', 'Mars square Saturn', '21°01′ Capricorn / Aries'),
+      rowIso(S2027.direct, 'en', 'Saturn stations direct', '21°01′ Aries'),
+      rowIso(S2027.postShadow, 'en', 'Shadow ends (post-retrograde)', '27°53′ Aries'),
+      rowIso(S2027.intoTaurus, 'en', 'Saturn enters Taurus', '0° Taurus'),
+    ],
+    sections: [
+      {
+        h2: 'Saturn 2027 at a glance',
+        paragraphs: [
+          'Saturn takes about 29.5 years to travel the zodiac and spends two to three years in each sign. It first entered Aries on 25 May 2025, slipped back into Pisces on 1 September 2025 and has been in Aries for good since 14 February 2026. It stays there all through 2027, from 8°20′ Aries on 1 January up to 27°53′ at the 9 August station.',
+          'Saturn turns retrograde every year for about four and a half months. The previous retrograde ran from 26 July to 10 December 2026, from 14°45′ to 7°56′ Aries. The next one starts on 22 August 2028, at 11°19′ Taurus.',
+        ],
+      },
+      {
+        h2: 'What Saturn retrograde in Aries means',
+        paragraphs: [
+          'In astrology Saturn stands for structure, time, responsibility and limits. Aries is a cardinal fire sign, the sign of beginnings and initiative. Tradition calls Aries Saturn’s fall, because Saturn’s patience and Aries’ urgency pull in opposite directions.',
+          'A Saturn retrograde is read as a time to review rather than launch. In Aries it asks you to look again at commitments made on impulse since 2025, finish what you started and tell real courage apart from haste.',
+        ],
+      },
+      {
+        h2: 'The shadow, the stations and key dates',
+        paragraphs: [
+          `Saturn first reaches 21°01′ Aries on ${t(S2027.preShadow)}, which opens the shadow. It turns retrograde on ${t(S2027.retro)}, moves back to 21°01′ and turns direct on ${t(S2027.direct)}. It only passes 27°53′ again on 27 March 2028, when the shadow ends.`,
+          `On ${t(S2027.opposition)} Saturn is opposite the Sun, about 1.25 billion km away: visible all night in Aries, its rings opening again in a small telescope after being edge-on in 2025. On 23 December Mars in Capricorn squares Saturn at the exact degree of the direct station, the day before it, which calls for patience.`,
+        ],
+      },
+      {
+        h2: 'The last time Saturn was in Aries',
+        paragraphs: [
+          'Saturn’s previous stay in Aries ran from 7 April 1996 to 1 March 1999, including a return to Aries from 25 October 1998 to 1 March 1999. The one before ran from 3 March 1967 to 29 April 1969.',
+          'If you lived through those years, the part of life that took shape then can hint at what comes back now. In 2027 Saturn and Neptune move through Aries together, after their exact conjunction on 20 February 2026 at 0°45′ Aries.',
+        ],
+      },
+    ],
+    signsTitle: 'Saturn retrograde 2027 for each sign',
+    signsIntro: 'Reading by solar houses, from your Sun sign. Your rising sign, calculated by our free birth chart, gives the exact house where Saturn moves back.',
+    adviceTitle: 'How to handle Saturn retrograde',
+    advice: [
+      'Between 4 May and 9 August, write down the commitments that feel heavy: those are the ones the retrograde will bring back to the table.',
+      'During the retrograde, finish, repair and consolidate rather than opening big new projects.',
+      'Find the house holding 21° to 28° Aries in your birth chart: that is where astrology reads the review.',
+      'Saturn retrograde does not block your life, so keep money, health and legal decisions grounded in professional advice.',
+    ],
+    method: METHOD_OUTER.en,
+    faqTitle: 'Frequently asked questions',
+    faqs: [
+      { question: 'When is Saturn retrograde in 2027?', answer: 'From 9 August 2027 at 18:06 UTC (20:06 Paris time) to 24 December 2027 at 02:46 UTC (03:46 Paris time). The retrograde lasts about 136 days.' },
+      { question: 'What sign is Saturn retrograde in during 2027?', answer: 'Aries, from 27°53′ back to 21°01′. Saturn stays in Aries all year and only enters Taurus on 13 April 2028.' },
+      { question: 'What are the Saturn retrograde 2027 shadow dates?', answer: 'The pre-shadow starts on 4 May 2027, when Saturn reaches 21°01′ Aries. The post-shadow ends on 27 March 2028, when it passes 27°53′ again.' },
+      { question: 'Is Saturn retrograde every year?', answer: 'Yes, for about four and a half months each year. In 2026 it ran from 26 July to 10 December; in 2028 it starts on 22 August, in Taurus.' },
+      { question: 'Which signs feel Saturn retrograde 2027 the most?', answer: 'In a Sun-sign reading, Aries first, then Libra, Cancer and Capricorn, especially people whose Sun falls between 21° and 28° of their sign.' },
+      { question: 'When can you see Saturn in 2027?', answer: 'Around the opposition of 18 October 2027, when Saturn rises at sunset and stays visible all night in Aries. In early April it is hidden in the Sun’s glare.' },
+    ],
+    ctaText: 'A commitment that feels heavy, a relationship to strengthen, a project to finish before starting the next one? Talk it through out loud with a Callastral advisor, from your real birth chart. The first 3 minutes are free, then you choose a fixed-price pack if you want to continue.',
+    ctaButton: '3 free minutes, no card',
+    linksTitle: 'Go further',
+    links,
+    related: { href: SKY_EVENT_PATHS.uranusGemini2027.en, label: SKY_EVENT_LABELS.uranusGemini2027.en },
+    home: 'Home',
+    disclaimer: DISCLAIMER.en,
+  };
+}
+
+function uranusGemini2027Copy(locale: SkyLocale): SkyEventCopy {
+  const t = (iso: string) => bothIso(iso, locale);
+  const path = SKY_EVENT_PATHS.uranusGemini2027[locale];
+  const links = [link2027(locale), ...commonLinks(locale)];
+  if (locale === 'fr') {
+    return {
+      id: 'uranusGemini2027',
+      locale,
+      path,
+      title: 'Uranus en Gémeaux 2027 : dates, rétrograde et 12 signes',
+      description: 'Uranus reste en Gémeaux toute l’année 2027, entre 1°41′ et 9°57′. Direct le 8 février, rétrograde le 15 septembre : heures exactes et effets par signe.',
+      h1: 'Uranus en Gémeaux 2027 : dates, heures et effets par signe',
+      breadcrumb: 'Uranus en Gémeaux 2027',
+      answer: [
+        `Uranus reste en Gémeaux pendant toute l’année 2027 : il redevient direct le ${t(U2027.direct)} à 1°41′ Gémeaux et devient rétrograde le ${t(U2027.retro)} à 9°57′ Gémeaux.`,
+        'Uranus est entré en Gémeaux pour de bon le 26 avril 2026 et y restera jusqu’au 3 août 2032, avec un dernier retour jusqu’au 22 mai 2033. C’est son premier passage dans ce signe depuis 1941-1949.',
+      ],
+      updated: 'Publié le 18 novembre 2026',
+      tableTitle: 'Le calendrier d’Uranus 2026-2028',
+      tableCaption: 'Calculé avec l’éphéméride NASA JPL DE440',
+      cols: ['Événement', 'Heure de Paris', 'UTC', 'Position'],
+      rows: [
+        rowIso(U2027.retroPrev, 'fr', 'Uranus devient rétrograde', '5°42′ Gémeaux'),
+        rowIso(U2027.sextileNeptune, 'fr', 'Sextile Uranus-Neptune (4e passage)', '1°56′ Gémeaux / Bélier'),
+        rowIso(U2027.direct, 'fr', 'Uranus redevient direct', '1°41′ Gémeaux'),
+        rowIso(U2027.conjSun, 'fr', 'Conjonction Uranus-Soleil', '5°46′ Gémeaux'),
+        rowIso(U2027.sextileNeptune2, 'fr', 'Sextile Uranus-Neptune (dernier passage)', '6°21′ Gémeaux / Bélier'),
+        rowIso(U2027.trinePluto, 'fr', 'Trigone Uranus-Pluton', '6°52′ Gémeaux / Verseau'),
+        rowIso(U2027.squareJupiter, 'fr', 'Carré Jupiter-Uranus', '9°57′ Vierge / Gémeaux'),
+        rowIso(U2027.retro, 'fr', 'Uranus devient rétrograde', '9°57′ Gémeaux'),
+        rowIso(U2027.opposition, 'fr', 'Opposition au Soleil (Uranus au plus près)', '7°56′ Gémeaux'),
+        rowIso(U2027.direct2, 'fr', 'Uranus redevient direct', '5°56′ Gémeaux'),
+      ],
+      sections: [
+        {
+          h2: 'Uranus 2027 en un coup d’œil',
+          paragraphs: [
+            'Uranus met environ 84 ans à faire le tour du zodiaque et reste à peu près sept ans dans chaque signe. Il est entré en Gémeaux une première fois le 7 juillet 2025, est revenu en Taureau le 8 novembre 2025, puis s’est installé en Gémeaux le 26 avril 2026. En 2027, il n’avance que de 1°41′ à 9°57′ Gémeaux.',
+            `Uranus est rétrograde environ cinq mois par an. Il termine la rétrogradation commencée le 10 septembre 2026 en redevenant direct le 8 février 2027, puis recule de nouveau du 15 septembre 2027 au 12 février 2028. L’ombre de cette seconde rétrogradation commence le 30 mai 2027 et se termine le 29 mai 2028.`,
+          ],
+        },
+        {
+          h2: 'Ce que signifie Uranus en Gémeaux',
+          paragraphs: [
+            'En astrologie, Uranus représente le changement soudain, l’invention, la liberté et la rupture avec les habitudes. Les Gémeaux sont un signe d’air gouverné par Mercure : la parole, l’écriture, l’apprentissage, les déplacements courts et les échanges du quotidien.',
+            'Les astrologues associent ce passage à des changements rapides dans la façon de communiquer, d’apprendre et de s’informer. Sur le plan personnel, il pousse à renouveler sa manière de penser et de parler. Le risque le plus souvent cité est la dispersion, avec beaucoup d’idées et peu de suivi.',
+          ],
+        },
+        {
+          h2: 'Les aspects d’Uranus en 2027',
+          paragraphs: [
+            `Uranus forme un sextile à Neptune en Bélier, exact cinq fois entre août 2025 et juin 2027, dont le ${t(U2027.sextileNeptune)} et pour la dernière fois le ${t(U2027.sextileNeptune2)}. Il forme aussi un trigone à Pluton en Verseau, exact le ${t(U2027.trinePluto)}, l’un des cinq passages qui s’étalent de juillet 2026 à mai 2028. Ces aspects lents entre planètes générationnelles sont lus comme des soutiens aux changements de société.`,
+            `Le ${t(U2027.squareJupiter)}, Jupiter en Vierge forme un carré exact à Uranus, cinq jours avant la station rétrograde : un moment de tension entre l’envie d’améliorer le quotidien et le besoin de tout changer. Le ${t(U2027.opposition)}, Uranus est à l’opposition du Soleil, à environ 2,75 milliards de km, au meilleur de sa visibilité.`,
+          ],
+        },
+        {
+          h2: 'La dernière fois qu’Uranus était en Gémeaux',
+          paragraphs: [
+            'Le passage précédent d’Uranus en Gémeaux a eu lieu du 7 août au 5 octobre 1941, puis du 15 mai 1942 au 30 août 1948, avec un dernier retour du 12 novembre 1948 au 10 juin 1949. Cette période a vu naître le transistor, mis au point aux Bell Labs en décembre 1947, et l’ENIAC, l’un des premiers ordinateurs électroniques, présenté en février 1946.',
+            'Avant cela, Uranus était en Gémeaux au milieu du XIXe siècle. Ce cycle de 84 ans explique pourquoi presque personne ne se souvient du passage précédent : il touche chaque génération une seule fois.',
+          ],
+        },
+      ],
+      signsTitle: 'Uranus en Gémeaux en 2027 pour chaque signe',
+      signsIntro: 'Lecture par maisons solaires, à partir de votre signe solaire. Votre ascendant, calculé par notre thème astral gratuit, donne la maison exacte traversée par Uranus.',
+      adviceTitle: 'Comment vivre Uranus en Gémeaux',
+      advice: [
+        'Choisissez une compétence nouvelle à apprendre en 2027 (une langue, un outil, une forme d’écriture) et pratiquez-la chaque semaine.',
+        'Quand une idée vous emballe, notez-la et attendez quelques jours avant d’agir : Uranus aime la surprise, les Gémeaux aiment papillonner.',
+        'Repérez dans votre thème astral la maison qui contient 1° à 10° Gémeaux : c’est là que les changements sont lus en astrologie cette année.',
+        'Uranus annonce du mouvement, pas un événement précis : gardez vos décisions d’argent, de santé ou de droit appuyées sur des avis professionnels.',
+      ],
+      method: METHOD_OUTER.fr,
+      faqTitle: 'Questions fréquentes',
+      faqs: [
+        { question: 'Uranus est-il en Gémeaux en 2027 ?', answer: 'Oui, Uranus reste en Gémeaux toute l’année. Il avance entre 1°41′ et 9°57′ Gémeaux et ne revient pas en Taureau.' },
+        { question: 'Quand Uranus est-il rétrograde en 2027 ?', answer: 'Jusqu’au 8 février 2027 à 13 h 30, heure de Paris (12 h 30 UTC), puis de nouveau à partir du 15 septembre 2027 à 11 h 09, heure de Paris (9 h 09 UTC), jusqu’au 12 février 2028.' },
+        { question: 'Combien de temps Uranus reste-t-il en Gémeaux ?', answer: 'Du 26 avril 2026 au 3 août 2032, avec un retour en Gémeaux du 12 décembre 2032 au 22 mai 2033. Le premier passage avait duré du 7 juillet au 8 novembre 2025.' },
+        { question: 'Quand Uranus était-il en Gémeaux la dernière fois ?', answer: 'De 1941 à 1949 : du 7 août au 5 octobre 1941, du 15 mai 1942 au 30 août 1948, puis du 12 novembre 1948 au 10 juin 1949.' },
+        { question: 'Quels signes ressentent le plus Uranus en Gémeaux en 2027 ?', answer: 'En lecture solaire, les Gémeaux nés entre le 22 mai et le 1er juin environ, puis le Sagittaire, la Vierge et les Poissons dont le Soleil est entre 1° et 10° de leur signe.' },
+        { question: 'Peut-on voir Uranus en 2027 ?', answer: 'Autour de l’opposition du 30 novembre 2027, Uranus brille vers la magnitude 5,6 en Gémeaux : à la limite de l’œil nu sous un ciel très noir, facile aux jumelles.' },
+      ],
+      ctaText: 'Une envie de tout changer, une relation qui demande plus d’air, une décision qui vous trotte dans la tête ? Parlez-en à voix haute avec une Conseillère ou un Conseiller Callastral, à partir de votre vrai thème. Les 3 premières minutes sont offertes, puis vous choisissez un pack à prix fixe si vous voulez continuer.',
+      ctaButton: '3 min offertes, sans carte',
+      linksTitle: 'Aller plus loin',
+      links,
+      related: { href: SKY_EVENT_PATHS.saturnRetrograde2027.fr, label: SKY_EVENT_LABELS.saturnRetrograde2027.fr },
+      home: 'Accueil',
+      disclaimer: DISCLAIMER.fr,
+    };
+  }
+  return {
+    id: 'uranusGemini2027',
+    locale,
+    path,
+    title: 'Uranus in Gemini 2027: Dates, Retrograde and 12 Signs',
+    description: 'Uranus stays in Gemini all of 2027, between 1°41′ and 9°57′. Direct on 8 February, retrograde on 15 September: exact times and effects for all 12 signs.',
+    h1: 'Uranus in Gemini 2027: dates, times and effects by sign',
+    breadcrumb: 'Uranus in Gemini 2027',
+    answer: [
+      `Uranus stays in Gemini for the whole of 2027: it turns direct on ${t(U2027.direct)} at 1°41′ Gemini and stations retrograde on ${t(U2027.retro)} at 9°57′ Gemini.`,
+      'Uranus entered Gemini for good on 26 April 2026 and stays until 3 August 2032, with a last return until 22 May 2033. It is the planet’s first stay in this sign since 1941 to 1949.',
+    ],
+    updated: 'Published on 18 November 2026',
+    tableTitle: 'Uranus 2026 to 2028 calendar',
+    tableCaption: 'Calculated with the NASA JPL DE440 ephemeris',
+    cols: ['Event', 'Paris time', 'UTC', 'Position'],
+    rows: [
+      rowIso(U2027.retroPrev, 'en', 'Uranus stations retrograde', '5°42′ Gemini'),
+      rowIso(U2027.sextileNeptune, 'en', 'Uranus sextile Neptune (4th pass)', '1°56′ Gemini / Aries'),
+      rowIso(U2027.direct, 'en', 'Uranus stations direct', '1°41′ Gemini'),
+      rowIso(U2027.conjSun, 'en', 'Uranus conjunct the Sun', '5°46′ Gemini'),
+      rowIso(U2027.sextileNeptune2, 'en', 'Uranus sextile Neptune (last pass)', '6°21′ Gemini / Aries'),
+      rowIso(U2027.trinePluto, 'en', 'Uranus trine Pluto', '6°52′ Gemini / Aquarius'),
+      rowIso(U2027.squareJupiter, 'en', 'Jupiter square Uranus', '9°57′ Virgo / Gemini'),
+      rowIso(U2027.retro, 'en', 'Uranus stations retrograde', '9°57′ Gemini'),
+      rowIso(U2027.opposition, 'en', 'Opposition to the Sun (Uranus closest)', '7°56′ Gemini'),
+      rowIso(U2027.direct2, 'en', 'Uranus stations direct', '5°56′ Gemini'),
+    ],
+    sections: [
+      {
+        h2: 'Uranus 2027 at a glance',
+        paragraphs: [
+          'Uranus takes about 84 years to travel the zodiac and spends roughly seven years in each sign. It first entered Gemini on 7 July 2025, went back into Taurus on 8 November 2025, then settled in Gemini on 26 April 2026. In 2027 it only moves from 1°41′ to 9°57′ Gemini.',
+          'Uranus is retrograde for about five months every year. It ends the retrograde that began on 10 September 2026 by turning direct on 8 February 2027, then moves backwards again from 15 September 2027 to 12 February 2028. The shadow of that second retrograde starts on 30 May 2027 and ends on 29 May 2028.',
+        ],
+      },
+      {
+        h2: 'What Uranus in Gemini means',
+        paragraphs: [
+          'In astrology Uranus stands for sudden change, invention, freedom and breaking habits. Gemini is an air sign ruled by Mercury: speech, writing, learning, short trips and everyday exchanges.',
+          'Astrologers link this transit with fast changes in how people communicate, learn and get their news. On a personal level it pushes you to refresh the way you think and speak. The risk named most often is scattered energy, with many ideas and little follow-through.',
+        ],
+      },
+      {
+        h2: 'Uranus aspects in 2027',
+        paragraphs: [
+          `Uranus sextiles Neptune in Aries, exact five times between August 2025 and June 2027, including ${t(U2027.sextileNeptune)} and, for the last time, ${t(U2027.sextileNeptune2)}. It also trines Pluto in Aquarius, exact on ${t(U2027.trinePluto)}, one of five passes running from July 2026 to May 2028. These slow aspects between generational planets are read as support for changes across society.`,
+          `On ${t(U2027.squareJupiter)} Jupiter in Virgo makes an exact square to Uranus, five days before the retrograde station: a tension between improving daily life and wanting to change everything. On ${t(U2027.opposition)} Uranus is opposite the Sun, about 2.75 billion km away, at its best visibility.`,
+        ],
+      },
+      {
+        h2: 'The last time Uranus was in Gemini',
+        paragraphs: [
+          'Uranus last moved through Gemini from 7 August to 5 October 1941, then from 15 May 1942 to 30 August 1948, with a final return from 12 November 1948 to 10 June 1949. Those years saw the transistor, developed at Bell Labs in December 1947, and ENIAC, one of the first electronic computers, unveiled in February 1946.',
+          'Before that, Uranus was in Gemini in the middle of the 19th century. This 84-year cycle explains why almost nobody remembers the previous one: it reaches each generation only once.',
+        ],
+      },
+    ],
+    signsTitle: 'Uranus in Gemini 2027 for each sign',
+    signsIntro: 'Reading by solar houses, from your Sun sign. Your rising sign, calculated by our free birth chart, gives the exact house Uranus moves through.',
+    adviceTitle: 'How to live with Uranus in Gemini',
+    advice: [
+      'Pick one new skill to learn in 2027 (a language, a tool, a style of writing) and practise it every week.',
+      'When an idea excites you, write it down and wait a few days before acting, because Uranus loves surprises and Gemini loves to flit.',
+      'Find the house holding 1° to 10° Gemini in your birth chart: that is where astrology reads this year’s changes.',
+      'Uranus points to movement, not a specific event, so keep money, health and legal decisions grounded in professional advice.',
+    ],
+    method: METHOD_OUTER.en,
+    faqTitle: 'Frequently asked questions',
+    faqs: [
+      { question: 'Is Uranus in Gemini in 2027?', answer: 'Yes, Uranus stays in Gemini all year. It moves between 1°41′ and 9°57′ Gemini and does not go back to Taurus.' },
+      { question: 'When is Uranus retrograde in 2027?', answer: 'Until 8 February 2027 at 12:30 UTC (13:30 Paris time), then again from 15 September 2027 at 09:09 UTC (11:09 Paris time) to 12 February 2028.' },
+      { question: 'How long is Uranus in Gemini?', answer: 'From 26 April 2026 to 3 August 2032, with a return to Gemini from 12 December 2032 to 22 May 2033. The first brief visit ran from 7 July to 8 November 2025.' },
+      { question: 'When was Uranus last in Gemini?', answer: 'From 1941 to 1949: 7 August to 5 October 1941, 15 May 1942 to 30 August 1948, then 12 November 1948 to 10 June 1949.' },
+      { question: 'Which signs feel Uranus in Gemini 2027 the most?', answer: 'In a Sun-sign reading, Geminis born around 22 May to 1 June, then Sagittarius, Virgo and Pisces with the Sun between 1° and 10° of their sign.' },
+      { question: 'Can you see Uranus in 2027?', answer: 'Around the opposition of 30 November 2027, Uranus shines at about magnitude 5.6 in Gemini: at the limit of naked-eye visibility under a very dark sky, easy with binoculars.' },
+    ],
+    ctaText: 'An urge to change everything, a relationship that needs more room, a decision that keeps going round in your head? Talk it through out loud with a Callastral advisor, from your real birth chart. The first 3 minutes are free, then you choose a fixed-price pack if you want to continue.',
+    ctaButton: '3 free minutes, no card',
+    linksTitle: 'Go further',
+    links,
+    related: { href: SKY_EVENT_PATHS.saturnRetrograde2027.en, label: SKY_EVENT_LABELS.saturnRetrograde2027.en },
+    home: 'Home',
+    disclaimer: DISCLAIMER.en,
+  };
+}
+
+
 const LEONIDS_HOUSE: Record<SkyLocale, string[]> = {
   fr: [
     'l’envie de vous montrer tel que vous êtes revient. Un vœu qui parle de vous, pas de quelqu’un d’autre, a plus de chances de tenir.',
@@ -2847,6 +3320,8 @@ export function skyEventCopy(id: SkyEventId, locale: SkyLocale): SkyEventCopy {
   else if (id === 'fullMoons2027') copy = fullMoons2027Copy(locale);
   else if (id === 'newMoons2027') copy = newMoons2027Copy(locale);
   else if (id === 'jupiterVirgo2027') copy = jupiterVirgo2027Copy(locale);
+  else if (id === 'saturnRetrograde2027') copy = saturnRetro2027Copy(locale);
+  else if (id === 'uranusGemini2027') copy = uranusGemini2027Copy(locale);
   else copy = sagittariusSeasonCopy(locale);
   // Maillage : chaque page événement renvoie vers les autres pages du ciel de la saison.
   const others = SKY_EVENT_IDS.filter((other) => other !== id && SKY_EVENT_PATHS[other][locale] !== copy.related.href);

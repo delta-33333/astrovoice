@@ -29,6 +29,7 @@ function aboutSkyLinks(locale: Locale): { title: string; links: { href: string; 
           { href: '/fr/horoscope-2027', label: 'horoscope 2027' },
           { href: SKY_EVENT_PATHS.newMoons2027.fr, label: 'Nouvelles Lunes 2027' },
           { href: SKY_EVENT_PATHS.jupiterVirgo2027.fr, label: 'Jupiter en Vierge 2027' },
+          { href: SKY_EVENT_PATHS.saturnRetrograde2027.fr, label: 'Saturne rétrograde 2027' },
           { href: SKY_EVENT_PATHS.eclipses2027.fr, label: 'éclipses 2027' },
         ],
       }
@@ -42,6 +43,7 @@ function aboutSkyLinks(locale: Locale): { title: string; links: { href: string; 
           { href: SKY_EVENT_PATHS.newMoons2027.en, label: 'New Moons 2027' },
           { href: SKY_EVENT_PATHS.fullMoons2027.en, label: 'Full Moons 2027' },
           { href: SKY_EVENT_PATHS.jupiterVirgo2027.en, label: 'Jupiter in Virgo 2027' },
+          { href: SKY_EVENT_PATHS.saturnRetrograde2027.en, label: 'Saturn retrograde 2027' },
           { href: SKY_EVENT_PATHS.eclipses2027.en, label: 'eclipses 2027' },
         ],
       };
