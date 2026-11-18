@@ -1,0 +1,177 @@
+{
+  "date": "2026-11-18",
+  "sky": {
+    "date": "2026-11-18",
+    "computedAt": "08:00 Europe/Paris",
+    "phase": {
+      "id": "firstQuarter",
+      "illumination": 58,
+      "waxing": true
+    },
+    "bodies": [
+      {
+        "name": "Soleil",
+        "sign": "Scorpion",
+        "degree": 25,
+        "retrograde": false
+      },
+      {
+        "name": "Lune",
+        "sign": "Poissons",
+        "degree": 4,
+        "retrograde": false
+      },
+      {
+        "name": "Mercure",
+        "sign": "Scorpion",
+        "degree": 6,
+        "retrograde": false
+      },
+      {
+        "name": "Vénus",
+        "sign": "Balance",
+        "degree": 23,
+        "retrograde": false
+      },
+      {
+        "name": "Mars",
+        "sign": "Lion",
+        "degree": 26,
+        "retrograde": false
+      },
+      {
+        "name": "Jupiter",
+        "sign": "Lion",
+        "degree": 26,
+        "retrograde": false
+      },
+      {
+        "name": "Saturne",
+        "sign": "Bélier",
+        "degree": 8,
+        "retrograde": true
+      },
+      {
+        "name": "Uranus",
+        "sign": "Gémeaux",
+        "degree": 3,
+        "retrograde": true
+      },
+      {
+        "name": "Neptune",
+        "sign": "Bélier",
+        "degree": 1,
+        "retrograde": true
+      },
+      {
+        "name": "Pluton",
+        "sign": "Verseau",
+        "degree": 3,
+        "retrograde": false
+      },
+      {
+        "name": "Nœud nord",
+        "sign": "Verseau",
+        "degree": 25,
+        "retrograde": true
+      }
+    ],
+    "ingresses": [],
+    "aspects": [
+      {
+        "a": "Soleil",
+        "b": "Jupiter",
+        "aspect": "square",
+        "orb": 0.1
+      },
+      {
+        "a": "Mars",
+        "b": "Jupiter",
+        "aspect": "conjunction",
+        "orb": 0.7
+      },
+      {
+        "a": "Soleil",
+        "b": "Mars",
+        "aspect": "square",
+        "orb": 0.8
+      },
+      {
+        "a": "Soleil",
+        "b": "Nœud nord",
+        "aspect": "square",
+        "orb": 0.8
+      },
+      {
+        "a": "Lune",
+        "b": "Uranus",
+        "aspect": "square",
+        "orb": 1
+      },
+      {
+        "a": "Mars",
+        "b": "Nœud nord",
+        "aspect": "opposition",
+        "orb": 1.6
+      },
+      {
+        "a": "Lune",
+        "b": "Mercure",
+        "aspect": "trine",
+        "orb": 1.8
+      },
+      {
+        "a": "Vénus",
+        "b": "Nœud nord",
+        "aspect": "trine",
+        "orb": 1.9
+      },
+      {
+        "a": "Vénus",
+        "b": "Jupiter",
+        "aspect": "sextile",
+        "orb": 2.8
+      },
+      {
+        "a": "Mercure",
+        "b": "Pluton",
+        "aspect": "square",
+        "orb": 3.5
+      }
+    ]
+  },
+  "en": {
+    "summary": "Wednesday 18 November 2026: the waxing Moon, just past first quarter and about 58% lit, moves through the early degrees of Pisces. It trines Mercury at 6° Scorpio and squares Uranus at 3° Gemini (retrograde). The Sun at 25° Scorpio makes an exact square to Jupiter at 26° Leo, with Mars conjunct Jupiter and the Sun also square Mars and the North Node. Venus at 23° Libra trines the Node and sextiles Jupiter, and Mercury (direct) still squares Pluto. No sign change today. Saturn, Uranus and Neptune are retrograde.",
+    "signs": {
+      "belier": "Aries, today’s main theme is rest, the inner world and what you keep hidden. The Moon in Pisces crosses this part of your chart and trines Mercury in your area of shared money, intimacy and deep bonds, so intuition and clear words work well together. Your inner world needs space, and a moment alone to rest, write or meditate clears your head.\n\nA square from the Moon to Uranus, in your sector of conversations, messages and short trips, can bring a last-minute change of plan, so leave some room in your schedule. The Sun makes an exact square to Jupiter and Mars in your area of love, pleasure and creativity: the urge to do too much or promise too much is strong, and choosing one priority keeps you steady. Venus sextile Jupiter, from your domain of partnerships and one-to-one relationships, helps you smooth things over with kindness.\n\nOn Thursday, keep ten quiet minutes for yourself in the morning. The sky describes a climate, and you remain free to choose.",
+      "taureau": "Taurus, this Wednesday revolves around friends, groups and long-term plans. The Moon in Pisces crosses this part of your chart and trines Mercury in your area of partnerships and one-to-one relationships, so intuition and clear words work well together. Friends and community bring comfort, and reaching out to someone who shares your hopes reconnects you with them.\n\nA square from the Moon to Uranus, in your sector of money, possessions and self-worth, can bring a last-minute change of plan, so leave some room in your schedule. The Sun makes an exact square to Jupiter and Mars in your area of home, family and private roots: the urge to do too much or promise too much is strong, and choosing one priority keeps you steady. Venus sextile Jupiter, from your domain of daily work, health and routines, helps you smooth things over with kindness.\n\nOn Thursday, suggest a simple meet-up with a friend. Take these as tendencies, not as a fixed script.",
+      "gemeaux": "Gemini, the growing Moon in Pisces lights up career, reputation and public goals. The Moon in Pisces crosses this part of your chart and trines Mercury in your area of daily work, health and routines, so intuition and clear words work well together. Your professional direction calls for intuition, and following a quiet hunch about a work choice proves useful.\n\nA square from the Moon to Uranus, in your sector of identity, body and first impressions, can bring a last-minute change of plan, so leave some room in your schedule. The Sun makes an exact square to Jupiter and Mars in your area of conversations, messages and short trips: the urge to do too much or promise too much is strong, and choosing one priority keeps you steady. Venus sextile Jupiter, from your domain of love, pleasure and creativity, helps you smooth things over with kindness.\n\nOn Thursday, share one idea with a colleague you trust. Nothing here is written in stone, so keep what resonates.",
+      "cancer": "Cancer, your Wednesday is coloured by travel, study and the beliefs that guide you. The Moon in Pisces crosses this part of your chart and trines Mercury in your area of love, pleasure and creativity, so intuition and clear words work well together. Your mind looks for meaning and horizons, and reading, learning or planning a getaway feeds your spirit.\n\nA square from the Moon to Uranus, in your sector of rest, the inner world and what you keep hidden, can bring a last-minute change of plan, so leave some room in your schedule. The Sun makes an exact square to Jupiter and Mars in your area of money, possessions and self-worth: the urge to do too much or promise too much is strong, and choosing one priority keeps you steady. Venus sextile Jupiter, from your domain of home, family and private roots, helps you smooth things over with kindness.\n\nOn Thursday, book or sketch the next step of that plan. Your own judgement stays the best compass.",
+      "lion": "Leo, the day invites you to look at shared money, intimacy and deep bonds with softer eyes. The Moon in Pisces crosses this part of your chart and trines Mercury in your area of home, family and private roots, so intuition and clear words work well together. Deep emotions and shared matters surface, and being honest about what you need creates real trust.\n\nA square from the Moon to Uranus, in your sector of friends, groups and long-term plans, can bring a last-minute change of plan, so leave some room in your schedule. The Sun makes an exact square to Jupiter and Mars in your area of identity, body and first impressions: the urge to do too much or promise too much is strong, and choosing one priority keeps you steady. Venus sextile Jupiter, from your domain of conversations, messages and short trips, helps you smooth things over with kindness.\n\nOn Thursday, clarify one shared expense or commitment in writing. The sky describes a climate, and you remain free to choose.",
+      "vierge": "Virgo, the emotional focus today is partnerships and one-to-one relationships. The Moon in Pisces crosses this part of your chart and trines Mercury in your area of conversations, messages and short trips, so intuition and clear words work well together. Your partner or a close person needs empathy, and listening without trying to fix things brings you closer.\n\nA square from the Moon to Uranus, in your sector of career, reputation and public goals, can bring a last-minute change of plan, so leave some room in your schedule. The Sun makes an exact square to Jupiter and Mars in your area of rest, the inner world and what you keep hidden: the urge to do too much or promise too much is strong, and choosing one priority keeps you steady. Venus sextile Jupiter, from your domain of money, possessions and self-worth, helps you smooth things over with kindness.\n\nOn Thursday, thank the person who listened to you. Take these as tendencies, not as a fixed script.",
+      "balance": "Libra, Wednesday turns your attention to daily work, health and routines. The Moon in Pisces crosses this part of your chart and trines Mercury in your area of money, possessions and self-worth, so intuition and clear words work well together. Your body asks for gentleness, and adjusting your pace at work avoids an energy dip in the afternoon.\n\nA square from the Moon to Uranus, in your sector of travel, study and the beliefs that guide you, can bring a last-minute change of plan, so leave some room in your schedule. The Sun makes an exact square to Jupiter and Mars in your area of friends, groups and long-term plans: the urge to do too much or promise too much is strong, and choosing one priority keeps you steady. Venus sextile Jupiter, from your domain of identity, body and first impressions, helps you smooth things over with kindness.\n\nOn Thursday, go to bed a little earlier than usual. Nothing here is written in stone, so keep what resonates.",
+      "scorpion": "Scorpio, the key area of the day is love, pleasure and creativity. The Moon in Pisces crosses this part of your chart and trines Mercury in your area of identity, body and first impressions, so intuition and clear words work well together. Romance and imagination flow easily, and giving time to a creative pleasure or a tender moment lifts your mood.\n\nA square from the Moon to Uranus, in your sector of shared money, intimacy and deep bonds, can bring a last-minute change of plan, so leave some room in your schedule. The Sun makes an exact square to Jupiter and Mars in your area of career, reputation and public goals: the urge to do too much or promise too much is strong, and choosing one priority keeps you steady. Venus sextile Jupiter, from your domain of rest, the inner world and what you keep hidden, helps you smooth things over with kindness.\n\nOn Thursday, share something you created or enjoyed with someone you like. Your own judgement stays the best compass.",
+      "sagittaire": "Sagittarius, today’s sky speaks about home, family and private roots. The Moon in Pisces crosses this part of your chart and trines Mercury in your area of rest, the inner world and what you keep hidden, so intuition and clear words work well together. Home becomes your refuge, and an evening with family or in a quiet space restores you better than any outing.\n\nA square from the Moon to Uranus, in your sector of partnerships and one-to-one relationships, can bring a last-minute change of plan, so leave some room in your schedule. The Sun makes an exact square to Jupiter and Mars in your area of travel, study and the beliefs that guide you: the urge to do too much or promise too much is strong, and choosing one priority keeps you steady. Venus sextile Jupiter, from your domain of friends, groups and long-term plans, helps you smooth things over with kindness.\n\nOn Thursday, tidy one corner of your home that weighs on you. The sky describes a climate, and you remain free to choose.",
+      "capricorne": "Capricorn, the Moon in Pisces brings conversations, messages and short trips to the surface. The Moon in Pisces crosses this part of your chart and trines Mercury in your area of friends, groups and long-term plans, so intuition and clear words work well together. Your messages read with more feeling, and choosing warm words over sharp ones keeps a conversation open.\n\nA square from the Moon to Uranus, in your sector of daily work, health and routines, can bring a last-minute change of plan, so leave some room in your schedule. The Sun makes an exact square to Jupiter and Mars in your area of shared money, intimacy and deep bonds: the urge to do too much or promise too much is strong, and choosing one priority keeps you steady. Venus sextile Jupiter, from your domain of career, reputation and public goals, helps you smooth things over with kindness.\n\nOn Thursday, reread an important message before you send it. Take these as tendencies, not as a fixed script.",
+      "verseau": "Aquarius, this midweek day centres on money, possessions and self-worth. The Moon in Pisces crosses this part of your chart and trines Mercury in your area of career, reputation and public goals, so intuition and clear words work well together. Your relationship with money becomes more intuitive, and a calm look at what you really value helps you spend wisely.\n\nA square from the Moon to Uranus, in your sector of love, pleasure and creativity, can bring a last-minute change of plan, so leave some room in your schedule. The Sun makes an exact square to Jupiter and Mars in your area of partnerships and one-to-one relationships: the urge to do too much or promise too much is strong, and choosing one priority keeps you steady. Venus sextile Jupiter, from your domain of travel, study and the beliefs that guide you, helps you smooth things over with kindness.\n\nOn Thursday, set aside a small amount for something that truly matters to you. Nothing here is written in stone, so keep what resonates.",
+      "poissons": "Pisces, your feelings today gather around identity, body and first impressions. The Moon in Pisces crosses this part of your chart and trines Mercury in your area of travel, study and the beliefs that guide you, so intuition and clear words work well together. You feel more sensitive than usual, and trusting your instinct about how you show up today is the right call.\n\nA square from the Moon to Uranus, in your sector of home, family and private roots, can bring a last-minute change of plan, so leave some room in your schedule. The Sun makes an exact square to Jupiter and Mars in your area of daily work, health and routines: the urge to do too much or promise too much is strong, and choosing one priority keeps you steady. Venus sextile Jupiter, from your domain of shared money, intimacy and deep bonds, helps you smooth things over with kindness.\n\nOn Thursday, note one decision you made from instinct and see how it turned out. Your own judgement stays the best compass."
+    }
+  },
+  "fr": {
+    "summary": "Mercredi 18 novembre 2026 : la Lune croissante, juste après le premier quartier et éclairée à environ 58 %, avance dans les premiers degrés des Poissons. Elle fait trigone à Mercure à 6° du Scorpion et carré à Uranus à 3° des Gémeaux (rétrograde). Le Soleil à 25° du Scorpion forme un carré exact à Jupiter à 26° du Lion, Mars est conjoint à Jupiter et le Soleil fait aussi carré à Mars et au Nœud nord. Vénus à 23° de la Balance fait trigone au Nœud et sextile à Jupiter, et Mercure (directe) reste au carré de Pluton. Aucun changement de signe aujourd’hui. Saturne, Uranus et Neptune sont rétrogrades.",
+    "signs": {
+      "belier": "Bélier, le thème principal du jour est celui du repos, du monde intérieur et de ce que vous gardez pour vous. La Lune en Poissons traverse ce secteur et fait trigone à Mercure, dans votre domaine de l’argent partagé, de l’intimité et des liens profonds : intuition et mots clairs vont bien ensemble. Votre monde intérieur a besoin d’espace, et un moment seul pour vous reposer, écrire ou méditer vous éclaircit les idées.\n\nUn carré de la Lune à Uranus, dans votre secteur des échanges, des messages et des petits trajets, peut provoquer un changement de dernière minute : gardez de la marge dans votre emploi du temps. Le Soleil forme un carré exact à Jupiter et Mars, dans votre domaine de l’amour, du plaisir et de la créativité : l’envie d’en faire ou d’en promettre trop est forte, et choisir une seule priorité vous garde stable. Le sextile Vénus-Jupiter, depuis votre domaine du couple et des relations en face à face, vous aide à arrondir les angles avec gentillesse.\n\nJeudi, gardez dix minutes de calme pour vous le matin. Le ciel décrit un climat, et vous restez libre de vos choix.",
+      "taureau": "Taureau, ce mercredi tourne autour du domaine des amis, des groupes et des projets à long terme. La Lune en Poissons traverse ce secteur et fait trigone à Mercure, dans votre domaine du couple et des relations en face à face : intuition et mots clairs vont bien ensemble. Les amis et le groupe vous réconfortent, et contacter quelqu’un qui partage vos espoirs renoue le lien.\n\nUn carré de la Lune à Uranus, dans votre secteur de l’argent, des biens et de l’estime de soi, peut provoquer un changement de dernière minute : gardez de la marge dans votre emploi du temps. Le Soleil forme un carré exact à Jupiter et Mars, dans votre domaine du foyer, de la famille et des racines : l’envie d’en faire ou d’en promettre trop est forte, et choisir une seule priorité vous garde stable. Le sextile Vénus-Jupiter, depuis votre domaine du travail quotidien, de la santé et des routines, vous aide à arrondir les angles avec gentillesse.\n\nJeudi, proposez un rendez-vous simple à un ami. Prenez cela comme des tendances, pas comme un scénario figé.",
+      "gemeaux": "Gémeaux, la Lune croissante en Poissons éclaire le domaine de la carrière, de la réputation et des objectifs publics. La Lune en Poissons traverse ce secteur et fait trigone à Mercure, dans votre domaine du travail quotidien, de la santé et des routines : intuition et mots clairs vont bien ensemble. Votre direction professionnelle fait appel à l’intuition, et suivre un pressentiment discret sur un choix de travail s’avère utile.\n\nUn carré de la Lune à Uranus, dans votre secteur de l’identité, du corps et de l’image que vous donnez, peut provoquer un changement de dernière minute : gardez de la marge dans votre emploi du temps. Le Soleil forme un carré exact à Jupiter et Mars, dans votre domaine des échanges, des messages et des petits trajets : l’envie d’en faire ou d’en promettre trop est forte, et choisir une seule priorité vous garde stable. Le sextile Vénus-Jupiter, depuis votre domaine de l’amour, du plaisir et de la créativité, vous aide à arrondir les angles avec gentillesse.\n\nJeudi, partagez une idée avec un collègue de confiance. Rien n’est gravé dans le marbre : gardez ce qui vous parle.",
+      "cancer": "Cancer, votre mercredi est coloré par le domaine des voyages, des études et des convictions. La Lune en Poissons traverse ce secteur et fait trigone à Mercure, dans votre domaine de l’amour, du plaisir et de la créativité : intuition et mots clairs vont bien ensemble. Votre esprit cherche du sens et de l’horizon, et lire, apprendre ou préparer une escapade vous fait du bien.\n\nUn carré de la Lune à Uranus, dans votre secteur du repos, du monde intérieur et de ce que vous gardez pour vous, peut provoquer un changement de dernière minute : gardez de la marge dans votre emploi du temps. Le Soleil forme un carré exact à Jupiter et Mars, dans votre domaine de l’argent, des biens et de l’estime de soi : l’envie d’en faire ou d’en promettre trop est forte, et choisir une seule priorité vous garde stable. Le sextile Vénus-Jupiter, depuis votre domaine du foyer, de la famille et des racines, vous aide à arrondir les angles avec gentillesse.\n\nJeudi, réservez ou esquissez la prochaine étape de ce projet. Votre propre jugement reste la meilleure boussole.",
+      "lion": "Lion, la journée vous invite à regarder avec douceur le domaine de l’argent partagé, de l’intimité et des liens profonds. La Lune en Poissons traverse ce secteur et fait trigone à Mercure, dans votre domaine du foyer, de la famille et des racines : intuition et mots clairs vont bien ensemble. Des émotions profondes et des questions communes remontent, et dire honnêtement ce dont vous avez besoin crée une vraie confiance.\n\nUn carré de la Lune à Uranus, dans votre secteur des amis, des groupes et des projets à long terme, peut provoquer un changement de dernière minute : gardez de la marge dans votre emploi du temps. Le Soleil forme un carré exact à Jupiter et Mars, dans votre domaine de l’identité, du corps et de l’image que vous donnez : l’envie d’en faire ou d’en promettre trop est forte, et choisir une seule priorité vous garde stable. Le sextile Vénus-Jupiter, depuis votre domaine des échanges, des messages et des petits trajets, vous aide à arrondir les angles avec gentillesse.\n\nJeudi, clarifiez par écrit une dépense ou un engagement commun. Le ciel décrit un climat, et vous restez libre de vos choix.",
+      "vierge": "Vierge, l’accent émotionnel du jour porte sur le domaine du couple et des relations en face à face. La Lune en Poissons traverse ce secteur et fait trigone à Mercure, dans votre domaine des échanges, des messages et des petits trajets : intuition et mots clairs vont bien ensemble. Votre partenaire ou un proche a besoin d’empathie, et écouter sans chercher à tout régler vous rapproche.\n\nUn carré de la Lune à Uranus, dans votre secteur de la carrière, de la réputation et des objectifs publics, peut provoquer un changement de dernière minute : gardez de la marge dans votre emploi du temps. Le Soleil forme un carré exact à Jupiter et Mars, dans votre domaine du repos, du monde intérieur et de ce que vous gardez pour vous : l’envie d’en faire ou d’en promettre trop est forte, et choisir une seule priorité vous garde stable. Le sextile Vénus-Jupiter, depuis votre domaine de l’argent, des biens et de l’estime de soi, vous aide à arrondir les angles avec gentillesse.\n\nJeudi, remerciez la personne qui vous a écouté. Prenez cela comme des tendances, pas comme un scénario figé.",
+      "balance": "Balance, ce mercredi oriente votre attention vers le domaine du travail quotidien, de la santé et des routines. La Lune en Poissons traverse ce secteur et fait trigone à Mercure, dans votre domaine de l’argent, des biens et de l’estime de soi : intuition et mots clairs vont bien ensemble. Votre corps demande de la douceur, et adapter votre rythme au travail évite un coup de fatigue l’après-midi.\n\nUn carré de la Lune à Uranus, dans votre secteur des voyages, des études et des convictions, peut provoquer un changement de dernière minute : gardez de la marge dans votre emploi du temps. Le Soleil forme un carré exact à Jupiter et Mars, dans votre domaine des amis, des groupes et des projets à long terme : l’envie d’en faire ou d’en promettre trop est forte, et choisir une seule priorité vous garde stable. Le sextile Vénus-Jupiter, depuis votre domaine de l’identité, du corps et de l’image que vous donnez, vous aide à arrondir les angles avec gentillesse.\n\nJeudi, couchez-vous un peu plus tôt que d’habitude. Rien n’est gravé dans le marbre : gardez ce qui vous parle.",
+      "scorpion": "Scorpion, le secteur clé de la journée est celui de l’amour, du plaisir et de la créativité. La Lune en Poissons traverse ce secteur et fait trigone à Mercure, dans votre domaine de l’identité, du corps et de l’image que vous donnez : intuition et mots clairs vont bien ensemble. L’amour et l’imagination circulent facilement, et consacrer du temps à un plaisir créatif ou à un moment tendre vous remonte le moral.\n\nUn carré de la Lune à Uranus, dans votre secteur de l’argent partagé, de l’intimité et des liens profonds, peut provoquer un changement de dernière minute : gardez de la marge dans votre emploi du temps. Le Soleil forme un carré exact à Jupiter et Mars, dans votre domaine de la carrière, de la réputation et des objectifs publics : l’envie d’en faire ou d’en promettre trop est forte, et choisir une seule priorité vous garde stable. Le sextile Vénus-Jupiter, depuis votre domaine du repos, du monde intérieur et de ce que vous gardez pour vous, vous aide à arrondir les angles avec gentillesse.\n\nJeudi, partagez une création ou un plaisir avec quelqu’un que vous appréciez. Votre propre jugement reste la meilleure boussole.",
+      "sagittaire": "Sagittaire, le ciel du jour parle du domaine du foyer, de la famille et des racines. La Lune en Poissons traverse ce secteur et fait trigone à Mercure, dans votre domaine du repos, du monde intérieur et de ce que vous gardez pour vous : intuition et mots clairs vont bien ensemble. Le foyer devient votre refuge, et une soirée en famille ou au calme vous ressource mieux qu’une sortie.\n\nUn carré de la Lune à Uranus, dans votre secteur du couple et des relations en face à face, peut provoquer un changement de dernière minute : gardez de la marge dans votre emploi du temps. Le Soleil forme un carré exact à Jupiter et Mars, dans votre domaine des voyages, des études et des convictions : l’envie d’en faire ou d’en promettre trop est forte, et choisir une seule priorité vous garde stable. Le sextile Vénus-Jupiter, depuis votre domaine des amis, des groupes et des projets à long terme, vous aide à arrondir les angles avec gentillesse.\n\nJeudi, rangez un coin de la maison qui vous pèse. Le ciel décrit un climat, et vous restez libre de vos choix.",
+      "capricorne": "Capricorne, la Lune en Poissons fait remonter le domaine des échanges, des messages et des petits trajets. La Lune en Poissons traverse ce secteur et fait trigone à Mercure, dans votre domaine des amis, des groupes et des projets à long terme : intuition et mots clairs vont bien ensemble. Vos messages se chargent d’émotion, et choisir des mots chaleureux plutôt que tranchants garde le dialogue ouvert.\n\nUn carré de la Lune à Uranus, dans votre secteur du travail quotidien, de la santé et des routines, peut provoquer un changement de dernière minute : gardez de la marge dans votre emploi du temps. Le Soleil forme un carré exact à Jupiter et Mars, dans votre domaine de l’argent partagé, de l’intimité et des liens profonds : l’envie d’en faire ou d’en promettre trop est forte, et choisir une seule priorité vous garde stable. Le sextile Vénus-Jupiter, depuis votre domaine de la carrière, de la réputation et des objectifs publics, vous aide à arrondir les angles avec gentillesse.\n\nJeudi, relisez un message important avant de l’envoyer. Prenez cela comme des tendances, pas comme un scénario figé.",
+      "verseau": "Verseau, ce milieu de semaine se concentre sur le domaine de l’argent, des biens et de l’estime de soi. La Lune en Poissons traverse ce secteur et fait trigone à Mercure, dans votre domaine de la carrière, de la réputation et des objectifs publics : intuition et mots clairs vont bien ensemble. Votre rapport à l’argent devient plus intuitif, et un regard calme sur ce qui compte vraiment pour vous aide à dépenser avec justesse.\n\nUn carré de la Lune à Uranus, dans votre secteur de l’amour, du plaisir et de la créativité, peut provoquer un changement de dernière minute : gardez de la marge dans votre emploi du temps. Le Soleil forme un carré exact à Jupiter et Mars, dans votre domaine du couple et des relations en face à face : l’envie d’en faire ou d’en promettre trop est forte, et choisir une seule priorité vous garde stable. Le sextile Vénus-Jupiter, depuis votre domaine des voyages, des études et des convictions, vous aide à arrondir les angles avec gentillesse.\n\nJeudi, mettez de côté une petite somme pour quelque chose qui compte vraiment. Rien n’est gravé dans le marbre : gardez ce qui vous parle.",
+      "poissons": "Poissons, vos émotions se rassemblent aujourd’hui autour du domaine de l’identité, du corps et de l’image que vous donnez. La Lune en Poissons traverse ce secteur et fait trigone à Mercure, dans votre domaine des voyages, des études et des convictions : intuition et mots clairs vont bien ensemble. Vous êtes plus sensible que d’habitude, et faire confiance à votre instinct sur la façon dont vous vous montrez est le bon choix.\n\nUn carré de la Lune à Uranus, dans votre secteur du foyer, de la famille et des racines, peut provoquer un changement de dernière minute : gardez de la marge dans votre emploi du temps. Le Soleil forme un carré exact à Jupiter et Mars, dans votre domaine du travail quotidien, de la santé et des routines : l’envie d’en faire ou d’en promettre trop est forte, et choisir une seule priorité vous garde stable. Le sextile Vénus-Jupiter, depuis votre domaine de l’argent partagé, de l’intimité et des liens profonds, vous aide à arrondir les angles avec gentillesse.\n\nJeudi, notez une décision prise à l’instinct et observez comment elle a tourné. Votre propre jugement reste la meilleure boussole."
+    }
+  }
+}
