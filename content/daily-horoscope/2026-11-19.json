@@ -1,0 +1,159 @@
+{
+  "date": "2026-11-19",
+  "sky": {
+    "date": "2026-11-19",
+    "computedAt": "08:00 Europe/Paris",
+    "phase": {
+      "id": "firstQuarter",
+      "illumination": 68,
+      "waxing": true
+    },
+    "bodies": [
+      {
+        "name": "Soleil",
+        "sign": "Scorpion",
+        "degree": 26,
+        "retrograde": false
+      },
+      {
+        "name": "Lune",
+        "sign": "Poissons",
+        "degree": 17,
+        "retrograde": false
+      },
+      {
+        "name": "Mercure",
+        "sign": "Scorpion",
+        "degree": 7,
+        "retrograde": false
+      },
+      {
+        "name": "Vénus",
+        "sign": "Balance",
+        "degree": 23,
+        "retrograde": false
+      },
+      {
+        "name": "Mars",
+        "sign": "Lion",
+        "degree": 27,
+        "retrograde": false
+      },
+      {
+        "name": "Jupiter",
+        "sign": "Lion",
+        "degree": 26,
+        "retrograde": false
+      },
+      {
+        "name": "Saturne",
+        "sign": "Bélier",
+        "degree": 8,
+        "retrograde": true
+      },
+      {
+        "name": "Uranus",
+        "sign": "Gémeaux",
+        "degree": 3,
+        "retrograde": true
+      },
+      {
+        "name": "Neptune",
+        "sign": "Bélier",
+        "degree": 1,
+        "retrograde": true
+      },
+      {
+        "name": "Pluton",
+        "sign": "Verseau",
+        "degree": 3,
+        "retrograde": false
+      },
+      {
+        "name": "Nœud nord",
+        "sign": "Verseau",
+        "degree": 25,
+        "retrograde": true
+      }
+    ],
+    "ingresses": [],
+    "aspects": [
+      {
+        "a": "Soleil",
+        "b": "Mars",
+        "aspect": "square",
+        "orb": 0.3
+      },
+      {
+        "a": "Soleil",
+        "b": "Jupiter",
+        "aspect": "square",
+        "orb": 0.8
+      },
+      {
+        "a": "Mars",
+        "b": "Jupiter",
+        "aspect": "conjunction",
+        "orb": 1.1
+      },
+      {
+        "a": "Vénus",
+        "b": "Nœud nord",
+        "aspect": "trine",
+        "orb": 1.7
+      },
+      {
+        "a": "Soleil",
+        "b": "Nœud nord",
+        "aspect": "square",
+        "orb": 1.9
+      },
+      {
+        "a": "Mars",
+        "b": "Nœud nord",
+        "aspect": "opposition",
+        "orb": 2.1
+      },
+      {
+        "a": "Vénus",
+        "b": "Jupiter",
+        "aspect": "sextile",
+        "orb": 2.7
+      }
+    ]
+  },
+  "en": {
+    "summary": "Thursday 19 November 2026: the waxing Moon, about 68% lit, travels through the middle of Pisces and heads toward a trine with the Sun late in the day. The Sun at 26° Scorpio makes an exact square to Mars at 27° Leo and a close square to Jupiter at 26° Leo, while Mars and Jupiter stay conjunct. Mars opposes the North Node in Aquarius and the Sun squares it. Venus at 23° Libra trines the Node and sextiles Jupiter. No sign change today. Saturn, Uranus and Neptune are retrograde.",
+    "signs": {
+      "belier": "Aries, today centres on rest, the inner world and what you keep hidden. The Moon in Pisces moves through this part of your chart and, by evening, draws close to a trine with the Sun in your area of shared money, intimacy and deep bonds, which helps feelings and goals line up. Rest and solitude matter more than usual, and protecting a quiet hour helps you process the week.\n\nThe main tension of the day is the exact square between the Sun and Mars, joined by Jupiter, in your sector of love, pleasure and creativity. Impatience and pride can flare, so avoid turning a small disagreement into a contest. Venus, from your domain of partnerships and one-to-one relationships, trines the North Node and sextiles Jupiter, which favours tact, generosity and a friendly gesture.\n\nOn Friday, switch off screens half an hour before sleep. The sky sets a tone, and the choices remain yours.",
+      "taureau": "Taurus, this Thursday puts the spotlight on friends, groups and long-term plans. The Moon in Pisces moves through this part of your chart and, by evening, draws close to a trine with the Sun in your area of partnerships and one-to-one relationships, which helps feelings and goals line up. Friendships and group plans bring warmth, and a supportive message to someone in your circle is well received.\n\nThe main tension of the day is the exact square between the Sun and Mars, joined by Jupiter, in your sector of home, family and private roots. Impatience and pride can flare, so avoid turning a small disagreement into a contest. Venus, from your domain of daily work, health and routines, trines the North Node and sextiles Jupiter, which favours tact, generosity and a friendly gesture.\n\nOn Friday, answer a group invitation you had left open. Read this as a tendency rather than a prediction.",
+      "gemeaux": "Gemini, the bright Pisces Moon highlights career, reputation and public goals. The Moon in Pisces moves through this part of your chart and, by evening, draws close to a trine with the Sun in your area of daily work, health and routines, which helps feelings and goals line up. Your public role and ambitions feel charged, and acting on a quiet conviction rather than pressure serves you.\n\nThe main tension of the day is the exact square between the Sun and Mars, joined by Jupiter, in your sector of conversations, messages and short trips. Impatience and pride can flare, so avoid turning a small disagreement into a contest. Venus, from your domain of love, pleasure and creativity, trines the North Node and sextiles Jupiter, which favours tact, generosity and a friendly gesture.\n\nOn Friday, finish one task before starting another. Keep what helps and leave the rest.",
+      "cancer": "Cancer, your Thursday is mostly about travel, study and the beliefs that guide you. The Moon in Pisces moves through this part of your chart and, by evening, draws close to a trine with the Sun in your area of love, pleasure and creativity, which helps feelings and goals line up. You crave a wider view, and a book, a course or a conversation with someone from elsewhere refreshes you.\n\nThe main tension of the day is the exact square between the Sun and Mars, joined by Jupiter, in your sector of money, possessions and self-worth. Impatience and pride can flare, so avoid turning a small disagreement into a contest. Venus, from your domain of home, family and private roots, trines the North Node and sextiles Jupiter, which favours tact, generosity and a friendly gesture.\n\nOn Friday, note three things you want to learn next. You know your situation better than any chart.",
+      "lion": "Leo, the sky asks you to tend to shared money, intimacy and deep bonds today. The Moon in Pisces moves through this part of your chart and, by evening, draws close to a trine with the Sun in your area of home, family and private roots, which helps feelings and goals line up. Trust, intimacy and shared resources stir strong feelings, and naming what worries you softens it.\n\nThe main tension of the day is the exact square between the Sun and Mars, joined by Jupiter, in your sector of identity, body and first impressions. Impatience and pride can flare, so avoid turning a small disagreement into a contest. Venus, from your domain of conversations, messages and short trips, trines the North Node and sextiles Jupiter, which favours tact, generosity and a friendly gesture.\n\nOn Friday, write down one fear and one fact that answers it. The sky sets a tone, and the choices remain yours.",
+      "vierge": "Virgo, the main mood of the day touches partnerships and one-to-one relationships. The Moon in Pisces moves through this part of your chart and, by evening, draws close to a trine with the Sun in your area of conversations, messages and short trips, which helps feelings and goals line up. Close relationships ask for patience, and meeting the other person halfway calms a tense moment.\n\nThe main tension of the day is the exact square between the Sun and Mars, joined by Jupiter, in your sector of rest, the inner world and what you keep hidden. Impatience and pride can flare, so avoid turning a small disagreement into a contest. Venus, from your domain of money, possessions and self-worth, trines the North Node and sextiles Jupiter, which favours tact, generosity and a friendly gesture.\n\nOn Friday, tell someone close what you appreciate about them. Read this as a tendency rather than a prediction.",
+      "balance": "Libra, Thursday brings daily work, health and routines to the front. The Moon in Pisces moves through this part of your chart and, by evening, draws close to a trine with the Sun in your area of money, possessions and self-worth, which helps feelings and goals line up. Daily routines and health need care, and a lighter to-do list keeps you from running on empty.\n\nThe main tension of the day is the exact square between the Sun and Mars, joined by Jupiter, in your sector of friends, groups and long-term plans. Impatience and pride can flare, so avoid turning a small disagreement into a contest. Venus, from your domain of identity, body and first impressions, trines the North Node and sextiles Jupiter, which favours tact, generosity and a friendly gesture.\n\nOn Friday, take a short walk between two tasks. Keep what helps and leave the rest.",
+      "scorpion": "Scorpio, your key theme today is love, pleasure and creativity. The Moon in Pisces moves through this part of your chart and, by evening, draws close to a trine with the Sun in your area of identity, body and first impressions, which helps feelings and goals line up. Pleasure, romance and play call for attention, and letting yourself enjoy something simple restores your spark.\n\nThe main tension of the day is the exact square between the Sun and Mars, joined by Jupiter, in your sector of career, reputation and public goals. Impatience and pride can flare, so avoid turning a small disagreement into a contest. Venus, from your domain of rest, the inner world and what you keep hidden, trines the North Node and sextiles Jupiter, which favours tact, generosity and a friendly gesture.\n\nOn Friday, plan a small treat for the weekend. You know your situation better than any chart.",
+      "sagittaire": "Sagittarius, the Moon in Pisces nudges you toward home, family and private roots. The Moon in Pisces moves through this part of your chart and, by evening, draws close to a trine with the Sun in your area of rest, the inner world and what you keep hidden, which helps feelings and goals line up. Family matters and your need for a safe base come forward, and a small comfort at home settles your nerves.\n\nThe main tension of the day is the exact square between the Sun and Mars, joined by Jupiter, in your sector of travel, study and the beliefs that guide you. Impatience and pride can flare, so avoid turning a small disagreement into a contest. Venus, from your domain of friends, groups and long-term plans, trines the North Node and sextiles Jupiter, which favours tact, generosity and a friendly gesture.\n\nOn Friday, call a relative just to hear how they are. The sky sets a tone, and the choices remain yours.",
+      "capricorne": "Capricorn, today’s focus falls on conversations, messages and short trips. The Moon in Pisces moves through this part of your chart and, by evening, draws close to a trine with the Sun in your area of friends, groups and long-term plans, which helps feelings and goals line up. Conversations carry a strong emotional undertone, and asking one honest question clears more than a long explanation.\n\nThe main tension of the day is the exact square between the Sun and Mars, joined by Jupiter, in your sector of shared money, intimacy and deep bonds. Impatience and pride can flare, so avoid turning a small disagreement into a contest. Venus, from your domain of career, reputation and public goals, trines the North Node and sextiles Jupiter, which favours tact, generosity and a friendly gesture.\n\nOn Friday, reply to the message you have been postponing. Read this as a tendency rather than a prediction.",
+      "verseau": "Aquarius, the day’s energy gathers around money, possessions and self-worth. The Moon in Pisces moves through this part of your chart and, by evening, draws close to a trine with the Sun in your area of career, reputation and public goals, which helps feelings and goals line up. Questions of security and worth feel personal, and checking a purchase against your real needs saves regret.\n\nThe main tension of the day is the exact square between the Sun and Mars, joined by Jupiter, in your sector of partnerships and one-to-one relationships. Impatience and pride can flare, so avoid turning a small disagreement into a contest. Venus, from your domain of travel, study and the beliefs that guide you, trines the North Node and sextiles Jupiter, which favours tact, generosity and a friendly gesture.\n\nOn Friday, review one subscription or expense you no longer use. Keep what helps and leave the rest.",
+      "poissons": "Pisces, this Thursday’s sky speaks about identity, body and first impressions. The Moon in Pisces moves through this part of your chart and, by evening, draws close to a trine with the Sun in your area of travel, study and the beliefs that guide you, which helps feelings and goals line up. Your mood shapes how others see you, and a gentle, unhurried presence works better than forcing your point.\n\nThe main tension of the day is the exact square between the Sun and Mars, joined by Jupiter, in your sector of daily work, health and routines. Impatience and pride can flare, so avoid turning a small disagreement into a contest. Venus, from your domain of shared money, intimacy and deep bonds, trines the North Node and sextiles Jupiter, which favours tact, generosity and a friendly gesture.\n\nOn Friday, pause before reacting to a remark that stings. You know your situation better than any chart."
+    }
+  },
+  "fr": {
+    "summary": "Jeudi 19 novembre 2026 : la Lune croissante, éclairée à environ 68 %, traverse le milieu des Poissons et se dirige vers un trigone au Soleil en fin de journée. Le Soleil à 26° du Scorpion forme un carré exact à Mars à 27° du Lion et un carré serré à Jupiter à 26° du Lion, tandis que Mars et Jupiter restent conjoints. Mars s’oppose au Nœud nord en Verseau et le Soleil lui fait carré. Vénus à 23° de la Balance fait trigone au Nœud et sextile à Jupiter. Aucun changement de signe aujourd’hui. Saturne, Uranus et Neptune sont rétrogrades.",
+    "signs": {
+      "belier": "Bélier, la journée se concentre sur le domaine du repos, du monde intérieur et de ce que vous gardez pour vous. La Lune en Poissons traverse ce secteur et, en soirée, s’approche d’un trigone au Soleil situé dans votre domaine de l’argent partagé, de l’intimité et des liens profonds : émotions et objectifs s’accordent mieux. Le repos et la solitude comptent plus que d’habitude, et protéger une heure de calme vous aide à digérer la semaine.\n\nLa tension principale du jour est le carré exact entre le Soleil et Mars, rejoint par Jupiter, dans votre secteur de l’amour, du plaisir et de la créativité. L’impatience et la fierté peuvent s’enflammer : évitez de transformer un petit désaccord en bras de fer. Vénus, depuis votre domaine du couple et des relations en face à face, fait trigone au Nœud nord et sextile à Jupiter, ce qui favorise le tact, la générosité et un geste amical.\n\nVendredi, éteignez les écrans une demi-heure avant de dormir. Le ciel donne un ton, et les choix restent les vôtres.",
+      "taureau": "Taureau, ce jeudi met en lumière le domaine des amis, des groupes et des projets à long terme. La Lune en Poissons traverse ce secteur et, en soirée, s’approche d’un trigone au Soleil situé dans votre domaine du couple et des relations en face à face : émotions et objectifs s’accordent mieux. Les amitiés et les projets de groupe apportent de la chaleur, et un message de soutien à un proche est bien accueilli.\n\nLa tension principale du jour est le carré exact entre le Soleil et Mars, rejoint par Jupiter, dans votre secteur du foyer, de la famille et des racines. L’impatience et la fierté peuvent s’enflammer : évitez de transformer un petit désaccord en bras de fer. Vénus, depuis votre domaine du travail quotidien, de la santé et des routines, fait trigone au Nœud nord et sextile à Jupiter, ce qui favorise le tact, la générosité et un geste amical.\n\nVendredi, répondez à une invitation de groupe restée en suspens. Lisez ceci comme une tendance plutôt qu’une prédiction.",
+      "gemeaux": "Gémeaux, la Lune lumineuse en Poissons souligne le domaine de la carrière, de la réputation et des objectifs publics. La Lune en Poissons traverse ce secteur et, en soirée, s’approche d’un trigone au Soleil situé dans votre domaine du travail quotidien, de la santé et des routines : émotions et objectifs s’accordent mieux. Votre rôle public et vos ambitions sont chargés, et agir selon une conviction calme plutôt que sous pression vous sert.\n\nLa tension principale du jour est le carré exact entre le Soleil et Mars, rejoint par Jupiter, dans votre secteur des échanges, des messages et des petits trajets. L’impatience et la fierté peuvent s’enflammer : évitez de transformer un petit désaccord en bras de fer. Vénus, depuis votre domaine de l’amour, du plaisir et de la créativité, fait trigone au Nœud nord et sextile à Jupiter, ce qui favorise le tact, la générosité et un geste amical.\n\nVendredi, terminez une tâche avant d’en commencer une autre. Gardez ce qui vous aide et laissez le reste.",
+      "cancer": "Cancer, votre jeudi parle surtout du domaine des voyages, des études et des convictions. La Lune en Poissons traverse ce secteur et, en soirée, s’approche d’un trigone au Soleil situé dans votre domaine de l’amour, du plaisir et de la créativité : émotions et objectifs s’accordent mieux. Vous avez besoin d’horizon, et un livre, une formation ou un échange avec quelqu’un d’ailleurs vous rafraîchit.\n\nLa tension principale du jour est le carré exact entre le Soleil et Mars, rejoint par Jupiter, dans votre secteur de l’argent, des biens et de l’estime de soi. L’impatience et la fierté peuvent s’enflammer : évitez de transformer un petit désaccord en bras de fer. Vénus, depuis votre domaine du foyer, de la famille et des racines, fait trigone au Nœud nord et sextile à Jupiter, ce qui favorise le tact, la générosité et un geste amical.\n\nVendredi, notez trois choses que vous aimeriez apprendre. Vous connaissez votre situation mieux que n’importe quel thème.",
+      "lion": "Lion, le ciel vous demande aujourd’hui de prendre soin du domaine de l’argent partagé, de l’intimité et des liens profonds. La Lune en Poissons traverse ce secteur et, en soirée, s’approche d’un trigone au Soleil situé dans votre domaine du foyer, de la famille et des racines : émotions et objectifs s’accordent mieux. La confiance, l’intimité et les ressources partagées réveillent des émotions fortes, et nommer ce qui vous inquiète l’adoucit.\n\nLa tension principale du jour est le carré exact entre le Soleil et Mars, rejoint par Jupiter, dans votre secteur de l’identité, du corps et de l’image que vous donnez. L’impatience et la fierté peuvent s’enflammer : évitez de transformer un petit désaccord en bras de fer. Vénus, depuis votre domaine des échanges, des messages et des petits trajets, fait trigone au Nœud nord et sextile à Jupiter, ce qui favorise le tact, la générosité et un geste amical.\n\nVendredi, notez une peur et un fait concret qui y répond. Le ciel donne un ton, et les choix restent les vôtres.",
+      "vierge": "Vierge, l’ambiance principale du jour touche le domaine du couple et des relations en face à face. La Lune en Poissons traverse ce secteur et, en soirée, s’approche d’un trigone au Soleil situé dans votre domaine des échanges, des messages et des petits trajets : émotions et objectifs s’accordent mieux. Vos relations proches demandent de la patience, et faire un pas vers l’autre apaise un moment tendu.\n\nLa tension principale du jour est le carré exact entre le Soleil et Mars, rejoint par Jupiter, dans votre secteur du repos, du monde intérieur et de ce que vous gardez pour vous. L’impatience et la fierté peuvent s’enflammer : évitez de transformer un petit désaccord en bras de fer. Vénus, depuis votre domaine de l’argent, des biens et de l’estime de soi, fait trigone au Nœud nord et sextile à Jupiter, ce qui favorise le tact, la générosité et un geste amical.\n\nVendredi, dites à un proche ce que vous appréciez chez lui. Lisez ceci comme une tendance plutôt qu’une prédiction.",
+      "balance": "Balance, ce jeudi place au premier plan le domaine du travail quotidien, de la santé et des routines. La Lune en Poissons traverse ce secteur et, en soirée, s’approche d’un trigone au Soleil situé dans votre domaine de l’argent, des biens et de l’estime de soi : émotions et objectifs s’accordent mieux. Vos routines et votre santé demandent du soin, et alléger votre liste de tâches vous évite de tourner à vide.\n\nLa tension principale du jour est le carré exact entre le Soleil et Mars, rejoint par Jupiter, dans votre secteur des amis, des groupes et des projets à long terme. L’impatience et la fierté peuvent s’enflammer : évitez de transformer un petit désaccord en bras de fer. Vénus, depuis votre domaine de l’identité, du corps et de l’image que vous donnez, fait trigone au Nœud nord et sextile à Jupiter, ce qui favorise le tact, la générosité et un geste amical.\n\nVendredi, faites une courte marche entre deux tâches. Gardez ce qui vous aide et laissez le reste.",
+      "scorpion": "Scorpion, votre thème clé du jour est celui de l’amour, du plaisir et de la créativité. La Lune en Poissons traverse ce secteur et, en soirée, s’approche d’un trigone au Soleil situé dans votre domaine de l’identité, du corps et de l’image que vous donnez : émotions et objectifs s’accordent mieux. Le plaisir, l’amour et le jeu réclament de l’attention, et vous accorder un plaisir simple ravive votre élan.\n\nLa tension principale du jour est le carré exact entre le Soleil et Mars, rejoint par Jupiter, dans votre secteur de la carrière, de la réputation et des objectifs publics. L’impatience et la fierté peuvent s’enflammer : évitez de transformer un petit désaccord en bras de fer. Vénus, depuis votre domaine du repos, du monde intérieur et de ce que vous gardez pour vous, fait trigone au Nœud nord et sextile à Jupiter, ce qui favorise le tact, la générosité et un geste amical.\n\nVendredi, prévoyez un petit plaisir pour le week-end. Vous connaissez votre situation mieux que n’importe quel thème.",
+      "sagittaire": "Sagittaire, la Lune en Poissons vous oriente vers le domaine du foyer, de la famille et des racines. La Lune en Poissons traverse ce secteur et, en soirée, s’approche d’un trigone au Soleil situé dans votre domaine du repos, du monde intérieur et de ce que vous gardez pour vous : émotions et objectifs s’accordent mieux. La famille et votre besoin d’un socle sûr passent au premier plan, et un petit réconfort à la maison apaise vos nerfs.\n\nLa tension principale du jour est le carré exact entre le Soleil et Mars, rejoint par Jupiter, dans votre secteur des voyages, des études et des convictions. L’impatience et la fierté peuvent s’enflammer : évitez de transformer un petit désaccord en bras de fer. Vénus, depuis votre domaine des amis, des groupes et des projets à long terme, fait trigone au Nœud nord et sextile à Jupiter, ce qui favorise le tact, la générosité et un geste amical.\n\nVendredi, appelez un proche simplement pour prendre des nouvelles. Le ciel donne un ton, et les choix restent les vôtres.",
+      "capricorne": "Capricorne, l’accent du jour porte sur le domaine des échanges, des messages et des petits trajets. La Lune en Poissons traverse ce secteur et, en soirée, s’approche d’un trigone au Soleil situé dans votre domaine des amis, des groupes et des projets à long terme : émotions et objectifs s’accordent mieux. Les échanges portent une forte charge émotionnelle, et poser une question sincère éclaire plus qu’une longue explication.\n\nLa tension principale du jour est le carré exact entre le Soleil et Mars, rejoint par Jupiter, dans votre secteur de l’argent partagé, de l’intimité et des liens profonds. L’impatience et la fierté peuvent s’enflammer : évitez de transformer un petit désaccord en bras de fer. Vénus, depuis votre domaine de la carrière, de la réputation et des objectifs publics, fait trigone au Nœud nord et sextile à Jupiter, ce qui favorise le tact, la générosité et un geste amical.\n\nVendredi, répondez au message que vous repoussez. Lisez ceci comme une tendance plutôt qu’une prédiction.",
+      "verseau": "Verseau, l’énergie de la journée se rassemble autour du domaine de l’argent, des biens et de l’estime de soi. La Lune en Poissons traverse ce secteur et, en soirée, s’approche d’un trigone au Soleil situé dans votre domaine de la carrière, de la réputation et des objectifs publics : émotions et objectifs s’accordent mieux. Les questions de sécurité et de valeur personnelle vous touchent, et vérifier un achat face à vos vrais besoins vous évite des regrets.\n\nLa tension principale du jour est le carré exact entre le Soleil et Mars, rejoint par Jupiter, dans votre secteur du couple et des relations en face à face. L’impatience et la fierté peuvent s’enflammer : évitez de transformer un petit désaccord en bras de fer. Vénus, depuis votre domaine des voyages, des études et des convictions, fait trigone au Nœud nord et sextile à Jupiter, ce qui favorise le tact, la générosité et un geste amical.\n\nVendredi, passez en revue un abonnement ou une dépense devenue inutile. Gardez ce qui vous aide et laissez le reste.",
+      "poissons": "Poissons, le ciel de ce jeudi parle du domaine de l’identité, du corps et de l’image que vous donnez. La Lune en Poissons traverse ce secteur et, en soirée, s’approche d’un trigone au Soleil situé dans votre domaine des voyages, des études et des convictions : émotions et objectifs s’accordent mieux. Votre humeur influence la façon dont on vous perçoit, et une présence douce et sans hâte fonctionne mieux que de forcer votre point de vue.\n\nLa tension principale du jour est le carré exact entre le Soleil et Mars, rejoint par Jupiter, dans votre secteur du travail quotidien, de la santé et des routines. L’impatience et la fierté peuvent s’enflammer : évitez de transformer un petit désaccord en bras de fer. Vénus, depuis votre domaine de l’argent partagé, de l’intimité et des liens profonds, fait trigone au Nœud nord et sextile à Jupiter, ce qui favorise le tact, la générosité et un geste amical.\n\nVendredi, marquez une pause avant de réagir à une remarque qui pique. Vous connaissez votre situation mieux que n’importe quel thème."
+    }
+  }
+}
