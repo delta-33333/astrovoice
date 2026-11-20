@@ -7,9 +7,9 @@ import { SIGN_IDS, signPath, weekPath, type SignId } from './zodiac/signs.ts';
  * positions géocentriques apparentes), recoupées avec des tables publiées (astro-seek, otldr).
  */
 export type SkyLocale = 'fr' | 'en';
-export type SkyEventId = 'leonids2026' | 'mercuryVenusDirect' | 'newMoonScorpio' | 'fullMoonGemini' | 'sagittariusSeason' | 'mercuryRetrograde2027' | 'eclipses2027' | 'marsRetrograde2027' | 'fullMoons2027' | 'newMoons2027' | 'jupiterVirgo2027' | 'saturnRetrograde2027' | 'uranusGemini2027';
+export type SkyEventId = 'leonids2026' | 'mercuryVenusDirect' | 'newMoonScorpio' | 'fullMoonGemini' | 'sagittariusSeason' | 'mercuryRetrograde2027' | 'eclipses2027' | 'marsRetrograde2027' | 'fullMoons2027' | 'newMoons2027' | 'jupiterVirgo2027' | 'saturnRetrograde2027' | 'uranusGemini2027' | 'neptuneAries2027' | 'retrogrades2027';
 
-export const SKY_EVENT_IDS: SkyEventId[] = ['leonids2026', 'mercuryVenusDirect', 'newMoonScorpio', 'fullMoonGemini', 'sagittariusSeason', 'mercuryRetrograde2027', 'eclipses2027', 'marsRetrograde2027', 'fullMoons2027', 'newMoons2027', 'jupiterVirgo2027', 'saturnRetrograde2027', 'uranusGemini2027'];
+export const SKY_EVENT_IDS: SkyEventId[] = ['leonids2026', 'mercuryVenusDirect', 'newMoonScorpio', 'fullMoonGemini', 'sagittariusSeason', 'mercuryRetrograde2027', 'eclipses2027', 'marsRetrograde2027', 'fullMoons2027', 'newMoons2027', 'jupiterVirgo2027', 'saturnRetrograde2027', 'uranusGemini2027', 'neptuneAries2027', 'retrogrades2027'];
 export const SKY_EVENTS_ORIGIN = 'https://callastral.com';
 export const SKY_EVENTS_PUBLISHED = '2026-10-30';
 
@@ -28,6 +28,8 @@ export const SKY_EVENT_PUBLISHED: Record<SkyEventId, string> = {
   jupiterVirgo2027: '2026-11-16',
   saturnRetrograde2027: '2026-11-18',
   uranusGemini2027: '2026-11-18',
+  neptuneAries2027: '2026-11-20',
+  retrogrades2027: '2026-11-20',
 };
 
 /** Dernière modification (titres et maillage revus le 02/11/2026). */
@@ -45,6 +47,8 @@ export const SKY_EVENT_MODIFIED: Record<SkyEventId, string> = {
   jupiterVirgo2027: '2026-11-16',
   saturnRetrograde2027: '2026-11-18',
   uranusGemini2027: '2026-11-18',
+  neptuneAries2027: '2026-11-20',
+  retrogrades2027: '2026-11-20',
 };
 
 export const SKY_EVENT_PATHS: Record<SkyEventId, Record<SkyLocale, string>> = {
@@ -61,6 +65,8 @@ export const SKY_EVENT_PATHS: Record<SkyEventId, Record<SkyLocale, string>> = {
   jupiterVirgo2027: { en: '/en/jupiter-in-virgo-2027', fr: '/fr/jupiter-en-vierge-2027' },
   saturnRetrograde2027: { en: '/en/saturn-retrograde-2027', fr: '/fr/saturne-retrograde-2027' },
   uranusGemini2027: { en: '/en/uranus-in-gemini-2027', fr: '/fr/uranus-en-gemeaux-2027' },
+  neptuneAries2027: { en: '/en/neptune-in-aries-2027', fr: '/fr/neptune-en-belier-2027' },
+  retrogrades2027: { en: '/en/retrograde-planets-2027', fr: '/fr/planetes-retrogrades-2027' },
 };
 
 /** Même convention que les pages GEO : x-default = FR. */
@@ -411,6 +417,8 @@ export function signRows(event: SkyEventId, locale: SkyLocale): SkySignRow[] {
       text = signRows2027c(event, locale, index);
     } else if (event === 'saturnRetrograde2027' || event === 'uranusGemini2027') {
       text = signRows2027d(event, locale, index);
+    } else if (event === 'neptuneAries2027' || event === 'retrogrades2027') {
+      text = signRows2027e(event, locale, index);
     } else if (event === 'leonids2026') {
       const h = solarHouse(index, 4);
       text = locale === 'fr'
@@ -861,6 +869,8 @@ export const SKY_EVENT_LABELS: Record<SkyEventId, Record<SkyLocale, string>> = {
   jupiterVirgo2027: { en: 'Jupiter in Virgo 2027: from 26 July', fr: 'Jupiter en Vierge 2027 : à partir du 26 juillet' },
   saturnRetrograde2027: { en: 'Saturn retrograde 2027: 9 August to 24 December in Aries', fr: 'Saturne rétrograde 2027 : du 9 août au 24 décembre en Bélier' },
   uranusGemini2027: { en: 'Uranus in Gemini 2027: dates, retrograde and effects by sign', fr: 'Uranus en Gémeaux 2027 : dates, rétrograde et effets par signe' },
+  neptuneAries2027: { en: 'Neptune in Aries 2027: retrograde dates and effects by sign', fr: 'Neptune en Bélier 2027 : rétrograde et effets par signe' },
+  retrogrades2027: { en: 'Retrograde planets 2027: the full calendar', fr: 'Planètes rétrogrades 2027 : le calendrier complet' },
 };
 
 function fullMoonCopy(locale: SkyLocale): SkyEventCopy {
@@ -3122,6 +3132,535 @@ function uranusGemini2027Copy(locale: SkyLocale): SkyEventCopy {
 }
 
 
+/** Neptune et Pluton 2026-2028 (UTC), DE440, calculé le 20/11/2026 (/workspace/callastral-growth/nep-plu-2027.py). */
+export const N2027 = {
+  directPrev: '2026-12-12T22:18:00Z',
+  sextileUranus: '2027-01-15T09:26:00Z',
+  preShadow: '2027-03-18T18:30:00Z',
+  conjSun: '2027-03-24T23:13:00Z',
+  shadowEndPrev: '2027-04-02T18:06:00Z',
+  sextileUranus2: '2027-06-06T10:12:00Z',
+  sextilePluto: '2027-06-28T23:56:00Z',
+  retro: '2027-07-09T22:41:00Z',
+  opposition: '2027-09-28T14:19:00Z',
+  sextilePluto2: '2027-10-16T14:40:00Z',
+  direct: '2027-12-15T09:07:00Z',
+  postShadow: '2028-04-04T12:40:00Z',
+} as const;
+
+/** Stations 2026-2028 de toutes les planètes (UTC), DE440, calculé le 20/11/2026. */
+export const R2027 = {
+  uranusRetroPrev: '2026-09-10T18:27:00Z',
+  jupiterRetroPrev: '2026-12-13T00:57:00Z',
+  marsRetro: '2027-01-10T12:59:00Z',
+  uranusDirect: '2027-02-08T12:30:00Z',
+  mercury1Retro: '2027-02-09T17:36:00Z',
+  mercury1Direct: '2027-03-03T12:32:00Z',
+  marsDirect: '2027-04-01T14:08:00Z',
+  jupiterDirect: '2027-04-13T02:11:00Z',
+  plutoRetro: '2027-05-08T12:56:00Z',
+  mercury2Retro: '2027-06-10T18:15:00Z',
+  mercury2Direct: '2027-07-04T19:39:00Z',
+  neptuneRetro: '2027-07-09T22:41:00Z',
+  saturnRetro: '2027-08-09T18:06:00Z',
+  uranusRetro: '2027-09-15T09:09:00Z',
+  mercury3Retro: '2027-10-07T14:37:00Z',
+  plutoDirect: '2027-10-18T03:50:00Z',
+  mercury3Direct: '2027-10-28T14:11:00Z',
+  neptuneDirect: '2027-12-15T09:07:00Z',
+  saturnDirect: '2027-12-24T02:46:00Z',
+  jupiterRetroNext: '2028-01-12T08:53:00Z',
+  mercuryRetroNext: '2028-01-24T11:02:00Z',
+  uranusDirectNext: '2028-02-12T23:49:00Z',
+} as const;
+
+const NEP_2027_EXTRA: Record<SkyLocale, Partial<Record<number, string>>> = {
+  en: {
+    0: 'Neptune has been in your sign since 26 January 2026 and stays until 2038. In 2027 it moves between 1°43′ and 6°40′ Aries, so Aries born roughly 22 to 27 March feel it most: a softer, more intuitive way of going after what you want, and a need to check that the goal is really yours.',
+    11: 'Neptune rules your sign and left it for good on 26 January 2026, after almost fourteen years. In 2027 it sits in your money and values sector, asking you to put a clear figure on what your gifts are worth.',
+    6: 'Neptune sits in your opposite sign. On 28 September the Sun in Libra faces it exactly: Libras born around 24 to 30 September may idealise a partner or an associate, so look at facts as well as feelings.',
+    3: 'Neptune squares your sign. Cancers born roughly 22 to 28 June feel it most, especially around 28 June, when the Sun in Cancer squares Neptune: a career goal may look blurry for a while, which is a signal to clarify, not to give up.',
+    9: 'Neptune squares your sign. On 30 November Mars in Capricorn squares Neptune and on 25 December the Sun does the same: keep family and housing plans grounded in written facts during those weeks.',
+    10: 'Pluto in your sign forms a sextile to Neptune, exact on 28 June and 16 October 2027: a supportive background for learning, writing or sharing an idea that matters to you.',
+    2: 'Uranus in your sign forms its last exact sextile to Neptune on 6 June 2027: a good moment to talk about a hope with friends or a group that can help.',
+    8: 'Neptune trines your sign from a fellow fire sign. On 22 October Mars, and on 26 November the Sun, both in Sagittarius, trine Neptune: good days for a creative or romantic project.',
+    4: 'Neptune trines your sign from a fellow fire sign. On 29 July, during your season, the Sun in Leo trines Neptune: a warm day to plan a trip, a course or something that inspires you.',
+  },
+  fr: {
+    0: 'Neptune est dans votre signe depuis le 26 janvier 2026 et y reste jusqu’en 2038. En 2027, il avance entre 1°43′ et 6°40′ Bélier : les Bélier nés à peu près entre le 22 et le 27 mars le ressentent le plus. Une façon plus douce et plus intuitive d’aller vers ce que vous voulez, et le besoin de vérifier que ce but est bien le vôtre.',
+    11: 'Neptune gouverne votre signe et l’a quitté pour de bon le 26 janvier 2026, après presque quatorze ans. En 2027, il occupe votre secteur de l’argent et des valeurs : c’est le moment de mettre un chiffre clair sur ce que valent vos talents.',
+    6: 'Neptune occupe votre signe opposé. Le 28 septembre, le Soleil en Balance lui fait face exactement : les natifs nés entre le 24 et le 30 septembre environ peuvent idéaliser un partenaire ou un associé, alors regardez les faits autant que les sentiments.',
+    3: 'Neptune forme un carré à votre signe. Les Cancer nés à peu près entre le 22 et le 28 juin le ressentent le plus, surtout autour du 28 juin, quand le Soleil en Cancer forme un carré à Neptune. Un objectif professionnel peut sembler flou un moment, ce qui invite à clarifier plutôt qu’à abandonner.',
+    9: 'Neptune forme un carré à votre signe. Le 30 novembre, Mars en Capricorne forme un carré à Neptune, puis le Soleil le 25 décembre : appuyez vos projets familiaux et immobiliers sur des faits écrits pendant ces semaines.',
+    10: 'Pluton dans votre signe forme un sextile à Neptune, exact le 28 juin et le 16 octobre 2027 : un appui discret pour apprendre, écrire ou partager une idée qui vous tient à cœur.',
+    2: 'Uranus dans votre signe forme son dernier sextile exact à Neptune le 6 juin 2027 : un bon moment pour parler d’un espoir à des amis ou à un groupe qui peut vous aider.',
+    8: 'Neptune forme un trigone à votre signe depuis un autre signe de feu. Le 22 octobre Mars, puis le 26 novembre le Soleil, tous deux en Sagittaire, forment un trigone à Neptune : de bonnes journées pour un projet créatif ou amoureux.',
+    4: 'Neptune forme un trigone à votre signe depuis un autre signe de feu. Le 29 juillet, pendant votre saison, le Soleil en Lion forme un trigone à Neptune : une journée chaleureuse pour préparer un voyage, une formation ou un projet qui vous inspire.',
+  },
+};
+
+/** Signes touchés par chaque rétrogradation 2027 (index de signe, 0 = Bélier). */
+const RETRO_2027_SIGNS: { en: string; fr: string; signs: number[] }[] = [
+  { en: 'Mercury (9 February to 3 March)', fr: 'Mercure (du 9 février au 3 mars)', signs: [11, 10] },
+  { en: 'Mercury (10 June to 4 July)', fr: 'Mercure (du 10 juin au 4 juillet)', signs: [3, 2] },
+  { en: 'Mercury (7 to 28 October)', fr: 'Mercure (du 7 au 28 octobre)', signs: [7, 6] },
+  { en: 'Mars (10 January to 1 April)', fr: 'Mars (du 10 janvier au 1er avril)', signs: [5, 4] },
+  { en: 'Jupiter (until 13 April)', fr: 'Jupiter (jusqu’au 13 avril)', signs: [4] },
+  { en: 'Saturn (9 August to 24 December)', fr: 'Saturne (du 9 août au 24 décembre)', signs: [0] },
+  { en: 'Uranus (until 8 February, then from 15 September)', fr: 'Uranus (jusqu’au 8 février, puis à partir du 15 septembre)', signs: [2] },
+  { en: 'Neptune (9 July UTC to 15 December)', fr: 'Neptune (du 10 juillet au 15 décembre)', signs: [0] },
+  { en: 'Pluto (8 May to 18 October)', fr: 'Pluton (du 8 mai au 18 octobre)', signs: [10] },
+];
+
+function listJoin(items: string[], locale: SkyLocale): string {
+  if (items.length <= 1) return items.join('');
+  const and = locale === 'fr' ? ' et ' : ' and ';
+  return `${items.slice(0, -1).join(', ')}${and}${items[items.length - 1]}`;
+}
+
+export function signRows2027e(event: 'neptuneAries2027' | 'retrogrades2027', locale: SkyLocale, index: number): string {
+  const name = SIGN_NAMES[locale][index];
+  const topic = (h: number) => HOUSE_TOPIC[locale][h - 1];
+  const o = (h: number) => ordinal(h, locale);
+  if (event === 'neptuneAries2027') {
+    const h = solarHouse(index, SIGN_ARIES);
+    const extra = NEP_2027_EXTRA[locale][index];
+    return locale === 'fr'
+      ? `Pour ${FR_ARTICLE[index]}${name}, Neptune en Bélier traverse votre maison solaire ${h} (${topic(h)}) pendant toute l’année 2027. C’est le domaine où l’intuition, l’idéal et parfois le flou prennent plus de place, et où il vaut mieux vérifier avant de croire.${extra ? ` ${extra}` : ''}`
+      : `For ${name}, Neptune in Aries moves through your ${o(h)} solar house (${topic(h)}) for the whole of 2027. This is the area where intuition, ideals and sometimes confusion take up more room, and where it pays to check before you believe.${extra ? ` ${extra}` : ''}`;
+  }
+  const own = RETRO_2027_SIGNS.filter((r) => r.signs.includes(index)).map((r) => r[locale]);
+  const hAries = solarHouse(index, SIGN_ARIES);
+  const hAquarius = solarHouse(index, SIGN_AQUARIUS);
+  if (locale === 'fr') {
+    const first = own.length
+      ? `Pour ${FR_ARTICLE[index]}${name}, ${own.length > 1 ? 'les rétrogradations qui passent' : 'la rétrogradation qui passe'} par votre signe en 2027 : ${listJoin(own, 'fr')}. Ce sont vos périodes de bilan les plus personnelles.`
+      : `Pour ${FR_ARTICLE[index]}${name}, aucune planète ne rétrograde dans votre signe en 2027 : les bilans de l’année touchent d’autres domaines de vie plus que votre image.`;
+    return `${first} Saturne et Neptune reculent dans votre maison solaire ${hAries} (${topic(hAries)}) pendant la seconde moitié de l’année, et Pluton dans votre maison ${hAquarius} (${topic(hAquarius)}) du 8 mai au 18 octobre.`;
+  }
+  const first = own.length
+    ? `For ${name}, ${own.length > 1 ? 'the retrogrades that pass through your sign' : 'the retrograde that passes through your sign'} in 2027: ${listJoin(own, 'en')}. These are your most personal review periods.`
+    : `For ${name}, no planet turns retrograde in your sign in 2027, so the year’s reviews touch other areas of life more than your image.`;
+  return `${first} Saturn and Neptune move back through your ${o(hAries)} solar house (${topic(hAries)}) in the second half of the year, and Pluto through your ${o(hAquarius)} house (${topic(hAquarius)}) from 8 May to 18 October.`;
+}
+
+const METHOD_NEP: Record<SkyLocale, string> = {
+  en: 'Method: stations, ingresses, oppositions, aspects and degrees computed by Callastral with the NASA JPL DE440 ephemeris (geocentric, apparent positions, tropical zodiac). Neptune barely moves for weeks around a station, so published station times can differ by 10 to 30 minutes from one ephemeris to another. Shadow dates mark when Neptune first and last crosses the degrees of the retrograde. Paris time is UTC+1 in winter and UTC+2 from 28 March to 31 October 2027.',
+  fr: 'Méthode : stations, entrées en signe, oppositions, aspects et degrés calculés par Callastral avec l’éphéméride NASA JPL DE440 (positions géocentriques apparentes, zodiaque tropical). Neptune reste presque immobile plusieurs semaines autour d’une station : l’heure publiée peut varier de 10 à 30 minutes selon l’éphéméride. Les dates d’ombre indiquent le premier et le dernier passage de Neptune sur les degrés de la rétrogradation. L’heure de Paris est UTC+1 en hiver et UTC+2 du 28 mars au 31 octobre 2027.',
+};
+
+function neptuneAries2027Copy(locale: SkyLocale): SkyEventCopy {
+  const t = (iso: string) => bothIso(iso, locale);
+  const path = SKY_EVENT_PATHS.neptuneAries2027[locale];
+  const links = [link2027(locale), ...commonLinks(locale)];
+  if (locale === 'fr') {
+    return {
+      id: 'neptuneAries2027',
+      locale,
+      path,
+      title: 'Neptune en Bélier 2027 : dates, rétrograde et 12 signes',
+      description: 'Neptune reste en Bélier toute l’année 2027. Rétrograde du 10 juillet au 15 décembre : heures Paris et UTC, sextile à Pluton, effets pour les 12 signes.',
+      h1: 'Neptune en Bélier 2027 : dates, heures et effets par signe',
+      breadcrumb: 'Neptune en Bélier 2027',
+      answer: [
+        `Neptune reste en Bélier pendant toute l’année 2027, entre 1°43′ et 6°40′ : il devient rétrograde le ${t(N2027.retro)} à 6°40′ Bélier et redevient direct le ${t(N2027.direct)} à 3°51′ Bélier.`,
+        'Neptune est entré en Bélier pour de bon le 26 janvier 2026 et y restera jusqu’au 22 mai 2038, avec un dernier retour en Bélier jusqu’au 23 mars 2039. Son passage précédent dans ce signe date de 1861 à 1875 : aucune personne vivante ne l’a connu.',
+      ],
+      updated: 'Publié le 20 novembre 2026',
+      tableTitle: 'Le calendrier de Neptune 2026-2028',
+      tableCaption: 'Calculé avec l’éphéméride NASA JPL DE440',
+      cols: ['Événement', 'Heure de Paris', 'UTC', 'Position'],
+      rows: [
+        rowIso(N2027.directPrev, 'fr', 'Neptune redevient direct', '1°37′ Bélier'),
+        rowIso(N2027.sextileUranus, 'fr', 'Sextile Uranus-Neptune', '1°56′ Gémeaux / Bélier'),
+        rowIso(N2027.preShadow, 'fr', 'Début de l’ombre (pré-rétrogradation)', '3°51′ Bélier'),
+        rowIso(N2027.conjSun, 'fr', 'Conjonction Neptune-Soleil', '4°05′ Bélier'),
+        rowIso(N2027.shadowEndPrev, 'fr', 'Fin de l’ombre de la rétrogradation 2026', '4°25′ Bélier'),
+        rowIso(N2027.sextileUranus2, 'fr', 'Sextile Uranus-Neptune (dernier passage)', '6°21′ Gémeaux / Bélier'),
+        rowIso(N2027.sextilePluto, 'fr', 'Sextile Neptune-Pluton', '6°38′ Bélier / Verseau'),
+        rowIso(N2027.retro, 'fr', 'Neptune devient rétrograde', '6°40′ Bélier'),
+        rowIso(N2027.opposition, 'fr', 'Opposition au Soleil (Neptune au plus près)', '5°14′ Bélier'),
+        rowIso(N2027.sextilePluto2, 'fr', 'Sextile Neptune-Pluton', '4°45′ Bélier / Verseau'),
+        rowIso(N2027.direct, 'fr', 'Neptune redevient direct', '3°51′ Bélier'),
+        rowIso(N2027.postShadow, 'fr', 'Fin de l’ombre (post-rétrogradation)', '6°40′ Bélier'),
+      ],
+      sections: [
+        {
+          h2: 'Neptune 2027 en un coup d’œil',
+          paragraphs: [
+            'Neptune met environ 165 ans à faire le tour du zodiaque et reste à peu près quatorze ans dans chaque signe. Il est entré en Bélier une première fois le 30 mars 2025, est revenu en Poissons le 22 octobre 2025, puis s’est installé en Bélier le 26 janvier 2026. En 2027, il n’avance que de 1°43′ à 6°40′ Bélier.',
+            `Neptune est rétrograde environ cinq mois par an. La rétrogradation 2026 a eu lieu du 7 juillet au ${t(N2027.directPrev)}, de 4°25′ à 1°37′ Bélier. En 2027, l’ombre commence le ${t(N2027.preShadow)}, la rétrogradation dure du 10 juillet au 15 décembre (heure de Paris), et l’ombre se termine le 4 avril 2028.`,
+          ],
+        },
+        {
+          h2: 'Ce que signifie Neptune en Bélier',
+          paragraphs: [
+            'En astrologie, Neptune représente les rêves, l’intuition, l’idéal, la spiritualité et la compassion, mais aussi le flou et les illusions. Le Bélier est un signe de feu cardinal : l’élan, le courage, l’initiative et l’affirmation de soi.',
+            'Neptune en Bélier est lu comme un temps où l’idéal se transforme en action, où l’on ose défendre ce en quoi l’on croit. Son revers est de suivre un héros ou une cause sans prendre de recul, ou de s’épuiser à courir après une image de soi. La rétrogradation de juillet à décembre est lue comme une période pour revoir ses rêves avant de foncer.',
+          ],
+        },
+        {
+          h2: 'Le sextile Neptune-Pluton et les autres aspects de 2027',
+          paragraphs: [
+            `Neptune en Bélier et Pluton en Verseau forment un sextile, un angle de 60°. Cet aspect très lent reste à moins d’un degré de l’exactitude de mi-2024 à début 2033 et devient exact treize fois entre juillet 2026 et février 2032, dont deux fois en 2027 : le ${t(N2027.sextilePluto)} et le ${t(N2027.sextilePluto2)}. Il est lu comme un soutien de fond aux changements collectifs.`,
+            `Uranus en Gémeaux forme aussi un sextile à Neptune, exact le ${t(N2027.sextileUranus)} et pour la dernière fois le ${t(N2027.sextileUranus2)}. Saturne, qui a rejoint Neptune le 20 février 2026 à 0°45′ Bélier, s’en éloigne : 6,6° les séparent le 1er janvier 2027, puis plus de 21° fin août. Les deux planètes restent en Bélier toute l’année.`,
+          ],
+        },
+        {
+          h2: 'Peut-on voir Neptune en 2027 ?',
+          paragraphs: [
+            `Neptune est à l’opposition du Soleil le ${t(N2027.opposition)}, à environ 4,32 milliards de km. Il brille alors vers la magnitude 7,8 : invisible à l’œil nu, mais repérable aux jumelles ou dans un petit télescope avec une carte du ciel. Il se trouve dans la constellation des Poissons, car les constellations du ciel ne coïncident pas avec les signes astrologiques.`,
+            `Le ${t(N2027.conjSun)}, Neptune est en conjonction avec le Soleil, donc caché dans sa lumière pendant plusieurs semaines autour de cette date.`,
+          ],
+        },
+        {
+          h2: 'La dernière fois que Neptune était en Bélier',
+          paragraphs: [
+            'Le passage précédent a commencé le 13 avril 1861. Neptune est revenu en Poissons le 1er octobre 1861, s’est installé en Bélier le 14 février 1862, est entré en Taureau le 8 juin 1874, puis a fait un dernier retour en Bélier du 30 septembre 1874 au 7 avril 1875.',
+            'Ces années ont vu la proclamation du royaume d’Italie en mars 1861, la guerre de Sécession aux États-Unis de 1861 à 1865 et la fondation de l’Empire allemand en janvier 1871. Le cycle de Neptune dure environ 165 ans : chaque génération ne vit ce passage qu’une fois, au mieux.',
+          ],
+        },
+      ],
+      signsTitle: 'Neptune en Bélier en 2027 pour chaque signe',
+      signsIntro: 'Lecture par maisons solaires, à partir de votre signe solaire. Votre ascendant, calculé par notre thème astral gratuit, donne la maison exacte traversée par Neptune.',
+      adviceTitle: 'Comment vivre Neptune en Bélier en 2027',
+      advice: [
+        'Notez vos rêves et vos intuitions entre mars et juillet : la rétrogradation de juillet à décembre les ramène sur la table, et vous verrez lesquels tiennent.',
+        'Avant de vous lancer pour une cause ou une personne, vérifiez les faits, les chiffres et les engagements écrits.',
+        'Cherchez dans votre thème la maison qui contient 1° à 7° Bélier : c’est là que l’astrologie lit l’influence de Neptune cette année.',
+        'Neptune ne décide rien à votre place : gardez un avis professionnel pour l’argent, la santé et le droit.',
+      ],
+      method: METHOD_NEP.fr,
+      faqTitle: 'Questions fréquentes',
+      faqs: [
+        { question: 'Quand Neptune est-il rétrograde en 2027 ?', answer: 'Du 10 juillet 2027 à 0 h 41, heure de Paris (9 juillet à 22 h 41 UTC), au 15 décembre 2027 à 10 h 07, heure de Paris (9 h 07 UTC). La rétrogradation dure environ cinq mois.' },
+        { question: 'Combien de temps Neptune reste-t-il en Bélier ?', answer: 'Du 26 janvier 2026 au 22 mai 2038, avec un dernier retour en Bélier du 21 octobre 2038 au 23 mars 2039. Le premier passage bref a eu lieu du 30 mars au 22 octobre 2025.' },
+        { question: 'Quand Neptune était-il en Bélier la dernière fois ?', answer: 'De 1861 à 1875 : du 13 avril au 1er octobre 1861, du 14 février 1862 au 8 juin 1874, puis du 30 septembre 1874 au 7 avril 1875.' },
+        { question: 'Quels signes ressentent le plus Neptune en Bélier en 2027 ?', answer: 'En lecture par signe solaire, les Bélier nés vers le 22 au 27 mars, puis la Balance, le Cancer et le Capricorne avec le Soleil entre 1° et 7° de leur signe.' },
+        { question: 'Qu’est-ce que le sextile Neptune-Pluton ?', answer: 'Un angle de 60° entre Neptune en Bélier et Pluton en Verseau. Il reste presque exact de 2024 à 2033 et devient exact le 28 juin et le 16 octobre 2027. On le lit comme un appui lent aux changements de société.' },
+        { question: 'Peut-on voir Neptune en 2027 ?', answer: 'Pas à l’œil nu. Autour de l’opposition du 28 septembre 2027, Neptune atteint environ la magnitude 7,8 : il faut des jumelles ou un petit télescope et une carte du ciel.' },
+      ],
+      ctaText: 'Un rêve que vous n’osez pas poursuivre, une relation que vous idéalisez peut-être, une décision qui reste floue ? Parlez-en à voix haute avec une Conseillère ou un Conseiller Callastral, à partir de votre vrai thème. Les 3 premières minutes sont offertes, puis vous choisissez un pack à prix fixe si vous voulez continuer.',
+      ctaButton: '3 minutes offertes, sans carte',
+      linksTitle: 'Pour aller plus loin',
+      links,
+      related: { href: SKY_EVENT_PATHS.retrogrades2027.fr, label: SKY_EVENT_LABELS.retrogrades2027.fr },
+      home: 'Accueil',
+      disclaimer: DISCLAIMER.fr,
+    };
+  }
+  return {
+    id: 'neptuneAries2027',
+    locale,
+    path,
+    title: 'Neptune in Aries 2027: dates, retrograde and 12 signs',
+    description: 'Neptune stays in Aries all of 2027. Retrograde from 9 July to 15 December: Paris and UTC times, the sextile to Pluto and effects for all 12 signs.',
+    h1: 'Neptune in Aries 2027: dates, times and effects by sign',
+    breadcrumb: 'Neptune in Aries 2027',
+    answer: [
+      `Neptune stays in Aries for the whole of 2027, between 1°43′ and 6°40′: it turns retrograde on ${t(N2027.retro)} at 6°40′ Aries and turns direct again on ${t(N2027.direct)} at 3°51′ Aries.`,
+      'Neptune entered Aries for good on 26 January 2026 and stays until 22 May 2038, with a final return to Aries until 23 March 2039. Its previous stay in this sign ran from 1861 to 1875, so nobody alive has lived through it before.',
+    ],
+    updated: 'Published on 20 November 2026',
+    tableTitle: 'Neptune calendar 2026 to 2028',
+    tableCaption: 'Computed with the NASA JPL DE440 ephemeris',
+    cols: ['Event', 'Paris time', 'UTC', 'Position'],
+    rows: [
+      rowIso(N2027.directPrev, 'en', 'Neptune turns direct', '1°37′ Aries'),
+      rowIso(N2027.sextileUranus, 'en', 'Uranus sextile Neptune', '1°56′ Gemini / Aries'),
+      rowIso(N2027.preShadow, 'en', 'Pre-retrograde shadow begins', '3°51′ Aries'),
+      rowIso(N2027.conjSun, 'en', 'Neptune conjunct the Sun', '4°05′ Aries'),
+      rowIso(N2027.shadowEndPrev, 'en', 'End of the 2026 retrograde shadow', '4°25′ Aries'),
+      rowIso(N2027.sextileUranus2, 'en', 'Uranus sextile Neptune (last pass)', '6°21′ Gemini / Aries'),
+      rowIso(N2027.sextilePluto, 'en', 'Neptune sextile Pluto', '6°38′ Aries / Aquarius'),
+      rowIso(N2027.retro, 'en', 'Neptune turns retrograde', '6°40′ Aries'),
+      rowIso(N2027.opposition, 'en', 'Opposition to the Sun (Neptune closest)', '5°14′ Aries'),
+      rowIso(N2027.sextilePluto2, 'en', 'Neptune sextile Pluto', '4°45′ Aries / Aquarius'),
+      rowIso(N2027.direct, 'en', 'Neptune turns direct', '3°51′ Aries'),
+      rowIso(N2027.postShadow, 'en', 'Post-retrograde shadow ends', '6°40′ Aries'),
+    ],
+    sections: [
+      {
+        h2: 'Neptune 2027 at a glance',
+        paragraphs: [
+          'Neptune takes about 165 years to go around the zodiac and spends roughly fourteen years in each sign. It first entered Aries on 30 March 2025, slipped back into Pisces on 22 October 2025 and settled in Aries on 26 January 2026. In 2027 it only moves from 1°43′ to 6°40′ Aries.',
+          `Neptune is retrograde for about five months every year. The 2026 retrograde ran from 7 July to ${t(N2027.directPrev)}, from 4°25′ back to 1°37′ Aries. In 2027 the shadow begins on ${t(N2027.preShadow)}, the retrograde runs from 9 July (UTC) to 15 December, and the shadow ends on 4 April 2028.`,
+        ],
+      },
+      {
+        h2: 'What Neptune in Aries means',
+        paragraphs: [
+          'In astrology Neptune stands for dreams, intuition, ideals, spirituality and compassion, and also for fog and illusion. Aries is a cardinal fire sign: drive, courage, initiative and standing up for yourself.',
+          'Neptune in Aries is read as a time when ideals turn into action and people dare to fight for what they believe in. The flip side is following a hero or a cause without stepping back, or burning out while chasing an image of yourself. The July to December retrograde is read as a time to review your dreams before charging ahead.',
+        ],
+      },
+      {
+        h2: 'The Neptune-Pluto sextile and the other aspects of 2027',
+        paragraphs: [
+          `Neptune in Aries and Pluto in Aquarius form a sextile, a 60° angle. This very slow aspect stays within one degree of exact from mid-2024 to early 2033 and is exact thirteen times between July 2026 and February 2032, twice in 2027: on ${t(N2027.sextilePluto)} and on ${t(N2027.sextilePluto2)}. It is read as steady background support for collective change.`,
+          `Uranus in Gemini also sextiles Neptune, exact on ${t(N2027.sextileUranus)} and for the last time on ${t(N2027.sextileUranus2)}. Saturn, which met Neptune on 20 February 2026 at 0°45′ Aries, is pulling away: the two are 6.6° apart on 1 January 2027 and more than 21° apart by late August. Both stay in Aries all year.`,
+        ],
+      },
+      {
+        h2: 'Can you see Neptune in 2027?',
+        paragraphs: [
+          `Neptune is opposite the Sun on ${t(N2027.opposition)}, about 4.32 billion km away. It then shines at about magnitude 7.8: invisible to the naked eye, but you can find it with binoculars or a small telescope and a star chart. It lies in the constellation Pisces, because the sky’s constellations do not match the astrological signs.`,
+          `On ${t(N2027.conjSun)} Neptune is conjunct the Sun, so it is hidden in the Sun’s glare for several weeks around that date.`,
+        ],
+      },
+      {
+        h2: 'The last time Neptune was in Aries',
+        paragraphs: [
+          'The previous passage began on 13 April 1861. Neptune went back into Pisces on 1 October 1861, settled in Aries on 14 February 1862, entered Taurus on 8 June 1874 and made a final return to Aries from 30 September 1874 to 7 April 1875.',
+          'Those years saw the proclamation of the Kingdom of Italy in March 1861, the American Civil War from 1861 to 1865 and the founding of the German Empire in January 1871. Neptune’s cycle lasts about 165 years, so each generation lives through this passage once at most.',
+        ],
+      },
+    ],
+    signsTitle: 'Neptune in Aries 2027 for each sign',
+    signsIntro: 'Reading by solar houses, from your Sun sign. Your rising sign, calculated by our free birth chart, gives the exact house Neptune moves through.',
+    adviceTitle: 'How to handle Neptune in Aries in 2027',
+    advice: [
+      'Write down your dreams and hunches between March and July: the July to December retrograde brings them back, and you will see which ones hold up.',
+      'Before you throw yourself into a cause or a person, check the facts, the figures and the written commitments.',
+      'Find the house holding 1° to 7° Aries in your birth chart: that is where astrology reads Neptune’s influence this year.',
+      'Neptune does not decide for you, so keep money, health and legal decisions grounded in professional advice.',
+    ],
+    method: METHOD_NEP.en,
+    faqTitle: 'Frequently asked questions',
+    faqs: [
+      { question: 'When is Neptune retrograde in 2027?', answer: 'From 9 July 2027 at 22:41 UTC (00:41 Paris time on 10 July) to 15 December 2027 at 09:07 UTC (10:07 Paris time). The retrograde lasts about five months.' },
+      { question: 'How long is Neptune in Aries?', answer: 'From 26 January 2026 to 22 May 2038, with a final return to Aries from 21 October 2038 to 23 March 2039. The first brief visit ran from 30 March to 22 October 2025.' },
+      { question: 'When was Neptune last in Aries?', answer: 'From 1861 to 1875: 13 April to 1 October 1861, 14 February 1862 to 8 June 1874, then 30 September 1874 to 7 April 1875.' },
+      { question: 'Which signs feel Neptune in Aries 2027 the most?', answer: 'In a Sun-sign reading, Aries born around 22 to 27 March, then Libra, Cancer and Capricorn with the Sun between 1° and 7° of their sign.' },
+      { question: 'What is the Neptune-Pluto sextile?', answer: 'A 60° angle between Neptune in Aries and Pluto in Aquarius. It stays almost exact from 2024 to 2033 and is exact on 28 June and 16 October 2027. It is read as slow support for social change.' },
+      { question: 'Can you see Neptune in 2027?', answer: 'Not with the naked eye. Around the opposition of 28 September 2027 Neptune reaches about magnitude 7.8, so you need binoculars or a small telescope and a star chart.' },
+    ],
+    ctaText: 'A dream you do not dare to chase, a relationship you might be idealising, a decision that stays blurry? Talk it through out loud with a Callastral advisor, from your real birth chart. The first 3 minutes are free, then you choose a fixed-price pack if you want to continue.',
+    ctaButton: '3 free minutes, no card',
+    linksTitle: 'Go further',
+    links,
+    related: { href: SKY_EVENT_PATHS.retrogrades2027.en, label: SKY_EVENT_LABELS.retrogrades2027.en },
+    home: 'Home',
+    disclaimer: DISCLAIMER.en,
+  };
+}
+
+function retrogrades2027Copy(locale: SkyLocale): SkyEventCopy {
+  const t = (iso: string) => bothIso(iso, locale);
+  const path = SKY_EVENT_PATHS.retrogrades2027[locale];
+  const links = [link2027(locale), ...commonLinks(locale)];
+  if (locale === 'fr') {
+    return {
+      id: 'retrogrades2027',
+      locale,
+      path,
+      title: 'Planètes rétrogrades 2027 : calendrier complet et dates',
+      description: 'Les planètes rétrogrades de 2027 : Mercure 3 fois, Mars, Jupiter, Saturne, Uranus, Neptune, Pluton. Heures Paris et UTC, pas de Vénus rétrograde.',
+      h1: 'Planètes rétrogrades 2027 : le calendrier complet',
+      breadcrumb: 'Planètes rétrogrades 2027',
+      answer: [
+        'En 2027, sept planètes sont rétrogrades à un moment de l’année : Mercure trois fois (du 9 février au 3 mars, du 10 juin au 4 juillet, du 7 au 28 octobre), Mars (du 10 janvier au 1er avril), Jupiter (jusqu’au 13 avril), Saturne (du 9 août au 24 décembre), Uranus (jusqu’au 8 février, puis à partir du 15 septembre), Neptune (du 10 juillet au 15 décembre) et Pluton (du 8 mai au 18 octobre).',
+        'Vénus est la seule planète qui ne rétrograde pas en 2027. Du 13 avril au 8 mai, aucune planète n’est rétrograde, et la période la plus chargée va du 7 au 18 octobre, avec cinq planètes rétrogrades en même temps.',
+      ],
+      updated: 'Publié le 20 novembre 2026',
+      tableTitle: 'Toutes les stations planétaires de 2027',
+      tableCaption: 'Calculé avec l’éphéméride NASA JPL DE440 (R = devient rétrograde, D = redevient direct)',
+      cols: ['Événement', 'Heure de Paris', 'UTC', 'Position'],
+      rows: [
+        rowIso(R2027.uranusRetroPrev, 'fr', 'Uranus R (depuis 2026)', '5°42′ Gémeaux'),
+        rowIso(R2027.jupiterRetroPrev, 'fr', 'Jupiter R (depuis 2026)', '27°01′ Lion'),
+        rowIso(R2027.marsRetro, 'fr', 'Mars R', '10°26′ Vierge'),
+        rowIso(R2027.uranusDirect, 'fr', 'Uranus D', '1°41′ Gémeaux'),
+        rowIso(R2027.mercury1Retro, 'fr', 'Mercure R (1re période)', '5°59′ Poissons'),
+        rowIso(R2027.mercury1Direct, 'fr', 'Mercure D', '20°55′ Verseau'),
+        rowIso(R2027.marsDirect, 'fr', 'Mars D', '20°56′ Lion'),
+        rowIso(R2027.jupiterDirect, 'fr', 'Jupiter D', '17°00′ Lion'),
+        rowIso(R2027.plutoRetro, 'fr', 'Pluton R', '7°11′ Verseau'),
+        rowIso(R2027.mercury2Retro, 'fr', 'Mercure R (2e période)', '6°22′ Cancer'),
+        rowIso(R2027.mercury2Direct, 'fr', 'Mercure D', '27°28′ Gémeaux'),
+        rowIso(R2027.neptuneRetro, 'fr', 'Neptune R', '6°40′ Bélier'),
+        rowIso(R2027.saturnRetro, 'fr', 'Saturne R', '27°53′ Bélier'),
+        rowIso(R2027.uranusRetro, 'fr', 'Uranus R', '9°57′ Gémeaux'),
+        rowIso(R2027.mercury3Retro, 'fr', 'Mercure R (3e période)', '4°56′ Scorpion'),
+        rowIso(R2027.plutoDirect, 'fr', 'Pluton D', '4°45′ Verseau'),
+        rowIso(R2027.mercury3Direct, 'fr', 'Mercure D', '19°19′ Balance'),
+        rowIso(R2027.neptuneDirect, 'fr', 'Neptune D', '3°51′ Bélier'),
+        rowIso(R2027.saturnDirect, 'fr', 'Saturne D', '21°01′ Bélier'),
+        rowIso(R2027.jupiterRetroNext, 'fr', 'Jupiter R (2028)', '27°31′ Vierge'),
+        rowIso(R2027.mercuryRetroNext, 'fr', 'Mercure R (2028)', '19°42′ Verseau'),
+        rowIso(R2027.uranusDirectNext, 'fr', 'Uranus D (2028)', '5°56′ Gémeaux'),
+      ],
+      sections: [
+        {
+          h2: 'Combien de planètes sont rétrogrades en 2027, mois par mois',
+          paragraphs: [
+            'Janvier commence avec Jupiter et Uranus rétrogrades, rejoints par Mars le 10 janvier. Uranus repart le 8 février, Mercure recule du 9 février au 3 mars, Mars repart le 1er avril et Jupiter le 13 avril.',
+            'Pluton ouvre la saison des planètes lentes le 8 mai. Mercure recule de nouveau du 10 juin au 4 juillet, Neptune le 10 juillet (heure de Paris), Saturne le 9 août et Uranus le 15 septembre. Mercure s’y ajoute le 7 octobre. Pluton repart le 18 octobre, Mercure le 28 octobre, Neptune le 15 décembre et Saturne le 24 décembre. L’année se termine avec Uranus seul rétrograde.',
+          ],
+        },
+        {
+          h2: 'Du 13 avril au 8 mai 2027 : aucune planète rétrograde',
+          paragraphs: [
+            `Entre la station directe de Jupiter, le ${t(R2027.jupiterDirect)}, et la station rétrograde de Pluton, le ${t(R2027.plutoRetro)}, toutes les planètes avancent dans le zodiaque. Ces 25 jours sont la seule fenêtre de 2027 sans aucune rétrogradation.`,
+            'En astrologie, ce type de fenêtre est souvent choisi pour lancer un projet, signer ou annoncer une nouvelle, car rien ne « revient en arrière » dans le ciel. Elle couvre la fin de la saison du Bélier et le début de celle du Taureau, le 20 avril : un bon enchaînement pour lancer un projet puis le construire dans la durée.',
+          ],
+        },
+        {
+          h2: 'Octobre 2027 : cinq planètes rétrogrades en même temps',
+          paragraphs: [
+            `Du ${t(R2027.mercury3Retro)} au ${t(R2027.plutoDirect)}, Mercure, Saturne, Uranus, Neptune et Pluton sont rétrogrades ensemble. C’est le maximum de l’année.`,
+            'On lit ces jours comme un temps de relecture plutôt que de lancement : terminer, vérifier, renouer, corriger. La même semaine, Saturne est à l’opposition du Soleil le 18 octobre, la nuit où il est le plus proche de la Terre.',
+          ],
+        },
+        {
+          h2: 'Pourquoi il n’y a pas de Vénus rétrograde en 2027',
+          paragraphs: [
+            'Vénus rétrograde environ tous les 19 mois, pendant à peu près six semaines. La dernière rétrogradation a eu lieu du 3 octobre au 14 novembre 2026, en Scorpion puis en Balance. La suivante ira du 11 mai au 23 juin 2028 (heure de Paris), de 19°41′ à 3°11′ Gémeaux.',
+            'Mars, lui, rétrograde tous les 26 mois environ : après janvier-avril 2027, la prochaine fois sera du 14 février au 5 mai 2029, de la Balance à la Vierge.',
+          ],
+        },
+        {
+          h2: 'Qu’est-ce qu’une planète rétrograde ?',
+          paragraphs: [
+            'Une planète rétrograde semble reculer dans le zodiaque, vue depuis la Terre. C’est un effet de perspective : la Terre et la planète tournent autour du Soleil à des vitesses différentes, comme une voiture qui en dépasse une autre semble la voir reculer. Aucune planète ne change réellement de sens.',
+            'En astrologie, une rétrogradation est lue comme une période de révision dans le domaine de la planète : la communication pour Mercure, l’action pour Mars, la croissance pour Jupiter, les structures pour Saturne, le changement pour Uranus, l’idéal pour Neptune, la transformation pour Pluton.',
+          ],
+        },
+      ],
+      signsTitle: 'Les rétrogrades 2027 pour chaque signe',
+      signsIntro: 'Lecture à partir de votre signe solaire. Votre ascendant, calculé par notre thème astral gratuit, donne les maisons exactes où chaque planète recule.',
+      adviceTitle: 'Comment traverser les rétrogrades de 2027',
+      advice: [
+        'Gardez la fenêtre du 13 avril au 8 mai pour ce que vous voulez lancer, signer ou annoncer.',
+        'Pendant les trois Mercure rétrogrades, relisez vos messages, vos contrats et vos réservations avant de valider.',
+        'En octobre, quand cinq planètes reculent, privilégiez ce qui est à terminer ou à réparer plutôt que les grands départs.',
+        'Une rétrogradation ne bloque rien : gardez un avis professionnel pour l’argent, la santé et le droit.',
+      ],
+      method: METHOD_NEP.fr,
+      faqTitle: 'Questions fréquentes',
+      faqs: [
+        { question: 'Combien de planètes sont rétrogrades en 2027 ?', answer: 'Sept : Mercure (trois fois), Mars, Jupiter, Saturne, Uranus, Neptune et Pluton. Vénus ne rétrograde pas en 2027.' },
+        { question: 'Vénus est-elle rétrograde en 2027 ?', answer: 'Non. La dernière Vénus rétrograde s’est terminée le 14 novembre 2026. La prochaine commence le 11 mai 2028 à 1 h 03, heure de Paris (10 mai à 23 h 03 UTC), en Gémeaux.' },
+        { question: 'Quand Mercure est-il rétrograde en 2027 ?', answer: 'Du 9 février au 3 mars (Poissons puis Verseau), du 10 juin au 4 juillet (Cancer puis Gémeaux) et du 7 au 28 octobre (Scorpion puis Balance).' },
+        { question: 'Y a-t-il une période sans rétrograde en 2027 ?', answer: 'Oui, du 13 avril 2027 à 4 h 11, heure de Paris, au 8 mai 2027 à 14 h 56, heure de Paris : environ 25 jours sans aucune planète rétrograde.' },
+        { question: 'Quand y a-t-il le plus de planètes rétrogrades en 2027 ?', answer: 'Du 7 au 18 octobre 2027 : Mercure, Saturne, Uranus, Neptune et Pluton sont rétrogrades en même temps.' },
+        { question: 'Une planète rétrograde recule-t-elle vraiment ?', answer: 'Non. C’est un effet de perspective vu depuis la Terre. L’astrologie lit cette période comme un temps de révision, pas comme un blocage.' },
+      ],
+      ctaText: 'Un projet à relancer, un ex qui réapparaît, une décision que vous voulez revoir avant de signer ? Parlez-en à voix haute avec une Conseillère ou un Conseiller Callastral, à partir de votre vrai thème. Les 3 premières minutes sont offertes, puis vous choisissez un pack à prix fixe si vous voulez continuer.',
+      ctaButton: '3 minutes offertes, sans carte',
+      linksTitle: 'Pour aller plus loin',
+      links,
+      related: { href: SKY_EVENT_PATHS.mercuryRetrograde2027.fr, label: SKY_EVENT_LABELS.mercuryRetrograde2027.fr },
+      home: 'Accueil',
+      disclaimer: DISCLAIMER.fr,
+    };
+  }
+  return {
+    id: 'retrogrades2027',
+    locale,
+    path,
+    title: 'Retrograde planets 2027: full calendar and dates',
+    description: 'Every retrograde planet in 2027: Mercury three times, Mars, Jupiter, Saturn, Uranus, Neptune and Pluto. Paris and UTC times, no Venus retrograde.',
+    h1: 'Retrograde planets 2027: the full calendar',
+    breadcrumb: 'Retrograde planets 2027',
+    answer: [
+      'In 2027, seven planets go retrograde at some point in the year: Mercury three times (9 February to 3 March, 10 June to 4 July, 7 to 28 October), Mars (10 January to 1 April), Jupiter (until 13 April), Saturn (9 August to 24 December), Uranus (until 8 February, then from 15 September), Neptune (9 July UTC to 15 December) and Pluto (8 May to 18 October).',
+      'Venus is the only planet that is never retrograde in 2027. From 13 April to 8 May no planet is retrograde at all, and the busiest stretch runs from 7 to 18 October, with five planets retrograde at once.',
+    ],
+    updated: 'Published on 20 November 2026',
+    tableTitle: 'Every planetary station of 2027',
+    tableCaption: 'Computed with the NASA JPL DE440 ephemeris (R = turns retrograde, D = turns direct)',
+    cols: ['Event', 'Paris time', 'UTC', 'Position'],
+    rows: [
+      rowIso(R2027.uranusRetroPrev, 'en', 'Uranus R (since 2026)', '5°42′ Gemini'),
+      rowIso(R2027.jupiterRetroPrev, 'en', 'Jupiter R (since 2026)', '27°01′ Leo'),
+      rowIso(R2027.marsRetro, 'en', 'Mars R', '10°26′ Virgo'),
+      rowIso(R2027.uranusDirect, 'en', 'Uranus D', '1°41′ Gemini'),
+      rowIso(R2027.mercury1Retro, 'en', 'Mercury R (1st period)', '5°59′ Pisces'),
+      rowIso(R2027.mercury1Direct, 'en', 'Mercury D', '20°55′ Aquarius'),
+      rowIso(R2027.marsDirect, 'en', 'Mars D', '20°56′ Leo'),
+      rowIso(R2027.jupiterDirect, 'en', 'Jupiter D', '17°00′ Leo'),
+      rowIso(R2027.plutoRetro, 'en', 'Pluto R', '7°11′ Aquarius'),
+      rowIso(R2027.mercury2Retro, 'en', 'Mercury R (2nd period)', '6°22′ Cancer'),
+      rowIso(R2027.mercury2Direct, 'en', 'Mercury D', '27°28′ Gemini'),
+      rowIso(R2027.neptuneRetro, 'en', 'Neptune R', '6°40′ Aries'),
+      rowIso(R2027.saturnRetro, 'en', 'Saturn R', '27°53′ Aries'),
+      rowIso(R2027.uranusRetro, 'en', 'Uranus R', '9°57′ Gemini'),
+      rowIso(R2027.mercury3Retro, 'en', 'Mercury R (3rd period)', '4°56′ Scorpio'),
+      rowIso(R2027.plutoDirect, 'en', 'Pluto D', '4°45′ Aquarius'),
+      rowIso(R2027.mercury3Direct, 'en', 'Mercury D', '19°19′ Libra'),
+      rowIso(R2027.neptuneDirect, 'en', 'Neptune D', '3°51′ Aries'),
+      rowIso(R2027.saturnDirect, 'en', 'Saturn D', '21°01′ Aries'),
+      rowIso(R2027.jupiterRetroNext, 'en', 'Jupiter R (2028)', '27°31′ Virgo'),
+      rowIso(R2027.mercuryRetroNext, 'en', 'Mercury R (2028)', '19°42′ Aquarius'),
+      rowIso(R2027.uranusDirectNext, 'en', 'Uranus D (2028)', '5°56′ Gemini'),
+    ],
+    sections: [
+      {
+        h2: 'How many planets are retrograde in 2027, month by month',
+        paragraphs: [
+          'January opens with Jupiter and Uranus retrograde, joined by Mars on 10 January. Uranus turns direct on 8 February, Mercury moves back from 9 February to 3 March, Mars turns direct on 1 April and Jupiter on 13 April.',
+          'Pluto starts the slow planets’ season on 8 May. Mercury goes back again from 10 June to 4 July, Neptune on 9 July (UTC), Saturn on 9 August and Uranus on 15 September. Mercury joins them on 7 October. Pluto turns direct on 18 October, Mercury on 28 October, Neptune on 15 December and Saturn on 24 December. The year ends with Uranus alone retrograde.',
+        ],
+      },
+      {
+        h2: '13 April to 8 May 2027: no planet retrograde',
+        paragraphs: [
+          `Between Jupiter’s direct station on ${t(R2027.jupiterDirect)} and Pluto’s retrograde station on ${t(R2027.plutoRetro)}, every planet moves forward through the zodiac. These 25 days are the only window in 2027 with no retrograde at all.`,
+          'In astrology this kind of window is often chosen to launch a project, sign or share news, because nothing in the sky is moving backwards. It straddles the end of Aries season and the start of Taurus season on 20 April, a pairing that suits starting something and then building it to last.',
+        ],
+      },
+      {
+        h2: 'October 2027: five planets retrograde at once',
+        paragraphs: [
+          `From ${t(R2027.mercury3Retro)} to ${t(R2027.plutoDirect)}, Mercury, Saturn, Uranus, Neptune and Pluto are all retrograde together. That is the peak of the year.`,
+          'These days are read as a time to review rather than launch: finish, check, reconnect, correct. The same week Saturn is opposite the Sun on 18 October, the night it is closest to Earth.',
+        ],
+      },
+      {
+        h2: 'Why there is no Venus retrograde in 2027',
+        paragraphs: [
+          'Venus goes retrograde about every 19 months, for roughly six weeks. The last retrograde ran from 3 October to 14 November 2026, in Scorpio then Libra. The next one runs from 10 May to 22 June 2028 (UTC), from 19°41′ back to 3°11′ Gemini.',
+          'Mars goes retrograde about every 26 months: after January to April 2027, the next one runs from 14 February to 5 May 2029, from Libra back into Virgo.',
+        ],
+      },
+      {
+        h2: 'What does retrograde mean?',
+        paragraphs: [
+          'A retrograde planet seems to move backwards through the zodiac, seen from Earth. It is a perspective effect: Earth and the planet orbit the Sun at different speeds, like a car you overtake seems to slip backwards. No planet really reverses.',
+          'In astrology a retrograde is read as a review period in the planet’s area: communication for Mercury, action for Mars, growth for Jupiter, structure for Saturn, change for Uranus, ideals for Neptune, transformation for Pluto.',
+        ],
+      },
+    ],
+    signsTitle: 'The 2027 retrogrades for each sign',
+    signsIntro: 'Reading from your Sun sign. Your rising sign, calculated by our free birth chart, gives the exact houses where each planet moves back.',
+    adviceTitle: 'How to handle the 2027 retrogrades',
+    advice: [
+      'Keep the 13 April to 8 May window for what you want to launch, sign or announce.',
+      'During the three Mercury retrogrades, reread messages, contracts and bookings before you confirm.',
+      'In October, when five planets move back, favour what needs finishing or repairing over big new starts.',
+      'A retrograde does not block anything, so keep money, health and legal decisions grounded in professional advice.',
+    ],
+    method: METHOD_NEP.en,
+    faqTitle: 'Frequently asked questions',
+    faqs: [
+      { question: 'How many planets are retrograde in 2027?', answer: 'Seven: Mercury (three times), Mars, Jupiter, Saturn, Uranus, Neptune and Pluto. Venus is not retrograde in 2027.' },
+      { question: 'Is Venus retrograde in 2027?', answer: 'No. The last Venus retrograde ended on 14 November 2026. The next one begins on 10 May 2028 at 23:03 UTC (01:03 Paris time on 11 May), in Gemini.' },
+      { question: 'When is Mercury retrograde in 2027?', answer: '9 February to 3 March (Pisces then Aquarius), 10 June to 4 July (Cancer then Gemini) and 7 to 28 October (Scorpio then Libra).' },
+      { question: 'Is there a time with no retrograde planets in 2027?', answer: 'Yes, from 13 April 2027 at 02:11 UTC (04:11 Paris time) to 8 May 2027 at 12:56 UTC (14:56 Paris time): about 25 days with no planet retrograde.' },
+      { question: 'When are the most planets retrograde in 2027?', answer: 'From 7 to 18 October 2027, when Mercury, Saturn, Uranus, Neptune and Pluto are retrograde at the same time.' },
+      { question: 'Does a retrograde planet really move backwards?', answer: 'No. It is a perspective effect seen from Earth. Astrology reads the period as a time to review, not as a block.' },
+    ],
+    ctaText: 'A project to restart, an ex who shows up again, a decision you want to review before you sign? Talk it through out loud with a Callastral advisor, from your real birth chart. The first 3 minutes are free, then you choose a fixed-price pack if you want to continue.',
+    ctaButton: '3 free minutes, no card',
+    linksTitle: 'Go further',
+    links,
+    related: { href: SKY_EVENT_PATHS.mercuryRetrograde2027.en, label: SKY_EVENT_LABELS.mercuryRetrograde2027.en },
+    home: 'Home',
+    disclaimer: DISCLAIMER.en,
+  };
+}
+
 const LEONIDS_HOUSE: Record<SkyLocale, string[]> = {
   fr: [
     'l’envie de vous montrer tel que vous êtes revient. Un vœu qui parle de vous, pas de quelqu’un d’autre, a plus de chances de tenir.',
@@ -3326,6 +3865,8 @@ export function skyEventCopy(id: SkyEventId, locale: SkyLocale): SkyEventCopy {
   else if (id === 'jupiterVirgo2027') copy = jupiterVirgo2027Copy(locale);
   else if (id === 'saturnRetrograde2027') copy = saturnRetro2027Copy(locale);
   else if (id === 'uranusGemini2027') copy = uranusGemini2027Copy(locale);
+  else if (id === 'neptuneAries2027') copy = neptuneAries2027Copy(locale);
+  else if (id === 'retrogrades2027') copy = retrogrades2027Copy(locale);
   else copy = sagittariusSeasonCopy(locale);
   // Maillage : chaque page événement renvoie vers les autres pages du ciel de la saison.
   const others = SKY_EVENT_IDS.filter((other) => other !== id && SKY_EVENT_PATHS[other][locale] !== copy.related.href);

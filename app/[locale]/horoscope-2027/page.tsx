@@ -74,6 +74,8 @@ export default async function Page(props: { params: Promise<{ locale: string }> 
           <li><Link href={SKY_EVENT_PATHS.jupiterVirgo2027.fr} className="underline text-celestial-gold">Jupiter en Vierge 2027</Link> : l’entrée du 26 juillet, la rétrogradation en Lion et l’effet pour chaque signe.</li>
           <li><Link href={SKY_EVENT_PATHS.saturnRetrograde2027.fr} className="underline text-celestial-gold">Saturne rétrograde 2027</Link> : du 9 août au 24 décembre en Bélier, les dates d’ombre et l’effet pour chaque signe.</li>
           <li><Link href={SKY_EVENT_PATHS.uranusGemini2027.fr} className="underline text-celestial-gold">Uranus en Gémeaux 2027</Link> : la station directe du 8 février, la rétrogradation du 15 septembre et le trigone à Pluton.</li>
+          <li><Link href={SKY_EVENT_PATHS.neptuneAries2027.fr} className="underline text-celestial-gold">Neptune en Bélier 2027</Link> : la rétrogradation du 10 juillet au 15 décembre, le sextile à Pluton et l’effet pour chaque signe.</li>
+          <li><Link href={SKY_EVENT_PATHS.retrogrades2027.fr} className="underline text-celestial-gold">Planètes rétrogrades 2027</Link> : toutes les rétrogradations de l’année, la fenêtre sans rétrograde du 13 avril au 8 mai.</li>
           <li><Link href="/fr/horoscope-du-jour" className="underline text-celestial-gold">Horoscope du jour</Link> et <Link href="/fr/lune-aujourdhui" className="underline text-celestial-gold">la Lune aujourd’hui</Link> pour suivre le ciel au quotidien.</li>
         </ul>
       </section>
