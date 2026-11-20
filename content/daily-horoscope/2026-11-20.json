@@ -1,0 +1,189 @@
+{
+  "date": "2026-11-20",
+  "sky": {
+    "date": "2026-11-20",
+    "computedAt": "08:00 Europe/Paris",
+    "phase": {
+      "id": "waxingGibbous",
+      "illumination": 77,
+      "waxing": true
+    },
+    "bodies": [
+      {
+        "name": "Soleil",
+        "sign": "Scorpion",
+        "degree": 27,
+        "retrograde": false
+      },
+      {
+        "name": "Lune",
+        "sign": "Bélier",
+        "degree": 0,
+        "retrograde": false
+      },
+      {
+        "name": "Mercure",
+        "sign": "Scorpion",
+        "degree": 8,
+        "retrograde": false
+      },
+      {
+        "name": "Vénus",
+        "sign": "Balance",
+        "degree": 23,
+        "retrograde": false
+      },
+      {
+        "name": "Mars",
+        "sign": "Lion",
+        "degree": 27,
+        "retrograde": false
+      },
+      {
+        "name": "Jupiter",
+        "sign": "Lion",
+        "degree": 26,
+        "retrograde": false
+      },
+      {
+        "name": "Saturne",
+        "sign": "Bélier",
+        "degree": 8,
+        "retrograde": true
+      },
+      {
+        "name": "Uranus",
+        "sign": "Gémeaux",
+        "degree": 3,
+        "retrograde": true
+      },
+      {
+        "name": "Neptune",
+        "sign": "Bélier",
+        "degree": 1,
+        "retrograde": true
+      },
+      {
+        "name": "Pluton",
+        "sign": "Verseau",
+        "degree": 3,
+        "retrograde": false
+      },
+      {
+        "name": "Nœud nord",
+        "sign": "Verseau",
+        "degree": 25,
+        "retrograde": true
+      }
+    ],
+    "ingresses": [
+      {
+        "name": "Lune",
+        "from": "Poissons",
+        "to": "Bélier"
+      }
+    ],
+    "aspects": [
+      {
+        "a": "Soleil",
+        "b": "Mars",
+        "aspect": "square",
+        "orb": 0.3
+      },
+      {
+        "a": "Lune",
+        "b": "Neptune",
+        "aspect": "conjunction",
+        "orb": 1.1
+      },
+      {
+        "a": "Vénus",
+        "b": "Nœud nord",
+        "aspect": "trine",
+        "orb": 1.4
+      },
+      {
+        "a": "Mars",
+        "b": "Jupiter",
+        "aspect": "conjunction",
+        "orb": 1.4
+      },
+      {
+        "a": "Soleil",
+        "b": "Jupiter",
+        "aspect": "square",
+        "orb": 1.8
+      },
+      {
+        "a": "Vénus",
+        "b": "Jupiter",
+        "aspect": "sextile",
+        "orb": 2.6
+      },
+      {
+        "a": "Mars",
+        "b": "Nœud nord",
+        "aspect": "opposition",
+        "orb": 2.6
+      },
+      {
+        "a": "Soleil",
+        "b": "Lune",
+        "aspect": "trine",
+        "orb": 2.7
+      },
+      {
+        "a": "Lune",
+        "b": "Pluton",
+        "aspect": "sextile",
+        "orb": 2.7
+      },
+      {
+        "a": "Soleil",
+        "b": "Nœud nord",
+        "aspect": "square",
+        "orb": 2.9
+      },
+      {
+        "a": "Soleil",
+        "b": "Neptune",
+        "aspect": "trine",
+        "orb": 3.8
+      }
+    ]
+  },
+  "en": {
+    "summary": "Friday 20 November 2026: the waxing gibbous Moon, about 77% lit, leaves Pisces and enters Aries early in the morning, just past its trine with the Sun. In Aries it meets Neptune at 1° and sextiles Pluto in Aquarius. The Sun at 27° Scorpio keeps its exact square to Mars at 27° Leo and a close square to Jupiter at 26° Leo, while Mars and Jupiter stay conjunct and Mars opposes the North Node. The Sun also trines Neptune. Venus at 23° Libra trines the Node and sextiles Jupiter. Saturn, Uranus and Neptune are retrograde.",
+    "signs": {
+      "belier": "Aries, this Friday is mostly about identity, body and first impressions. The Moon enters Aries in this part of your chart and meets Neptune there, so instincts are strong but some details may stay blurry until later. You feel ready to start something on your own terms, and one clear first step beats a grand announcement.\n\nThe Sun in your area of shared money, intimacy and deep bonds still squares Mars and Jupiter in your sector of love, pleasure and creativity. Pressure and big promises can collide, so check that your effort matches what is really possible before committing. Venus, from your domain of partnerships and one-to-one relationships, softens the mood with a trine to the North Node and a sextile to Jupiter, a good sign for diplomacy and a helping hand.\n\nThis weekend, choose one project and give it a real hour. Treat this as a trend, not a verdict.",
+      "taureau": "Taurus, the new Aries Moon puts rest, the inner world and what you keep hidden in the spotlight. The Moon enters Aries in this part of your chart and meets Neptune there, so instincts are strong but some details may stay blurry until later. Your inner world asks for space, and a quiet moment before you act saves you an unnecessary reaction.\n\nThe Sun in your area of partnerships and one-to-one relationships still squares Mars and Jupiter in your sector of home, family and private roots. Pressure and big promises can collide, so check that your effort matches what is really possible before committing. Venus, from your domain of daily work, health and routines, softens the mood with a trine to the North Node and a sextile to Jupiter, a good sign for diplomacy and a helping hand.\n\nThis weekend, keep one morning free of plans. The sky offers a climate, and you decide what to do with it.",
+      "gemeaux": "Gemini, today’s main theme is friends, groups and long-term plans. The Moon enters Aries in this part of your chart and meets Neptune there, so instincts are strong but some details may stay blurry until later. Friends and networks energise you, and taking the lead on a group plan suits you well.\n\nThe Sun in your area of daily work, health and routines still squares Mars and Jupiter in your sector of conversations, messages and short trips. Pressure and big promises can collide, so check that your effort matches what is really possible before committing. Venus, from your domain of love, pleasure and creativity, softens the mood with a trine to the North Node and a sextile to Jupiter, a good sign for diplomacy and a helping hand.\n\nThis weekend, reconnect with a friend you have not seen in a while. Take what is useful and let the rest go.",
+      "cancer": "Cancer, Friday’s sky draws your attention to career, reputation and public goals. The Moon enters Aries in this part of your chart and meets Neptune there, so instincts are strong but some details may stay blurry until later. Career matters push forward, and a confident, well-timed proposal can be heard today.\n\nThe Sun in your area of love, pleasure and creativity still squares Mars and Jupiter in your sector of money, possessions and self-worth. Pressure and big promises can collide, so check that your effort matches what is really possible before committing. Venus, from your domain of home, family and private roots, softens the mood with a trine to the North Node and a sextile to Jupiter, a good sign for diplomacy and a helping hand.\n\nThis weekend, list the three goals that matter most before December. Your own judgement stays the best guide.",
+      "lion": "Leo, the day revolves around travel, study and the beliefs that guide you. The Moon enters Aries in this part of your chart and meets Neptune there, so instincts are strong but some details may stay blurry until later. You want movement and new ideas, and planning a short trip or signing up for something new feels right.\n\nThe Sun in your area of home, family and private roots still squares Mars and Jupiter in your sector of identity, body and first impressions. Pressure and big promises can collide, so check that your effort matches what is really possible before committing. Venus, from your domain of conversations, messages and short trips, softens the mood with a trine to the North Node and a sextile to Jupiter, a good sign for diplomacy and a helping hand.\n\nThis weekend, explore a place or topic you do not know yet. Treat this as a trend, not a verdict.",
+      "vierge": "Virgo, the Moon’s fresh start in Aries touches shared money, intimacy and deep bonds. The Moon enters Aries in this part of your chart and meets Neptune there, so instincts are strong but some details may stay blurry until later. Deep feelings about trust and shared money surface, and dealing with one pending detail frees your mind.\n\nThe Sun in your area of conversations, messages and short trips still squares Mars and Jupiter in your sector of rest, the inner world and what you keep hidden. Pressure and big promises can collide, so check that your effort matches what is really possible before committing. Venus, from your domain of money, possessions and self-worth, softens the mood with a trine to the North Node and a sextile to Jupiter, a good sign for diplomacy and a helping hand.\n\nThis weekend, clear one shared admin task with the person concerned. The sky offers a climate, and you decide what to do with it.",
+      "balance": "Libra, your Friday brings partnerships and one-to-one relationships to the foreground. The Moon enters Aries in this part of your chart and meets Neptune there, so instincts are strong but some details may stay blurry until later. Partners and close allies take the initiative, and listening before answering keeps things fair.\n\nThe Sun in your area of money, possessions and self-worth still squares Mars and Jupiter in your sector of friends, groups and long-term plans. Pressure and big promises can collide, so check that your effort matches what is really possible before committing. Venus, from your domain of identity, body and first impressions, softens the mood with a trine to the North Node and a sextile to Jupiter, a good sign for diplomacy and a helping hand.\n\nThis weekend, plan something together with your partner or a close friend. Take what is useful and let the rest go.",
+      "scorpion": "Scorpio, the key area for you today is daily work, health and routines. The Moon enters Aries in this part of your chart and meets Neptune there, so instincts are strong but some details may stay blurry until later. Work and health respond well to action, and starting the task you dread gives you a lift by noon.\n\nThe Sun in your area of identity, body and first impressions still squares Mars and Jupiter in your sector of career, reputation and public goals. Pressure and big promises can collide, so check that your effort matches what is really possible before committing. Venus, from your domain of rest, the inner world and what you keep hidden, softens the mood with a trine to the North Node and a sextile to Jupiter, a good sign for diplomacy and a helping hand.\n\nThis weekend, move your body outdoors, even briefly. Your own judgement stays the best guide.",
+      "sagittaire": "Sagittarius, energy gathers today around love, pleasure and creativity. The Moon enters Aries in this part of your chart and meets Neptune there, so instincts are strong but some details may stay blurry until later. Desire and creativity wake up, and acting on a playful idea brings back a sense of fun.\n\nThe Sun in your area of rest, the inner world and what you keep hidden still squares Mars and Jupiter in your sector of travel, study and the beliefs that guide you. Pressure and big promises can collide, so check that your effort matches what is really possible before committing. Venus, from your domain of friends, groups and long-term plans, softens the mood with a trine to the North Node and a sextile to Jupiter, a good sign for diplomacy and a helping hand.\n\nThis weekend, make time for a hobby with no goal attached. Treat this as a trend, not a verdict.",
+      "capricorne": "Capricorn, this Friday invites you to work on home, family and private roots. The Moon enters Aries in this part of your chart and meets Neptune there, so instincts are strong but some details may stay blurry until later. Home and family stir quick reactions, and tackling one small chore at home turns restlessness into relief.\n\nThe Sun in your area of friends, groups and long-term plans still squares Mars and Jupiter in your sector of shared money, intimacy and deep bonds. Pressure and big promises can collide, so check that your effort matches what is really possible before committing. Venus, from your domain of career, reputation and public goals, softens the mood with a trine to the North Node and a sextile to Jupiter, a good sign for diplomacy and a helping hand.\n\nThis weekend, invite someone you love for a simple meal. The sky offers a climate, and you decide what to do with it.",
+      "verseau": "Aquarius, the Moon now in Aries stirs conversations, messages and short trips. The Moon enters Aries in this part of your chart and meets Neptune there, so instincts are strong but some details may stay blurry until later. Words come fast and direct, so saying what you mean kindly matters more than winning the exchange.\n\nThe Sun in your area of career, reputation and public goals still squares Mars and Jupiter in your sector of partnerships and one-to-one relationships. Pressure and big promises can collide, so check that your effort matches what is really possible before committing. Venus, from your domain of travel, study and the beliefs that guide you, softens the mood with a trine to the North Node and a sextile to Jupiter, a good sign for diplomacy and a helping hand.\n\nThis weekend, send the message you keep rewriting. Take what is useful and let the rest go.",
+      "poissons": "Pisces, today you are asked to look at money, possessions and self-worth. The Moon enters Aries in this part of your chart and meets Neptune there, so instincts are strong but some details may stay blurry until later. Money and self-worth get a burst of energy, and deciding on one practical priority keeps spending in check.\n\nThe Sun in your area of travel, study and the beliefs that guide you still squares Mars and Jupiter in your sector of daily work, health and routines. Pressure and big promises can collide, so check that your effort matches what is really possible before committing. Venus, from your domain of shared money, intimacy and deep bonds, softens the mood with a trine to the North Node and a sextile to Jupiter, a good sign for diplomacy and a helping hand.\n\nThis weekend, sort your receipts or check your budget for December. Your own judgement stays the best guide."
+    }
+  },
+  "fr": {
+    "summary": "Vendredi 20 novembre 2026 : la Lune gibbeuse croissante, éclairée à environ 77 %, quitte les Poissons et entre en Bélier tôt le matin, juste après son trigone au Soleil. En Bélier, elle rejoint Neptune à 1° et fait sextile à Pluton en Verseau. Le Soleil à 27° du Scorpion garde son carré exact à Mars à 27° du Lion et un carré serré à Jupiter à 26° du Lion, tandis que Mars et Jupiter restent conjoints et que Mars s’oppose au Nœud nord. Le Soleil fait aussi trigone à Neptune. Vénus à 23° de la Balance fait trigone au Nœud et sextile à Jupiter. Saturne, Uranus et Neptune sont rétrogrades.",
+    "signs": {
+      "belier": "Bélier, ce vendredi parle surtout du domaine de l’identité, du corps et de l’image que vous donnez. La Lune entre en Bélier dans ce secteur et y rejoint Neptune : l’instinct est fort, mais certains détails peuvent rester flous jusqu’à plus tard. Vous vous sentez prêt à lancer quelque chose à votre manière, et un premier pas concret vaut mieux qu’une grande annonce.\n\nLe Soleil, dans votre domaine de l’argent partagé, de l’intimité et des liens profonds, reste en carré à Mars et Jupiter, situés dans votre secteur de l’amour, du plaisir et de la créativité. La pression et les grandes promesses peuvent se heurter : vérifiez que votre effort correspond à ce qui est vraiment possible avant de vous engager. Vénus, depuis votre domaine du couple et des relations en face à face, adoucit l’ambiance par un trigone au Nœud nord et un sextile à Jupiter, un bon signe pour la diplomatie et un coup de main.\n\nCe week-end, choisissez un projet et accordez-lui une vraie heure. Voyez ceci comme une tendance, pas comme un verdict.",
+      "taureau": "Taureau, la Lune qui entre en Bélier met en lumière le domaine du repos, du monde intérieur et de ce que vous gardez pour vous. La Lune entre en Bélier dans ce secteur et y rejoint Neptune : l’instinct est fort, mais certains détails peuvent rester flous jusqu’à plus tard. Votre monde intérieur réclame de l’espace, et un moment calme avant d’agir vous évite une réaction inutile.\n\nLe Soleil, dans votre domaine du couple et des relations en face à face, reste en carré à Mars et Jupiter, situés dans votre secteur du foyer, de la famille et des racines. La pression et les grandes promesses peuvent se heurter : vérifiez que votre effort correspond à ce qui est vraiment possible avant de vous engager. Vénus, depuis votre domaine du travail quotidien, de la santé et des routines, adoucit l’ambiance par un trigone au Nœud nord et un sextile à Jupiter, un bon signe pour la diplomatie et un coup de main.\n\nCe week-end, gardez une matinée libre de tout programme. Le ciel propose un climat, et c’est vous qui décidez quoi en faire.",
+      "gemeaux": "Gémeaux, le thème principal du jour est celui des amis, des groupes et des projets à long terme. La Lune entre en Bélier dans ce secteur et y rejoint Neptune : l’instinct est fort, mais certains détails peuvent rester flous jusqu’à plus tard. Les amis et vos réseaux vous stimulent, et prendre la tête d’un projet de groupe vous va bien.\n\nLe Soleil, dans votre domaine du travail quotidien, de la santé et des routines, reste en carré à Mars et Jupiter, situés dans votre secteur des échanges, des messages et des petits trajets. La pression et les grandes promesses peuvent se heurter : vérifiez que votre effort correspond à ce qui est vraiment possible avant de vous engager. Vénus, depuis votre domaine de l’amour, du plaisir et de la créativité, adoucit l’ambiance par un trigone au Nœud nord et un sextile à Jupiter, un bon signe pour la diplomatie et un coup de main.\n\nCe week-end, renouez avec un ami perdu de vue. Prenez ce qui est utile et laissez le reste.",
+      "cancer": "Cancer, le ciel de ce vendredi attire votre attention sur le domaine de la carrière, de la réputation et des objectifs publics. La Lune entre en Bélier dans ce secteur et y rejoint Neptune : l’instinct est fort, mais certains détails peuvent rester flous jusqu’à plus tard. Les questions de carrière avancent, et une proposition sûre et bien placée peut être entendue aujourd’hui.\n\nLe Soleil, dans votre domaine de l’amour, du plaisir et de la créativité, reste en carré à Mars et Jupiter, situés dans votre secteur de l’argent, des biens et de l’estime de soi. La pression et les grandes promesses peuvent se heurter : vérifiez que votre effort correspond à ce qui est vraiment possible avant de vous engager. Vénus, depuis votre domaine du foyer, de la famille et des racines, adoucit l’ambiance par un trigone au Nœud nord et un sextile à Jupiter, un bon signe pour la diplomatie et un coup de main.\n\nCe week-end, listez les trois objectifs qui comptent le plus avant décembre. Votre propre jugement reste le meilleur guide.",
+      "lion": "Lion, la journée tourne autour du domaine des voyages, des études et des convictions. La Lune entre en Bélier dans ce secteur et y rejoint Neptune : l’instinct est fort, mais certains détails peuvent rester flous jusqu’à plus tard. Vous avez envie de mouvement et d’idées neuves, et prévoir une courte escapade ou vous inscrire à quelque chose de nouveau vous fait du bien.\n\nLe Soleil, dans votre domaine du foyer, de la famille et des racines, reste en carré à Mars et Jupiter, situés dans votre secteur de l’identité, du corps et de l’image que vous donnez. La pression et les grandes promesses peuvent se heurter : vérifiez que votre effort correspond à ce qui est vraiment possible avant de vous engager. Vénus, depuis votre domaine des échanges, des messages et des petits trajets, adoucit l’ambiance par un trigone au Nœud nord et un sextile à Jupiter, un bon signe pour la diplomatie et un coup de main.\n\nCe week-end, explorez un lieu ou un sujet que vous ne connaissez pas. Voyez ceci comme une tendance, pas comme un verdict.",
+      "vierge": "Vierge, le nouveau départ de la Lune en Bélier touche le domaine de l’argent partagé, de l’intimité et des liens profonds. La Lune entre en Bélier dans ce secteur et y rejoint Neptune : l’instinct est fort, mais certains détails peuvent rester flous jusqu’à plus tard. Des émotions profondes autour de la confiance et de l’argent partagé remontent, et régler un détail en attente libère votre esprit.\n\nLe Soleil, dans votre domaine des échanges, des messages et des petits trajets, reste en carré à Mars et Jupiter, situés dans votre secteur du repos, du monde intérieur et de ce que vous gardez pour vous. La pression et les grandes promesses peuvent se heurter : vérifiez que votre effort correspond à ce qui est vraiment possible avant de vous engager. Vénus, depuis votre domaine de l’argent, des biens et de l’estime de soi, adoucit l’ambiance par un trigone au Nœud nord et un sextile à Jupiter, un bon signe pour la diplomatie et un coup de main.\n\nCe week-end, réglez une démarche commune avec la personne concernée. Le ciel propose un climat, et c’est vous qui décidez quoi en faire.",
+      "balance": "Balance, votre vendredi place au premier plan le domaine du couple et des relations en face à face. La Lune entre en Bélier dans ce secteur et y rejoint Neptune : l’instinct est fort, mais certains détails peuvent rester flous jusqu’à plus tard. Les partenaires et les proches prennent l’initiative, et écouter avant de répondre garde l’échange équilibré.\n\nLe Soleil, dans votre domaine de l’argent, des biens et de l’estime de soi, reste en carré à Mars et Jupiter, situés dans votre secteur des amis, des groupes et des projets à long terme. La pression et les grandes promesses peuvent se heurter : vérifiez que votre effort correspond à ce qui est vraiment possible avant de vous engager. Vénus, depuis votre domaine de l’identité, du corps et de l’image que vous donnez, adoucit l’ambiance par un trigone au Nœud nord et un sextile à Jupiter, un bon signe pour la diplomatie et un coup de main.\n\nCe week-end, prévoyez quelque chose à deux avec votre partenaire ou un ami proche. Prenez ce qui est utile et laissez le reste.",
+      "scorpion": "Scorpion, le secteur clé pour vous aujourd’hui est celui du travail quotidien, de la santé et des routines. La Lune entre en Bélier dans ce secteur et y rejoint Neptune : l’instinct est fort, mais certains détails peuvent rester flous jusqu’à plus tard. Le travail et la santé répondent bien à l’action, et commencer la tâche que vous redoutez vous allège dès midi.\n\nLe Soleil, dans votre domaine de l’identité, du corps et de l’image que vous donnez, reste en carré à Mars et Jupiter, situés dans votre secteur de la carrière, de la réputation et des objectifs publics. La pression et les grandes promesses peuvent se heurter : vérifiez que votre effort correspond à ce qui est vraiment possible avant de vous engager. Vénus, depuis votre domaine du repos, du monde intérieur et de ce que vous gardez pour vous, adoucit l’ambiance par un trigone au Nœud nord et un sextile à Jupiter, un bon signe pour la diplomatie et un coup de main.\n\nCe week-end, bougez dehors, même brièvement. Votre propre jugement reste le meilleur guide.",
+      "sagittaire": "Sagittaire, l’énergie se rassemble aujourd’hui autour du domaine de l’amour, du plaisir et de la créativité. La Lune entre en Bélier dans ce secteur et y rejoint Neptune : l’instinct est fort, mais certains détails peuvent rester flous jusqu’à plus tard. Le désir et la créativité se réveillent, et suivre une idée ludique vous rend le goût du jeu.\n\nLe Soleil, dans votre domaine du repos, du monde intérieur et de ce que vous gardez pour vous, reste en carré à Mars et Jupiter, situés dans votre secteur des voyages, des études et des convictions. La pression et les grandes promesses peuvent se heurter : vérifiez que votre effort correspond à ce qui est vraiment possible avant de vous engager. Vénus, depuis votre domaine des amis, des groupes et des projets à long terme, adoucit l’ambiance par un trigone au Nœud nord et un sextile à Jupiter, un bon signe pour la diplomatie et un coup de main.\n\nCe week-end, prenez du temps pour un loisir sans objectif. Voyez ceci comme une tendance, pas comme un verdict.",
+      "capricorne": "Capricorne, ce vendredi vous invite à travailler le domaine du foyer, de la famille et des racines. La Lune entre en Bélier dans ce secteur et y rejoint Neptune : l’instinct est fort, mais certains détails peuvent rester flous jusqu’à plus tard. La maison et la famille provoquent des réactions rapides, et régler une petite tâche chez vous transforme l’agitation en soulagement.\n\nLe Soleil, dans votre domaine des amis, des groupes et des projets à long terme, reste en carré à Mars et Jupiter, situés dans votre secteur de l’argent partagé, de l’intimité et des liens profonds. La pression et les grandes promesses peuvent se heurter : vérifiez que votre effort correspond à ce qui est vraiment possible avant de vous engager. Vénus, depuis votre domaine de la carrière, de la réputation et des objectifs publics, adoucit l’ambiance par un trigone au Nœud nord et un sextile à Jupiter, un bon signe pour la diplomatie et un coup de main.\n\nCe week-end, invitez un proche pour un repas simple. Le ciel propose un climat, et c’est vous qui décidez quoi en faire.",
+      "verseau": "Verseau, la Lune désormais en Bélier anime le domaine des échanges, des messages et des petits trajets. La Lune entre en Bélier dans ce secteur et y rejoint Neptune : l’instinct est fort, mais certains détails peuvent rester flous jusqu’à plus tard. Les mots sortent vite et sans détour, alors dire les choses avec douceur compte plus que gagner l’échange.\n\nLe Soleil, dans votre domaine de la carrière, de la réputation et des objectifs publics, reste en carré à Mars et Jupiter, situés dans votre secteur du couple et des relations en face à face. La pression et les grandes promesses peuvent se heurter : vérifiez que votre effort correspond à ce qui est vraiment possible avant de vous engager. Vénus, depuis votre domaine des voyages, des études et des convictions, adoucit l’ambiance par un trigone au Nœud nord et un sextile à Jupiter, un bon signe pour la diplomatie et un coup de main.\n\nCe week-end, envoyez le message que vous réécrivez sans cesse. Prenez ce qui est utile et laissez le reste.",
+      "poissons": "Poissons, aujourd’hui, le ciel vous demande de regarder le domaine de l’argent, des biens et de l’estime de soi. La Lune entre en Bélier dans ce secteur et y rejoint Neptune : l’instinct est fort, mais certains détails peuvent rester flous jusqu’à plus tard. L’argent et l’estime de soi reçoivent un coup d’élan, et choisir une seule priorité pratique garde vos dépenses en main.\n\nLe Soleil, dans votre domaine des voyages, des études et des convictions, reste en carré à Mars et Jupiter, situés dans votre secteur du travail quotidien, de la santé et des routines. La pression et les grandes promesses peuvent se heurter : vérifiez que votre effort correspond à ce qui est vraiment possible avant de vous engager. Vénus, depuis votre domaine de l’argent partagé, de l’intimité et des liens profonds, adoucit l’ambiance par un trigone au Nœud nord et un sextile à Jupiter, un bon signe pour la diplomatie et un coup de main.\n\nCe week-end, classez vos tickets ou vérifiez votre budget de décembre. Votre propre jugement reste le meilleur guide."
+    }
+  }
+}
