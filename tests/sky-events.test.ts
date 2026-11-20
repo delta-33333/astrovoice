@@ -114,3 +114,17 @@ test('Saturne rétrograde 2027 et Uranus en Gémeaux 2027 : heures calculées DE
     }
   }
 });
+
+test('Neptune en Bélier 2027 et planètes rétrogrades 2027 : heures calculées DE440', () => {
+  assert.match(skyEventCopy('neptuneAries2027', 'en').answer[0], /10 July, 00:41 Paris \(9 July, 22:41 UTC\)/);
+  assert.match(skyEventCopy('neptuneAries2027', 'fr').answer[0], /15 décembre, 10 h 07 Paris \(9 h 07 UTC\)/);
+  assert.match(skyEventCopy('retrogrades2027', 'en').sections[1].paragraphs[0], /13 April, 04:11 Paris \(02:11 UTC\)/);
+  assert.match(skyEventCopy('retrogrades2027', 'fr').sections[1].paragraphs[0], /8 mai, 14 h 56 Paris \(12 h 56 UTC\)/);
+  for (const id of ['neptuneAries2027', 'retrogrades2027'] as const) {
+    for (const locale of ['en', 'fr'] as const) {
+      const text = JSON.stringify([skyEventCopy(id, locale), signRows(id, locale)]);
+      assert.equal(text.includes('—'), false, `${id} ${locale} tiret cadratin`);
+      assert.equal(/1,99|per minute|par minute|AggregateRating|Astrology-API/i.test(text), false, `${id} ${locale} interdit`);
+    }
+  }
+});
