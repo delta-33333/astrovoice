@@ -28,8 +28,15 @@ import {
 import { SIGN_IDS, type SignId } from '@/lib/zodiac/signs';
 import { dailyInsights } from '@/lib/daily-horoscope-insights';
 import { DateTime } from 'luxon';
+import { SKY_EVENT_LABELS, SKY_EVENT_PATHS, type SkyEventId } from '@/lib/sky-events';
 
 const h2 = 'font-[family-name:var(--font-cinzel)] text-2xl text-white';
+
+// Sky-event guides linked from the daily horoscope while the event is near (inclusive date windows, Paris dates).
+const SKY_EVENT_WINDOWS: { id: SkyEventId; from: string; to: string }[] = [
+  { id: 'fullMoonGemini', from: '2026-11-17', to: '2026-11-25' },
+  { id: 'sagittariusSeason', from: '2026-11-18', to: '2026-12-21' },
+];
 
 const T = {
   en: {
@@ -188,7 +195,11 @@ export default async function DailyHoroscopePage({ route }: { route: DailyRoute 
   const { locale, date, sign } = route;
   const t = T[locale];
   const copy = day[locale];
-  const links = t.links(DAILY_LINKS[locale] as never);
+  const skyLinks = SKY_EVENT_WINDOWS.filter((w) => date >= w.from && date <= w.to).map((w) => ({
+    href: SKY_EVENT_PATHS[w.id][locale],
+    label: SKY_EVENT_LABELS[w.id][locale],
+  }));
+  const links = [...skyLinks, ...t.links(DAILY_LINKS[locale] as never)];
   const { h1, description } = headline(route, day);
   const latest = latestDailyDate();
   const isArchive = date !== latest;
