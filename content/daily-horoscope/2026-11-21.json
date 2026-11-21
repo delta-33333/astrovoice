@@ -1,0 +1,177 @@
+{
+  "date": "2026-11-21",
+  "sky": {
+    "date": "2026-11-21",
+    "computedAt": "08:00 Europe/Paris",
+    "phase": {
+      "id": "waxingGibbous",
+      "illumination": 85,
+      "waxing": true
+    },
+    "bodies": [
+      {
+        "name": "Soleil",
+        "sign": "Scorpion",
+        "degree": 28,
+        "retrograde": false
+      },
+      {
+        "name": "Lune",
+        "sign": "Bélier",
+        "degree": 14,
+        "retrograde": false
+      },
+      {
+        "name": "Mercure",
+        "sign": "Scorpion",
+        "degree": 9,
+        "retrograde": false
+      },
+      {
+        "name": "Vénus",
+        "sign": "Balance",
+        "degree": 23,
+        "retrograde": false
+      },
+      {
+        "name": "Mars",
+        "sign": "Lion",
+        "degree": 28,
+        "retrograde": false
+      },
+      {
+        "name": "Jupiter",
+        "sign": "Lion",
+        "degree": 26,
+        "retrograde": false
+      },
+      {
+        "name": "Saturne",
+        "sign": "Bélier",
+        "degree": 8,
+        "retrograde": true
+      },
+      {
+        "name": "Uranus",
+        "sign": "Gémeaux",
+        "degree": 3,
+        "retrograde": true
+      },
+      {
+        "name": "Neptune",
+        "sign": "Bélier",
+        "degree": 1,
+        "retrograde": true
+      },
+      {
+        "name": "Pluton",
+        "sign": "Verseau",
+        "degree": 3,
+        "retrograde": false
+      },
+      {
+        "name": "Nœud nord",
+        "sign": "Verseau",
+        "degree": 24,
+        "retrograde": true
+      }
+    ],
+    "ingresses": [],
+    "aspects": [
+      {
+        "a": "Soleil",
+        "b": "Mars",
+        "aspect": "square",
+        "orb": 0.9
+      },
+      {
+        "a": "Vénus",
+        "b": "Nœud nord",
+        "aspect": "trine",
+        "orb": 1.1
+      },
+      {
+        "a": "Mars",
+        "b": "Jupiter",
+        "aspect": "conjunction",
+        "orb": 1.8
+      },
+      {
+        "a": "Vénus",
+        "b": "Jupiter",
+        "aspect": "sextile",
+        "orb": 2.4
+      },
+      {
+        "a": "Soleil",
+        "b": "Jupiter",
+        "aspect": "square",
+        "orb": 2.7
+      },
+      {
+        "a": "Soleil",
+        "b": "Neptune",
+        "aspect": "trine",
+        "orb": 2.8
+      },
+      {
+        "a": "Mars",
+        "b": "Nœud nord",
+        "aspect": "opposition",
+        "orb": 3.1
+      },
+      {
+        "a": "Soleil",
+        "b": "Nœud nord",
+        "aspect": "square",
+        "orb": 4
+      },
+      {
+        "a": "Soleil",
+        "b": "Uranus",
+        "aspect": "opposition",
+        "orb": 4.9
+      },
+      {
+        "a": "Lune",
+        "b": "Saturne",
+        "aspect": "conjunction",
+        "orb": 5.8
+      }
+    ]
+  },
+  "en": {
+    "summary": "Saturday 21 November 2026: the waxing gibbous Moon, about 85% lit, spends the whole day in Aries. It has just passed retrograde Saturn at 8° Aries and moves toward an opposition with Venus in Libra, exact during the night (around 1:10 am Paris time on Sunday). It is the Sun’s last full day in Scorpio: at 28° it is separating from its square to Mars at 28° Leo, still squares Jupiter at 26° Leo and trines Neptune, and it begins to oppose Uranus in Gemini. Mars and Jupiter remain conjunct, Mars opposes the North Node, and Venus at 23° Libra trines the Node and sextiles Jupiter. The Sun enters Sagittarius on Sunday morning, ahead of the Full Moon on 24 November. Saturn, Uranus and Neptune are retrograde.",
+    "signs": {
+      "belier": "Aries, this Saturday asks you to give some structure to identity, body and first impressions. The Moon in Aries has just crossed Saturn in this part of your chart, so enthusiasm meets a reality check. After a burst of impulse, Saturn asks for patience with yourself, and a realistic pace will carry you further than a sprint.\n\nTonight the Moon opposes Venus in your area of partnerships and one-to-one relationships, which asks you to balance what you want with what someone else needs. The Sun, on its last full day in your sector of shared money, intimacy and deep bonds, is easing away from its square to Mars but still squares Jupiter in your domain of love, pleasure and creativity, so keep promises in proportion. From Sunday the Sun moves into your area of travel, study and the beliefs that guide you, ahead of the Full Moon on 24 November.\n\nOn Sunday, write down one personal goal for December and the first small step toward it. Astrology describes a mood, and you remain in charge of your choices.",
+      "taureau": "Taurus, the Aries Moon, fresh from meeting Saturn, works on rest, the inner world and what you keep hidden. The Moon in Aries has just crossed Saturn in this part of your chart, so enthusiasm meets a reality check. Tiredness or old worries may surface, and giving yourself permission to slow down is the wisest move.\n\nTonight the Moon opposes Venus in your area of daily work, health and routines, which asks you to balance what you want with what someone else needs. The Sun, on its last full day in your sector of partnerships and one-to-one relationships, is easing away from its square to Mars but still squares Jupiter in your domain of home, family and private roots, so keep promises in proportion. From Sunday the Sun moves into your area of shared money, intimacy and deep bonds, ahead of the Full Moon on 24 November.\n\nOn Sunday, keep a few hours for rest with your phone set aside. Use this as a compass, not a rulebook.",
+      "gemeaux": "Gemini, your Saturday turns on friends, groups and long-term plans. The Moon in Aries has just crossed Saturn in this part of your chart, so enthusiasm meets a reality check. Group life asks for clear roles, and saying what you can and cannot do keeps friendships easy.\n\nTonight the Moon opposes Venus in your area of love, pleasure and creativity, which asks you to balance what you want with what someone else needs. The Sun, on its last full day in your sector of daily work, health and routines, is easing away from its square to Mars but still squares Jupiter in your domain of conversations, messages and short trips, so keep promises in proportion. From Sunday the Sun moves into your area of partnerships and one-to-one relationships, ahead of the Full Moon on 24 November.\n\nOn Sunday, reply to a group message or plan a get-together. Keep the parts that ring true for you.",
+      "cancer": "Cancer, the weekend opens with a focus on career, reputation and public goals. The Moon in Aries has just crossed Saturn in this part of your chart, so enthusiasm meets a reality check. Responsibilities at work feel serious, and showing steady reliability counts more than a flashy gesture.\n\nTonight the Moon opposes Venus in your area of home, family and private roots, which asks you to balance what you want with what someone else needs. The Sun, on its last full day in your sector of love, pleasure and creativity, is easing away from its square to Mars but still squares Jupiter in your domain of money, possessions and self-worth, so keep promises in proportion. From Sunday the Sun moves into your area of daily work, health and routines, ahead of the Full Moon on 24 November.\n\nOn Sunday, block out time in your diary for the week’s priority. No chart knows your life better than you do.",
+      "lion": "Leo, today the Moon and Saturn shape travel, study and the beliefs that guide you. The Moon in Aries has just crossed Saturn in this part of your chart, so enthusiasm meets a reality check. Big plans meet practical limits, and checking dates, prices or requirements before you commit saves stress.\n\nTonight the Moon opposes Venus in your area of conversations, messages and short trips, which asks you to balance what you want with what someone else needs. The Sun, on its last full day in your sector of home, family and private roots, is easing away from its square to Mars but still squares Jupiter in your domain of identity, body and first impressions, so keep promises in proportion. From Sunday the Sun moves into your area of love, pleasure and creativity, ahead of the Full Moon on 24 November.\n\nOn Sunday, read or watch something that widens your view. Astrology describes a mood, and you remain in charge of your choices.",
+      "vierge": "Virgo, this Saturday’s key topic is shared money, intimacy and deep bonds. The Moon in Aries has just crossed Saturn in this part of your chart, so enthusiasm meets a reality check. Questions of trust and shared resources want honesty, and one frank conversation about money clears the air.\n\nTonight the Moon opposes Venus in your area of money, possessions and self-worth, which asks you to balance what you want with what someone else needs. The Sun, on its last full day in your sector of conversations, messages and short trips, is easing away from its square to Mars but still squares Jupiter in your domain of rest, the inner world and what you keep hidden, so keep promises in proportion. From Sunday the Sun moves into your area of home, family and private roots, ahead of the Full Moon on 24 November.\n\nOn Sunday, agree on one shared expense or loan with the person concerned. Use this as a compass, not a rulebook.",
+      "balance": "Libra, the sky today points you toward partnerships and one-to-one relationships. The Moon in Aries has just crossed Saturn in this part of your chart, so enthusiasm meets a reality check. Others may seem demanding or distant, and naming your own needs calmly brings more respect than silence.\n\nTonight the Moon opposes Venus in your area of identity, body and first impressions, which asks you to balance what you want with what someone else needs. The Sun, on its last full day in your sector of money, possessions and self-worth, is easing away from its square to Mars but still squares Jupiter in your domain of friends, groups and long-term plans, so keep promises in proportion. From Sunday the Sun moves into your area of conversations, messages and short trips, ahead of the Full Moon on 24 November.\n\nOn Sunday, share an easy moment with someone close without discussing problems. Keep the parts that ring true for you.",
+      "scorpion": "Scorpio, Saturday puts daily work, health and routines under a steadier light. The Moon in Aries has just crossed Saturn in this part of your chart, so enthusiasm meets a reality check. Routines need structure more than willpower, and fixing a sensible bedtime or meal time helps your energy.\n\nTonight the Moon opposes Venus in your area of rest, the inner world and what you keep hidden, which asks you to balance what you want with what someone else needs. The Sun, on its last full day in your sector of identity, body and first impressions, is easing away from its square to Mars but still squares Jupiter in your domain of career, reputation and public goals, so keep promises in proportion. From Sunday the Sun moves into your area of money, possessions and self-worth, ahead of the Full Moon on 24 November.\n\nOn Sunday, prepare a simple plan for meals or sleep for the coming week. No chart knows your life better than you do.",
+      "sagittaire": "Sagittarius, a sober Aries Moon colours love, pleasure and creativity today. The Moon in Aries has just crossed Saturn in this part of your chart, so enthusiasm meets a reality check. Romance and creativity call for commitment, and finishing a small creative piece feels better than starting three.\n\nTonight the Moon opposes Venus in your area of friends, groups and long-term plans, which asks you to balance what you want with what someone else needs. The Sun, on its last full day in your sector of rest, the inner world and what you keep hidden, is easing away from its square to Mars but still squares Jupiter in your domain of travel, study and the beliefs that guide you, so keep promises in proportion. From Sunday the Sun moves into your area of identity, body and first impressions, ahead of the Full Moon on 24 November.\n\nOn Sunday, spend an hour on something you create just for joy. Astrology describes a mood, and you remain in charge of your choices.",
+      "capricorne": "Capricorn, the theme you meet first today is home, family and private roots. The Moon in Aries has just crossed Saturn in this part of your chart, so enthusiasm meets a reality check. Old family duties can feel heavy, and sharing one household task instead of carrying it alone eases the load.\n\nTonight the Moon opposes Venus in your area of career, reputation and public goals, which asks you to balance what you want with what someone else needs. The Sun, on its last full day in your sector of friends, groups and long-term plans, is easing away from its square to Mars but still squares Jupiter in your domain of shared money, intimacy and deep bonds, so keep promises in proportion. From Sunday the Sun moves into your area of rest, the inner world and what you keep hidden, ahead of the Full Moon on 24 November.\n\nOn Sunday, tidy one corner of your home that bothers you. Use this as a compass, not a rulebook.",
+      "verseau": "Aquarius, this Saturday centres on conversations, messages and short trips. The Moon in Aries has just crossed Saturn in this part of your chart, so enthusiasm meets a reality check. You want to speak plainly, and choosing fewer, clearer words gives your message more weight.\n\nTonight the Moon opposes Venus in your area of travel, study and the beliefs that guide you, which asks you to balance what you want with what someone else needs. The Sun, on its last full day in your sector of career, reputation and public goals, is easing away from its square to Mars but still squares Jupiter in your domain of partnerships and one-to-one relationships, so keep promises in proportion. From Sunday the Sun moves into your area of friends, groups and long-term plans, ahead of the Full Moon on 24 November.\n\nOn Sunday, call or write to someone you owe an answer. Keep the parts that ring true for you.",
+      "poissons": "Pisces, today’s Moon in Aries asks for care with money, possessions and self-worth. The Moon in Aries has just crossed Saturn in this part of your chart, so enthusiasm meets a reality check. Spending urges meet a sober voice, and writing a simple limit for the week protects your peace of mind.\n\nTonight the Moon opposes Venus in your area of shared money, intimacy and deep bonds, which asks you to balance what you want with what someone else needs. The Sun, on its last full day in your sector of travel, study and the beliefs that guide you, is easing away from its square to Mars but still squares Jupiter in your domain of daily work, health and routines, so keep promises in proportion. From Sunday the Sun moves into your area of career, reputation and public goals, ahead of the Full Moon on 24 November.\n\nOn Sunday, check one bill or bank statement you have been avoiding. No chart knows your life better than you do."
+    }
+  },
+  "fr": {
+    "summary": "Samedi 21 novembre 2026 : la Lune gibbeuse croissante, éclairée à environ 85 %, reste en Bélier toute la journée. Elle vient de passer sur Saturne rétrograde à 8° du Bélier et s’approche d’une opposition à Vénus en Balance, exacte dans la nuit (vers 1 h 10, heure de Paris, dimanche). C’est le dernier jour complet du Soleil en Scorpion : à 28°, il se sépare de son carré à Mars à 28° du Lion, reste en carré à Jupiter à 26° du Lion et en trigone à Neptune, et commence à s’opposer à Uranus en Gémeaux. Mars et Jupiter restent conjoints, Mars s’oppose au Nœud nord, et Vénus à 23° de la Balance fait trigone au Nœud et sextile à Jupiter. Le Soleil entre en Sagittaire dimanche matin, avant la pleine lune du 24 novembre. Saturne, Uranus et Neptune sont rétrogrades.",
+    "signs": {
+      "belier": "Bélier, ce samedi vous invite à structurer le domaine de l’identité, du corps et de l’image que vous donnez. La Lune en Bélier vient de croiser Saturne dans ce secteur : l’enthousiasme rencontre un retour au réel. Après un élan d’impulsion, Saturne vous demande de la patience envers vous-même, et un rythme réaliste vous mènera plus loin qu’un sprint.\n\nCe soir, la Lune s’oppose à Vénus, située dans votre domaine du couple et des relations en face à face, ce qui vous demande d’équilibrer vos envies et les besoins de l’autre. Le Soleil, pour son dernier jour complet dans votre secteur de l’argent partagé, de l’intimité et des liens profonds, se détache de son carré à Mars mais reste en carré à Jupiter, dans votre domaine de l’amour, du plaisir et de la créativité : gardez vos promesses à la bonne mesure. Dès dimanche, le Soleil passe dans votre domaine des voyages, des études et des convictions, avant la pleine lune du 24 novembre.\n\nDimanche, notez un objectif personnel pour décembre et le premier petit pas vers lui. L’astrologie décrit une ambiance, et vous restez maître de vos choix.",
+      "taureau": "Taureau, la Lune en Bélier, qui vient de croiser Saturne, travaille le domaine du repos, du monde intérieur et de ce que vous gardez pour vous. La Lune en Bélier vient de croiser Saturne dans ce secteur : l’enthousiasme rencontre un retour au réel. La fatigue ou d’anciennes inquiétudes peuvent remonter, et vous autoriser à ralentir est le choix le plus sage.\n\nCe soir, la Lune s’oppose à Vénus, située dans votre domaine du travail quotidien, de la santé et des routines, ce qui vous demande d’équilibrer vos envies et les besoins de l’autre. Le Soleil, pour son dernier jour complet dans votre secteur du couple et des relations en face à face, se détache de son carré à Mars mais reste en carré à Jupiter, dans votre domaine du foyer, de la famille et des racines : gardez vos promesses à la bonne mesure. Dès dimanche, le Soleil passe dans votre domaine de l’argent partagé, de l’intimité et des liens profonds, avant la pleine lune du 24 novembre.\n\nDimanche, gardez quelques heures de repos, téléphone de côté. Servez-vous-en comme d’une boussole, pas comme d’un règlement.",
+      "gemeaux": "Gémeaux, votre samedi s’articule autour du domaine des amis, des groupes et des projets à long terme. La Lune en Bélier vient de croiser Saturne dans ce secteur : l’enthousiasme rencontre un retour au réel. La vie de groupe demande des rôles clairs, et dire ce que vous pouvez faire ou non garde vos amitiés légères.\n\nCe soir, la Lune s’oppose à Vénus, située dans votre domaine de l’amour, du plaisir et de la créativité, ce qui vous demande d’équilibrer vos envies et les besoins de l’autre. Le Soleil, pour son dernier jour complet dans votre secteur du travail quotidien, de la santé et des routines, se détache de son carré à Mars mais reste en carré à Jupiter, dans votre domaine des échanges, des messages et des petits trajets : gardez vos promesses à la bonne mesure. Dès dimanche, le Soleil passe dans votre domaine du couple et des relations en face à face, avant la pleine lune du 24 novembre.\n\nDimanche, répondez à un message de groupe ou organisez une retrouvaille. Gardez ce qui sonne juste pour vous.",
+      "cancer": "Cancer, le week-end s’ouvre sur le domaine de la carrière, de la réputation et des objectifs publics. La Lune en Bélier vient de croiser Saturne dans ce secteur : l’enthousiasme rencontre un retour au réel. Les responsabilités professionnelles prennent un tour sérieux, et montrer une fiabilité constante compte plus qu’un coup d’éclat.\n\nCe soir, la Lune s’oppose à Vénus, située dans votre domaine du foyer, de la famille et des racines, ce qui vous demande d’équilibrer vos envies et les besoins de l’autre. Le Soleil, pour son dernier jour complet dans votre secteur de l’amour, du plaisir et de la créativité, se détache de son carré à Mars mais reste en carré à Jupiter, dans votre domaine de l’argent, des biens et de l’estime de soi : gardez vos promesses à la bonne mesure. Dès dimanche, le Soleil passe dans votre domaine du travail quotidien, de la santé et des routines, avant la pleine lune du 24 novembre.\n\nDimanche, bloquez du temps dans votre agenda pour la priorité de la semaine. Aucun thème ne connaît votre vie mieux que vous.",
+      "lion": "Lion, aujourd’hui, la Lune et Saturne façonnent le domaine des voyages, des études et des convictions. La Lune en Bélier vient de croiser Saturne dans ce secteur : l’enthousiasme rencontre un retour au réel. Les grands projets rencontrent des limites concrètes, et vérifier dates, prix ou conditions avant de vous engager vous épargne du stress.\n\nCe soir, la Lune s’oppose à Vénus, située dans votre domaine des échanges, des messages et des petits trajets, ce qui vous demande d’équilibrer vos envies et les besoins de l’autre. Le Soleil, pour son dernier jour complet dans votre secteur du foyer, de la famille et des racines, se détache de son carré à Mars mais reste en carré à Jupiter, dans votre domaine de l’identité, du corps et de l’image que vous donnez : gardez vos promesses à la bonne mesure. Dès dimanche, le Soleil passe dans votre domaine de l’amour, du plaisir et de la créativité, avant la pleine lune du 24 novembre.\n\nDimanche, lisez ou regardez quelque chose qui élargit votre regard. L’astrologie décrit une ambiance, et vous restez maître de vos choix.",
+      "vierge": "Vierge, le sujet clé de ce samedi est celui de l’argent partagé, de l’intimité et des liens profonds. La Lune en Bélier vient de croiser Saturne dans ce secteur : l’enthousiasme rencontre un retour au réel. Les questions de confiance et de ressources communes réclament de l’honnêteté, et une conversation franche sur l’argent assainit l’ambiance.\n\nCe soir, la Lune s’oppose à Vénus, située dans votre domaine de l’argent, des biens et de l’estime de soi, ce qui vous demande d’équilibrer vos envies et les besoins de l’autre. Le Soleil, pour son dernier jour complet dans votre secteur des échanges, des messages et des petits trajets, se détache de son carré à Mars mais reste en carré à Jupiter, dans votre domaine du repos, du monde intérieur et de ce que vous gardez pour vous : gardez vos promesses à la bonne mesure. Dès dimanche, le Soleil passe dans votre domaine du foyer, de la famille et des racines, avant la pleine lune du 24 novembre.\n\nDimanche, mettez-vous d’accord sur une dépense ou un prêt commun avec la personne concernée. Servez-vous-en comme d’une boussole, pas comme d’un règlement.",
+      "balance": "Balance, le ciel du jour vous oriente vers le domaine du couple et des relations en face à face. La Lune en Bélier vient de croiser Saturne dans ce secteur : l’enthousiasme rencontre un retour au réel. Les autres peuvent sembler exigeants ou distants, et exprimer calmement vos propres besoins vous vaut plus de respect que le silence.\n\nCe soir, la Lune s’oppose à Vénus, située dans votre domaine de l’identité, du corps et de l’image que vous donnez, ce qui vous demande d’équilibrer vos envies et les besoins de l’autre. Le Soleil, pour son dernier jour complet dans votre secteur de l’argent, des biens et de l’estime de soi, se détache de son carré à Mars mais reste en carré à Jupiter, dans votre domaine des amis, des groupes et des projets à long terme : gardez vos promesses à la bonne mesure. Dès dimanche, le Soleil passe dans votre domaine des échanges, des messages et des petits trajets, avant la pleine lune du 24 novembre.\n\nDimanche, partagez un moment facile avec un proche sans parler de problèmes. Gardez ce qui sonne juste pour vous.",
+      "scorpion": "Scorpion, ce samedi éclaire plus calmement le domaine du travail quotidien, de la santé et des routines. La Lune en Bélier vient de croiser Saturne dans ce secteur : l’enthousiasme rencontre un retour au réel. Vos routines ont besoin de structure plus que de volonté, et fixer une heure de coucher ou de repas raisonnable soutient votre énergie.\n\nCe soir, la Lune s’oppose à Vénus, située dans votre domaine du repos, du monde intérieur et de ce que vous gardez pour vous, ce qui vous demande d’équilibrer vos envies et les besoins de l’autre. Le Soleil, pour son dernier jour complet dans votre secteur de l’identité, du corps et de l’image que vous donnez, se détache de son carré à Mars mais reste en carré à Jupiter, dans votre domaine de la carrière, de la réputation et des objectifs publics : gardez vos promesses à la bonne mesure. Dès dimanche, le Soleil passe dans votre domaine de l’argent, des biens et de l’estime de soi, avant la pleine lune du 24 novembre.\n\nDimanche, préparez un plan simple de repas ou de sommeil pour la semaine. Aucun thème ne connaît votre vie mieux que vous.",
+      "sagittaire": "Sagittaire, une Lune en Bélier plus sobre colore aujourd’hui le domaine de l’amour, du plaisir et de la créativité. La Lune en Bélier vient de croiser Saturne dans ce secteur : l’enthousiasme rencontre un retour au réel. L’amour et la créativité demandent de l’engagement, et terminer un petit projet créatif fait plus de bien qu’en commencer trois.\n\nCe soir, la Lune s’oppose à Vénus, située dans votre domaine des amis, des groupes et des projets à long terme, ce qui vous demande d’équilibrer vos envies et les besoins de l’autre. Le Soleil, pour son dernier jour complet dans votre secteur du repos, du monde intérieur et de ce que vous gardez pour vous, se détache de son carré à Mars mais reste en carré à Jupiter, dans votre domaine des voyages, des études et des convictions : gardez vos promesses à la bonne mesure. Dès dimanche, le Soleil passe dans votre domaine de l’identité, du corps et de l’image que vous donnez, avant la pleine lune du 24 novembre.\n\nDimanche, consacrez une heure à créer quelque chose pour le simple plaisir. L’astrologie décrit une ambiance, et vous restez maître de vos choix.",
+      "capricorne": "Capricorne, le premier thème que vous rencontrez aujourd’hui est celui du foyer, de la famille et des racines. La Lune en Bélier vient de croiser Saturne dans ce secteur : l’enthousiasme rencontre un retour au réel. D’anciens devoirs familiaux peuvent peser, et partager une tâche de la maison au lieu de tout porter seul allège la charge.\n\nCe soir, la Lune s’oppose à Vénus, située dans votre domaine de la carrière, de la réputation et des objectifs publics, ce qui vous demande d’équilibrer vos envies et les besoins de l’autre. Le Soleil, pour son dernier jour complet dans votre secteur des amis, des groupes et des projets à long terme, se détache de son carré à Mars mais reste en carré à Jupiter, dans votre domaine de l’argent partagé, de l’intimité et des liens profonds : gardez vos promesses à la bonne mesure. Dès dimanche, le Soleil passe dans votre domaine du repos, du monde intérieur et de ce que vous gardez pour vous, avant la pleine lune du 24 novembre.\n\nDimanche, rangez un coin de votre logement qui vous dérange. Servez-vous-en comme d’une boussole, pas comme d’un règlement.",
+      "verseau": "Verseau, ce samedi se concentre sur le domaine des échanges, des messages et des petits trajets. La Lune en Bélier vient de croiser Saturne dans ce secteur : l’enthousiasme rencontre un retour au réel. Vous avez envie de parler franchement, et choisir moins de mots, mais plus clairs, donne du poids à votre message.\n\nCe soir, la Lune s’oppose à Vénus, située dans votre domaine des voyages, des études et des convictions, ce qui vous demande d’équilibrer vos envies et les besoins de l’autre. Le Soleil, pour son dernier jour complet dans votre secteur de la carrière, de la réputation et des objectifs publics, se détache de son carré à Mars mais reste en carré à Jupiter, dans votre domaine du couple et des relations en face à face : gardez vos promesses à la bonne mesure. Dès dimanche, le Soleil passe dans votre domaine des amis, des groupes et des projets à long terme, avant la pleine lune du 24 novembre.\n\nDimanche, appelez ou écrivez à quelqu’un à qui vous devez une réponse. Gardez ce qui sonne juste pour vous.",
+      "poissons": "Poissons, la Lune en Bélier vous demande aujourd’hui de soigner le domaine de l’argent, des biens et de l’estime de soi. La Lune en Bélier vient de croiser Saturne dans ce secteur : l’enthousiasme rencontre un retour au réel. Les envies de dépenser croisent une voix plus sobre, et fixer une limite simple pour la semaine protège votre tranquillité.\n\nCe soir, la Lune s’oppose à Vénus, située dans votre domaine de l’argent partagé, de l’intimité et des liens profonds, ce qui vous demande d’équilibrer vos envies et les besoins de l’autre. Le Soleil, pour son dernier jour complet dans votre secteur des voyages, des études et des convictions, se détache de son carré à Mars mais reste en carré à Jupiter, dans votre domaine du travail quotidien, de la santé et des routines : gardez vos promesses à la bonne mesure. Dès dimanche, le Soleil passe dans votre domaine de la carrière, de la réputation et des objectifs publics, avant la pleine lune du 24 novembre.\n\nDimanche, vérifiez une facture ou un relevé que vous évitez. Aucun thème ne connaît votre vie mieux que vous."
+    }
+  }
+}
