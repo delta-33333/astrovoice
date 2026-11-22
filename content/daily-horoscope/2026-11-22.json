@@ -1,0 +1,194 @@
+{
+  "date": "2026-11-22",
+  "sky": {
+    "date": "2026-11-22",
+    "computedAt": "08:00 Europe/Paris",
+    "phase": {
+      "id": "waxingGibbous",
+      "illumination": 92,
+      "waxing": true
+    },
+    "bodies": [
+      {
+        "name": "Soleil",
+        "sign": "Scorpion",
+        "degree": 29,
+        "retrograde": false
+      },
+      {
+        "name": "Lune",
+        "sign": "Bélier",
+        "degree": 28,
+        "retrograde": false
+      },
+      {
+        "name": "Mercure",
+        "sign": "Scorpion",
+        "degree": 10,
+        "retrograde": false
+      },
+      {
+        "name": "Vénus",
+        "sign": "Balance",
+        "degree": 24,
+        "retrograde": false
+      },
+      {
+        "name": "Mars",
+        "sign": "Lion",
+        "degree": 28,
+        "retrograde": false
+      },
+      {
+        "name": "Jupiter",
+        "sign": "Lion",
+        "degree": 26,
+        "retrograde": false
+      },
+      {
+        "name": "Saturne",
+        "sign": "Bélier",
+        "degree": 8,
+        "retrograde": true
+      },
+      {
+        "name": "Uranus",
+        "sign": "Gémeaux",
+        "degree": 3,
+        "retrograde": true
+      },
+      {
+        "name": "Neptune",
+        "sign": "Bélier",
+        "degree": 1,
+        "retrograde": true
+      },
+      {
+        "name": "Pluton",
+        "sign": "Verseau",
+        "degree": 3,
+        "retrograde": false
+      },
+      {
+        "name": "Nœud nord",
+        "sign": "Verseau",
+        "degree": 24,
+        "retrograde": true
+      }
+    ],
+    "ingresses": [
+      {
+        "name": "Soleil",
+        "from": "Scorpion",
+        "to": "Sagittaire"
+      },
+      {
+        "name": "Lune",
+        "from": "Bélier",
+        "to": "Taureau"
+      }
+    ],
+    "aspects": [
+      {
+        "a": "Lune",
+        "b": "Mars",
+        "aspect": "trine",
+        "orb": 0.4
+      },
+      {
+        "a": "Vénus",
+        "b": "Nœud nord",
+        "aspect": "trine",
+        "orb": 0.8
+      },
+      {
+        "a": "Soleil",
+        "b": "Mars",
+        "aspect": "square",
+        "orb": 1.5
+      },
+      {
+        "a": "Soleil",
+        "b": "Neptune",
+        "aspect": "trine",
+        "orb": 1.7
+      },
+      {
+        "a": "Lune",
+        "b": "Jupiter",
+        "aspect": "trine",
+        "orb": 1.8
+      },
+      {
+        "a": "Vénus",
+        "b": "Jupiter",
+        "aspect": "sextile",
+        "orb": 2.2
+      },
+      {
+        "a": "Mars",
+        "b": "Jupiter",
+        "aspect": "conjunction",
+        "orb": 2.2
+      },
+      {
+        "a": "Mars",
+        "b": "Nœud nord",
+        "aspect": "opposition",
+        "orb": 3.5
+      },
+      {
+        "a": "Soleil",
+        "b": "Jupiter",
+        "aspect": "square",
+        "orb": 3.6
+      },
+      {
+        "a": "Soleil",
+        "b": "Uranus",
+        "aspect": "opposition",
+        "orb": 3.8
+      },
+      {
+        "a": "Lune",
+        "b": "Vénus",
+        "aspect": "opposition",
+        "orb": 3.9
+      }
+    ]
+  },
+  "en": {
+    "summary": "Sunday 22 November 2026: the Sun leaves Scorpio and enters Sagittarius in the morning, opening the season of the Archer. The waxing gibbous Moon, about 92% lit, finishes its passage through Aries with a trine to Mars and Jupiter in Leo, then enters Taurus in the late morning, two days before the Full Moon of 24 November. The Sun is separating from its square to Mars and Jupiter and from its trine to Neptune, and it opposes Uranus in Gemini within a few degrees. Mars and Jupiter stay conjunct at 26 to 28° Leo, opposite the North Node, while Venus at 24° Libra trines the Node and sextiles Jupiter. Mercury is at 10° Scorpio. Saturn, Uranus and Neptune are retrograde.",
+    "signs": {
+      "belier": "Aries, this Sunday settles around money, possessions and self-worth. Money and self-worth want solid ground, and checking one figure or one habit brings real reassurance.\n\nEarly in the day the Moon, still in Aries in your sector of identity, body and first impressions, trines Mars and Jupiter in your area of love, pleasure and creativity, which gives a short burst of courage for one thing you have been putting off. The bigger shift is the Sun entering Sagittarius, your domain of travel, study and the beliefs that guide you: for the next month, this is where curiosity and fresh air come from. With the Full Moon in Gemini due on Tuesday in your sector of conversations, messages and short trips, today is a good moment to notice what you want to complete there.\n\nAstrology describes a mood, and you remain in charge of your choices.",
+      "taureau": "Taurus, once the Moon reaches Taurus, the day turns to identity, body and first impressions. Slowing down suits you now: steady comfort and a calm body give you more confidence than proving yourself.\n\nEarly in the day the Moon, still in Aries in your sector of rest, the inner world and what you keep hidden, trines Mars and Jupiter in your area of home, family and private roots, which gives a short burst of courage for one thing you have been putting off. The bigger shift is the Sun entering Sagittarius, your domain of shared money, intimacy and deep bonds: for the next month, this is where curiosity and fresh air come from. With the Full Moon in Gemini due on Tuesday in your sector of money, possessions and self-worth, today is a good moment to notice what you want to complete there.\n\nUse this as a compass, not a rulebook.",
+      "gemeaux": "Gemini, your Sunday is mostly about rest, the inner world and what you keep hidden. Rest is productive today, and a quiet afternoon away from screens helps your inner world settle.\n\nEarly in the day the Moon, still in Aries in your sector of friends, groups and long-term plans, trines Mars and Jupiter in your area of conversations, messages and short trips, which gives a short burst of courage for one thing you have been putting off. The bigger shift is the Sun entering Sagittarius, your domain of partnerships and one-to-one relationships: for the next month, this is where curiosity and fresh air come from. With the Full Moon in Gemini due on Tuesday in your sector of identity, body and first impressions, today is a good moment to notice what you want to complete there.\n\nKeep the parts that ring true for you.",
+      "cancer": "Cancer, the slower Taurus Moon highlights friends, groups and long-term plans today. Friendships want reliability, and keeping one small promise to a friend strengthens the bond.\n\nEarly in the day the Moon, still in Aries in your sector of career, reputation and public goals, trines Mars and Jupiter in your area of money, possessions and self-worth, which gives a short burst of courage for one thing you have been putting off. The bigger shift is the Sun entering Sagittarius, your domain of daily work, health and routines: for the next month, this is where curiosity and fresh air come from. With the Full Moon in Gemini due on Tuesday in your sector of rest, the inner world and what you keep hidden, today is a good moment to notice what you want to complete there.\n\nNo chart knows your life better than you do.",
+      "lion": "Leo, today’s main theme is career, reputation and public goals. Work and reputation benefit from patience, and preparing Monday quietly gives you a calm head start.\n\nEarly in the day the Moon, still in Aries in your sector of travel, study and the beliefs that guide you, trines Mars and Jupiter in your area of identity, body and first impressions, which gives a short burst of courage for one thing you have been putting off. The bigger shift is the Sun entering Sagittarius, your domain of love, pleasure and creativity: for the next month, this is where curiosity and fresh air come from. With the Full Moon in Gemini due on Tuesday in your sector of friends, groups and long-term plans, today is a good moment to notice what you want to complete there.\n\nAstrology describes a mood, and you remain in charge of your choices.",
+      "vierge": "Virgo, Sunday brings a calmer focus on travel, study and the beliefs that guide you. Your mind wants something tangible to believe in, and one practical step toward a future plan makes it real.\n\nEarly in the day the Moon, still in Aries in your sector of shared money, intimacy and deep bonds, trines Mars and Jupiter in your area of rest, the inner world and what you keep hidden, which gives a short burst of courage for one thing you have been putting off. The bigger shift is the Sun entering Sagittarius, your domain of home, family and private roots: for the next month, this is where curiosity and fresh air come from. With the Full Moon in Gemini due on Tuesday in your sector of career, reputation and public goals, today is a good moment to notice what you want to complete there.\n\nUse this as a compass, not a rulebook.",
+      "balance": "Libra, the sky invites you to tend shared money, intimacy and deep bonds today. Trust and shared resources need steadiness, and taking time before any joint decision serves you.\n\nEarly in the day the Moon, still in Aries in your sector of partnerships and one-to-one relationships, trines Mars and Jupiter in your area of friends, groups and long-term plans, which gives a short burst of courage for one thing you have been putting off. The bigger shift is the Sun entering Sagittarius, your domain of conversations, messages and short trips: for the next month, this is where curiosity and fresh air come from. With the Full Moon in Gemini due on Tuesday in your sector of travel, study and the beliefs that guide you, today is a good moment to notice what you want to complete there.\n\nKeep the parts that ring true for you.",
+      "scorpion": "Scorpio, a grounded Sunday puts partnerships and one-to-one relationships first. Relationships ask for loyalty in small acts, and showing up as promised says more than words.\n\nEarly in the day the Moon, still in Aries in your sector of daily work, health and routines, trines Mars and Jupiter in your area of career, reputation and public goals, which gives a short burst of courage for one thing you have been putting off. The bigger shift is the Sun entering Sagittarius, your domain of money, possessions and self-worth: for the next month, this is where curiosity and fresh air come from. With the Full Moon in Gemini due on Tuesday in your sector of shared money, intimacy and deep bonds, today is a good moment to notice what you want to complete there.\n\nNo chart knows your life better than you do.",
+      "sagittaire": "Sagittarius, from late morning the Moon lights up daily work, health and routines. Your body asks for regular rhythms, and a walk, good food and an early night set up the week well.\n\nEarly in the day the Moon, still in Aries in your sector of love, pleasure and creativity, trines Mars and Jupiter in your area of travel, study and the beliefs that guide you, which gives a short burst of courage for one thing you have been putting off. The bigger shift is the Sun entering Sagittarius, your domain of identity, body and first impressions: for the next month, this is where curiosity and fresh air come from. With the Full Moon in Gemini due on Tuesday in your sector of partnerships and one-to-one relationships, today is a good moment to notice what you want to complete there.\n\nAstrology describes a mood, and you remain in charge of your choices.",
+      "capricorne": "Capricorn, today the spotlight moves to love, pleasure and creativity. Pleasure is the point, and a slow, sensual or creative moment refills you more than any big outing.\n\nEarly in the day the Moon, still in Aries in your sector of home, family and private roots, trines Mars and Jupiter in your area of shared money, intimacy and deep bonds, which gives a short burst of courage for one thing you have been putting off. The bigger shift is the Sun entering Sagittarius, your domain of rest, the inner world and what you keep hidden: for the next month, this is where curiosity and fresh air come from. With the Full Moon in Gemini due on Tuesday in your sector of daily work, health and routines, today is a good moment to notice what you want to complete there.\n\nUse this as a compass, not a rulebook.",
+      "verseau": "Aquarius, this Sunday gently centres on home, family and private roots. Home asks for comfort, and a warm meal, a clean room or an unhurried evening restores you.\n\nEarly in the day the Moon, still in Aries in your sector of conversations, messages and short trips, trines Mars and Jupiter in your area of partnerships and one-to-one relationships, which gives a short burst of courage for one thing you have been putting off. The bigger shift is the Sun entering Sagittarius, your domain of friends, groups and long-term plans: for the next month, this is where curiosity and fresh air come from. With the Full Moon in Gemini due on Tuesday in your sector of love, pleasure and creativity, today is a good moment to notice what you want to complete there.\n\nKeep the parts that ring true for you.",
+      "poissons": "Pisces, the Taurus Moon asks you to care for conversations, messages and short trips today. Your words land better when they are simple, and a short, kind message can settle what a long debate would not.\n\nEarly in the day the Moon, still in Aries in your sector of money, possessions and self-worth, trines Mars and Jupiter in your area of daily work, health and routines, which gives a short burst of courage for one thing you have been putting off. The bigger shift is the Sun entering Sagittarius, your domain of career, reputation and public goals: for the next month, this is where curiosity and fresh air come from. With the Full Moon in Gemini due on Tuesday in your sector of home, family and private roots, today is a good moment to notice what you want to complete there.\n\nNo chart knows your life better than you do."
+    }
+  },
+  "fr": {
+    "summary": "Dimanche 22 novembre 2026 : le Soleil quitte le Scorpion et entre en Sagittaire dans la matinée, ouvrant la saison de l’Archer. La Lune gibbeuse croissante, éclairée à environ 92 %, termine son passage en Bélier par un trigone à Mars et Jupiter en Lion, puis entre en Taureau en fin de matinée, deux jours avant la pleine lune du 24 novembre. Le Soleil se sépare de son carré à Mars et Jupiter et de son trigone à Neptune, et s’oppose à Uranus en Gémeaux à quelques degrés près. Mars et Jupiter restent conjoints entre 26° et 28° du Lion, face au Nœud nord, tandis que Vénus à 24° de la Balance fait trigone au Nœud et sextile à Jupiter. Mercure est à 10° du Scorpion. Saturne, Uranus et Neptune sont rétrogrades.",
+    "signs": {
+      "belier": "Bélier, ce dimanche s’installe autour du domaine de l’argent, des biens et de l’estime de soi. L’argent et l’estime de soi réclament une base solide, et vérifier un chiffre ou une habitude vous rassure vraiment.\n\nEn début de journée, la Lune, encore en Bélier dans votre secteur de l’identité, du corps et de l’image que vous donnez, fait trigone à Mars et Jupiter dans votre domaine de l’amour, du plaisir et de la créativité, ce qui donne un court élan de courage pour une chose que vous repoussez. Le changement majeur est l’entrée du Soleil en Sagittaire, dans votre domaine des voyages, des études et des convictions : pendant un mois, c’est là que naissent la curiosité et l’air frais. Avec la pleine lune en Gémeaux attendue mardi dans votre secteur des échanges, des messages et des petits trajets, c’est un bon moment pour repérer ce que vous voulez y conclure.\n\nL’astrologie décrit une ambiance, et vous restez maître de vos choix.",
+      "taureau": "Taureau, dès que la Lune atteint le Taureau, la journée se tourne vers le domaine de l’identité, du corps et de l’image que vous donnez. Ralentir vous réussit : un confort stable et un corps apaisé vous donnent plus d’assurance que le besoin de faire vos preuves.\n\nEn début de journée, la Lune, encore en Bélier dans votre secteur du repos, du monde intérieur et de ce que vous gardez pour vous, fait trigone à Mars et Jupiter dans votre domaine du foyer, de la famille et des racines, ce qui donne un court élan de courage pour une chose que vous repoussez. Le changement majeur est l’entrée du Soleil en Sagittaire, dans votre domaine de l’argent partagé, de l’intimité et des liens profonds : pendant un mois, c’est là que naissent la curiosité et l’air frais. Avec la pleine lune en Gémeaux attendue mardi dans votre secteur de l’argent, des biens et de l’estime de soi, c’est un bon moment pour repérer ce que vous voulez y conclure.\n\nServez-vous-en comme d’une boussole, pas comme d’un règlement.",
+      "gemeaux": "Gémeaux, votre dimanche parle surtout du domaine du repos, du monde intérieur et de ce que vous gardez pour vous. Le repos est productif aujourd’hui, et un après-midi calme loin des écrans aide votre monde intérieur à se poser.\n\nEn début de journée, la Lune, encore en Bélier dans votre secteur des amis, des groupes et des projets à long terme, fait trigone à Mars et Jupiter dans votre domaine des échanges, des messages et des petits trajets, ce qui donne un court élan de courage pour une chose que vous repoussez. Le changement majeur est l’entrée du Soleil en Sagittaire, dans votre domaine du couple et des relations en face à face : pendant un mois, c’est là que naissent la curiosité et l’air frais. Avec la pleine lune en Gémeaux attendue mardi dans votre secteur de l’identité, du corps et de l’image que vous donnez, c’est un bon moment pour repérer ce que vous voulez y conclure.\n\nGardez ce qui sonne juste pour vous.",
+      "cancer": "Cancer, la Lune plus lente du Taureau éclaire aujourd’hui le domaine des amis, des groupes et des projets à long terme. Les amitiés demandent de la fiabilité, et tenir une petite promesse faite à un ami renforce le lien.\n\nEn début de journée, la Lune, encore en Bélier dans votre secteur de la carrière, de la réputation et des objectifs publics, fait trigone à Mars et Jupiter dans votre domaine de l’argent, des biens et de l’estime de soi, ce qui donne un court élan de courage pour une chose que vous repoussez. Le changement majeur est l’entrée du Soleil en Sagittaire, dans votre domaine du travail quotidien, de la santé et des routines : pendant un mois, c’est là que naissent la curiosité et l’air frais. Avec la pleine lune en Gémeaux attendue mardi dans votre secteur du repos, du monde intérieur et de ce que vous gardez pour vous, c’est un bon moment pour repérer ce que vous voulez y conclure.\n\nAucun thème ne connaît votre vie mieux que vous.",
+      "lion": "Lion, le thème principal du jour est celui de la carrière, de la réputation et des objectifs publics. Le travail et la réputation profitent de la patience, et préparer lundi tranquillement vous donne une avance sereine.\n\nEn début de journée, la Lune, encore en Bélier dans votre secteur des voyages, des études et des convictions, fait trigone à Mars et Jupiter dans votre domaine de l’identité, du corps et de l’image que vous donnez, ce qui donne un court élan de courage pour une chose que vous repoussez. Le changement majeur est l’entrée du Soleil en Sagittaire, dans votre domaine de l’amour, du plaisir et de la créativité : pendant un mois, c’est là que naissent la curiosité et l’air frais. Avec la pleine lune en Gémeaux attendue mardi dans votre secteur des amis, des groupes et des projets à long terme, c’est un bon moment pour repérer ce que vous voulez y conclure.\n\nL’astrologie décrit une ambiance, et vous restez maître de vos choix.",
+      "vierge": "Vierge, ce dimanche apporte une attention plus calme au domaine des voyages, des études et des convictions. Votre esprit cherche quelque chose de concret en quoi croire, et un pas pratique vers un projet futur le rend réel.\n\nEn début de journée, la Lune, encore en Bélier dans votre secteur de l’argent partagé, de l’intimité et des liens profonds, fait trigone à Mars et Jupiter dans votre domaine du repos, du monde intérieur et de ce que vous gardez pour vous, ce qui donne un court élan de courage pour une chose que vous repoussez. Le changement majeur est l’entrée du Soleil en Sagittaire, dans votre domaine du foyer, de la famille et des racines : pendant un mois, c’est là que naissent la curiosité et l’air frais. Avec la pleine lune en Gémeaux attendue mardi dans votre secteur de la carrière, de la réputation et des objectifs publics, c’est un bon moment pour repérer ce que vous voulez y conclure.\n\nServez-vous-en comme d’une boussole, pas comme d’un règlement.",
+      "balance": "Balance, le ciel vous invite aujourd’hui à prendre soin du domaine de l’argent partagé, de l’intimité et des liens profonds. La confiance et les ressources communes ont besoin de stabilité, et prendre le temps avant toute décision à deux vous sert.\n\nEn début de journée, la Lune, encore en Bélier dans votre secteur du couple et des relations en face à face, fait trigone à Mars et Jupiter dans votre domaine des amis, des groupes et des projets à long terme, ce qui donne un court élan de courage pour une chose que vous repoussez. Le changement majeur est l’entrée du Soleil en Sagittaire, dans votre domaine des échanges, des messages et des petits trajets : pendant un mois, c’est là que naissent la curiosité et l’air frais. Avec la pleine lune en Gémeaux attendue mardi dans votre secteur des voyages, des études et des convictions, c’est un bon moment pour repérer ce que vous voulez y conclure.\n\nGardez ce qui sonne juste pour vous.",
+      "scorpion": "Scorpion, un dimanche plus ancré place en premier le domaine du couple et des relations en face à face. Vos relations demandent de la fidélité dans les petits gestes, et tenir ce que vous avez promis en dit plus que les mots.\n\nEn début de journée, la Lune, encore en Bélier dans votre secteur du travail quotidien, de la santé et des routines, fait trigone à Mars et Jupiter dans votre domaine de la carrière, de la réputation et des objectifs publics, ce qui donne un court élan de courage pour une chose que vous repoussez. Le changement majeur est l’entrée du Soleil en Sagittaire, dans votre domaine de l’argent, des biens et de l’estime de soi : pendant un mois, c’est là que naissent la curiosité et l’air frais. Avec la pleine lune en Gémeaux attendue mardi dans votre secteur de l’argent partagé, de l’intimité et des liens profonds, c’est un bon moment pour repérer ce que vous voulez y conclure.\n\nAucun thème ne connaît votre vie mieux que vous.",
+      "sagittaire": "Sagittaire, à partir de la fin de matinée, la Lune éclaire le domaine du travail quotidien, de la santé et des routines. Votre corps demande des rythmes réguliers, et une marche, une bonne table et un coucher tôt préparent bien la semaine.\n\nEn début de journée, la Lune, encore en Bélier dans votre secteur de l’amour, du plaisir et de la créativité, fait trigone à Mars et Jupiter dans votre domaine des voyages, des études et des convictions, ce qui donne un court élan de courage pour une chose que vous repoussez. Le changement majeur est l’entrée du Soleil en Sagittaire, dans votre domaine de l’identité, du corps et de l’image que vous donnez : pendant un mois, c’est là que naissent la curiosité et l’air frais. Avec la pleine lune en Gémeaux attendue mardi dans votre secteur du couple et des relations en face à face, c’est un bon moment pour repérer ce que vous voulez y conclure.\n\nL’astrologie décrit une ambiance, et vous restez maître de vos choix.",
+      "capricorne": "Capricorne, aujourd’hui, les projecteurs se tournent vers le domaine de l’amour, du plaisir et de la créativité. Le plaisir est le sujet, et un moment lent, sensuel ou créatif vous remplit plus qu’une grande sortie.\n\nEn début de journée, la Lune, encore en Bélier dans votre secteur du foyer, de la famille et des racines, fait trigone à Mars et Jupiter dans votre domaine de l’argent partagé, de l’intimité et des liens profonds, ce qui donne un court élan de courage pour une chose que vous repoussez. Le changement majeur est l’entrée du Soleil en Sagittaire, dans votre domaine du repos, du monde intérieur et de ce que vous gardez pour vous : pendant un mois, c’est là que naissent la curiosité et l’air frais. Avec la pleine lune en Gémeaux attendue mardi dans votre secteur du travail quotidien, de la santé et des routines, c’est un bon moment pour repérer ce que vous voulez y conclure.\n\nServez-vous-en comme d’une boussole, pas comme d’un règlement.",
+      "verseau": "Verseau, ce dimanche se recentre doucement sur le domaine du foyer, de la famille et des racines. Le foyer appelle le réconfort, et un repas chaud, une pièce rangée ou une soirée sans hâte vous ressourcent.\n\nEn début de journée, la Lune, encore en Bélier dans votre secteur des échanges, des messages et des petits trajets, fait trigone à Mars et Jupiter dans votre domaine du couple et des relations en face à face, ce qui donne un court élan de courage pour une chose que vous repoussez. Le changement majeur est l’entrée du Soleil en Sagittaire, dans votre domaine des amis, des groupes et des projets à long terme : pendant un mois, c’est là que naissent la curiosité et l’air frais. Avec la pleine lune en Gémeaux attendue mardi dans votre secteur de l’amour, du plaisir et de la créativité, c’est un bon moment pour repérer ce que vous voulez y conclure.\n\nGardez ce qui sonne juste pour vous.",
+      "poissons": "Poissons, la Lune en Taureau vous demande aujourd’hui de soigner le domaine des échanges, des messages et des petits trajets. Vos mots portent mieux quand ils sont simples, et un message court et bienveillant apaise ce qu’un long débat n’arrangerait pas.\n\nEn début de journée, la Lune, encore en Bélier dans votre secteur de l’argent, des biens et de l’estime de soi, fait trigone à Mars et Jupiter dans votre domaine du travail quotidien, de la santé et des routines, ce qui donne un court élan de courage pour une chose que vous repoussez. Le changement majeur est l’entrée du Soleil en Sagittaire, dans votre domaine de la carrière, de la réputation et des objectifs publics : pendant un mois, c’est là que naissent la curiosité et l’air frais. Avec la pleine lune en Gémeaux attendue mardi dans votre secteur du foyer, de la famille et des racines, c’est un bon moment pour repérer ce que vous voulez y conclure.\n\nAucun thème ne connaît votre vie mieux que vous."
+    }
+  }
+}
